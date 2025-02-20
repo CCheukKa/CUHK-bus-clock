@@ -1,21 +1,40 @@
 import { StyleSheet, Text, View, type ViewProps } from 'react-native';
+import { useMemo } from 'react';
 import { ClockThing, ClockThingType } from '@/components/ClockThing';
+import { ClockHand } from '@/components/ClockHand';
+import { ClockTick, ClockTickType } from '@/components/ClockTick';
 
-export function ClockView({ ...otherProps }: ViewProps) {
+export type ClockViewProps = {
+    currentTime: Date;
+} & ViewProps;
+
+export function ClockView({ currentTime, ...otherProps }: ClockViewProps) {
+    const clockNumbers = useMemo(() => {
+        return Array.from({ length: 12 }, (_, i) => i + 1).map(i => {
+            return (
+                <ClockThing type={ClockThingType.CLOCK_NUMBER} key={i} degrees={360 / 12 * i} length={0.8}>
+                    {i}
+                </ClockThing>
+            );
+        });
+    }, []);
+    const clockTicks = useMemo(() => {
+        return Array.from({ length: 60 }, (_, i) => i + 1).map(i => {
+            const degrees = 360 / 60 * i;
+            return (
+                <ClockTick type={i % 5 === 0 ? ClockTickType.MAJOR : ClockTickType.MINOR} degrees={degrees} key={i} />
+            );
+        });
+    }, []);
+
     return (
         <View style={styles.clockContainer}>
             <View style={styles.clockFace}
                 {...otherProps}
             >
-                {
-                    Array.from({ length: 12 }, (_, i) => i + 1).map(i => {
-                        return (
-                            <ClockThing type={ClockThingType.ClockNumber} key={i} degrees={360 / 12 * i} length={0.9}>
-                                {i}
-                            </ClockThing>
-                        );
-                    })
-                }
+                {clockNumbers}
+                <ClockHand degrees={360 / 60 * currentTime.getMinutes() + 360 / 60 / 60 * currentTime.getSeconds()} />
+                {clockTicks}
             </View>
         </View>
     );
@@ -34,7 +53,7 @@ const styles = StyleSheet.create({
         display: 'flex',
         width: '90%',
         aspectRatio: 1,
-        backgroundColor: '#00ff00',
+        backgroundColor: '#ffffff',
         borderRadius: '50%',
         borderWidth: 2,
         borderColor: '#000000',

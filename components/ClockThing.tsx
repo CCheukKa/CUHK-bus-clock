@@ -1,7 +1,7 @@
 import { StyleSheet, Text, View, ViewProps } from 'react-native';
 
 export enum ClockThingType {
-    ClockNumber = 'clockNumber',
+    CLOCK_NUMBER = 'clockNumber',
 };
 
 /**
@@ -40,7 +40,7 @@ export function ClockThing({ type, x, y, degrees, length, ...otherProps }: Clock
     const contentWithin = (() => {
         const children = otherProps.children;
         switch (type) {
-            case ClockThingType.ClockNumber:
+            case ClockThingType.CLOCK_NUMBER:
                 return (<Text style={styles.clockNumber}>{children}</Text>);
             default:
                 return children;
@@ -59,13 +59,12 @@ export function ClockThing({ type, x, y, degrees, length, ...otherProps }: Clock
 
 const styles = StyleSheet.create({
     clockThing: {
-        color: '#ffffff',
+        color: '#000000',
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
         width: '10%',
         aspectRatio: 1,
-        backgroundColor: '#0000ff',
         borderRadius: '50%',
         position: 'absolute',
         transform: 'translate(-50%, -50%)',
@@ -73,8 +72,8 @@ const styles = StyleSheet.create({
         left: '50%',
     },
     clockNumber: {
-        color: '#ffffff',
+        color: '#000000',
         fontSize: 20,
         fontWeight: 'bold',
-    }
+    },
 });
