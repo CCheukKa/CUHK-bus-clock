@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState, useRef, useMemo } from 'react';
 import { StyleSheet } from 'react-native';
 
 import { ThemedText } from '@/components/ThemedText';
@@ -23,6 +23,8 @@ export default function ClockScreen() {
         };
     }, []);
 
+    const clockView = useMemo(() => <ClockView currentTime={currentTime} />, [currentTime.getSeconds()]);
+
     return (
         <SafeAreaView style={styles.safeAreaView}>
             <ThemedView style={styles.titleContainer}>
@@ -30,7 +32,7 @@ export default function ClockScreen() {
                     {currentTime.toLocaleTimeString('en-GB')}
                 </ThemedText>
             </ThemedView>
-            <ClockView currentTime={currentTime} />
+            {clockView}
         </SafeAreaView>
     );
 }

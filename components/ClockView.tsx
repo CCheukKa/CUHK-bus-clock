@@ -1,10 +1,9 @@
 import { StyleSheet, View, type ViewProps } from 'react-native';
-import { useMemo } from 'react';
+import { ReactElement, useEffect, useMemo, useState } from 'react';
 import { ClockThing, ClockThingType } from '@/components/ClockThing';
 import { ClockHand } from '@/components/ClockHand';
 import { ClockTick, ClockTickType } from '@/components/ClockTick';
-import { BusRoute } from '@/constants/BusInfo';
-import { getRouteThings, RouteThing } from '@/components/RouteThing';
+import { getRouteThings } from '@/components/RouteThing';
 
 export type ClockViewProps = {
     currentTime: Date;
