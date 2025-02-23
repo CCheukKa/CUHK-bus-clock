@@ -3,8 +3,8 @@ import { useMemo } from 'react';
 import { ClockThing, ClockThingType } from '@/components/ClockThing';
 import { ClockHand } from '@/components/ClockHand';
 import { ClockTick, ClockTickType } from '@/components/ClockTick';
-import { BusRoute } from '@/constants/Bus';
-import { RouteThing } from './RouteThing';
+import { BusRoute } from '@/constants/BusInfo';
+import { getRouteThings, RouteThing } from '@/components/RouteThing';
 
 export type ClockViewProps = {
     currentTime: Date;
@@ -29,6 +29,8 @@ export function ClockView({ currentTime, ...otherProps }: ClockViewProps) {
         });
     }, []);
 
+    const routeThings = getRouteThings(currentTime);
+
     return (
         <View style={styles.clockContainer}>
             <View style={styles.clockFace}
@@ -37,7 +39,7 @@ export function ClockView({ currentTime, ...otherProps }: ClockViewProps) {
                 {clockNumbers}
                 <ClockHand degrees={360 / 60 * currentTime.getMinutes() + 360 / 60 / 60 * currentTime.getSeconds()} />
                 {clockTicks}
-                <RouteThing route={BusRoute._5D} currentTime={currentTime} etaTime={new Date(1740329635521)} />
+                {routeThings}
             </View>
         </View>
     );

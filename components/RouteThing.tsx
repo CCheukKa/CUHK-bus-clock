@@ -1,7 +1,6 @@
 import { ViewProps } from "react-native";
 import { ClockThing, ClockThingType } from "@/components/ClockThing";
-import { BusRoute, BusRouteInfos } from "@/constants/Bus";
-import { Colours } from "@/constants/Colours";
+import { BusRoute, BusRouteInfos, EtaInfo, getETAs, Station } from "@/constants/BusInfo";
 import { useThemeColour } from "@/hooks/useThemeColour";
 
 export type RouteThingProps = {
@@ -54,4 +53,17 @@ function mixRGBA(colour1: string, colour2: string, ratio: number) {
     const g = Math.round(g1 * (1 - ratio) + g2 * ratio);
     const b = Math.round(b1 * (1 - ratio) + b2 * ratio);
     return `#${r.toString(16).padStart(2, '0')}${g.toString(16).padStart(2, '0')}${b.toString(16).padStart(2, '0')}`;
+}
+
+export function getRouteThings(currentTime: Date) {
+    return getETAs(Station.UNIVERSITY_STATION, currentTime, 10, 30).map(etaInfo => {
+        return (
+            <RouteThing
+                route={etaInfo.route}
+                currentTime={currentTime}
+                etaTime={etaInfo.etaTime}
+                key={`${etaInfo.route}-${etaInfo.etaTime.getTime()}`}
+            />
+        );
+    });
 }
