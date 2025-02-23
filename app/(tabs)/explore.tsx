@@ -10,11 +10,11 @@ import { IconSymbol } from '@/components/ui/IconSymbol';
 export default function TabTwoScreen() {
     return (
         <ParallaxScrollView
-            headerBackgroundColor={{ light: '#D0D0D0', dark: '#353636' }}
+            headerBackgroundColour={{ light: '#D0D0D0', dark: '#353636' }}
             headerImage={
                 <IconSymbol
                     size={310}
-                    color="#808080"
+                    colour="#808080"
                     name="chevron.left.forwardslash.chevron.right"
                     style={styles.headerImage}
                 />
@@ -68,8 +68,8 @@ export default function TabTwoScreen() {
             <Collapsible title="Light and dark mode components">
                 <ThemedText>
                     This template has light and dark mode support. The{' '}
-                    <ThemedText type="defaultSemiBold">useColorScheme()</ThemedText> hook lets you inspect
-                    what the user's current color scheme is, and so you can adjust UI colors accordingly.
+                    <ThemedText type="defaultSemiBold">useColourScheme()</ThemedText> hook lets you inspect
+                    what the user's current colour scheme is, and so you can adjust UI colors accordingly.
                 </ThemedText>
                 <ExternalLink href="https://docs.expo.dev/develop/user-interface/color-themes/">
                     <ThemedText type="link">Learn more</ThemedText>

@@ -31,14 +31,14 @@ export type IconSymbolName = keyof typeof MAPPING;
 export function IconSymbol({
     name,
     size = 24,
-    color,
+    colour: colour,
     style,
 }: {
     name: IconSymbolName;
     size?: number;
-    color: string | OpaqueColorValue;
+    colour: string | OpaqueColorValue;
     style?: StyleProp<ViewStyle>;
     weight?: SymbolWeight;
 }) {
-    return <MaterialIcons color={color} size={size} name={MAPPING[name]} style={style} />;
+    return <MaterialIcons color={colour} size={size} name={MAPPING[name]} style={style} />;
 }

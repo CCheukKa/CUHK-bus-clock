@@ -24,13 +24,7 @@ export default function ClockScreen() {
     }, []);
 
     return (
-        <SafeAreaView style={{
-            flex: 1,
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
-            backgroundColor: '#141414',
-        }}>
+        <SafeAreaView style={styles.safeAreaView}>
             <ThemedView style={styles.titleContainer}>
                 <ThemedText type="title">
                     {currentTime.toLocaleTimeString('en-GB')}
@@ -42,6 +36,13 @@ export default function ClockScreen() {
 }
 
 const styles = StyleSheet.create({
+    safeAreaView: {
+        flex: 1,
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: '#141414',
+    },
     titleContainer: {
         flexDirection: 'row',
         gap: 8,
