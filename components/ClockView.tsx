@@ -3,7 +3,7 @@ import { useMemo } from 'react';
 import { ClockThing, ClockThingType } from '@/components/ClockThing';
 import { ClockHand } from '@/components/ClockHand';
 import { ClockTick, ClockTickType } from '@/components/ClockTick';
-import { BusRoute } from '@/constants/Buses';
+import { BusRoute } from '@/constants/Bus';
 import { RouteThing } from './RouteThing';
 
 export type ClockViewProps = {
