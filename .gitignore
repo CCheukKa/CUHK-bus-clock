@@ -30,8 +30,18 @@ yarn-error.*
 .DS_Store
 *.pem
 
+# Windows
+Thumbs.db
+ehthumbs.db
+
+# Linux
+*~
+
 # local env files
+.env
 .env*.local
+.env.test
+.env.production
 
 # typescript
 *.tsbuildinfo
@@ -48,6 +58,18 @@ temp/
 
 # editor-specific files
 .vscode/
+.idea/
+*.sublime-workspace
+*.sublime-project
 
 # example app
 app-example
+
+# coverage reports
+coverage/
+
+# dependency directories
+jspm_packages/
+
+# KDE directory information files
+.directory
