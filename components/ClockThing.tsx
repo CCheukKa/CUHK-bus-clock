@@ -20,14 +20,15 @@ export enum ClockThingType {
  * @param {number} [props.degrees] - The angle in degrees of the clock thing. (0 is 12 o'clock; clockwise)
  * @param {number} [props.length] - The length from the center of the clock thing.
  */
-export type ClockThingProps = {
-    type?: ClockThingType;
-    style?: {
-        backgroundColour?: string;
-        textColour?: string;
-        opacity?: number;
-    };
-} & (
+export type ClockThingProps =
+    {
+        type?: ClockThingType;
+        style?: {
+            backgroundColour?: string;
+            textColour?: string;
+            opacity?: number;
+        };
+    } & (
         { x: number; y: number; degrees?: never; length?: never } |
         { degrees: number; length: number; x?: never; y?: never }
     ) & ViewProps;
