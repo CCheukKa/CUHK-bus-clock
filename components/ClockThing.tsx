@@ -1,6 +1,7 @@
 import { StyleSheet, Text, View, ViewProps } from 'react-native';
 
 export enum ClockThingType {
+    CLOCK_CENTRE_DOT = 'clockCentreDot',
     CLOCK_NUMBER = 'clockNumber',
     ROUTE_NUMBER_BUBBLE = 'routeNumber',
     ROUTE_ANNOTATION_LINE = 'routeAnnotationLine',
@@ -53,6 +54,8 @@ export function ClockThing({ type, style, x, y, degrees, length, ...otherProps }
     const contentWithin = (() => {
         const children = otherProps.children;
         switch (type) {
+            case ClockThingType.CLOCK_CENTRE_DOT:
+                return (<View style={styles.clockCentreDot} />);
             case ClockThingType.CLOCK_NUMBER:
                 return (<Text style={styles.clockNumber}>{children}</Text>);
             case ClockThingType.ROUTE_NUMBER_BUBBLE:
@@ -117,6 +120,12 @@ const styles = StyleSheet.create({
         transform: 'translate(-50%, -50%)',
         top: '50%',
         left: '50%',
+    },
+    clockCentreDot: {
+        width: '30%',
+        aspectRatio: 1,
+        borderRadius: '50%',
+        backgroundColor: '#000000'
     },
     clockNumber: {
         color: '#000000',

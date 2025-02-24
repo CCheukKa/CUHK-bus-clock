@@ -36,9 +36,10 @@ export function ClockView({ currentTime, ...otherProps }: ClockViewProps) {
                 {...otherProps}
             >
                 {clockNumbers}
-                <ClockHand degrees={360 / 60 * currentTime.getMinutes() + 360 / 60 / 60 * currentTime.getSeconds()} />
                 {clockTicks}
                 {routeThings}
+                <ClockHand degrees={360 / 60 * currentTime.getMinutes() + 360 / 60 / 60 * currentTime.getSeconds()} />
+                <ClockThing type={ClockThingType.CLOCK_CENTRE_DOT} x={0} y={0} />
             </View>
         </View>
     );
