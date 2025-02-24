@@ -1,6 +1,6 @@
 import { ViewProps } from "react-native";
 import { ClockThing, ClockThingType } from "@/components/ClockThing";
-import { BusRoute, BusRouteInfos, EtaInfo, getETAs, Region, Station } from "@/constants/BusInfo";
+import { BusRoute, BusRouteInfos, getETAs, Region, Station } from "@/constants/BusInfo";
 import { useThemeColour } from "@/hooks/useThemeColour";
 
 export type RouteThingProps = {
@@ -56,7 +56,6 @@ function mixRGBA(colour1: string, colour2: string, ratio: number) {
 }
 
 export function getRouteThings(currentTime: Date) {
-    currentTime = new Date(2025, 1, 25, 11, 2);
     const etas = getETAs({ from: Region.MAIN_CAMPUS, to: Region.CWC_COLLEGE }, currentTime, 10, 30);
     if (etas.length === 0) {
         // TODO: add a "no buses" message
