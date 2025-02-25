@@ -35,6 +35,8 @@ export default function ClockScreen() {
             mode='time'
             is24Hour={true}
             disabled={!showDateTimePicker}
+            //! TODO: update @react-native-community/datetimepicker to ^8.3.0 after the issue is fixed
+            // design='material'
             onChange={(event, selectedDate) => {
                 if (selectedDate) {
                     setDateTimePickerValue(selectedDate);
