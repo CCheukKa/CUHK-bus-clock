@@ -3,10 +3,10 @@ import React from 'react';
 import { Platform } from 'react-native';
 
 import { HapticTab } from '@/components/HapticTab';
-import { IconSymbol } from '@/components/ui/IconSymbol';
 import TabBarBackground from '@/components/ui/TabBarBackground';
 import { useColourScheme } from '@/hooks/useColourScheme';
 import { Colours } from '@/constants/Colours';
+import { MaterialIcons } from '@expo/vector-icons';
 
 export default function TabLayout() {
     const colourScheme = useColourScheme();
@@ -30,21 +30,27 @@ export default function TabLayout() {
                 name="index"
                 options={{
                     title: 'Home',
-                    tabBarIcon: ({ color: colour }) => <IconSymbol size={28} name="house.fill" colour={colour} />,
+                    tabBarIcon: ({ color: colour }) => (
+                        <MaterialIcons name="home" size={28} color={colour} />
+                    ),
                 }}
             />
             <Tabs.Screen
                 name="explore"
                 options={{
                     title: 'Explore',
-                    tabBarIcon: ({ color: colour }) => <IconSymbol size={28} name="paperplane.fill" colour={colour} />,
+                    tabBarIcon: ({ color: colour }) => (
+                        <MaterialIcons name="send" size={28} color={colour} />
+                    ),
                 }}
             />
             <Tabs.Screen
                 name="clock"
                 options={{
                     title: 'Clock',
-                    tabBarIcon: ({ color: colour }) => <IconSymbol size={28} name="clock.fill" colour={colour} />,
+                    tabBarIcon: ({ color: colour }) => (
+                        <MaterialIcons name="access-time" size={28} color={colour} />
+                    ),
                 }}
             />
         </Tabs>
