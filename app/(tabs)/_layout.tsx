@@ -13,6 +13,7 @@ export default function TabLayout() {
 
     return (
         <Tabs
+            initialRouteName='home' //? This doesn't seem to work
             screenOptions={{
                 tabBarActiveTintColor: Colours[colourScheme ?? 'light'].tint,
                 headerShown: false,
@@ -26,21 +27,21 @@ export default function TabLayout() {
                     default: {},
                 }),
             }}>
+
             <Tabs.Screen
+                //? This is a workaround for the initialRouteName not working
                 name="index"
+                options={{
+                    href: null,
+                }}
+            />
+
+            <Tabs.Screen
+                name="home"
                 options={{
                     title: 'Home',
                     tabBarIcon: ({ color: colour }) => (
                         <MaterialIcons name="home" size={28} color={colour} />
-                    ),
-                }}
-            />
-            <Tabs.Screen
-                name="explore"
-                options={{
-                    title: 'Explore',
-                    tabBarIcon: ({ color: colour }) => (
-                        <MaterialIcons name="send" size={28} color={colour} />
                     ),
                 }}
             />
@@ -50,6 +51,15 @@ export default function TabLayout() {
                     title: 'Clock',
                     tabBarIcon: ({ color: colour }) => (
                         <MaterialIcons name="access-time" size={28} color={colour} />
+                    ),
+                }}
+            />
+            <Tabs.Screen
+                name="explore"
+                options={{
+                    title: 'Explore',
+                    tabBarIcon: ({ color: colour }) => (
+                        <MaterialIcons name="send" size={28} color={colour} />
                     ),
                 }}
             />
