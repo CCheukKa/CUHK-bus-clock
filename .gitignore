@@ -29,13 +29,19 @@ yarn-error.*
 # macOS
 .DS_Store
 *.pem
+.AppleDouble
+.LSOverride
 
 # Windows
 Thumbs.db
 ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
 
 # Linux
 *~
+.fuse_hidden*
+.nfs*
 
 # local env files
 .env
@@ -55,12 +61,16 @@ build/
 # temporary files
 tmp/
 temp/
+*.tmp
+*.swp
+*.swo
 
 # editor-specific files
 .vscode/
 .idea/
 *.sublime-workspace
 *.sublime-project
+*.iml
 
 # example app
 app-example
@@ -73,3 +83,18 @@ jspm_packages/
 
 # KDE directory information files
 .directory
+
+# Eclipse
+.project
+.classpath
+.cproject
+.settings/
+
+# Backup files
+*.bak
+*.old
+*.orig
+
+# Platform directories
+android/
+ios/
