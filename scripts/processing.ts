@@ -1,4 +1,4 @@
-[
+const data = [
     {
         "route": "1A",
         "timeStamp": "2025-02-21T02:06:13.000Z",
@@ -628,4 +628,71 @@
             "timestamp": 1740635424842
         }
     }
-]
+];
+
+const StationCoordinates = Object.freeze({
+    AREA_39_DOWNWARD: { latitude: 22.42762, longitude: 114.20436 }, //^ ???
+    AREA_39_UPWARD: { latitude: 22.42762, longitude: 114.20436 }, //^ ???
+    CAMPUS_CIRCUIT_EAST_DOWNWARD: { latitude: 22.41906, longitude: 114.21298 },
+    CAMPUS_CIRCUIT_EAST_UPWARD: { latitude: 22.41915, longitude: 114.21290 },
+    CAMPUS_CIRCUIT_NORTH: { latitude: 22.42569, longitude: 114.20608 }, //^ ???
+    CHAN_CHUN_HA_HOSTEL: { latitude: 22.42181, longitude: 114.20466 },
+    CHUNG_CHI_TEACHING_BUILDING: { latitude: 22.41596, longitude: 114.20833 },
+    CWC_COLLEGE_DOWNWARD: { latitude: 22.42569, longitude: 114.20608 }, //^ ???
+    CWC_COLLEGE_UPWARD: { latitude: 0, longitude: 0 }, //! TBD
+    FUNG_KING_HEY_BUILDING: { latitude: 22.41983, longitude: 114.20302 },
+    NEW_ASIA_CIRCLE: { latitude: 22.42096, longitude: 114.20775 },
+    NEW_ASIA_COLLEGE: { latitude: 22.42128, longitude: 114.20750 },
+    POSTGRADUATE_HALL_1: { latitude: 22.42034, longitude: 114.21215 },
+    RESIDENCE_10: { latitude: 0, longitude: 0 }, //! TBD
+    RESIDENCE_15: { latitude: 22.42377, longitude: 114.20665 },
+    SCIENCE_CENTRE: { latitude: 22.41985, longitude: 114.20719 },
+    SHAW_COLLEGE_DOWNWARD: { latitude: 22.42242, longitude: 114.20126 },
+    SHAW_COLLEGE_UPWARD: { latitude: 22.42252, longitude: 114.20143 },
+    SHHO_COLLEGE: { latitude: 22.41801, longitude: 114.20994 },
+    SIR_RUN_RUN_SHAW_HALL: { latitude: 22.41984, longitude: 114.20697 },
+    UNITED_COLLEGE_DOWNWARD: { latitude: 22.42030, longitude: 114.20528 },
+    UNTIED_COLLEGE_STAFF_RESIDENCE: { latitude: 22.42324, longitude: 114.20516 },
+    UNITED_COLLEGE_UPWARD: { latitude: 22.42040, longitude: 114.20534 },
+    UNIVERSITY_ADMIN_BUILDING: { latitude: 22.41882, longitude: 114.20536 },
+    UNIVERSITY_SPORTS_CENTRE: { latitude: 22.41781, longitude: 114.21041 },
+    UNIVERSITY_STATION: { latitude: 22.41453, longitude: 114.21024 },
+    UNIVERSITY_STATION_TERMINUS: { latitude: 22.41517, longitude: 114.21053 },
+    UNIVERSITY_STATION_PIAZZA: { latitude: 22.41382, longitude: 114.20946 },
+    UNIVERSITY_STATION_PIAZZA_TERMINUS: { latitude: 22.41399, longitude: 114.20981 },
+    WU_YEE_SUN_COLLEGE_DOWNWARD: { latitude: 22.42109, longitude: 114.20353 },
+    WU_YEE_SUN_COLLEGE_UPWARD: { latitude: 22.42121, longitude: 114.20345 },
+    YIA: { latitude: 22.41599, longitude: 114.21083 },
+});
+
+function haversineDistance(coord1, coord2) {
+    const toRad = (x: number) => x * Math.PI / 180;
+    const R = 6371; // Radius of the Earth in km
+    const dLat = toRad(coord2.latitude - coord1.latitude);
+    const dLon = toRad(coord2.longitude - coord1.longitude);
+    const lat1 = toRad(coord1.latitude);
+    const lat2 = toRad(coord2.latitude);
+
+    const a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+        Math.sin(dLon / 2) * Math.sin(dLon / 2) * Math.cos(lat1) * Math.cos(lat2);
+    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+    return R * c;
+}
+
+function findClosestStation(location) {
+    let closestStation = null;
+    let closestDistance = Infinity;
+    for (const [station, coords] of Object.entries(StationCoordinates)) {
+        const distance = haversineDistance(location.coords, coords);
+        if (distance < closestDistance) {
+            closestDistance = distance;
+            closestStation = station;
+        }
+    }
+    return closestStation;
+}
+
+data.forEach((entry) => {
+    const station = findClosestStation(entry.location);
+    console.log(`Route: ${entry.route}, Time: ${entry.timeStamp}, Closest Station: ${station}`);
+});

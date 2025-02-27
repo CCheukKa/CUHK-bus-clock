@@ -1,7 +1,8 @@
 import { ViewProps } from "react-native";
 import { ClockThing, ClockThingType } from "@/components/ClockThing";
-import { BusRoute, BusRouteInfos, getETAs, Region, Station } from "@/constants/BusInfo";
 import { useThemeColour } from "@/hooks/useThemeColour";
+import { getETAs } from "@/constants/BusInfo";
+import { BusRoute, busRouteInfos, Region, Station } from "@/constants/BusData";
 
 export type RouteThingProps = {
     route: BusRoute;
@@ -10,7 +11,7 @@ export type RouteThingProps = {
 } & ViewProps;
 
 export function RouteThing({ route, currentTime, etaTime, ...otherProps }: RouteThingProps) {
-    const routeColour = BusRouteInfos.get(route)?.colour ?? '';
+    const routeColour = busRouteInfos.get(route)?.colour ?? '';
     const angle = etaTime.getMinutes() * 6 + etaTime.getSeconds() / 10;
     const eta = etaTime.getTime() - currentTime.getTime();
     const etaMinutes = Math.floor(eta / 60000);
