@@ -29,31 +29,57 @@ export function getETAs({ from, to }: FromTo, currentTime: Date, pastMinutes: nu
     const toStations = isRegion(to) ? stationRegions[to] : [to];
 
     const etas: EtaInfo[] = [];
+    const journeys: Journey[] = [];
     fromStations.forEach(fromStation => {
-        const routes: BusRoute[] = [];
         toStations.forEach(toStation => {
-            routes.push(...findRoute(fromStation, toStation));
+            journeys.push(...findJourney(fromStation, toStation));
         });
+    });
 
-        new Set(routes).forEach(route => {
-            etas.push(...getStationRouteETA(fromStation, route, currentTime, pastTimeLimit, futureTimeLimit) ?? []);
-        });
+    type ScoredJourney = Journey & { score: number };
+    const scoredJourneys: ScoredJourney[] = journeys.map(journey => ({ ...journey, score: scoredJourney(journey) }));
+    const filteredJourneys: Journey[] = [];
+    const routes = new Set(scoredJourneys.map(journey => journey.route));
+    routes.forEach(route => {
+        const routeJourneys = scoredJourneys.filter(journey => journey.route === route);
+        const minScore = Math.min(...routeJourneys.map(journey => journey.score));
+        filteredJourneys.push(...routeJourneys.filter(journey => journey.score === minScore));
+    });
+
+    filteredJourneys.forEach(filteredJourney => {
+        etas.push(...getStationRouteETA(
+            busRouteInfos[filteredJourney.route].stations[filteredJourney.fromIndex],
+            filteredJourney.route,
+            currentTime,
+            pastTimeLimit,
+            futureTimeLimit)
+            ?? []
+        );
     });
 
     return etas;
+    /* -------------------------------------------------------------------------- */
+
+    function scoredJourney(journey: Journey): number {
+        // Lower score is better
+        const { route, fromIndex, toIndex } = journey;
+
+        return toIndex - fromIndex;
+    }
 }
 
-function findRoute(fromStation: Station, toStation: Station): BusRoute[] {
-    // TODO: add scoring to eliminate ridiculous routes
-    const routes: BusRoute[] = [];
+export type Journey = { route: BusRoute, fromIndex: number, toIndex: number };
+function findJourney(fromStation: Station, toStation: Station): Journey[] {
+    const journeys: Journey[] = [];
     Object.entries(busRouteInfos).forEach(([route, routeInfo]) => {
-        if (!routeInfo.stations.find(s => s === fromStation)) { return; }
-        if (!routeInfo.stations.find(s => s === toStation)) { return; }
-        if (routeInfo.stations.findIndex(s => s === fromStation) < routeInfo.stations.findIndex(s => s === toStation)) {
-            routes.push(route as BusRoute);
-        }
+        const fromIndex = routeInfo.stations.findIndex(s => s === fromStation);
+        if (fromIndex == -1) { return; }
+        const toIndex = routeInfo.stations.findIndex(s => s === toStation);
+        if (toIndex == -1) { return; }
+
+        if (fromIndex < toIndex) { journeys.push({ route: route as BusRoute, fromIndex, toIndex }); }
     });
-    return routes;
+    return journeys;
 }
 
 function getStationRouteETA(station: Station, route: BusRoute, currentTime: Date, pastTimeLimit: Date, futureTimeLimit: Date): EtaInfo[] | void {
