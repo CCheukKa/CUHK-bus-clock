@@ -45,7 +45,6 @@ export default function ClockScreen() {
                 break;
             case 'set':
                 if (selectedDate) {
-                    console.log(selectedDate);
                     setUseRealTime(false);
                     setCustomTime(selectedDate);
                     setDateTimePickerValue(selectedDate);
