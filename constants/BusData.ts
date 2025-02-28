@@ -452,7 +452,7 @@ export const busRouteInfos: Record<BusRoute, BusRouteInfo> = Object.freeze({
         routeColour: '#ffc55a',
         firstService: [7, 40],
         lastService: [18, 40],
-        days: [1, 2, 3, 4, 5],
+        days: [6],
         minuteMarks: [0, 20, 40],
         stations: [
             Station.AREA_39_UPWARD,
