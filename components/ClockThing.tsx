@@ -151,7 +151,7 @@ const styles = StyleSheet.create({
     },
     routeNumber: {
         fontSize: 16,
-        fontWeight: 'normal',
+        fontWeight: 'bold',
         textAlign: 'center',
     },
     routeEtaCountdown: {
