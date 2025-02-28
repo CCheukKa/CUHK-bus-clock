@@ -105,7 +105,7 @@ export default function ClockScreen() {
                                     },
                                     styles.button,
                                 ]}>
-                                <FontAwesome6 name="clock-rotate-left" color="#ffffff" size={20} />
+                                <FontAwesome6 name="clock-rotate-left" color="#000000" size={20} />
                             </Pressable>
                         </View>
                         : null
