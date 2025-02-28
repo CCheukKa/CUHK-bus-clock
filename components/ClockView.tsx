@@ -9,7 +9,7 @@ export type ClockViewProps = {
     time: Date;
 } & ViewProps;
 
-export function ClockView({ currentTime, ...otherProps }: ClockViewProps) {
+export function ClockView({ time, ...otherProps }: ClockViewProps) {
     const clockNumbers = useMemo(() => {
         return Array.from({ length: 12 }, (_, i) => i + 1).map(i => {
             return (
@@ -28,7 +28,7 @@ export function ClockView({ currentTime, ...otherProps }: ClockViewProps) {
         });
     }, []);
 
-    const routeThings = getRouteThings(currentTime);
+    const routeThings = getRouteThings(time);
 
     return (
         <View style={styles.clockContainer}>
@@ -38,8 +38,8 @@ export function ClockView({ currentTime, ...otherProps }: ClockViewProps) {
                 {clockNumbers}
                 {clockTicks}
                 {routeThings}
-                <ClockHand type='hour' degrees={360 / 12 * currentTime.getHours() + 360 / 12 / 60 * currentTime.getMinutes()} />
-                <ClockHand type='minute' degrees={360 / 60 * currentTime.getMinutes() + 360 / 60 / 60 * currentTime.getSeconds()} />
+                <ClockHand type='hour' degrees={360 / 12 * time.getHours() + 360 / 12 / 60 * time.getMinutes()} />
+                <ClockHand type='minute' degrees={360 / 60 * time.getMinutes() + 360 / 60 / 60 * time.getSeconds()} />
                 <ClockThing type={ClockThingType.CLOCK_CENTRE_DOT} x={0} y={0} />
             </View>
         </View>

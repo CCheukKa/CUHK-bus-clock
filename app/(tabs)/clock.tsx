@@ -1,23 +1,27 @@
-import React, { useEffect, useState, useRef, useMemo } from 'react';
-import { Pressable, StyleSheet, TouchableOpacity, View } from 'react-native';
+import React, { useEffect, useState, useRef, useMemo, useCallback } from 'react';
+import { Pressable, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
 import { ClockView } from '@/components/ClockView';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { FontAwesome6 } from '@expo/vector-icons';
-import DateTimePicker from '@react-native-community/datetimepicker';
+import DateTimePicker, { DateTimePickerEvent } from '@react-native-community/datetimepicker';
 
 export default function ClockScreen() {
 
-    const [currentTime, setCurrentTime] = useState(new Date());
+    const [realTime, setRealTime] = useState(new Date());
+    const [customTime, setCustomTime] = useState(new Date());
+    const [useRealTime, setUseRealTime] = useState(true);
+    const logicTime = useMemo(() => useRealTime ? realTime : customTime, [realTime, customTime, useRealTime]);
+    // 
     const frameId = useRef<number | null>(null);
-    const updateCurrentTime = () => {
-        setCurrentTime(new Date());
-        frameId.current = requestAnimationFrame(updateCurrentTime);
+    const updateRealTime = () => {
+        setRealTime(new Date());
+        frameId.current = requestAnimationFrame(updateRealTime);
     };
     useEffect(() => {
-        frameId.current = requestAnimationFrame(updateCurrentTime);
+        frameId.current = requestAnimationFrame(updateRealTime);
         return () => {
             if (frameId.current) {
                 cancelAnimationFrame(frameId.current);
@@ -25,57 +29,80 @@ export default function ClockScreen() {
         };
     }, []);
     // 
-    const [dateTimePickerValue, setDateTimePickerValue] = useState(currentTime);
-    const [showDateTimePicker, setShowDateTimePicker] = useState(false);
-    const [showResetToCurrentTimeButton, setShowResetToCurrentTimeButton] = useState(false);
+    const [dateTimePickerValue, setDateTimePickerValue] = useState(logicTime);
+    type DateTimePickerMode = 'time' | 'date' | null;
+    const [dateTimePickerMode, setDateTimePickerMode] = useState<DateTimePickerMode>(null);
+    const showResetToCurrentTimeButton = useMemo(() => !useRealTime, [useRealTime]);
     // 
-    const dateTimePicker = useMemo(() =>
-        <DateTimePicker
-            value={dateTimePickerValue}
-            mode='time'
-            is24Hour={true}
-            disabled={!showDateTimePicker}
-            //! TODO: update @react-native-community/datetimepicker to ^8.3.0 after the issue is fixed
-            // design='material'
-            onChange={(event, selectedDate) => {
+    const showDateTimePicker = useCallback((mode: DateTimePickerMode) => {
+        setDateTimePickerValue(logicTime);
+        setDateTimePickerMode(mode);
+    }, [logicTime]);
+    const handleDateTimePickerChange = useCallback((event: DateTimePickerEvent, selectedDate?: Date) => {
+        switch (event.type) {
+            case 'dismissed':
+                setDateTimePickerMode(null);
+                break;
+            case 'set':
                 if (selectedDate) {
+                    console.log(selectedDate);
+                    setUseRealTime(false);
+                    setCustomTime(selectedDate);
                     setDateTimePickerValue(selectedDate);
+                    setDateTimePickerMode(null);
                 }
-            }}
-        />
-        , [showDateTimePicker]
-    );
-    const clockView = useMemo(() => <ClockView currentTime={currentTime} />, [currentTime.getSeconds()]);
+                break;
+            case 'neutralButtonPressed':
+            default:
+                break;
+        }
+    }, []);
+    const handleResetToCurrentTimeButtonPress = useCallback(() => {
+        setUseRealTime(true);
+        setDateTimePickerMode(null);
+    }, []);
+    //
+    const dateTimeTextStyle = useMemo(() => !useRealTime ? { color: 'lightpink' } : null, [useRealTime]);
+    const clockView = useMemo(() => <ClockView time={logicTime} />, [logicTime.add(0, 0, 0, -logicTime.getMilliseconds()).getTime()]);
     return (
         <SafeAreaView style={styles.safeAreaView}>
             <View style={styles.headerContainer}>
                 <ThemedView style={styles.dateTimeContainer}>
-                    <TouchableOpacity onPress={() => {
-                        setShowDateTimePicker(true);
-                        setShowResetToCurrentTimeButton(true);
-                    }}>
-                        <ThemedText type="subtitle">
-                            {currentTime.toLocaleDateString('en-GB')}
+                    <TouchableOpacity onPress={() => { showDateTimePicker('date') }}>
+                        <ThemedText type="subtitle" style={dateTimeTextStyle}>
+                            {logicTime.toLocaleDateString('en-GB')}
                         </ThemedText>
                     </TouchableOpacity>
-                    <ThemedText type="title">
-                        {currentTime.toLocaleTimeString('en-GB')}
-                    </ThemedText>
+                    <TouchableOpacity onPress={() => { showDateTimePicker('time') }}>
+                        <ThemedText type="title" style={dateTimeTextStyle}>
+                            {logicTime.toLocaleTimeString('en-GB')}
+                        </ThemedText>
+                    </TouchableOpacity>
                 </ThemedView>
-                {showDateTimePicker
-                    ? dateTimePicker
+                {dateTimePickerMode
+                    ? (
+                        <DateTimePicker
+                            value={dateTimePickerValue}
+                            mode={dateTimePickerMode}
+                            is24Hour={true}
+                            disabled={!dateTimePickerMode}
+                            //! TODO: update @react-native-community/datetimepicker to ^8.3.0 after the issue is fixed
+                            // design='material'
+                            onChange={handleDateTimePickerChange}
+                        />
+                    )
                     : null
                 }
                 {
                     showResetToCurrentTimeButton
                         ? <View style={styles.buttonContainer}>
                             <Pressable
-                                onPress={() => { }}
+                                onPress={handleResetToCurrentTimeButtonPress}
                                 style={({ pressed }) => [
                                     {
                                         // backgroundColor: pressed ? 'lightgreen' : 'lightseagreen',
                                         // backgroundColor: pressed ? 'deepskyblue' : 'dodgerblue',
-                                        backgroundColor: pressed ? 'mediumvioletred' : 'palevioletred',
+                                        backgroundColor: pressed ? 'palevioletred' : 'lightpink',
                                     },
                                     styles.button,
                                 ]}>
