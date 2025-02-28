@@ -175,7 +175,7 @@ export const stationCoordinates: Record<Station, Coordinates> = Object.freeze({
 });
 
 export type BusRouteInfo = {
-    colour: string,
+    routeColour: string,
     firstService: [number, number],
     lastService: [number, number],
     days: number[],
@@ -184,7 +184,7 @@ export type BusRouteInfo = {
 };
 export const busRouteInfos: Record<BusRoute, BusRouteInfo> = Object.freeze({
     [BusRoute._1A]: {
-        colour: '#f2e421',
+        routeColour: '#f2e421',
         firstService: [7, 40],
         lastService: [18, 40],
         days: [1, 2, 3, 4, 5, 6],
@@ -199,7 +199,7 @@ export const busRouteInfos: Record<BusRoute, BusRouteInfo> = Object.freeze({
         ],
     },
     [BusRoute._1B]: {
-        colour: '#f2e421',
+        routeColour: '#f2e421',
         firstService: [8, 0],
         lastService: [18, 0],
         days: [1, 2, 3, 4, 5, 6],
@@ -216,7 +216,7 @@ export const busRouteInfos: Record<BusRoute, BusRouteInfo> = Object.freeze({
         ],
     },
     [BusRoute._2Y]: {
-        colour: '#ec4790',
+        routeColour: '#ec4790',
         firstService: [7, 45],
         lastService: [18, 45],
         days: [1, 2, 3, 4, 5, 6],
@@ -235,7 +235,7 @@ export const busRouteInfos: Record<BusRoute, BusRouteInfo> = Object.freeze({
         ],
     },
     [BusRoute._2N]: {
-        colour: '#ec4790',
+        routeColour: '#ec4790',
         firstService: [7, 45],
         lastService: [18, 45],
         days: [1, 2, 3, 4, 5, 6],
@@ -253,7 +253,7 @@ export const busRouteInfos: Record<BusRoute, BusRouteInfo> = Object.freeze({
         ],
     },
     [BusRoute._3]: {
-        colour: '#318761',
+        routeColour: '#318761',
         firstService: [9, 0],
         lastService: [18, 40],
         days: [1, 2, 3, 4, 5, 6],
@@ -277,7 +277,7 @@ export const busRouteInfos: Record<BusRoute, BusRouteInfo> = Object.freeze({
         ],
     },
     [BusRoute._4]: {
-        colour: '#e75a24',
+        routeColour: '#e75a24',
         firstService: [7, 30],
         lastService: [18, 50],
         days: [1, 2, 3, 4, 5, 6],
@@ -301,7 +301,7 @@ export const busRouteInfos: Record<BusRoute, BusRouteInfo> = Object.freeze({
         ],
     },
     [BusRoute._5D]: {
-        colour: '#29a1d8',
+        routeColour: '#29a1d8',
         firstService: [9, 18],
         lastService: [17, 26],
         days: [1, 2, 3, 4, 5],
@@ -319,7 +319,7 @@ export const busRouteInfos: Record<BusRoute, BusRouteInfo> = Object.freeze({
         ],
     },
     [BusRoute._5E]: {
-        colour: '#29a1d8',
+        routeColour: '#29a1d8',
         firstService: [9, 18],
         lastService: [13, 26],
         days: [6],
@@ -337,7 +337,7 @@ export const busRouteInfos: Record<BusRoute, BusRouteInfo> = Object.freeze({
         ],
     },
     [BusRoute._6AD]: {
-        colour: '#7c8644',
+        routeColour: '#7c8644',
         firstService: [9, 10],
         lastService: [17, 10],
         days: [1, 2, 3, 4, 5],
@@ -356,7 +356,7 @@ export const busRouteInfos: Record<BusRoute, BusRouteInfo> = Object.freeze({
         ],
     },
     [BusRoute._6AE]: {
-        colour: '#7c8644',
+        routeColour: '#7c8644',
         firstService: [9, 10],
         lastService: [13, 10],
         days: [6],
@@ -375,7 +375,7 @@ export const busRouteInfos: Record<BusRoute, BusRouteInfo> = Object.freeze({
         ],
     },
     [BusRoute._6B]: {
-        colour: '#7c8644',
+        routeColour: '#7c8644',
         firstService: [12, 20],
         lastService: [17, 20],
         days: [1, 2, 3, 4, 5],
@@ -390,7 +390,7 @@ export const busRouteInfos: Record<BusRoute, BusRouteInfo> = Object.freeze({
         ],
     },
     [BusRoute._7D]: {
-        colour: '#666666',
+        routeColour: '#666666',
         firstService: [8, 18],
         lastService: [17, 50],
         days: [1, 2, 3, 4, 5],
@@ -407,7 +407,7 @@ export const busRouteInfos: Record<BusRoute, BusRouteInfo> = Object.freeze({
         ],
     },
     [BusRoute._7E]: {
-        colour: '#666666',
+        routeColour: '#666666',
         firstService: [8, 18],
         lastService: [13, 18],
         days: [6],
@@ -424,7 +424,7 @@ export const busRouteInfos: Record<BusRoute, BusRouteInfo> = Object.freeze({
         ],
     },
     [BusRoute._8D]: {
-        colour: '#ffc55a',
+        routeColour: '#ffc55a',
         firstService: [7, 40],
         lastService: [18, 40],
         days: [1, 2, 3, 4, 5],
@@ -449,7 +449,7 @@ export const busRouteInfos: Record<BusRoute, BusRouteInfo> = Object.freeze({
         ],
     },
     [BusRoute._8E]: {
-        colour: '#ffc55a',
+        routeColour: '#ffc55a',
         firstService: [7, 40],
         lastService: [18, 40],
         days: [1, 2, 3, 4, 5],
@@ -475,7 +475,7 @@ export const busRouteInfos: Record<BusRoute, BusRouteInfo> = Object.freeze({
         ],
     },
     [BusRoute._NY]: {
-        colour: '#7961a8',
+        routeColour: '#7961a8',
         firstService: [19, 0],
         lastService: [23, 30],
         days: [1, 2, 3, 4, 5, 6],
@@ -505,7 +505,7 @@ export const busRouteInfos: Record<BusRoute, BusRouteInfo> = Object.freeze({
         ],
     },
     [BusRoute._NN]: {
-        colour: '#7961a8',
+        routeColour: '#7961a8',
         firstService: [19, 0],
         lastService: [23, 30],
         days: [1, 2, 3, 4, 5, 6],
@@ -533,7 +533,7 @@ export const busRouteInfos: Record<BusRoute, BusRouteInfo> = Object.freeze({
         ],
     },
     [BusRoute._HY]: {
-        colour: '#453087',
+        routeColour: '#453087',
         firstService: [8, 20],
         lastService: [23, 20],
         days: [0],
@@ -564,7 +564,7 @@ export const busRouteInfos: Record<BusRoute, BusRouteInfo> = Object.freeze({
         ],
     },
     [BusRoute._HN]: {
-        colour: '#453087',
+        routeColour: '#453087',
         firstService: [8, 20],
         lastService: [23, 20],
         days: [0],

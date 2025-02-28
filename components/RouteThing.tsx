@@ -11,12 +11,13 @@ export type RouteThingProps = {
 } & ViewProps;
 
 export function RouteThing({ route, currentTime, etaTime, ...otherProps }: RouteThingProps) {
-    const routeColour = busRouteInfos[route].colour;
+    const routeColour = busRouteInfos[route].routeColour;
     const angle = etaTime.getMinutes() * 6 + etaTime.getSeconds() / 10;
     const eta = etaTime.getTime() - currentTime.getTime();
     const etaMinutes = Math.floor(Math.abs(eta) / 60000);
     const etaSeconds = Math.floor(Math.abs(eta) % 60000 / 1000);
     const opacity = eta > 0 ? 1 : 0.6;
+    const contrastColour = getBrightness(routeColour) > 150 ? '#000000' : '#ffffff';
 
     return (
         <>
@@ -28,7 +29,10 @@ export function RouteThing({ route, currentTime, etaTime, ...otherProps }: Route
             <ClockThing
                 degrees={angle} length={1.2}
                 type={ClockThingType.ROUTE_NUMBER_BUBBLE}
-                style={{ backgroundColour: mixRGBA(useThemeColour({}, 'background'), routeColour, opacity) }}
+                style={{
+                    backgroundColour: mixRGBA(useThemeColour({}, 'background'), routeColour, opacity),
+                    textColour: contrastColour
+                }}
             >
                 {route}
             </ClockThing>
@@ -40,6 +44,15 @@ export function RouteThing({ route, currentTime, etaTime, ...otherProps }: Route
                 {eta < 0 ? '-' : null}{etaMinutes}:{etaSeconds.toString().padStart(2, '0')}
             </ClockThing>
         </>
+    );
+}
+
+function getBrightness(hex: string) {
+    // https://www.w3.org/TR/AERT/#color-contrast
+    return Math.sqrt(
+        0.299 * Math.pow(parseInt(hex.slice(1, 3), 16), 2) +
+        0.587 * Math.pow(parseInt(hex.slice(3, 5), 16), 2) +
+        0.114 * Math.pow(parseInt(hex.slice(5, 7), 16), 2)
     );
 }
 

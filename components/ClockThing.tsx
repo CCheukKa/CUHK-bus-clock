@@ -67,7 +67,10 @@ export function ClockThing({ type, style, x, y, degrees, length, ...otherProps }
                             opacity: style?.opacity
                         }
                     ]}>
-                        <Text style={styles.routeNumber}>
+                        <Text style={[
+                            styles.routeNumber,
+                            { color: style?.textColour }
+                        ]}>
                             {children}
                         </Text>
                     </View>
@@ -147,7 +150,6 @@ const styles = StyleSheet.create({
         width: 30,
     },
     routeNumber: {
-        color: '#000000',
         fontSize: 16,
         fontWeight: 'normal',
         textAlign: 'center',
