@@ -8,6 +8,8 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { FontAwesome6 } from '@expo/vector-icons';
 import DateTimePicker, { DateTimePickerEvent } from '@react-native-community/datetimepicker';
 
+const weekDays = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+
 export default function ClockScreen() {
 
     const [realTime, setRealTime] = useState(new Date());
@@ -69,7 +71,7 @@ export default function ClockScreen() {
                 <ThemedView style={styles.dateTimeContainer}>
                     <TouchableOpacity onPress={() => { showDateTimePicker('date') }}>
                         <ThemedText type="subtitle" style={dateTimeTextStyle}>
-                            {logicTime.toLocaleDateString('en-GB')}
+                            {`${logicTime.toLocaleDateString('en-GB')} (${weekDays[logicTime.getDay()]})`}
                         </ThemedText>
                     </TouchableOpacity>
                     <TouchableOpacity onPress={() => { showDateTimePicker('time') }}>
