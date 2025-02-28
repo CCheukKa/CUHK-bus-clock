@@ -6,9 +6,16 @@ export type ClockHandProps = {
 } & ViewProps;
 
 export function ClockHand({ type, degrees, ...otherProps }: ClockHandProps) {
+    const width = (() => {
+        switch (type) {
+            case 'hour': return 4;
+            case 'minute': return 3;
+            default: return '0%';
+        }
+    })();
     const height = (() => {
         switch (type) {
-            case 'hour': return '30%';
+            case 'hour': return '28%';
             case 'minute': return '48%';
             default: return '0%';
         }
@@ -24,6 +31,7 @@ export function ClockHand({ type, degrees, ...otherProps }: ClockHandProps) {
         <View style={[
             styles.clockHand,
             [{
+                width,
                 height,
                 backgroundColor,
                 top: '50%', left: '50%',
@@ -40,7 +48,6 @@ const styles = StyleSheet.create({
     clockHand: {
         display: 'flex',
         position: 'absolute',
-        width: 3,
         transformOrigin: '0 0',
     }
 });
