@@ -59,6 +59,7 @@ export enum Station {
 
 export enum Region {
     AREA_39 = 'Area 39',
+    CAMPUS_EAST = 'Campus East',
     CHUNG_CHI_COLLEGE = 'Chung Chi College',
     CWC_COLLEGE = 'CW Chu College',
     LWS_COLLEGE = 'Lee Woo Sing College',
@@ -80,6 +81,11 @@ export const stationRegions: Record<Region, Station[]> = Object.freeze({
     [Region.CHUNG_CHI_COLLEGE]: [
         Station.CHUNG_CHI_TEACHING_BUILDING,
         Station.CHUNG_CHI_TEACHING_BUILDING_TERMINUS,
+    ],
+    [Region.CAMPUS_EAST]: [
+        Station.CAMPUS_CIRCUIT_EAST_DOWNWARD,
+        Station.CAMPUS_CIRCUIT_EAST_UPWARD,
+        Station.POSTGRADUATE_HALL_1,
     ],
     [Region.CWC_COLLEGE]: [
         Station.CAMPUS_CIRCUIT_NORTH,
@@ -123,10 +129,7 @@ export const stationRegions: Record<Region, Station[]> = Object.freeze({
         Station.WU_YEE_SUN_COLLEGE_UPWARD,
     ],
     [Region.MISCELLANEOUS]: [
-        Station.CAMPUS_CIRCUIT_EAST_DOWNWARD,
-        Station.CAMPUS_CIRCUIT_EAST_UPWARD,
         Station.FUNG_KING_HEY_BUILDING,
-        Station.POSTGRADUATE_HALL_1,
         Station.RESIDENCE_10,
         Station.RESIDENCE_15,
         Station.UNTIED_COLLEGE_STAFF_RESIDENCE,
