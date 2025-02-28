@@ -1,7 +1,7 @@
 import { ViewProps } from "react-native";
 import { ClockThing, ClockThingType } from "@/components/ClockThing";
 import { useThemeColour } from "@/hooks/useThemeColour";
-import { getETAs } from "@/constants/BusInfo";
+import { getETAs } from "@/api/Bus";
 import { BusRoute, busRouteInfos, Region, Station } from "@/constants/BusData";
 
 export type RouteThingProps = {
