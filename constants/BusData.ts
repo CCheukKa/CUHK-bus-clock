@@ -640,24 +640,19 @@ export const busStationTimings: Map<[Station, Station], number> = new Map([
     [[Station.UNIVERSITY_ADMIN_BUILDING, Station.SHHO_COLLEGE], 98],
     [[Station.UNIVERSITY_SPORTS_CENTRE, Station.FUNG_KING_HEY_BUILDING], 0],
     [[Station.UNIVERSITY_SPORTS_CENTRE, Station.SCIENCE_CENTRE], 0],
-    [[Station.UNIVERSITY_SPORTS_CENTRE, Station.SIR_RUN_RUN_SHAW_HALL], Math.average(132, 139)],
+    [[Station.UNIVERSITY_SPORTS_CENTRE, Station.SIR_RUN_RUN_SHAW_HALL], average(132, 139)],
     [[Station.UNIVERSITY_STATION, Station.POSTGRADUATE_HALL_1], 0],
-    [[Station.UNIVERSITY_STATION, Station.UNIVERSITY_SPORTS_CENTRE], Math.average(75, 110)],
+    [[Station.UNIVERSITY_STATION, Station.UNIVERSITY_SPORTS_CENTRE], average(75, 110)],
     [[Station.UNIVERSITY_STATION_PIAZZA, Station.CHUNG_CHI_TEACHING_BUILDING_TERMINUS], 0],
     [[Station.UNIVERSITY_STATION_PIAZZA, Station.UNIVERSITY_SPORTS_CENTRE], 0],
     [[Station.WU_YEE_SUN_COLLEGE_DOWNWARD, Station.NEW_ASIA_COLLEGE], 0],
     [[Station.WU_YEE_SUN_COLLEGE_DOWNWARD, Station.UNIVERSITY_ADMIN_BUILDING], 92],
-    [[Station.WU_YEE_SUN_COLLEGE_UPWARD, Station.SHAW_COLLEGE_UPWARD], Math.average(94, 96)],
+    [[Station.WU_YEE_SUN_COLLEGE_UPWARD, Station.SHAW_COLLEGE_UPWARD], average(94, 96)],
     [[Station.YIA, Station.CAMPUS_CIRCUIT_EAST_UPWARD], 0],
     [[Station.YIA, Station.UNIVERSITY_SPORTS_CENTRE], 0],
 ]);
 
 /* -------------------------------------------------------------------------- */
-declare global {
-    interface Math {
-        average(...values: number[]): number;
-    }
-}
-Math.average = function (...values: number[]): number {
+function average(...values: number[]): number {
     return values.reduce((sum, value) => sum + value, 0) / values.length;
 };
