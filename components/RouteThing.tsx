@@ -14,8 +14,8 @@ export function RouteThing({ route, currentTime, etaTime, ...otherProps }: Route
     const routeColour = busRouteInfos[route].colour;
     const angle = etaTime.getMinutes() * 6 + etaTime.getSeconds() / 10;
     const eta = etaTime.getTime() - currentTime.getTime();
-    const etaMinutes = Math.floor(eta / 60000);
-    const etaSeconds = Math.abs(Math.floor((eta % 60000) / 1000));
+    const etaMinutes = Math.floor(Math.abs(eta) / 60000);
+    const etaSeconds = Math.floor(Math.abs(eta) % 60000 / 1000);
     const opacity = eta > 0 ? 1 : 0.6;
 
     return (
@@ -37,7 +37,7 @@ export function RouteThing({ route, currentTime, etaTime, ...otherProps }: Route
                 type={ClockThingType.ROUTE_ETA_COUNTDOWN}
                 style={{ textColour: routeColour, opacity }}
             >
-                {etaMinutes}:{etaSeconds.toString().padStart(2, '0')}
+                {eta < 0 ? '-' : null}{etaMinutes}:{etaSeconds.toString().padStart(2, '0')}
             </ClockThing>
         </>
     );
