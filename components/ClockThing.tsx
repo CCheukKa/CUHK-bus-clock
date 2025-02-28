@@ -125,7 +125,9 @@ const styles = StyleSheet.create({
         width: '30%',
         aspectRatio: 1,
         borderRadius: '50%',
-        backgroundColor: '#000000'
+        backgroundColor: '#ffffff',
+        borderColor: '#000000',
+        borderWidth: 2.5,
     },
     clockNumber: {
         color: '#000000',
