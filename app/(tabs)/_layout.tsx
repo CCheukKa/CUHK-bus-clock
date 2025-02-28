@@ -13,7 +13,7 @@ export default function TabLayout() {
 
     return (
         <Tabs
-            initialRouteName='home' //? This doesn't seem to work
+            initialRouteName='clock' //? This doesn't seem to work
             screenOptions={{
                 tabBarActiveTintColor: Colours[colourScheme ?? 'light'].tint,
                 headerShown: false,
@@ -37,11 +37,11 @@ export default function TabLayout() {
             />
 
             <Tabs.Screen
-                name="home"
+                name="info"
                 options={{
-                    title: 'Home',
+                    title: 'Info',
                     tabBarIcon: ({ color: colour }) => (
-                        <MaterialIcons name="home" size={28} color={colour} />
+                        <MaterialIcons name="info-outline" size={28} color={colour} />
                     ),
                 }}
             />
@@ -55,11 +55,11 @@ export default function TabLayout() {
                 }}
             />
             <Tabs.Screen
-                name="explore"
+                name="settings"
                 options={{
-                    title: 'Explore',
+                    title: 'Settings',
                     tabBarIcon: ({ color: colour }) => (
-                        <MaterialIcons name="send" size={28} color={colour} />
+                        <MaterialIcons name="settings" size={28} color={colour} />
                     ),
                 }}
             />
