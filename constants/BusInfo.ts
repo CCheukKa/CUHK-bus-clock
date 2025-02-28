@@ -46,21 +46,21 @@ export function getETAs({ from, to }: FromTo, currentTime: Date, pastMinutes: nu
 function findRoute(fromStation: Station, toStation: Station): BusRoute[] {
     // TODO: add scoring to eliminate ridiculous routes
     const routes: BusRoute[] = [];
-    busRouteInfos.forEach((routeInfo, route) => {
-        if (!routeInfo.stations.find(s => s[0] === fromStation)) { return; }
-        if (!routeInfo.stations.find(s => s[0] === toStation)) { return; }
-        if (routeInfo.stations.findIndex(s => s[0] === fromStation) < routeInfo.stations.findIndex(s => s[0] === toStation)) {
-            routes.push(route);
+    Object.entries(busRouteInfos).forEach(([route, routeInfo]) => {
+        if (!routeInfo.stations.find(s => s === fromStation)) { return; }
+        if (!routeInfo.stations.find(s => s === toStation)) { return; }
+        if (routeInfo.stations.findIndex(s => s === fromStation) < routeInfo.stations.findIndex(s => s === toStation)) {
+            routes.push(route as BusRoute);
         }
     });
     return routes;
 }
 
 function getStationRouteETA(station: Station, route: BusRoute, currentTime: Date, pastTimeLimit: Date, futureTimeLimit: Date): EtaInfo[] | void {
-    const routeInfo = busRouteInfos.get(route);
+    const routeInfo = busRouteInfos[route];
     if (!routeInfo) { return; }
     if (!routeInfo.days.includes(currentTime.getDay())) { return; }
-    if (!routeInfo.stations.find(s => s[0] === station)) { return; }
+    if (!routeInfo.stations.find(s => s === station)) { return; }
     const routeStationTime = getRouteStationTime();
 
     const currentHour = currentTime.getHours();
@@ -97,7 +97,7 @@ function getStationRouteETA(station: Station, route: BusRoute, currentTime: Date
         let stationTime = 0;
         const stationIndex = stations.findIndex(s => s === station);
         for (let i = 1; i < stationIndex; i++) {
-            stationTime += busStationTimings.get([stations[i - 1], stations[i]])
+            stationTime += busStationTimings[`${stations[i - 1]}>>${stations[i]}`]
                 ?? (() => { throw new Error(`Timing ${stations[i - 1]} -> ${stations[i]} not found!`) })();
         }
         return stationTime;
