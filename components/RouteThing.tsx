@@ -69,7 +69,7 @@ export function RouteThing({ route, currentTime, etaTime, ...otherProps }: Route
 }
 
 export function getRouteThings(currentTime: Date) {
-    const etas = getETAs({ from: Region.MAIN_CAMPUS, to: Region.CWC_COLLEGE }, currentTime, 10, 30);
+    const etas = getETAs({ from: Region.MAIN_CAMPUS, to: Region.CWC_COLLEGE_AREA }, currentTime, 10, 30);
     if (etas.length === 0) {
         // TODO: add a "no buses" message
         return null;

@@ -62,16 +62,16 @@ export enum Station {
 export enum Region {
     AREA_39 = 'Area 39',
     CAMPUS_EAST = 'Campus East',
-    CHUNG_CHI_COLLEGE = 'Chung Chi College',
-    CWC_COLLEGE = 'CW Chu College',
-    LWS_COLLEGE = 'Lee Woo Sing College',
+    CHUNG_CHI_COLLEGE_AREA = 'Chung Chi College Area',
+    CWC_COLLEGE_AREA = 'CW Chu College Area',
+    LWS_COLLEGE_AREA = 'Lee Woo Sing College Area',
     MAIN_CAMPUS = 'Main Campus',
     MTR = 'MTR',
-    NEW_ASIA_COLLEGE = 'New Asia College',
-    SHAW_COLLEGE = 'Shaw College',
-    SHHO_COLLEGE = 'S.H. Ho College',
-    UNITED_COLLEGE = 'United College',
-    WYS_COLLEGE = 'Wu Yee Sun College',
+    NEW_ASIA_COLLEGE_AREA = 'New Asia College Area',
+    SHAW_COLLEGE_AREA = 'Shaw College Area',
+    SHHO_COLLEGE_AREA = 'S.H. Ho College Area',
+    UNITED_COLLEGE_AREA = 'United College Area',
+    WYS_COLLEGE_AREA = 'Wu Yee Sun College Area',
     MISCELLANEOUS = 'Miscellaneous',
 };
 
@@ -80,7 +80,7 @@ export const stationRegions: Record<Region, Station[]> = Object.freeze({
         Station.AREA_39_DOWNWARD,
         Station.AREA_39_UPWARD,
     ],
-    [Region.CHUNG_CHI_COLLEGE]: [
+    [Region.CHUNG_CHI_COLLEGE_AREA]: [
         Station.CHUNG_CHI_TEACHING_BUILDING,
         Station.CHUNG_CHI_TEACHING_BUILDING_TERMINUS,
     ],
@@ -89,13 +89,13 @@ export const stationRegions: Record<Region, Station[]> = Object.freeze({
         Station.CAMPUS_CIRCUIT_EAST_UPWARD,
         Station.POSTGRADUATE_HALL_1,
     ],
-    [Region.CWC_COLLEGE]: [
+    [Region.CWC_COLLEGE_AREA]: [
         Station.CAMPUS_CIRCUIT_NORTH,
         Station.CWC_COLLEGE_DOWNWARD,
         Station.CWC_COLLEGE_DOWNWARD_TERMINUS,
         Station.CWC_COLLEGE_UPWARD,
     ],
-    [Region.LWS_COLLEGE]: [
+    [Region.LWS_COLLEGE_AREA]: [
         Station.CHAN_CHUN_HA_HOSTEL,
     ],
     [Region.MAIN_CAMPUS]: [
@@ -110,23 +110,23 @@ export const stationRegions: Record<Region, Station[]> = Object.freeze({
         Station.UNIVERSITY_STATION_PIAZZA_TERMINUS,
         Station.YIA,
     ],
-    [Region.NEW_ASIA_COLLEGE]: [
+    [Region.NEW_ASIA_COLLEGE_AREA]: [
         Station.NEW_ASIA_CIRCLE,
         Station.NEW_ASIA_COLLEGE,
     ],
-    [Region.SHAW_COLLEGE]: [
+    [Region.SHAW_COLLEGE_AREA]: [
         Station.SHAW_COLLEGE_DOWNWARD,
         Station.SHAW_COLLEGE_UPWARD,
     ],
-    [Region.SHHO_COLLEGE]: [
+    [Region.SHHO_COLLEGE_AREA]: [
         Station.SHHO_COLLEGE,
         Station.UNIVERSITY_SPORTS_CENTRE,
     ],
-    [Region.UNITED_COLLEGE]: [
+    [Region.UNITED_COLLEGE_AREA]: [
         Station.UNITED_COLLEGE_DOWNWARD,
         Station.UNITED_COLLEGE_UPWARD,
     ],
-    [Region.WYS_COLLEGE]: [
+    [Region.WYS_COLLEGE_AREA]: [
         Station.WU_YEE_SUN_COLLEGE_DOWNWARD,
         Station.WU_YEE_SUN_COLLEGE_UPWARD,
     ],
