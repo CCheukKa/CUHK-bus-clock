@@ -12,7 +12,7 @@ type ClockViewProps = {
     fromTo: FromTo;
 };
 
-export function ClockView({ time, fromTo }: ClockViewProps) {
+export function ClockFace({ time, fromTo }: ClockViewProps) {
     const clockNumbers = useMemo(() => {
         return Array.from({ length: 12 }, (_, i) => i + 1).map(i => {
             return (

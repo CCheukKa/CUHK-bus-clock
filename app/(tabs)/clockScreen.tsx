@@ -2,7 +2,7 @@ import React, { useEffect, useState, useRef, useMemo, useCallback } from 'react'
 import { Pressable, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
 import { ThemedText } from '@/components/ThemedText';
-import { ClockView } from '@/components/ClockView';
+import { ClockFace } from '@/components/ClockView';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { FontAwesome6 } from '@expo/vector-icons';
 import DateTimePicker, { DateTimePickerEvent } from '@react-native-community/datetimepicker';
@@ -70,7 +70,7 @@ export default function ClockScreen() {
     //
     const dateTimeTextStyle = useMemo(() => !useRealTime ? { color: 'lightpink' } : null, [useRealTime]);
     const clockView = useMemo(() =>
-        <ClockView
+        <ClockFace
             time={logicTime}
             fromTo={fromTo}
         />, [logicTime.add(0, 0, 0, -logicTime.getMilliseconds()).getTime()]
