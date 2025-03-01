@@ -4,12 +4,14 @@ import { ClockThing, ClockThingType } from '@/components/ClockThing';
 import { ClockHand } from '@/components/ClockHand';
 import { ClockTick, ClockTickType } from '@/components/ClockTick';
 import { getRouteThings } from '@/components/RouteThing';
+import { FromTo } from '@/api/Bus';
 
 export type ClockViewProps = {
     time: Date;
+    fromTo: FromTo;
 } & ViewProps;
 
-export function ClockView({ time, ...otherProps }: ClockViewProps) {
+export function ClockView({ time, fromTo, ...otherProps }: ClockViewProps) {
     const clockNumbers = useMemo(() => {
         return Array.from({ length: 12 }, (_, i) => i + 1).map(i => {
             return (
@@ -28,7 +30,7 @@ export function ClockView({ time, ...otherProps }: ClockViewProps) {
         });
     }, []);
 
-    const routeThings = getRouteThings(time);
+    const routeThings = getRouteThings(time, fromTo);
 
     return (
         <View style={styles.clockContainer}>

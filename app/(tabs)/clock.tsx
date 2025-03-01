@@ -7,6 +7,9 @@ import { ClockView } from '@/components/ClockView';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { FontAwesome6 } from '@expo/vector-icons';
 import DateTimePicker, { DateTimePickerEvent } from '@react-native-community/datetimepicker';
+import { JourneyPlanner } from '@/components/JourneyPlanner';
+import { FromTo } from '@/api/Bus';
+import { Region } from '@/constants/BusData';
 
 const weekDays = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 
@@ -63,8 +66,15 @@ export default function ClockScreen() {
         setDateTimePickerMode(null);
     }, []);
     //
+    const [fromTo, setFromTo] = useState<FromTo>({ from: Region.MTR, to: Region.MAIN_CAMPUS });
+    //
     const dateTimeTextStyle = useMemo(() => !useRealTime ? { color: 'lightpink' } : null, [useRealTime]);
-    const clockView = useMemo(() => <ClockView time={logicTime} />, [logicTime.add(0, 0, 0, -logicTime.getMilliseconds()).getTime()]);
+    const clockView = useMemo(() =>
+        <ClockView
+            time={logicTime}
+            fromTo={fromTo}
+        />, [logicTime.add(0, 0, 0, -logicTime.getMilliseconds()).getTime()]
+    );
     return (
         <SafeAreaView style={styles.safeAreaView}>
             <View style={styles.headerContainer}>
@@ -114,6 +124,7 @@ export default function ClockScreen() {
                 }
             </View>
             {clockView}
+            <JourneyPlanner fromTo={fromTo} setFromTo={setFromTo} />
         </SafeAreaView>
     );
 }

@@ -12,16 +12,19 @@ export type EtaInfo = {
     route: BusRoute,
     etaTime: Date,
 }
+export type LocationNullable = Station | Region | null;
 export type FromTo = {
-    from: Station | Region,
-    to: Station | Region,
+    from: LocationNullable,
+    to: LocationNullable,
 };
 
-function isRegion(x: Station | Region): x is Region {
+function isRegion(x: Exclude<LocationNullable, null>): x is Region {
     return Object.values(Region).includes(x as Region);
 }
 
 export function getETAs({ from, to }: FromTo, currentTime: Date, pastMinutes: number, futureMinutes: number): EtaInfo[] {
+    if (!from || !to) { return []; }
+
     const pastTimeLimit = new Date(currentTime.getTime() - pastMinutes * 60000);
     const futureTimeLimit = new Date(currentTime.getTime() + futureMinutes * 60000);
 

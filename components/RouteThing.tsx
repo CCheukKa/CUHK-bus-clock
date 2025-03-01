@@ -1,7 +1,7 @@
 import { ViewProps } from "react-native";
 import { ClockThing, ClockThingType } from "@/components/ClockThing";
 import { useThemeColour } from "@/hooks/useThemeColour";
-import { getETAs } from "@/api/Bus";
+import { FromTo, getETAs } from "@/api/Bus";
 import { BusRoute, busRouteInfos, Region, Station } from "@/constants/BusData";
 import { Colour, MathExtra } from "@/api/Helper";
 
@@ -68,8 +68,8 @@ export function RouteThing({ route, currentTime, etaTime, ...otherProps }: Route
     );
 }
 
-export function getRouteThings(currentTime: Date) {
-    const etas = getETAs({ from: Region.MAIN_CAMPUS, to: Region.CWC_COLLEGE_AREA }, currentTime, 10, 30);
+export function getRouteThings(currentTime: Date, fromTo: FromTo) {
+    const etas = getETAs(fromTo, currentTime, 10, 30);
     if (etas.length === 0) {
         // TODO: add a "no buses" message
         return null;
