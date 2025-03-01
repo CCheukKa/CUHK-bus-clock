@@ -1,11 +1,9 @@
 export class Colour {
-    public static getBrightness(hex: string): number {
-        // https://www.w3.org/TR/AERT/#color-contrast
-        return Math.sqrt(
-            0.299 * Math.pow(parseInt(hex.slice(1, 3), 16), 2) +
-            0.587 * Math.pow(parseInt(hex.slice(3, 5), 16), 2) +
-            0.114 * Math.pow(parseInt(hex.slice(5, 7), 16), 2)
-        );
+    public static getLuminance(hex: string): number {
+        const r = parseInt(hex.slice(1, 3), 16);
+        const g = parseInt(hex.slice(3, 5), 16);
+        const b = parseInt(hex.slice(5, 7), 16);
+        return Math.sqrt(0.299 * r * r + 0.587 * g * g + 0.114 * b * b);
     }
     public static mixRGBA(colour1: string, colour2: string, ratio: number): string {
         const r1 = parseInt(colour1.slice(1, 3), 16);

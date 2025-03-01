@@ -17,7 +17,7 @@ export function RouteThing({ route, currentTime, etaTime }: RouteThingProps) {
     const etaMinutes = Math.floor(Math.abs(eta) / 60000);
     const etaSeconds = Math.floor(Math.abs(eta) % 60000 / 1000);
     const opacity = eta > 0 ? 1 : 0.75;
-    const contrastColour = Colour.getBrightness(routeColour) > 150 ? ThemeColours.black : ThemeColours.white;
+    const contrastColour = Colour.getLuminance(routeColour) > 150 ? ThemeColours.black : ThemeColours.white;
     const routeBubbleScale = MathExtra.interpolateBetweenPins(eta / 60000, [
         { pin: -5, value: 0.6 },
         { pin: 0, value: 1 },
