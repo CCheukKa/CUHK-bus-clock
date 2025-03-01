@@ -98,9 +98,9 @@ function getStationRouteETA(station: Station, route: BusRoute, currentTime: Date
         const currentHourStartTime = new Date(currentTime);
         const futureHourStartTime = new Date(currentTime);
 
-        pastHourStartTime.setHours(currentHour - 1, minuteMark);
-        currentHourStartTime.setHours(currentHour, minuteMark);
-        futureHourStartTime.setHours(currentHour + 1, minuteMark);
+        pastHourStartTime.setHours(currentHour - 1, minuteMark, 0, 0);
+        currentHourStartTime.setHours(currentHour, minuteMark, 0, 0);
+        futureHourStartTime.setHours(currentHour + 1, minuteMark, 0, 0);
 
         const pastHourEtaTime = pastHourStartTime.add(0, 0, routeStationTime);
         const currentHourEtaTime = currentHourStartTime.add(0, 0, routeStationTime);
