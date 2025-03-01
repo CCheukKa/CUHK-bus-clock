@@ -5,6 +5,7 @@ import { ClockHand } from '@/components/ClockHand';
 import { ClockTick, ClockTickType } from '@/components/ClockTick';
 import { getRouteThings } from '@/components/RouteThing';
 import { FromTo } from '@/api/Bus';
+import { ThemeColours } from '@/constants/ThemeColours';
 
 type ClockViewProps = {
     time: Date;
@@ -58,11 +59,11 @@ const styles = StyleSheet.create({
         display: 'flex',
         width: '60%',
         aspectRatio: 1,
-        backgroundColor: '#141414',
+        backgroundColor: ThemeColours.background,
         borderRadius: '50%',
         borderWidth: 2,
-        borderColor: '#ffffff',
-        shadowColor: '#ffffff',
+        borderColor: ThemeColours.highContrast,
+        shadowColor: ThemeColours.highContrast,
         shadowOffset: {
             width: 0,
             height: 2,

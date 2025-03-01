@@ -5,7 +5,7 @@ import { Platform } from 'react-native';
 import { HapticTab } from '@/components/HapticTab';
 import TabBarBackground from '@/components/ui/TabBarBackground';
 import { useColourScheme } from '@/hooks/useColourScheme';
-import { Colours } from '@/constants/Colours';
+import { ThemeColours } from '@/constants/ThemeColours';
 import { MaterialIcons } from '@expo/vector-icons';
 
 export default function TabLayout() {
@@ -15,7 +15,7 @@ export default function TabLayout() {
         <Tabs
             initialRouteName='clockScreen' //? This doesn't seem to work
             screenOptions={{
-                tabBarActiveTintColor: Colours[colourScheme ?? 'light'].tint,
+                tabBarActiveTintColor: ThemeColours.highContrast,
                 headerShown: false,
                 tabBarButton: HapticTab,
                 tabBarBackground: TabBarBackground,

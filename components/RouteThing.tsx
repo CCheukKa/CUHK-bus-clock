@@ -1,8 +1,8 @@
 import { ClockThing, ClockThingType } from "@/components/ClockThing";
-import { useThemeColour } from "@/hooks/useThemeColour";
 import { FromTo, getETAs } from "@/api/Bus";
 import { BusRoute, busRouteInfos } from "@/constants/BusData";
 import { Colour, MathExtra } from "@/api/Helper";
+import { ThemeColours } from "@/constants/ThemeColours";
 
 type RouteThingProps = {
     route: BusRoute;
@@ -17,7 +17,7 @@ export function RouteThing({ route, currentTime, etaTime }: RouteThingProps) {
     const etaMinutes = Math.floor(Math.abs(eta) / 60000);
     const etaSeconds = Math.floor(Math.abs(eta) % 60000 / 1000);
     const opacity = eta > 0 ? 1 : 0.6;
-    const contrastColour = Colour.getBrightness(routeColour) > 150 ? '#000000' : '#ffffff';
+    const contrastColour = Colour.getBrightness(routeColour) > 150 ? ThemeColours.black : ThemeColours.white;
     const routeBubbleScale = MathExtra.interpolateBetweenPins(eta / 60000, [
         { pin: -5, value: 0.6 },
         { pin: 0, value: 1 },
@@ -49,7 +49,7 @@ export function RouteThing({ route, currentTime, etaTime }: RouteThingProps) {
                 degrees={angle} distance={1.2}
                 type={ClockThingType.ROUTE_NUMBER_BUBBLE}
                 style={{
-                    backgroundColour: Colour.mixRGBA(useThemeColour({}, 'background'), routeColour, opacity),
+                    backgroundColour: Colour.mixRGBA(ThemeColours.background, routeColour, opacity),
                     textColour: contrastColour,
                     scale: routeBubbleScale,
                 }}

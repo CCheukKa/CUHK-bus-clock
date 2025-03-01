@@ -1,3 +1,4 @@
+import { ThemeColours } from '@/constants/ThemeColours';
 import { StyleSheet, View } from 'react-native';
 
 type ClockHandProps = {
@@ -22,8 +23,8 @@ export function ClockHand({ type, degrees }: ClockHandProps) {
     })();
     const backgroundColor = (() => {
         switch (type) {
-            case 'hour': return '#ffffff60';
-            case 'minute': return '#ffffff';
+            case 'hour': return ThemeColours.lowContrast;
+            case 'minute': return ThemeColours.highContrast;
             default: return '0%';
         }
     })();

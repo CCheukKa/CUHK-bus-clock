@@ -1,3 +1,4 @@
+import { ThemeColours } from '@/constants/ThemeColours';
 import { StyleSheet, View } from 'react-native';
 
 export enum ClockTickType {
@@ -32,17 +33,16 @@ const styles = StyleSheet.create({
     clockTick: {
         display: 'flex',
         position: 'absolute',
-        backgroundColor: '#ffffff',
         transformOrigin: '0 0',
     },
     clockTickMajor: {
         width: 3,
         height: '5%',
-        opacity: 0.6,
+        backgroundColor: ThemeColours.halfContrast,
     },
     clockTickMinor: {
         width: 2,
         height: '3%',
-        opacity: 0.4,
+        backgroundColor: ThemeColours.lowContrast,
     },
 });

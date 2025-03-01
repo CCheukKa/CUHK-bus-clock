@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { FromTo, LocationNullable } from "@/api/Bus";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { View } from "react-native";
+import { ThemeColours } from "@/constants/ThemeColours";
 
 const data: DropdownItem[] = (() => {
     const entries: DropdownItem[] = [];
@@ -39,7 +40,7 @@ export function JourneyPlanner({ fromTo, setFromTo }: JourneyPlannerProps) {
                 <MaterialCommunityIcons
                     name="arrow-down-thin"
                     size={24}
-                    color={'#404040'}
+                    color={ThemeColours.halfContrast}
                     style={{
                         zIndex: 2,
                         transform: [{ scale: 2.5 }],
@@ -48,7 +49,7 @@ export function JourneyPlanner({ fromTo, setFromTo }: JourneyPlannerProps) {
                 <MaterialCommunityIcons
                     name="arrow-down-thin"
                     size={28}
-                    color={'#141414'}
+                    color={ThemeColours.lowContrast}
                     style={{
                         zIndex: 1,
                         position: 'absolute',

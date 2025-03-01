@@ -2,7 +2,6 @@ import React, { useEffect, useState, useRef, useMemo, useCallback } from 'react'
 import { Pressable, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
 import { ThemedText } from '@/components/ThemedText';
-import { ThemedView } from '@/components/ThemedView';
 import { ClockView } from '@/components/ClockView';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { FontAwesome6 } from '@expo/vector-icons';
@@ -10,6 +9,7 @@ import DateTimePicker, { DateTimePickerEvent } from '@react-native-community/dat
 import { JourneyPlanner } from '@/components/JourneyPlanner';
 import { FromTo } from '@/api/Bus';
 import { Region } from '@/constants/BusData';
+import { ThemeColours } from '@/constants/ThemeColours';
 
 const weekDays = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 
@@ -78,7 +78,7 @@ export default function ClockScreen() {
     return (
         <SafeAreaView style={styles.safeAreaView}>
             <View style={styles.headerContainer}>
-                <ThemedView style={styles.dateTimeContainer}>
+                <View style={styles.dateTimeContainer}>
                     <TouchableOpacity onPress={() => { showDateTimePicker('date') }}>
                         <ThemedText type="subtitle" style={dateTimeTextStyle}>
                             {`${logicTime.toLocaleDateString('en-GB')} (${weekDays[logicTime.getDay()]})`}
@@ -89,7 +89,7 @@ export default function ClockScreen() {
                             {logicTime.toLocaleTimeString('en-GB')}
                         </ThemedText>
                     </TouchableOpacity>
-                </ThemedView>
+                </View>
                 {dateTimePickerMode
                     ? (
                         <DateTimePicker
@@ -117,7 +117,7 @@ export default function ClockScreen() {
                                     },
                                     styles.button,
                                 ]}>
-                                <FontAwesome6 name="clock-rotate-left" color="#000000" size={20} />
+                                <FontAwesome6 name="clock-rotate-left" color={ThemeColours.black} size={20} />
                             </Pressable>
                         </View>
                         : null
@@ -135,7 +135,7 @@ const styles = StyleSheet.create({
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: '#141414',
+        backgroundColor: ThemeColours.background,
     },
     headerContainer: {
         width: '90%',

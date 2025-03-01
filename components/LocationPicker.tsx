@@ -1,17 +1,15 @@
 import { Region, Station } from "@/constants/BusData";
+import { ThemeColours } from "@/constants/ThemeColours";
 import { MaterialCommunityIcons, MaterialIcons } from "@expo/vector-icons";
 import { useCallback, useState } from "react";
 import { StyleSheet, Text, View } from "react-native";
 import { Dropdown } from "react-native-element-dropdown";
 
-type DropdownItem = {
+export type DropdownItem = {
     type: 'region' | 'station';
     label: string;
     value: string;
 };
-
-const contrastColour = '#ffffff';
-const highlightColour = '#404040';
 
 type LocationPickerProps = {
     label: string;
@@ -34,21 +32,21 @@ export function LocationPicker({ label, data, location, setLocation }: LocationP
         return (
             <View style={[
                 styles.dropdownItem,
-                selected ? { backgroundColor: contrastColour } : null
+                selected ? { backgroundColor: ThemeColours.highContrast } : null
             ]}>
                 {isRegion
                     ? <MaterialCommunityIcons
                         name="map-marker-radius"
                         size={24}
                         style={{
-                            color: selected ? highlightColour : contrastColour
+                            color: selected ? ThemeColours.dimContrast : ThemeColours.highContrast
                         }}
                     />
                     : <MaterialCommunityIcons
                         name="subdirectory-arrow-right"
                         size={24}
                         style={{
-                            color: selected ? highlightColour : contrastColour,
+                            color: selected ? ThemeColours.dimContrast : ThemeColours.highContrast,
                             marginLeft: 24
                         }}
                     />
@@ -56,7 +54,7 @@ export function LocationPicker({ label, data, location, setLocation }: LocationP
                 <Text style={[
                     styles.dropdownItemText,
                     {
-                        color: selected ? highlightColour : contrastColour,
+                        color: selected ? ThemeColours.dimContrast : ThemeColours.highContrast,
                         fontWeight: isRegion ? 'bold' : 'normal',
                         fontSize: isRegion ? 18 : 14,
                     }
@@ -70,7 +68,7 @@ export function LocationPicker({ label, data, location, setLocation }: LocationP
     return (
         <View style={styles.dropdownContainer}>
             <View style={styles.dropdownLabel}>
-                <MaterialCommunityIcons name="bus-stop" size={24} color={contrastColour} />
+                <MaterialCommunityIcons name="bus-stop" size={24} color={ThemeColours.highContrast} />
                 <Text style={styles.dropdownLabelText}>{label}</Text>
             </View>
             <Dropdown
@@ -92,7 +90,7 @@ export function LocationPicker({ label, data, location, setLocation }: LocationP
                         : null
                 ]}
                 selectedTextStyle={styles.dropdownSelectedText}
-                renderRightIcon={() => <MaterialIcons name="arrow-drop-down" size={24} color={contrastColour} />}
+                renderRightIcon={() => <MaterialIcons name="arrow-drop-down" size={24} color={ThemeColours.highContrast} />}
                 onFocus={() => { setDropdownExpanded(true); }}
                 onBlur={() => { setDropdownExpanded(false); }}
                 renderItem={dropdownListItem}
@@ -117,7 +115,7 @@ const styles = StyleSheet.create({
         gap: 6,
     },
     dropdownLabelText: {
-        color: contrastColour,
+        color: ThemeColours.highContrast,
         fontWeight: 'bold',
     },
     dropdownBar: {
@@ -126,14 +124,14 @@ const styles = StyleSheet.create({
         paddingHorizontal: 16,
         borderRadius: 8,
         borderWidth: 2,
-        borderColor: highlightColour,
+        borderColor: ThemeColours.dimContrast,
     },
     dropdownPlaceholder: {
-        color: highlightColour,
+        color: ThemeColours.dimContrast,
     },
     dropdownListContainer: {
-        backgroundColor: highlightColour,
-        borderColor: contrastColour,
+        backgroundColor: ThemeColours.dimContrast,
+        borderColor: ThemeColours.highContrast,
         borderTopStartRadius: 0,
         borderTopEndRadius: 0,
         borderRadius: 8,
@@ -144,7 +142,7 @@ const styles = StyleSheet.create({
         paddingHorizontal: 16,
         paddingVertical: 4,
         margin: 0,
-        color: contrastColour,
+        color: ThemeColours.highContrast,
         fontWeight: 'bold',
         display: 'flex',
         flexDirection: 'row',
@@ -154,7 +152,7 @@ const styles = StyleSheet.create({
         marginLeft: 4,
     },
     dropdownSelectedText: {
-        color: contrastColour,
+        color: ThemeColours.highContrast,
         fontWeight: 'bold',
     }
 });
