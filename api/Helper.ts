@@ -29,25 +29,25 @@ export class MathExtra {
     public static average(...values: number[]): number {
         return values.reduce((sum, value) => sum + value, 0) / values.length;
     }
-    public static interpolateBetweenPins(input: number, pinValues: PinValue[]): number {
+    public static interpolateBetweenPins(inputPin: number, pinValues: PinValue[]): number {
         // linearly interpolate between pins
         if (pinValues.length === 0) { return NaN; }
         if (pinValues.length === 1) { return pinValues[0].value; }
 
         const sortedPinValues = pinValues.sort((a, b) => a.pin - b.pin);
-        if (input <= sortedPinValues[0].pin) { return sortedPinValues[0].value; }
-        if (input >= sortedPinValues[sortedPinValues.length - 1].pin) { return sortedPinValues[sortedPinValues.length - 1].value; }
+        if (inputPin <= sortedPinValues[0].pin) { return sortedPinValues[0].value; }
+        if (inputPin >= sortedPinValues[sortedPinValues.length - 1].pin) { return sortedPinValues[sortedPinValues.length - 1].value; }
 
         for (let i = 0; i < sortedPinValues.length - 1; i++) {
             const pinA = sortedPinValues[i];
             const pinB = sortedPinValues[i + 1];
-            if (input >= pinA.pin && input <= pinB.pin) {
-                const ratio = (input - pinA.pin) / (pinB.pin - pinA.pin);
+            if (inputPin >= pinA.pin && inputPin <= pinB.pin) {
+                const ratio = (inputPin - pinA.pin) / (pinB.pin - pinA.pin);
                 return pinA.value + ratio * (pinB.value - pinA.value);
             }
         }
 
-        throw new Error(`interpolateBetweenPins() failed to interpolate ${input} between ${JSON.stringify(sortedPinValues, null, 1)}`);
+        throw new Error(`interpolateBetweenPins() failed to interpolate ${inputPin} between ${JSON.stringify(sortedPinValues, null, 1)}`);
     }
 }
 
