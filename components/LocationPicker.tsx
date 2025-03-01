@@ -21,7 +21,6 @@ type LocationPickerProps = {
 export function LocationPicker({ label, data, location, setLocation }: LocationPickerProps) {
     const [dropdownExpanded, setDropdownExpanded] = useState(false);
     const dropdownChange = useCallback((item: DropdownItem) => {
-        console.log(item);
         setLocation(item.value as Station | Region);
         setDropdownExpanded(false);
     }, []);
