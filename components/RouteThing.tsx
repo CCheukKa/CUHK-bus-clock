@@ -1,7 +1,7 @@
 import { ClockThing, ClockThingType } from "@/components/ClockThing";
 import { useThemeColour } from "@/hooks/useThemeColour";
 import { FromTo, getETAs } from "@/api/Bus";
-import { BusRoute, busRouteInfos, Region, Station } from "@/constants/BusData";
+import { BusRoute, busRouteInfos } from "@/constants/BusData";
 import { Colour, MathExtra } from "@/api/Helper";
 
 type RouteThingProps = {
