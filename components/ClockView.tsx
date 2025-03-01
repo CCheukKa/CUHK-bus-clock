@@ -6,7 +6,7 @@ import { ClockTick, ClockTickType } from '@/components/ClockTick';
 import { getRouteThings } from '@/components/RouteThing';
 import { FromTo } from '@/api/Bus';
 
-export type ClockViewProps = {
+type ClockViewProps = {
     time: Date;
     fromTo: FromTo;
 };

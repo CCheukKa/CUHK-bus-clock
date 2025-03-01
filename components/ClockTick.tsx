@@ -5,7 +5,7 @@ export enum ClockTickType {
     MINOR = 'minor',
 };
 
-export type ClockTickProps = {
+type ClockTickProps = {
     type: ClockTickType;
     degrees: number;
 };

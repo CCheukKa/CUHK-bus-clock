@@ -4,7 +4,7 @@ import { FromTo, getETAs } from "@/api/Bus";
 import { BusRoute, busRouteInfos, Region, Station } from "@/constants/BusData";
 import { Colour, MathExtra } from "@/api/Helper";
 
-export type RouteThingProps = {
+type RouteThingProps = {
     route: BusRoute;
     currentTime: Date;
     etaTime: Date;

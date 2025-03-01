@@ -4,7 +4,7 @@ import { useCallback, useState } from "react";
 import { StyleSheet, Text, View } from "react-native";
 import { Dropdown } from "react-native-element-dropdown";
 
-export type DropdownItem = {
+type DropdownItem = {
     type: 'region' | 'station';
     label: string;
     value: string;

@@ -1,6 +1,6 @@
 import { StyleSheet, View } from 'react-native';
 
-export type ClockHandProps = {
+type ClockHandProps = {
     type: 'hour' | 'minute';
     degrees: number;
 };

@@ -22,7 +22,7 @@ export enum ClockThingType {
  * @param {number} [props.degrees] - The angle in degrees of the clock thing. (0 is 12 o'clock; clockwise)
  * @param {number} [props.distance] - The distance from the center of the clock thing.
  */
-export type ClockThingProps =
+type ClockThingProps =
     {
         type?: ClockThingType;
         style?: {
