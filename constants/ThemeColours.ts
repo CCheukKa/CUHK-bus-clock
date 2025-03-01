@@ -12,6 +12,9 @@ export const ThemeColours = {
         halfContrast: '#606060',
         lowContrast: '#a0a0a0',
         dimContrast: '#c0c0c0',
+        //
+        accent: 'hotpink',
+        accentHeavy: 'deeppink',
     },
     dark: {
         black: '#000000',
@@ -23,5 +26,12 @@ export const ThemeColours = {
         halfContrast: '#a0a0a0',
         lowContrast: '#606060',
         dimContrast: '#404040',
+        //
+        accent: 'lightpink',
+        accentHeavy: 'hotpink',
+        // accent: 'lightblue',
+        // accentHeavy: 'deepskyblue',
+        // accent: 'lightgreen',
+        // accentHeavy: 'lightseagreen',
     }
 }[theme];

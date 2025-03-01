@@ -68,7 +68,7 @@ export default function ClockScreen() {
     //
     const [fromTo, setFromTo] = useState<FromTo>({ from: Region.MTR, to: Region.MAIN_CAMPUS });
     //
-    const dateTimeTextStyle = useMemo(() => !useRealTime ? { color: 'lightpink' } : null, [useRealTime]);
+    const dateTimeTextStyle = useMemo(() => !useRealTime ? { color: ThemeColours.accent } : null, [useRealTime]);
     const clockView = useMemo(() =>
         <ClockFace
             time={logicTime}
@@ -111,9 +111,9 @@ export default function ClockScreen() {
                                 onPress={handleResetToCurrentTimeButtonPress}
                                 style={({ pressed }) => [
                                     {
-                                        // backgroundColor: pressed ? 'lightgreen' : 'lightseagreen',
-                                        // backgroundColor: pressed ? 'deepskyblue' : 'dodgerblue',
-                                        backgroundColor: pressed ? 'palevioletred' : 'lightpink',
+                                        backgroundColor: !pressed
+                                            ? ThemeColours.accent
+                                            : ThemeColours.accentHeavy,
                                     },
                                     styles.button,
                                 ]}>
