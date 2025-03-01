@@ -19,7 +19,7 @@ export enum ClockThingType {
  * @param {number} [props.x] - The [-1,1] x-coordinate of the clock thing.
  * @param {number} [props.y] - The [-1,1] y-coordinate of the clock thing.
  * @param {number} [props.degrees] - The angle in degrees of the clock thing. (0 is 12 o'clock; clockwise)
- * @param {number} [props.length] - The length from the center of the clock thing.
+ * @param {number} [props.distance] - The distance from the center of the clock thing.
  */
 export type ClockThingProps =
     {
@@ -32,19 +32,19 @@ export type ClockThingProps =
             scale?: number;
         };
     } & (
-        { x: number; y: number; degrees?: never; length?: never } |
-        { degrees: number; length: number; x?: never; y?: never }
+        { x: number; y: number; degrees?: never; distance?: never } |
+        { degrees: number; distance: number; x?: never; y?: never }
     ) & ViewProps;
 
 
-export function ClockThing({ type, style, x, y, degrees, length, ...otherProps }: ClockThingProps) {
+export function ClockThing({ type, style, x, y, degrees, distance, ...otherProps }: ClockThingProps) {
 
     let left: number, top: number;
 
-    if (degrees !== undefined && length !== undefined) {
+    if (degrees !== undefined && distance !== undefined) {
         const radians = ((-degrees + 90) * Math.PI) / 180;
-        left = 50 + length * Math.cos(radians) * 50;
-        top = 50 - length * Math.sin(radians) * 50;
+        left = 50 + distance * Math.cos(radians) * 50;
+        top = 50 - distance * Math.sin(radians) * 50;
     } else if (x !== undefined && y !== undefined) {
         left = 50 + x * 50;
         top = 50 - y * 50;

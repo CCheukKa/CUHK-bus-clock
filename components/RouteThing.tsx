@@ -38,7 +38,7 @@ export function RouteThing({ route, currentTime, etaTime, ...otherProps }: Route
     return (
         <>
             <ClockThing
-                degrees={angle} length={1.2}
+                degrees={angle} distance={1.2}
                 type={ClockThingType.ROUTE_ANNOTATION_LINE}
                 style={{
                     backgroundColour: routeColour,
@@ -47,7 +47,7 @@ export function RouteThing({ route, currentTime, etaTime, ...otherProps }: Route
                 }}
             />
             <ClockThing
-                degrees={angle} length={1.2}
+                degrees={angle} distance={1.2}
                 type={ClockThingType.ROUTE_NUMBER_BUBBLE}
                 style={{
                     backgroundColour: Colour.mixRGBA(useThemeColour({}, 'background'), routeColour, opacity),
@@ -58,7 +58,7 @@ export function RouteThing({ route, currentTime, etaTime, ...otherProps }: Route
                 {route}
             </ClockThing>
             <ClockThing
-                degrees={angle} length={routeEtaCountdownLength}
+                degrees={angle} distance={routeEtaCountdownLength}
                 type={ClockThingType.ROUTE_ETA_COUNTDOWN}
                 style={{ textColour: routeColour, opacity }}
             >

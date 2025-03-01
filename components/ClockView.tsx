@@ -13,7 +13,7 @@ export function ClockView({ time, ...otherProps }: ClockViewProps) {
     const clockNumbers = useMemo(() => {
         return Array.from({ length: 12 }, (_, i) => i + 1).map(i => {
             return (
-                <ClockThing type={ClockThingType.CLOCK_NUMBER} key={i} degrees={360 / 12 * i} length={0.8}>
+                <ClockThing type={ClockThingType.CLOCK_NUMBER} key={i} degrees={360 / 12 * i} distance={0.8}>
                     {i}
                 </ClockThing>
             );
