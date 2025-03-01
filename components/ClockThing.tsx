@@ -25,9 +25,11 @@ export type ClockThingProps =
     {
         type?: ClockThingType;
         style?: {
+            height?: number;
             backgroundColour?: string;
             textColour?: string;
             opacity?: number;
+            scale?: number;
         };
     } & (
         { x: number; y: number; degrees?: never; length?: never } |
@@ -64,7 +66,8 @@ export function ClockThing({ type, style, x, y, degrees, length, ...otherProps }
                         styles.routeNumberContainer,
                         {
                             backgroundColor: style?.backgroundColour,
-                            opacity: style?.opacity
+                            opacity: style?.opacity,
+                            transform: [{ scale: style?.scale ?? 1 }],
                         }
                     ]}>
                         <Text style={[
@@ -79,6 +82,7 @@ export function ClockThing({ type, style, x, y, degrees, length, ...otherProps }
                 return (<View style={[
                     styles.routeAnnotationLine,
                     {
+                        height: style?.height,
                         backgroundColor: style?.backgroundColour,
                         opacity: style?.opacity,
                         transform: [
@@ -138,7 +142,6 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
     },
     routeAnnotationLine: {
-        height: 28,
         width: 5,
     },
     routeNumberContainer: {
