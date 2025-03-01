@@ -3,6 +3,7 @@ import { ClockThing, ClockThingType } from "@/components/ClockThing";
 import { useThemeColour } from "@/hooks/useThemeColour";
 import { getETAs } from "@/api/Bus";
 import { BusRoute, busRouteInfos, Region, Station } from "@/constants/BusData";
+import { Colour } from "@/api/Helper";
 
 export type RouteThingProps = {
     route: BusRoute;
@@ -17,7 +18,7 @@ export function RouteThing({ route, currentTime, etaTime, ...otherProps }: Route
     const etaMinutes = Math.floor(Math.abs(eta) / 60000);
     const etaSeconds = Math.floor(Math.abs(eta) % 60000 / 1000);
     const opacity = eta > 0 ? 1 : 0.6;
-    const contrastColour = getBrightness(routeColour) > 150 ? '#000000' : '#ffffff';
+    const contrastColour = Colour.getBrightness(routeColour) > 150 ? '#000000' : '#ffffff';
 
     return (
         <>
@@ -30,8 +31,7 @@ export function RouteThing({ route, currentTime, etaTime, ...otherProps }: Route
                 degrees={angle} length={1.2}
                 type={ClockThingType.ROUTE_NUMBER_BUBBLE}
                 style={{
-                    backgroundColour: mixRGBA(useThemeColour({}, 'background'), routeColour, opacity),
-                    textColour: contrastColour
+                    backgroundColour: Colour.mixRGBA(useThemeColour({}, 'background'), routeColour, opacity),
                 }}
             >
                 {route}
@@ -45,28 +45,6 @@ export function RouteThing({ route, currentTime, etaTime, ...otherProps }: Route
             </ClockThing>
         </>
     );
-}
-
-function getBrightness(hex: string) {
-    // https://www.w3.org/TR/AERT/#color-contrast
-    return Math.sqrt(
-        0.299 * Math.pow(parseInt(hex.slice(1, 3), 16), 2) +
-        0.587 * Math.pow(parseInt(hex.slice(3, 5), 16), 2) +
-        0.114 * Math.pow(parseInt(hex.slice(5, 7), 16), 2)
-    );
-}
-
-function mixRGBA(colour1: string, colour2: string, ratio: number) {
-    const r1 = parseInt(colour1.slice(1, 3), 16);
-    const g1 = parseInt(colour1.slice(3, 5), 16);
-    const b1 = parseInt(colour1.slice(5, 7), 16);
-    const r2 = parseInt(colour2.slice(1, 3), 16);
-    const g2 = parseInt(colour2.slice(3, 5), 16);
-    const b2 = parseInt(colour2.slice(5, 7), 16);
-    const r = Math.round(r1 * (1 - ratio) + r2 * ratio);
-    const g = Math.round(g1 * (1 - ratio) + g2 * ratio);
-    const b = Math.round(b1 * (1 - ratio) + b2 * ratio);
-    return `#${r.toString(16).padStart(2, '0')}${g.toString(16).padStart(2, '0')}${b.toString(16).padStart(2, '0')}`;
 }
 
 export function getRouteThings(currentTime: Date) {

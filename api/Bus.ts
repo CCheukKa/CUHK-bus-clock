@@ -139,18 +139,3 @@ function getStationRouteETA(station: Station, route: BusRoute, currentTime: Date
         return true;
     }
 }
-
-/* -------------------------------------------------------------------------- */
-declare global {
-    interface Date {
-        add(
-            hours: number,
-            minutes?: number,
-            seconds?: number,
-            milliseconds?: number
-        ): Date;
-    }
-}
-Date.prototype.add = function (this: Date, hours?, minutes?, seconds?, milliseconds?): Date {
-    return new Date(this.getTime() + (hours ?? 0) * 3600000 + (minutes ?? 0) * 60000 + (seconds ?? 0) * 1000 + (milliseconds ?? 0));
-};

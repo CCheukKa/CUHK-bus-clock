@@ -1,3 +1,5 @@
+import { MathExtra } from "@/api/Helper";
+
 export enum BusRoute {
     _1A = '1A',
     _1B = '1B',
@@ -641,19 +643,14 @@ export const busStationTimings: Record<string, number> = Object.freeze({
     [`${Station.UNIVERSITY_ADMIN_BUILDING}>>${Station.SHHO_COLLEGE}`]: 98,
     [`${Station.UNIVERSITY_SPORTS_CENTRE}>>${Station.FUNG_KING_HEY_BUILDING}`]: 120.5,
     [`${Station.UNIVERSITY_SPORTS_CENTRE}>>${Station.SCIENCE_CENTRE}`]: 120.5,
-    [`${Station.UNIVERSITY_SPORTS_CENTRE}>>${Station.SIR_RUN_RUN_SHAW_HALL}`]: average(132, 139),
+    [`${Station.UNIVERSITY_SPORTS_CENTRE}>>${Station.SIR_RUN_RUN_SHAW_HALL}`]: MathExtra.average(132, 139),
     [`${Station.UNIVERSITY_STATION}>>${Station.POSTGRADUATE_HALL_1}`]: 120.5,
-    [`${Station.UNIVERSITY_STATION}>>${Station.UNIVERSITY_SPORTS_CENTRE}`]: average(75, 110),
+    [`${Station.UNIVERSITY_STATION}>>${Station.UNIVERSITY_SPORTS_CENTRE}`]: MathExtra.average(75, 110),
     [`${Station.UNIVERSITY_STATION_PIAZZA}>>${Station.CHUNG_CHI_TEACHING_BUILDING_TERMINUS}`]: 120.5,
     [`${Station.UNIVERSITY_STATION_PIAZZA}>>${Station.UNIVERSITY_SPORTS_CENTRE}`]: 120.5,
     [`${Station.WU_YEE_SUN_COLLEGE_DOWNWARD}>>${Station.NEW_ASIA_COLLEGE}`]: 120.5,
     [`${Station.WU_YEE_SUN_COLLEGE_DOWNWARD}>>${Station.UNIVERSITY_ADMIN_BUILDING}`]: 92,
-    [`${Station.WU_YEE_SUN_COLLEGE_UPWARD}>>${Station.SHAW_COLLEGE_UPWARD}`]: average(94, 96),
+    [`${Station.WU_YEE_SUN_COLLEGE_UPWARD}>>${Station.SHAW_COLLEGE_UPWARD}`]: MathExtra.average(94, 96),
     [`${Station.YIA}>>${Station.CAMPUS_CIRCUIT_EAST_UPWARD}`]: 120.5,
     [`${Station.YIA}>>${Station.UNIVERSITY_SPORTS_CENTRE}`]: 120.5,
 });
-
-/* -------------------------------------------------------------------------- */
-function average(...values: number[]): number {
-    return values.reduce((sum, value) => sum + value, 0) / values.length;
-};
