@@ -49,7 +49,7 @@ export function JourneyPlanner({ fromTo, setFromTo }: JourneyPlannerProps) {
                 <MaterialCommunityIcons
                     name="arrow-down-thin"
                     size={28}
-                    color={ThemeColours.lowContrast}
+                    color={ThemeColours.background}
                     style={{
                         zIndex: 1,
                         position: 'absolute',
