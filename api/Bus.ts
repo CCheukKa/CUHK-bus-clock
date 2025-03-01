@@ -8,8 +8,7 @@ import { BusRoute, busRouteInfos, busStationTimings, Region, Station, stationReg
 //! update data structure to use a matrix?
 
 export type EtaInfo = {
-    station: Station,
-    route: BusRoute,
+    journey: Journey,
     etaTime: Date,
 }
 export type LocationNullable = Station | Region | null;
@@ -22,7 +21,7 @@ function isRegion(x: Exclude<LocationNullable, null>): x is Region {
     return Object.values(Region).includes(x as Region);
 }
 
-export function getETAs({ from, to }: FromTo, currentTime: Date, pastMinutes: number, futureMinutes: number): EtaInfo[] {
+export function getEtaInfos({ from, to }: FromTo, currentTime: Date, pastMinutes: number, futureMinutes: number): EtaInfo[] {
     if (!from || !to) { return []; }
 
     const pastTimeLimit = new Date(currentTime.getTime() - pastMinutes * 60000);
@@ -31,7 +30,7 @@ export function getETAs({ from, to }: FromTo, currentTime: Date, pastMinutes: nu
     const fromStations = isRegion(from) ? stationRegions[from] : [from];
     const toStations = isRegion(to) ? stationRegions[to] : [to];
 
-    const etas: EtaInfo[] = [];
+    const etaInfos: EtaInfo[] = [];
     const journeys: Journey[] = [];
     fromStations.forEach(fromStation => {
         toStations.forEach(toStation => {
@@ -50,9 +49,8 @@ export function getETAs({ from, to }: FromTo, currentTime: Date, pastMinutes: nu
     });
 
     filteredJourneys.forEach(filteredJourney => {
-        etas.push(...getStationRouteETA(
-            busRouteInfos[filteredJourney.route].stations[filteredJourney.fromIndex],
-            filteredJourney.route,
+        etaInfos.push(...getStationRouteETA(
+            filteredJourney,
             currentTime,
             pastTimeLimit,
             futureTimeLimit)
@@ -60,7 +58,7 @@ export function getETAs({ from, to }: FromTo, currentTime: Date, pastMinutes: nu
         );
     });
 
-    return etas;
+    return etaInfos;
     /* -------------------------------------------------------------------------- */
 
     function scoredJourney(journey: Journey): number {
@@ -71,7 +69,13 @@ export function getETAs({ from, to }: FromTo, currentTime: Date, pastMinutes: nu
     }
 }
 
-export type Journey = { route: BusRoute, fromIndex: number, toIndex: number };
+export type Journey = {
+    route: BusRoute,
+    fromStation: Station,
+    fromIndex: number,
+    toStation: Station,
+    toIndex: number,
+};
 function findJourney(fromStation: Station, toStation: Station): Journey[] {
     const journeys: Journey[] = [];
     Object.entries(busRouteInfos).forEach(([route, routeInfo]) => {
@@ -80,21 +84,23 @@ function findJourney(fromStation: Station, toStation: Station): Journey[] {
         const toIndex = routeInfo.stations.findIndex(s => s === toStation);
         if (toIndex == -1) { return; }
 
-        if (fromIndex < toIndex) { journeys.push({ route: route as BusRoute, fromIndex, toIndex }); }
+        if (fromIndex < toIndex) {
+            journeys.push({ route: route as BusRoute, fromIndex, toIndex, fromStation, toStation });
+        }
     });
     return journeys;
 }
 
-function getStationRouteETA(station: Station, route: BusRoute, currentTime: Date, pastTimeLimit: Date, futureTimeLimit: Date): EtaInfo[] | void {
-    const routeInfo = busRouteInfos[route];
+function getStationRouteETA(journey: Journey, currentTime: Date, pastTimeLimit: Date, futureTimeLimit: Date): EtaInfo[] | void {
+    const routeInfo = busRouteInfos[journey.route];
     if (!routeInfo) { return; }
     if (!routeInfo.days.includes(currentTime.getDay())) { return; }
-    if (!routeInfo.stations.find(s => s === station)) { return; }
+    if (!routeInfo.stations.find(s => s === journey.fromStation)) { return; }
     const routeStationTime = getRouteStationTime();
 
     const currentHour = currentTime.getHours();
 
-    const etas: EtaInfo[] = [];
+    const etaInfos: EtaInfo[] = [];
 
     routeInfo.minuteMarks.forEach(minuteMark => {
         const pastHourStartTime = new Date(currentTime);
@@ -109,14 +115,14 @@ function getStationRouteETA(station: Station, route: BusRoute, currentTime: Date
         const currentHourEtaTime = currentHourStartTime.add(0, 0, routeStationTime);
         const futureHourEtaTime = futureHourStartTime.add(0, 0, routeStationTime);
 
-        etas.push(
-            { station, route, etaTime: isWithinServiceHours(pastHourStartTime) ? pastHourEtaTime : new Date(Infinity) },
-            { station, route, etaTime: isWithinServiceHours(currentHourStartTime) ? currentHourEtaTime : new Date(Infinity) },
-            { station, route, etaTime: isWithinServiceHours(futureHourStartTime) ? futureHourEtaTime : new Date(Infinity) },
+        etaInfos.push(
+            { journey, etaTime: isWithinServiceHours(pastHourStartTime) ? pastHourEtaTime : new Date(Infinity) },
+            { journey, etaTime: isWithinServiceHours(currentHourStartTime) ? currentHourEtaTime : new Date(Infinity) },
+            { journey, etaTime: isWithinServiceHours(futureHourStartTime) ? futureHourEtaTime : new Date(Infinity) },
         );
     });
 
-    return etas.filter(eta => eta.etaTime >= pastTimeLimit && eta.etaTime <= futureTimeLimit);
+    return etaInfos.filter(eta => eta.etaTime >= pastTimeLimit && eta.etaTime <= futureTimeLimit);
 
     /* -------------------------------------------------------------------------- */
     function getRouteStationTime(): number {
@@ -124,8 +130,7 @@ function getStationRouteETA(station: Station, route: BusRoute, currentTime: Date
         const stations = routeInfo.stations;
 
         let stationTime = 0;
-        const stationIndex = stations.findIndex(s => s === station);
-        for (let i = 1; i < stationIndex; i++) {
+        for (let i = 1; i < journey.fromIndex; i++) {
             stationTime += busStationTimings[`${stations[i - 1]}>>${stations[i]}`]
                 ?? (() => { throw new Error(`Timing ${stations[i - 1]} -> ${stations[i]} not found!`) })();
         }

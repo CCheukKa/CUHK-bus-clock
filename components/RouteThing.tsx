@@ -1,17 +1,17 @@
 import { ClockThing, ClockThingType } from "@/components/ClockThing";
-import { FromTo, getETAs } from "@/api/Bus";
-import { BusRoute, busRouteInfos } from "@/constants/BusData";
+import { EtaInfo } from "@/api/Bus";
+import { busRouteInfos } from "@/constants/BusData";
 import { Colour, MathExtra } from "@/api/Helper";
 import { ThemeColours } from "@/constants/ThemeColours";
 
 type RouteThingProps = {
-    route: BusRoute;
+    etaInfo: EtaInfo;
     currentTime: Date;
-    etaTime: Date;
 };
 
-export function RouteThing({ route, currentTime, etaTime }: RouteThingProps) {
-    const routeColour = busRouteInfos[route].routeColour;
+export function RouteThing({ etaInfo, currentTime }: RouteThingProps) {
+    const routeColour = busRouteInfos[etaInfo.journey.route].routeColour;
+    const etaTime = etaInfo.etaTime;
     const angle = etaTime.getMinutes() * 6 + etaTime.getSeconds() / 10;
     const eta = etaTime.getTime() - currentTime.getTime();
     const etaMinutes = Math.floor(Math.abs(eta) / 60000);
@@ -53,7 +53,7 @@ export function RouteThing({ route, currentTime, etaTime }: RouteThingProps) {
                     scale: routeBubbleScale,
                 }}
             >
-                {route}
+                {etaInfo.journey.route}
             </ClockThing>
             <ClockThing
                 degrees={angle} distance={routeEtaCountdownDistance}
@@ -66,18 +66,16 @@ export function RouteThing({ route, currentTime, etaTime }: RouteThingProps) {
     );
 }
 
-export function getRouteThings(currentTime: Date, fromTo: FromTo) {
-    const etas = getETAs(fromTo, currentTime, 10, 30);
-    if (etas.length === 0) {
+export function getRouteThings(etaInfos: EtaInfo[], currentTime: Date) {
+    if (etaInfos.length === 0) {
         // TODO: add a "no buses" message
         return null;
     }
-    return etas.map(etaInfo => (
+    return etaInfos.map(etaInfo => (
         <RouteThing
-            route={etaInfo.route}
+            etaInfo={etaInfo}
             currentTime={currentTime}
-            etaTime={etaInfo.etaTime}
-            key={`${etaInfo.route}-${etaInfo.etaTime.getTime()}`}
+            key={`${etaInfo.journey.route}-${etaInfo.etaTime.getTime()}`}
         />
     ));
 }

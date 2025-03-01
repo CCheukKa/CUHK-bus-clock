@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef, useMemo, useCallback } from 'react';
-import { Pressable, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Pressable, StyleSheet, TouchableOpacity, View } from 'react-native';
 
 import { ThemedText } from '@/components/ThemedText';
 import { ClockFace } from '@/components/ClockFace';
@@ -7,9 +7,10 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { FontAwesome6 } from '@expo/vector-icons';
 import DateTimePicker, { DateTimePickerEvent } from '@react-native-community/datetimepicker';
 import { JourneyPlanner } from '@/components/JourneyPlanner';
-import { FromTo } from '@/api/Bus';
+import { FromTo, getEtaInfos } from '@/api/Bus';
 import { Region } from '@/constants/BusData';
 import { ThemeColours } from '@/constants/ThemeColours';
+import { DetailedEtaInfo } from '@/components/DetailedEtaInfo';
 
 const weekDays = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 
@@ -67,18 +68,36 @@ export default function ClockScreen() {
     }, []);
     //
     const [fromTo, setFromTo] = useState<FromTo>({ from: Region.MTR, to: Region.MAIN_CAMPUS });
+    const etaInfos = useMemo(() =>
+        getEtaInfos(fromTo, logicTime, 10, 30),
+        [
+            fromTo,
+            logicTime.add(0, 0, 0, -logicTime.getMilliseconds()).getTime(),
+        ]
+    );
     //
     const dateTimeTextStyle = useMemo(() => !useRealTime ? { color: ThemeColours.accent } : null, [useRealTime]);
     const clockView = useMemo(() =>
         <ClockFace
             time={logicTime}
-            fromTo={fromTo}
-        />,
-        [
-            logicTime.add(0, 0, 0, -logicTime.getMilliseconds()).getTime(),
-            fromTo,
-        ]
+            etaInfos={etaInfos}
+        />, [etaInfos]
     );
+    //
+    const journeyPlanner = useMemo(() =>
+        <JourneyPlanner
+            fromTo={fromTo}
+            setFromTo={setFromTo}
+        />, [fromTo]
+    );
+    //
+    const detailedEtaInfo = useMemo(() =>
+        <DetailedEtaInfo
+            time={logicTime}
+            etaInfos={etaInfos}
+        />, [etaInfos]
+    );
+    //
     return (
         <SafeAreaView style={styles.safeAreaView}>
             <View style={styles.headerContainer}>
@@ -128,7 +147,8 @@ export default function ClockScreen() {
                 }
             </View>
             {clockView}
-            <JourneyPlanner fromTo={fromTo} setFromTo={setFromTo} />
+            {journeyPlanner}
+            {detailedEtaInfo}
         </SafeAreaView>
     );
 }

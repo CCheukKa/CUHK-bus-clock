@@ -4,15 +4,15 @@ import { ClockThing, ClockThingType } from '@/components/ClockThing';
 import { ClockHand } from '@/components/ClockHand';
 import { ClockTick, ClockTickType } from '@/components/ClockTick';
 import { getRouteThings } from '@/components/RouteThing';
-import { FromTo } from '@/api/Bus';
+import { EtaInfo } from '@/api/Bus';
 import { ThemeColours } from '@/constants/ThemeColours';
 
 type ClockViewProps = {
     time: Date;
-    fromTo: FromTo;
+    etaInfos: EtaInfo[];
 };
 
-export function ClockFace({ time, fromTo }: ClockViewProps) {
+export function ClockFace({ time, etaInfos }: ClockViewProps) {
     const clockNumbers = useMemo(() => {
         return Array.from({ length: 12 }, (_, i) => i + 1).map(i => {
             return (
@@ -31,7 +31,7 @@ export function ClockFace({ time, fromTo }: ClockViewProps) {
         });
     }, []);
 
-    const routeThings = getRouteThings(time, fromTo);
+    const routeThings = getRouteThings(etaInfos, time);
 
     return (
         <View style={styles.clockContainer}>
