@@ -16,7 +16,7 @@ export function RouteThing({ route, currentTime, etaTime }: RouteThingProps) {
     const eta = etaTime.getTime() - currentTime.getTime();
     const etaMinutes = Math.floor(Math.abs(eta) / 60000);
     const etaSeconds = Math.floor(Math.abs(eta) % 60000 / 1000);
-    const opacity = eta > 0 ? 1 : 0.6;
+    const opacity = eta > 0 ? 1 : 0.75;
     const contrastColour = Colour.getBrightness(routeColour) > 150 ? ThemeColours.black : ThemeColours.white;
     const routeBubbleScale = MathExtra.interpolateBetweenPins(eta / 60000, [
         { pin: -5, value: 0.6 },
@@ -40,9 +40,8 @@ export function RouteThing({ route, currentTime, etaTime }: RouteThingProps) {
                 degrees={angle} distance={1.2}
                 type={ClockThingType.ROUTE_ANNOTATION_LINE}
                 style={{
-                    backgroundColour: routeColour,
-                    opacity,
-                    height: routeAnnotationLineLength
+                    backgroundColour: Colour.mixRGBA(ThemeColours.background, routeColour, opacity),
+                    height: routeAnnotationLineLength,
                 }}
             />
             <ClockThing
@@ -59,7 +58,7 @@ export function RouteThing({ route, currentTime, etaTime }: RouteThingProps) {
             <ClockThing
                 degrees={angle} distance={routeEtaCountdownDistance}
                 type={ClockThingType.ROUTE_ETA_COUNTDOWN}
-                style={{ textColour: routeColour, opacity }}
+                style={{ textColour: Colour.mixRGBA(ThemeColours.background, routeColour, opacity) }}
             >
                 {eta < 0 ? '-' : null}{etaMinutes}:{etaSeconds.toString().padStart(2, '0')}
             </ClockThing>

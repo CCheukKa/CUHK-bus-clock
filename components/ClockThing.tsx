@@ -30,7 +30,6 @@ type ClockThingProps =
             height?: number;
             backgroundColour?: string;
             textColour?: string;
-            opacity?: number;
             scale?: number;
         };
     } & (
@@ -68,8 +67,12 @@ export function ClockThing({ type, style, x, y, degrees, distance, children }: C
                         styles.routeNumberContainer,
                         {
                             backgroundColor: style?.backgroundColour,
-                            opacity: style?.opacity,
                             transform: [{ scale: style?.scale ?? 1 }],
+                            shadowColor: ThemeColours.highContrast,
+                            shadowOffset: { width: 0, height: 0 },
+                            shadowOpacity: 0.5,
+                            shadowRadius: 10,
+                            elevation: 1,
                         }
                     ]}>
                         <Text style={[
@@ -86,7 +89,6 @@ export function ClockThing({ type, style, x, y, degrees, distance, children }: C
                     {
                         height: style?.height,
                         backgroundColor: style?.backgroundColour,
-                        opacity: style?.opacity,
                         transform: [
                             { rotate: `${degrees}deg` },
                             { translateY: '50%' }
@@ -98,7 +100,10 @@ export function ClockThing({ type, style, x, y, degrees, distance, children }: C
                     styles.routeEtaCountdown,
                     {
                         color: style?.textColour,
-                        opacity: style?.opacity
+                        textShadowColor: ThemeColours.dimContrast,
+                        textShadowOffset: { width: 0, height: 0 },
+                        shadowOpacity: 0.5,
+                        textShadowRadius: 6,
                     }
                 ]}>{children}</Text>);
             default:
