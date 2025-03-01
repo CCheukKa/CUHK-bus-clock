@@ -29,10 +29,13 @@ export function LocationPicker({ label, data, location, setLocation }: LocationP
         const dropdownItem = item as DropdownItem;
         const isRegion = dropdownItem.type === 'region';
         return (
-            <View style={[
-                styles.dropdownItem,
-                selected ? { backgroundColor: ThemeColours.highContrast } : null
-            ]}>
+            <View
+                style={[
+                    styles.dropdownItem,
+                    selected ? { backgroundColor: ThemeColours.highContrast } : null
+                ]}
+                key={dropdownItem.value}
+            >
                 {isRegion
                     ? <MaterialCommunityIcons
                         name="map-marker-radius"
