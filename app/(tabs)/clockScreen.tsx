@@ -73,7 +73,11 @@ export default function ClockScreen() {
         <ClockFace
             time={logicTime}
             fromTo={fromTo}
-        />, [logicTime.add(0, 0, 0, -logicTime.getMilliseconds()).getTime()]
+        />,
+        [
+            logicTime.add(0, 0, 0, -logicTime.getMilliseconds()).getTime(),
+            fromTo,
+        ]
     );
     return (
         <SafeAreaView style={styles.safeAreaView}>
