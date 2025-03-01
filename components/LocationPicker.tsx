@@ -1,7 +1,7 @@
 import { Region, Station } from "@/constants/BusData";
 import { MaterialCommunityIcons, MaterialIcons } from "@expo/vector-icons";
 import { useCallback, useState } from "react";
-import { StyleSheet, Text, View, ViewProps } from "react-native";
+import { StyleSheet, Text, View } from "react-native";
 import { Dropdown } from "react-native-element-dropdown";
 
 export type DropdownItem = {
@@ -18,9 +18,9 @@ type LocationPickerProps = {
     data: DropdownItem[];
     location: Station | Region | null;
     setLocation: (location: Station | Region | null) => void;
-} & ViewProps;
+};
 
-export function LocationPicker({ label, data, location, setLocation, ...otherProps }: LocationPickerProps) {
+export function LocationPicker({ label, data, location, setLocation }: LocationPickerProps) {
     const [dropdownExpanded, setDropdownExpanded] = useState(false);
     const dropdownChange = useCallback((item: DropdownItem) => {
         console.log(item);

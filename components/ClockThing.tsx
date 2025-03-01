@@ -1,4 +1,5 @@
-import { StyleSheet, Text, View, ViewProps } from 'react-native';
+import { ReactNode } from 'react';
+import { StyleSheet, Text, View } from 'react-native';
 
 export enum ClockThingType {
     CLOCK_CENTRE_DOT = 'clockCentreDot',
@@ -34,11 +35,12 @@ export type ClockThingProps =
     } & (
         { x: number; y: number; degrees?: never; distance?: never } |
         { degrees: number; distance: number; x?: never; y?: never }
-    ) & ViewProps;
+    ) & {
+        children?: ReactNode;
+    };
 
 
-export function ClockThing({ type, style, x, y, degrees, distance, ...otherProps }: ClockThingProps) {
-
+export function ClockThing({ type, style, x, y, degrees, distance, children }: ClockThingProps) {
     let left: number, top: number;
 
     if (degrees !== undefined && distance !== undefined) {
@@ -54,7 +56,6 @@ export function ClockThing({ type, style, x, y, degrees, distance, ...otherProps
     }
 
     const contentWithin = (() => {
-        const children = otherProps.children;
         switch (type) {
             case ClockThingType.CLOCK_CENTRE_DOT:
                 return (<View style={styles.clockCentreDot} />);
@@ -108,7 +109,7 @@ export function ClockThing({ type, style, x, y, degrees, distance, ...otherProps
         <View style={[
             styles.clockThing,
             { left: `${left}%`, top: `${top}%` }
-        ]} {...otherProps}>
+        ]}>
             {contentWithin}
         </View>
     );

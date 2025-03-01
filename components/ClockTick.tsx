@@ -1,4 +1,4 @@
-import { StyleSheet, View, ViewProps } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 
 export enum ClockTickType {
     MAJOR = 'major',
@@ -8,9 +8,9 @@ export enum ClockTickType {
 export type ClockTickProps = {
     type: ClockTickType;
     degrees: number;
-} & ViewProps;
+};
 
-export function ClockTick({ type, degrees, ...otherProps }: ClockTickProps) {
+export function ClockTick({ type, degrees }: ClockTickProps) {
     const radians = degrees * Math.PI / 180;
     return (
         <View style={[
@@ -24,7 +24,7 @@ export function ClockTick({ type, degrees, ...otherProps }: ClockTickProps) {
                     { translateY: '-100%' },
                 ],
             }],
-        ]} {...otherProps} />
+        ]} />
     );
 }
 

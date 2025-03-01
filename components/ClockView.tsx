@@ -1,4 +1,4 @@
-import { StyleSheet, View, type ViewProps } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import { useMemo } from 'react';
 import { ClockThing, ClockThingType } from '@/components/ClockThing';
 import { ClockHand } from '@/components/ClockHand';
@@ -9,9 +9,9 @@ import { FromTo } from '@/api/Bus';
 export type ClockViewProps = {
     time: Date;
     fromTo: FromTo;
-} & ViewProps;
+};
 
-export function ClockView({ time, fromTo, ...otherProps }: ClockViewProps) {
+export function ClockView({ time, fromTo }: ClockViewProps) {
     const clockNumbers = useMemo(() => {
         return Array.from({ length: 12 }, (_, i) => i + 1).map(i => {
             return (
@@ -34,9 +34,7 @@ export function ClockView({ time, fromTo, ...otherProps }: ClockViewProps) {
 
     return (
         <View style={styles.clockContainer}>
-            <View style={styles.clockFace}
-                {...otherProps}
-            >
+            <View style={styles.clockFace}>
                 {clockNumbers}
                 {clockTicks}
                 {routeThings}

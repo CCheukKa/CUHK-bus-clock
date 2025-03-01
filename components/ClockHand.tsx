@@ -1,11 +1,11 @@
-import { StyleSheet, View, ViewProps } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 
 export type ClockHandProps = {
     type: 'hour' | 'minute';
     degrees: number;
-} & ViewProps;
+};
 
-export function ClockHand({ type, degrees, ...otherProps }: ClockHandProps) {
+export function ClockHand({ type, degrees }: ClockHandProps) {
     const width = (() => {
         switch (type) {
             case 'hour': return 4;
@@ -40,7 +40,7 @@ export function ClockHand({ type, degrees, ...otherProps }: ClockHandProps) {
                     { translateX: '-50%' },
                 ],
             }],
-        ]} {...otherProps} />
+        ]} />
     );
 }
 
