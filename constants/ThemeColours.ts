@@ -1,5 +1,5 @@
 // const theme = useColourScheme() ?? 'light';
-const theme = 'light';
+const theme = 'dark';
 
 export const ThemeColours = {
     light: {
