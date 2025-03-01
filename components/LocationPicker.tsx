@@ -112,6 +112,8 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         gap: 6,
+        backgroundColor: ThemeColours.background,
+        paddingRight: 6,
     },
     dropdownLabelText: {
         color: ThemeColours.highContrast,
