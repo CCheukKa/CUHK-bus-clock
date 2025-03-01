@@ -22,8 +22,8 @@ export function ClockHand({ type, degrees }: ClockHandProps) {
     })();
     const backgroundColor = (() => {
         switch (type) {
-            case 'hour': return '#00000060';
-            case 'minute': return '#000000';
+            case 'hour': return '#ffffff60';
+            case 'minute': return '#ffffff';
             default: return '0%';
         }
     })();

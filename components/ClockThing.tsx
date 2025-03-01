@@ -117,7 +117,7 @@ export function ClockThing({ type, style, x, y, degrees, distance, children }: C
 
 const styles = StyleSheet.create({
     clockThing: {
-        color: '#000000',
+        color: '#ffffff',
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
@@ -133,12 +133,12 @@ const styles = StyleSheet.create({
         width: '30%',
         aspectRatio: 1,
         borderRadius: '50%',
-        backgroundColor: '#ffffff',
-        borderColor: '#000000',
+        backgroundColor: '#141414',
+        borderColor: '#ffffff',
         borderWidth: 2.5,
     },
     clockNumber: {
-        color: '#000000',
+        color: '#ffffffa0',
         fontSize: 20,
         fontWeight: 'bold',
     },

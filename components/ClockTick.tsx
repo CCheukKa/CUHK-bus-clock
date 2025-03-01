@@ -32,7 +32,7 @@ const styles = StyleSheet.create({
     clockTick: {
         display: 'flex',
         position: 'absolute',
-        backgroundColor: '#000000',
+        backgroundColor: '#ffffff',
         transformOrigin: '0 0',
     },
     clockTickMajor: {
