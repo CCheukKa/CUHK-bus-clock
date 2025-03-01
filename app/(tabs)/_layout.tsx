@@ -13,7 +13,7 @@ export default function TabLayout() {
 
     return (
         <Tabs
-            initialRouteName='clock' //? This doesn't seem to work
+            initialRouteName='clockScreen' //? This doesn't seem to work
             screenOptions={{
                 tabBarActiveTintColor: Colours[colourScheme ?? 'light'].tint,
                 headerShown: false,
@@ -37,7 +37,7 @@ export default function TabLayout() {
             />
 
             <Tabs.Screen
-                name="info"
+                name="infoScreen"
                 options={{
                     title: 'Info',
                     tabBarIcon: ({ color: colour }) => (
@@ -46,7 +46,7 @@ export default function TabLayout() {
                 }}
             />
             <Tabs.Screen
-                name="clock"
+                name="clockScreen"
                 options={{
                     title: 'Clock',
                     tabBarIcon: ({ color: colour }) => (
@@ -55,7 +55,7 @@ export default function TabLayout() {
                 }}
             />
             <Tabs.Screen
-                name="settings"
+                name="settingsScreen"
                 options={{
                     title: 'Settings',
                     tabBarIcon: ({ color: colour }) => (

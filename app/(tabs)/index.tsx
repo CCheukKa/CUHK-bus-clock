@@ -8,7 +8,7 @@ export default function Index() {
 
     useEffect(() => {
         const timer = setTimeout(() => {
-            router.replace('/clock');
+            router.replace('/clockScreen');
         }, 0);
 
         return () => clearTimeout(timer);
