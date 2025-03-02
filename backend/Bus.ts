@@ -4,9 +4,6 @@ import { BusRoute, busRouteInfos, busStationTimings, Region, Station, stationReg
 //! add support for public holidays
 //! scrape here?: https://www.gov.hk/en/about/abouthk/holiday/2025.htm
 
-//! TODO:
-//! update data structure to use a matrix?
-
 export type EtaInfo = {
     journey: Journey,
     etaTime: Date,
