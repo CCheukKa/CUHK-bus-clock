@@ -1,35 +1,83 @@
-import { useFonts } from 'expo-font';
-import { Stack } from 'expo-router';
-import * as SplashScreen from 'expo-splash-screen';
+import { Tabs } from 'expo-router';
+import { HapticTab } from '@/components/HapticTab';
+import { MaterialIcons } from '@expo/vector-icons';
+import { ThemeColours } from '@/constants/ThemeColours';
+import { ComponentProps, useState } from 'react';
+import { StyleSheet } from 'react-native';
+import { getDefaultSettings, Settings } from '@/backend/Settings';
+import { SettingsProvider } from '@/context/SettingsContext';
 import { StatusBar } from 'expo-status-bar';
-import { useEffect } from 'react';
-import 'react-native-reanimated';
-
-// Prevent the splash screen from auto-hiding before asset loading is complete.
-SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
-    const [loaded] = useFonts({
-        SpaceMono: require('../assets/fonts/SpaceMono-Regular.ttf'),
-    });
+    const [settings, setSettings] = useState<Settings>(getDefaultSettings());
 
-    useEffect(() => {
-        if (loaded) {
-            SplashScreen.hideAsync();
-        }
-    }, [loaded]);
+    //
+    const inactiveColour = ThemeColours.lowContrast;
+    const activeColour = ThemeColours.highContrast;
 
-    if (!loaded) {
-        return null;
-    }
+    const tabBarIcon = (name: ComponentProps<typeof MaterialIcons>['name'], focused: boolean) => {
+        return <MaterialIcons
+            name={name}
+            size={28}
+            color={focused ? activeColour : inactiveColour}
+        />;
+    };
 
     return (
         <>
-            <Stack>
-                <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-                <Stack.Screen name="+not-found" />
-            </Stack>
             <StatusBar style="auto" />
+            <SettingsProvider>
+                <Tabs
+                    screenOptions={{
+                        headerShown: false,
+                        tabBarButton: HapticTab, //TODO: implement one that looks better
+                        tabBarActiveTintColor: activeColour,
+                        tabBarInactiveTintColor: inactiveColour,
+                        tabBarActiveBackgroundColor: ThemeColours.background,
+                        tabBarInactiveBackgroundColor: ThemeColours.background,
+                        tabBarLabelStyle: {
+                            fontWeight: 'bold',
+                        },
+                    }}>
+
+                    <Tabs.Screen
+                        name="index"
+                        options={{
+                            href: null,
+                        }}
+                    />
+
+                    <Tabs.Screen
+                        name="infoScreen"
+                        options={{
+                            title: 'Info',
+                            tabBarIcon: ({ focused }) => tabBarIcon('info-outline', focused),
+                        }}
+                    />
+                    <Tabs.Screen
+                        name="clockScreen"
+                        options={{
+                            title: 'Clock',
+                            tabBarIcon: ({ focused }) => tabBarIcon('access-time', focused),
+                        }}
+                    />
+                    <Tabs.Screen
+                        name="settingsScreen"
+                        options={{
+                            title: 'Settings',
+                            tabBarIcon: ({ focused }) => tabBarIcon('settings', focused),
+                        }}
+                    />
+                </Tabs>
+            </SettingsProvider>
         </>
     );
 }
+
+const styles = StyleSheet.create({
+    iconContainer: {
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+});
