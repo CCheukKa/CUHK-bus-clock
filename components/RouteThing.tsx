@@ -24,20 +24,21 @@ export function RouteThing({ etaInfo, currentTime }: RouteThingProps) {
         { pin: 15, value: 0.6 },
     ]);
     const routeAnnotationLineLength = MathExtra.interpolateBetweenPins(eta / 60000, [
-        { pin: -5, value: 28 * 0.6 },
-        { pin: 0, value: 28 },
-        { pin: 15, value: 28 * 0.6 },
+        { pin: -5, value: 75 },
+        { pin: 0, value: 160 },
+        { pin: 15, value: 75 },
     ]);
+    const routeBubbleDistance = 1.3;
     const routeEtaCountdownDistance = MathExtra.interpolateBetweenPins(eta / 60000, [
-        { pin: -5, value: 1.46 },
-        { pin: 0, value: 1.5 },
-        { pin: 15, value: 1.46 },
+        { pin: -5, value: routeBubbleDistance + 0.32 },
+        { pin: 0, value: routeBubbleDistance + 0.38 },
+        { pin: 15, value: routeBubbleDistance + 0.32 },
     ]);
 
     return (
         <>
             <ClockThing
-                degrees={angle} distance={1.2}
+                degrees={angle} distance={routeBubbleDistance}
                 type={ClockThingType.ROUTE_ANNOTATION_LINE}
                 style={{
                     backgroundColour: Colour.mixRGBA(ThemeColours.background, routeColour, opacity),
@@ -45,7 +46,7 @@ export function RouteThing({ etaInfo, currentTime }: RouteThingProps) {
                 }}
             />
             <ClockThing
-                degrees={angle} distance={1.2}
+                degrees={angle} distance={routeBubbleDistance}
                 type={ClockThingType.ROUTE_NUMBER_BUBBLE}
                 style={{
                     backgroundColour: Colour.mixRGBA(ThemeColours.background, routeColour, opacity),

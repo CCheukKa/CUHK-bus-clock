@@ -87,7 +87,7 @@ export function ClockThing({ type, style, x, y, degrees, distance, children }: C
                 return (<View style={[
                     styles.routeAnnotationLine,
                     {
-                        height: style?.height,
+                        height: style?.height ? `${style.height}%` : undefined,
                         backgroundColor: style?.backgroundColour,
                         transform: [
                             { rotate: `${degrees}deg` },
@@ -143,9 +143,12 @@ const styles = StyleSheet.create({
         borderWidth: 2.5,
     },
     clockNumber: {
+        width: 30,
+        textAlign: 'center',
         color: ThemeColours.halfContrast,
         fontSize: 20,
         fontWeight: 'bold',
+        transform: [{ translateY: -3 }],
     },
     routeAnnotationLine: {
         width: 5,
@@ -156,10 +159,10 @@ const styles = StyleSheet.create({
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
-        width: 30,
+        width: 32,
     },
     routeNumber: {
-        fontSize: 16,
+        fontSize: 20,
         fontWeight: 'bold',
         textAlign: 'center',
     },

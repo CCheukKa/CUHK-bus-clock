@@ -17,7 +17,7 @@ export function ClockHand({ type, degrees }: ClockHandProps) {
     const height = (() => {
         switch (type) {
             case 'hour': return '28%';
-            case 'minute': return '48%';
+            case 'minute': return '46%';
             default: return '0%';
         }
     })();

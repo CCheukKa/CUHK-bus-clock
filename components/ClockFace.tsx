@@ -16,7 +16,7 @@ export function ClockFace({ time, etaInfos }: ClockViewProps) {
     const clockNumbers = useMemo(() => {
         return Array.from({ length: 12 }, (_, i) => i + 1).map(i => {
             return (
-                <ClockThing type={ClockThingType.CLOCK_NUMBER} key={i} degrees={360 / 12 * i} distance={0.8}>
+                <ClockThing type={ClockThingType.CLOCK_NUMBER} key={i} degrees={360 / 12 * i} distance={0.76}>
                     {i}
                 </ClockThing>
             );
@@ -57,7 +57,7 @@ const styles = StyleSheet.create({
     },
     clockFace: {
         display: 'flex',
-        width: '60%',
+        width: '50%',
         aspectRatio: 1,
         backgroundColor: ThemeColours.background,
         borderRadius: '50%',

@@ -13,6 +13,8 @@
 ### UI
 - Migrate to 'react-native-paper' ?
 - Change to use 'react-native-dropdown-picker' for dropdowns
+- Make ETA text distance adjust dynamically based on location
+- Make route bubbles avoid overlapping
 - Add past/future peeking indicators on clock face
 - Add more colour themes
 - Shrink clock face size
