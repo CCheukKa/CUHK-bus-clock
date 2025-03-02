@@ -2,16 +2,11 @@ import { Tabs } from 'expo-router';
 import { HapticTab } from '@/components/HapticTab';
 import { MaterialIcons } from '@expo/vector-icons';
 import { ThemeColours } from '@/constants/ThemeColours';
-import { ComponentProps, useState } from 'react';
-import { StyleSheet } from 'react-native';
-import { getDefaultSettings, Settings } from '@/backend/Settings';
+import { ComponentProps } from 'react';
 import { SettingsProvider } from '@/context/SettingsContext';
 import { StatusBar } from 'expo-status-bar';
 
 export default function RootLayout() {
-    const [settings, setSettings] = useState<Settings>(getDefaultSettings());
-
-    //
     const inactiveColour = ThemeColours.lowContrast;
     const activeColour = ThemeColours.highContrast;
 
@@ -73,11 +68,3 @@ export default function RootLayout() {
         </>
     );
 }
-
-const styles = StyleSheet.create({
-    iconContainer: {
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-    },
-});
