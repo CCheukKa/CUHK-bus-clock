@@ -114,8 +114,46 @@ declare global {
             seconds?: number,
             milliseconds?: number,
         ): Date;
+
+        /**
+         * Truncates the current date to the specified unit.
+         * Truncating to 'millisecond' is a null operation.
+         * 
+         * @param unit - The unit to truncate to (e.g., 'year', 'month', 'day', etc.).
+         * @returns The truncated Date object.
+         */
+        truncateTo(
+            unit: DateUnits,
+        ): Date;
     }
 }
 Date.prototype.add = function (this: Date, hours?, minutes?, seconds?, milliseconds?): Date {
     return new Date(this.getTime() + (hours ?? 0) * 3600000 + (minutes ?? 0) * 60000 + (seconds ?? 0) * 1000 + (milliseconds ?? 0));
 };
+type DateUnits = 'year' | 'month' | 'day' | 'hour' | 'minute' | 'second' | 'millisecond';
+Date.prototype.truncateTo = function (this: Date, unit: DateUnits): Date {
+    switch (unit) {
+        case 'year':
+            this.setMonth(0, 1);
+            break;
+        case 'month':
+            this.setDate(1);
+            break;
+        case 'day':
+            this.setHours(0, 0, 0, 0);
+            break;
+        case 'hour':
+            this.setMinutes(0, 0, 0);
+            break
+        case 'minute':
+            this.setSeconds(0, 0);
+            break;
+        case 'second':
+            this.setMilliseconds(0);
+            break;
+        case 'millisecond':
+            console.warn('Date.prototype.truncateTo("millisecond") is a null operation.');
+            break;
+    }
+    return this;
+}

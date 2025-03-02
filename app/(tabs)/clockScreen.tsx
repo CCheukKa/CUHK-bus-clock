@@ -72,7 +72,7 @@ export default function ClockScreen() {
         getEtaInfos(fromTo, logicTime, 10, 30),
         [
             fromTo,
-            logicTime.add(0, 0, 0, -logicTime.getMilliseconds()).getTime(),
+            logicTime.truncateTo('second')
         ]
     );
     //
