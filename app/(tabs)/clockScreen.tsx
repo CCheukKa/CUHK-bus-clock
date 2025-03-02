@@ -3,7 +3,6 @@ import { Pressable, StyleSheet, TouchableOpacity, View } from 'react-native';
 
 import { ThemedText } from '@/components/ThemedText';
 import { ClockFace } from '@/components/ClockFace';
-import { SafeAreaView } from 'react-native-safe-area-context';
 import { FontAwesome6 } from '@expo/vector-icons';
 import DateTimePicker, { DateTimePickerEvent } from '@react-native-community/datetimepicker';
 import { JourneyPlanner } from '@/components/JourneyPlanner';
@@ -11,6 +10,7 @@ import { FromTo, getEtaInfos } from '@/backend/Bus';
 import { Region } from '@/constants/BusData';
 import { ThemeColours } from '@/constants/ThemeColours';
 import { DetailedEtaInfo } from '@/components/DetailedEtaInfo';
+import { FullscreenView } from '@/components/FullscreenView';
 
 const weekDays = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 
@@ -99,7 +99,7 @@ export default function ClockScreen() {
     );
     //
     return (
-        <SafeAreaView style={styles.safeAreaView}>
+        <FullscreenView>
             <View style={styles.headerContainer}>
                 <View style={styles.dateTimeContainer}>
                     <TouchableOpacity onPress={() => { showDateTimePicker('date') }}>
@@ -149,18 +149,11 @@ export default function ClockScreen() {
             {clockView}
             {journeyPlanner}
             {detailedEtaInfo}
-        </SafeAreaView>
+        </FullscreenView>
     );
 }
 
 const styles = StyleSheet.create({
-    safeAreaView: {
-        flex: 1,
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: ThemeColours.background,
-    },
     headerContainer: {
         width: '90%',
     },
