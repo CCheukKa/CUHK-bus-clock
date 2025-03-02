@@ -1,7 +1,7 @@
 import { ClockThing, ClockThingType } from "@/components/ClockThing";
-import { EtaInfo } from "@/api/Bus";
+import { EtaInfo } from "@/backend/Bus";
 import { busRouteInfos } from "@/constants/BusData";
-import { Colour, MathExtra } from "@/api/Helper";
+import { Colour, MathExtra } from "@/backend/Helper";
 import { ThemeColours } from "@/constants/ThemeColours";
 
 type RouteThingProps = {

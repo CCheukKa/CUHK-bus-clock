@@ -1,4 +1,4 @@
-import { EtaInfo } from "@/api/Bus";
+import { EtaInfo } from "@/backend/Bus";
 import { StyleSheet, View } from "react-native";
 
 type DetailedEtaInfoProps = {

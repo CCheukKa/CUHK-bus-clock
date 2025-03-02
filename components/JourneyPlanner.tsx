@@ -1,7 +1,7 @@
 import { Region, Station, stationRegions } from "@/constants/BusData";
 import { DropdownItem, LocationPicker } from "@/components/LocationPicker";
 import { useEffect, useState } from "react";
-import { FromTo, LocationNullable } from "@/api/Bus";
+import { FromTo, LocationNullable } from "@/backend/Bus";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { View } from "react-native";
 import { ThemeColours } from "@/constants/ThemeColours";

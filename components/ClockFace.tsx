@@ -4,7 +4,7 @@ import { ClockThing, ClockThingType } from '@/components/ClockThing';
 import { ClockHand } from '@/components/ClockHand';
 import { ClockTick, ClockTickType } from '@/components/ClockTick';
 import { getRouteThings } from '@/components/RouteThing';
-import { EtaInfo } from '@/api/Bus';
+import { EtaInfo } from '@/backend/Bus';
 import { ThemeColours } from '@/constants/ThemeColours';
 
 type ClockViewProps = {

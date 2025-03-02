@@ -7,7 +7,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { FontAwesome6 } from '@expo/vector-icons';
 import DateTimePicker, { DateTimePickerEvent } from '@react-native-community/datetimepicker';
 import { JourneyPlanner } from '@/components/JourneyPlanner';
-import { FromTo, getEtaInfos } from '@/api/Bus';
+import { FromTo, getEtaInfos } from '@/backend/Bus';
 import { Region } from '@/constants/BusData';
 import { ThemeColours } from '@/constants/ThemeColours';
 import { DetailedEtaInfo } from '@/components/DetailedEtaInfo';
