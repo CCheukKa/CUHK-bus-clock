@@ -10,11 +10,13 @@ import { FromTo, getEtaInfos } from '@/backend/Bus';
 import { Region } from '@/constants/BusData';
 import { ThemeColours } from '@/constants/ThemeColours';
 import { DetailedEtaInfo } from '@/components/DetailedEtaInfo';
+import { useSettings } from '@/context/SettingsContext';
 import { FullscreenView } from '@/components/FullscreenView';
 
 const weekDays = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 
 export default function ClockScreen() {
+    const { settings } = useSettings();
 
     const [realTime, setRealTime] = useState(new Date());
     const [customTime, setCustomTime] = useState(new Date());
@@ -69,7 +71,7 @@ export default function ClockScreen() {
     //
     const [fromTo, setFromTo] = useState<FromTo>({ from: Region.MTR, to: Region.MAIN_CAMPUS });
     const etaInfos = useMemo(() =>
-        getEtaInfos(fromTo, logicTime, 10, 30),
+        getEtaInfos(fromTo, logicTime, settings.pastPeekMinutes, settings.futurePeekMinutes),
         [
             fromTo,
             logicTime.truncateTo('second')

@@ -157,3 +157,28 @@ Date.prototype.truncateTo = function (this: Date, unit: DateUnits): Date {
     }
     return this;
 }
+
+/* -------------------------------------------------------------------------- */
+/**
+ * Extends the global string interface with additional methods.
+ */
+declare global {
+    interface String {
+        /**
+         * Extends the String interface to include a method that converts the string to title case.
+         * 
+         * @returns {string} A new string where the first letter of each word is capitalized.
+         * 
+         * @example
+         * ```typescript
+         * const string = 'camelCaseString'.toTitleString();
+         * console.log(string); // Output will be 'Camel Case String'
+         * ```
+         */
+        toTitleString(): string;
+    }
+}
+String.prototype.toTitleString = function (this: string): string {
+    const s = this.replace(/([A-Z])/g, ' $1').trim();
+    return s.charAt(0).toUpperCase() + s.slice(1);
+}

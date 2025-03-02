@@ -18,11 +18,11 @@ function isRegion(x: Exclude<LocationNullable, null>): x is Region {
     return Object.values(Region).includes(x as Region);
 }
 
-export function getEtaInfos({ from, to }: FromTo, currentTime: Date, pastMinutes: number, futureMinutes: number): EtaInfo[] {
+export function getEtaInfos({ from, to }: FromTo, currentTime: Date, pastPeekMinutes: number, futurePeekMinutes: number): EtaInfo[] {
     if (!from || !to) { return []; }
 
-    const pastTimeLimit = new Date(currentTime.getTime() - pastMinutes * 60000);
-    const futureTimeLimit = new Date(currentTime.getTime() + futureMinutes * 60000);
+    const pastPeekTimestamp = new Date(currentTime.getTime() - pastPeekMinutes * 60000);
+    const futurePeekTimestamp = new Date(currentTime.getTime() + futurePeekMinutes * 60000);
 
     const fromStations = isRegion(from) ? stationRegions[from] : [from];
     const toStations = isRegion(to) ? stationRegions[to] : [to];
@@ -49,8 +49,8 @@ export function getEtaInfos({ from, to }: FromTo, currentTime: Date, pastMinutes
         etaInfos.push(...getStationRouteETA(
             filteredJourney,
             currentTime,
-            pastTimeLimit,
-            futureTimeLimit)
+            pastPeekTimestamp,
+            futurePeekTimestamp)
             ?? []
         );
     });
@@ -88,7 +88,7 @@ function findJourney(fromStation: Station, toStation: Station): Journey[] {
     return journeys;
 }
 
-function getStationRouteETA(journey: Journey, currentTime: Date, pastTimeLimit: Date, futureTimeLimit: Date): EtaInfo[] | void {
+function getStationRouteETA(journey: Journey, currentTime: Date, pastPeekTimestamp: Date, futurePeekTimestamp: Date): EtaInfo[] | void {
     const routeInfo = busRouteInfos[journey.route];
     if (!routeInfo) { return; }
     if (!routeInfo.days.includes(currentTime.getDay())) { return; }
@@ -119,7 +119,7 @@ function getStationRouteETA(journey: Journey, currentTime: Date, pastTimeLimit: 
         );
     });
 
-    return etaInfos.filter(eta => eta.etaTime >= pastTimeLimit && eta.etaTime <= futureTimeLimit);
+    return etaInfos.filter(eta => eta.etaTime >= pastPeekTimestamp && eta.etaTime <= futurePeekTimestamp);
 
     /* -------------------------------------------------------------------------- */
     function getRouteStationTime(): number {
