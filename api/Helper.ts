@@ -1,10 +1,28 @@
+/**
+ * A utility class for colour-related operations.
+ */
 export class Colour {
+    /**
+     * Calculates the luminance of a given hex colour.
+     * 
+     * @param hex - The hex colour code in the format `#RRGGBB`.
+     * @returns The luminance value of the colour.
+     */
     public static getLuminance(hex: string): number {
         const r = parseInt(hex.slice(1, 3), 16);
         const g = parseInt(hex.slice(3, 5), 16);
         const b = parseInt(hex.slice(5, 7), 16);
         return Math.sqrt(0.299 * r * r + 0.587 * g * g + 0.114 * b * b);
     }
+
+    /**
+     * Mixes two hex colours with a given ratio.
+     * 
+     * @param colour1 - The first hex colour code in the format `#RRGGBB`.
+     * @param colour2 - The second hex colour code in the format `#RRGGBB`.
+     * @param ratio - The ratio to mix the colours, where 0 is all `colour1` and 1 is all `colour2`.
+     * @returns The mixed hex colour code in the format `#RRGGBB`.
+     */
     public static mixRGBA(colour1: string, colour2: string, ratio: number): string {
         const r1 = parseInt(colour1.slice(1, 3), 16);
         const g1 = parseInt(colour1.slice(3, 5), 16);
@@ -19,15 +37,41 @@ export class Colour {
     }
 }
 
-type PinValue = {
-    pin: number,
-    value: number,
-};
+/**
+ * A utility class providing additional mathematical functions.
+ */
 export class MathExtra {
+    /**
+     * Calculates the average of the given numbers.
+     *
+     * @param values - A list of numbers to calculate the average from.
+     * @returns The average of the provided numbers.
+     */
     public static average(...values: number[]): number {
         return values.reduce((sum, value) => sum + value, 0) / values.length;
     }
-    public static interpolateBetweenPins(inputPin: number, pinValues: PinValue[]): number {
+
+    /**
+     * Linearly interpolates a value between given pin values based on an input pin.
+     *
+     * @param inputPin - The pin number for which the value needs to be interpolated.
+     * @param pinValues - An array of objects containing pin numbers and their corresponding values.
+     * @returns The interpolated value for the input pin.
+     *
+     * @throws Will throw an error if interpolation fails.
+     *
+     * @example
+     * ```typescript
+     * const pinValues = [
+     *   { pin: 1, value: 10 },
+     *   { pin: 3, value: 30 },
+     *   { pin: 2, value: 20 }
+     * ];
+     * const result = Helper.interpolateBetweenPins(2.5, pinValues);
+     * console.log(result); // Output will be 25
+     * ```
+     */
+    public static interpolateBetweenPins(inputPin: number, pinValues: { pin: number, value: number }[]): number {
         // linearly interpolate between pins
         if (pinValues.length === 0) { return NaN; }
         if (pinValues.length === 1) { return pinValues[0].value; }
@@ -50,13 +94,25 @@ export class MathExtra {
 }
 
 /* -------------------------------------------------------------------------- */
+/**
+ * Extends the global Date interface with additional methods.
+ */
 declare global {
     interface Date {
+        /**
+         * Adds the specified amount of time to the current date.
+         * 
+         * @param hours - The number of hours to add. Defaults to 0.
+         * @param minutes - The number of minutes to add. Defaults to 0.
+         * @param seconds - The number of seconds to add. Defaults to 0.
+         * @param milliseconds - The number of milliseconds to add. Defaults to 0.
+         * @returns The updated Date object.
+         */
         add(
-            hours: number,
+            hours?: number,
             minutes?: number,
             seconds?: number,
-            milliseconds?: number
+            milliseconds?: number,
         ): Date;
     }
 }
