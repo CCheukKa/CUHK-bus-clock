@@ -11,6 +11,8 @@
 - Scrape public holiday data from [https://www.gov.hk/en/about/abouthk/holiday/2025.htm]
 - Add ability to fetch timing data from repo
 ### UI
+- Migrate to 'react-native-paper' ?
+- Change to use 'react-native-dropdown-picker' for dropdowns
 - Add past/future peeking indicators on clock face
 - Add more colour themes
 - Shrink clock face size
