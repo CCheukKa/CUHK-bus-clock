@@ -92,7 +92,11 @@ export function LocationPicker({ label, data, location, setLocation }: LocationP
                         : null
                 ]}
                 selectedTextStyle={styles.dropdownSelectedText}
-                renderRightIcon={() => <MaterialIcons name="arrow-drop-down" size={24} color={ThemeColours.highContrast} />}
+                renderRightIcon={() =>
+                    dropdownExpanded
+                        ? <MaterialIcons name="arrow-drop-up" size={24} color={ThemeColours.highContrast} />
+                        : <MaterialIcons name="arrow-drop-down" size={24} color={ThemeColours.highContrast} />
+                }
                 onFocus={() => { setDropdownExpanded(true); }}
                 onBlur={() => { setDropdownExpanded(false); }}
                 renderItem={dropdownListItem}
