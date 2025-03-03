@@ -20,6 +20,7 @@
 - Add more colour themes
 - Shrink clock face size
 - Define back button behaviour
+- Pressing setting controls dismiss everything
 ### Sustainability
 - Add a way for users to contribute data
 
