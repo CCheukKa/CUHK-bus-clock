@@ -17,6 +17,7 @@
 - Add past/future peeking indicators on clock face
 - Add more colour themes
 - Pressing setting controls dismiss everything
+- Improve light theme colour usage
 ### Sustainability
 - Add a way for users to contribute data
 
