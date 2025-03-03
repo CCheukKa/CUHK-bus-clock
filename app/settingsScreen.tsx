@@ -6,6 +6,7 @@ import { StyleSheet, View } from 'react-native';
 import { Switch, TextInput } from 'react-native-paper';
 import DropDownPicker from 'react-native-dropdown-picker';
 import { useEffect, useState } from 'react';
+import { useTheme } from '@/context/ThemeContext';
 
 DropDownPicker.setTheme('DARK');
 
@@ -21,6 +22,7 @@ export default function SettingsScreen() {
 
 function Controls() {
     const { settings, setSettings } = useSettings();
+    const { theme } = useTheme();
 
     return (Object.keys(settings) as (keyof Settings)[])
         .map(key => {
@@ -54,7 +56,11 @@ function Controls() {
                                 setOpen={setOpen}
                                 setValue={setValue}
                                 setItems={setItems}
-                                style={[styles.control]}
+                                style={[
+                                    styles.control,
+                                    { backgroundColor: theme.minimalContrast }
+                                ]}
+                                dropDownContainerStyle={{ backgroundColor: theme.minimalContrast }}
                             />);
                         }
                     case 'number':
@@ -68,7 +74,6 @@ function Controls() {
                                 value={value}
                                 onChangeText={setValue}
                                 onBlur={() => {
-                                    console.log('onBlur', value);
                                     let inputValue = Number(value);
                                     if (isNaN(inputValue)) { inputValue = 0; }
                                     if (schema.type === 'nonNegativeNumber' && !(inputValue >= 0)) { inputValue = 0; }
@@ -76,7 +81,10 @@ function Controls() {
                                     setValue(inputValue.toString());
                                 }}
                                 contentStyle={{ textAlign: 'right' }}
-                                style={[styles.control]}
+                                style={[
+                                    styles.control,
+                                    { backgroundColor: theme.minimalContrast }
+                                ]}
                                 outlineStyle={[styles.control]}
                             />);
                         }

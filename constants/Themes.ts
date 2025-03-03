@@ -13,6 +13,7 @@ export type Theme = {
     halfContrast: string;
     lowContrast: string;
     dimContrast: string;
+    minimalContrast: string;
     //
     accent: string;
     accentHeavy: string;
@@ -29,6 +30,7 @@ export const Themes: Record<ThemeName, Theme> = {
         halfContrast: '#a0a0a0',
         lowContrast: '#606060',
         dimContrast: '#404040',
+        minimalContrast: '#202020',
         //
         accent: 'lightpink',
         accentHeavy: 'hotpink',
@@ -47,6 +49,7 @@ export const Themes: Record<ThemeName, Theme> = {
         halfContrast: '#606060',
         lowContrast: '#a0a0a0',
         dimContrast: '#c0c0c0',
+        minimalContrast: '#e0e0e0',
         //
         accent: 'hotpink',
         accentHeavy: 'deeppink',
