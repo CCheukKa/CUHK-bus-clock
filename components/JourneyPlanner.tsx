@@ -33,9 +33,20 @@ export function JourneyPlanner({ fromTo, setFromTo }: JourneyPlannerProps) {
     const [fromDropdownOpened, setFromDropdownOpened] = useState(false);
     const [toDropdownOpened, setToDropdownOpened] = useState(false);
 
+    const fromOnOpen = () => { setToDropdownOpened(false); };
+    const toOnOpen = () => { setFromDropdownOpened(false); };
+
     return (
         <>
-            <LocationPicker data={data} label={'From'} location={fromLocation} setLocation={setFromLocation} dropdownOpened={fromDropdownOpened} setDropdownOpened={setFromDropdownOpened} />
+            <LocationPicker
+                data={data}
+                label={'From'}
+                location={fromLocation}
+                setLocation={setFromLocation}
+                dropdownOpened={fromDropdownOpened}
+                setDropdownOpened={setFromDropdownOpened}
+                onOpen={fromOnOpen}
+            />
             <View style={{
                 display: 'flex',
                 justifyContent: 'center',
@@ -62,7 +73,15 @@ export function JourneyPlanner({ fromTo, setFromTo }: JourneyPlannerProps) {
                     }}
                 />
             </View>
-            <LocationPicker data={data} label={'To'} location={toLocation} setLocation={setToLocation} dropdownOpened={toDropdownOpened} setDropdownOpened={setToDropdownOpened} />
+            <LocationPicker
+                data={data}
+                label={'To'}
+                location={toLocation}
+                setLocation={setToLocation}
+                dropdownOpened={toDropdownOpened}
+                setDropdownOpened={setToDropdownOpened}
+                onOpen={toOnOpen}
+            />
         </>
     );
 }

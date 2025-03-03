@@ -2,7 +2,7 @@ import { Region, Station } from "@/constants/BusData";
 import { useSettings } from "@/context/SettingsContext";
 import { useTheme } from "@/context/ThemeContext";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Dimensions, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import DropDownPicker, { RenderListItemPropsInterface } from "react-native-dropdown-picker";
 
@@ -19,12 +19,14 @@ type LocationPickerProps = {
     setLocation: React.Dispatch<React.SetStateAction<Station | Region | null>>;
     dropdownOpened: boolean;
     setDropdownOpened: React.Dispatch<React.SetStateAction<boolean>>;
+    onOpen: () => void;
 };
 export function LocationPicker({
     label: pickerLabel,
     data: pickerData,
     location, setLocation,
-    dropdownOpened, setDropdownOpened
+    dropdownOpened, setDropdownOpened,
+    onOpen
 }: LocationPickerProps) {
 
     const { settings } = useSettings();
@@ -34,21 +36,28 @@ export function LocationPicker({
     const [dropdownValue, setDropdownValue] = useState(location);
 
     const dropdownContainerRef = useRef<View>(null);
-    const [distanceFromBottom, setDistanceFromBottom] = useState(0);
+    const [distanceFromBottom, setDistanceFromBottom] = useState(200);
+    useEffect(() => {
+        measurePosition();
+        const subscription = Dimensions.addEventListener('change', measurePosition);
+        return subscription.remove;
+    }, []);
+    const measurePosition = () => {
+        const screenHeight = Dimensions.get('window').height;
+
+        if (!dropdownContainerRef.current) { return; }
+        dropdownContainerRef.current.measure((x, y, width, height, pageX, pageY) => {
+            const bottomEdgeOfComponent = pageY + height;
+            const distanceFromBottom = screenHeight - bottomEdgeOfComponent;
+            setDistanceFromBottom(distanceFromBottom);
+        });
+    };
+
     return (
         <View
             style={styles.dropdownContainer}
             ref={dropdownContainerRef}
-            onLayout={() => {
-                const screenHeight = Dimensions.get('window').height;
-
-                if (!dropdownContainerRef.current) { return; }
-                dropdownContainerRef.current.measure((x, y, width, height, pageX, pageY) => {
-                    const bottomEdgeOfComponent = pageY + height;
-                    const distanceFromBottom = screenHeight - bottomEdgeOfComponent;
-                    setDistanceFromBottom(distanceFromBottom);
-                });
-            }}
+            onLayout={measurePosition}
         >
             <View style={[
                 styles.dropdownLabel,
@@ -71,12 +80,14 @@ export function LocationPicker({
                 </Text>
             </View>
             <DropDownPicker
+                onOpen={onOpen}
                 open={dropdownOpened}
                 value={dropdownValue}
                 items={dropdownItems}
                 setOpen={setDropdownOpened}
                 setValue={setDropdownValue}
                 setItems={setDropdownItems}
+                closeOnBackPressed={true}
                 placeholder="Select a station/region"
                 placeholderStyle={[
                     styles.dropdownPlaceholder,
