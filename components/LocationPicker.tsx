@@ -2,8 +2,8 @@ import { Region, Station } from "@/constants/BusData";
 import { useSettings } from "@/context/SettingsContext";
 import { useTheme } from "@/context/ThemeContext";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
-import { useState } from "react";
-import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { useRef, useState } from "react";
+import { Dimensions, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import DropDownPicker, { RenderListItemPropsInterface } from "react-native-dropdown-picker";
 
 export type DropdownItem = {
@@ -16,18 +16,40 @@ type LocationPickerProps = {
     label: string;
     data: DropdownItem[];
     location: Station | Region | null;
-    setLocation: (location: Station | Region | null) => void;
+    setLocation: React.Dispatch<React.SetStateAction<Station | Region | null>>;
+    dropdownOpened: boolean;
+    setDropdownOpened: React.Dispatch<React.SetStateAction<boolean>>;
 };
-export function LocationPicker({ label: dropdownLabel, data: dropdownData, location, setLocation }: LocationPickerProps) {
+export function LocationPicker({
+    label: pickerLabel,
+    data: pickerData,
+    location, setLocation,
+    dropdownOpened, setDropdownOpened
+}: LocationPickerProps) {
+
     const { settings } = useSettings();
     const { theme } = useTheme();
 
-    const [dropdownOpened, setDropdownOpened] = useState(false);
-    const [dropdownItems, setDropdownItems] = useState(dropdownData);
+    const [dropdownItems, setDropdownItems] = useState(pickerData);
     const [dropdownValue, setDropdownValue] = useState(location);
 
+    const dropdownContainerRef = useRef<View>(null);
+    const [distanceFromBottom, setDistanceFromBottom] = useState(0);
     return (
-        <View style={styles.dropdownContainer}>
+        <View
+            style={styles.dropdownContainer}
+            ref={dropdownContainerRef}
+            onLayout={() => {
+                const screenHeight = Dimensions.get('window').height;
+
+                if (!dropdownContainerRef.current) { return; }
+                dropdownContainerRef.current.measure((x, y, width, height, pageX, pageY) => {
+                    const bottomEdgeOfComponent = pageY + height;
+                    const distanceFromBottom = screenHeight - bottomEdgeOfComponent;
+                    setDistanceFromBottom(distanceFromBottom);
+                });
+            }}
+        >
             <View style={[
                 styles.dropdownLabel,
                 {
@@ -45,7 +67,7 @@ export function LocationPicker({ label: dropdownLabel, data: dropdownData, locat
                     styles.dropdownLabelText,
                     { color: dropdownOpened ? theme.highContrast : theme.halfContrast },
                 ]}>
-                    {dropdownLabel}
+                    {pickerLabel}
                 </Text>
             </View>
             <DropDownPicker
@@ -61,8 +83,9 @@ export function LocationPicker({ label: dropdownLabel, data: dropdownData, locat
                     { color: theme.lowContrast },
                 ]}
                 dropDownDirection="BOTTOM"
+                maxHeight={distanceFromBottom - 34}
                 listMode={settings.locationPickerUseModal ? "MODAL" : "SCROLLVIEW"}
-                modalTitle={dropdownLabel}
+                modalTitle={pickerLabel}
                 modalTitleStyle={[
                     styles.dropdownModalTitle,
                     { color: theme.highContrast },
@@ -90,7 +113,7 @@ export function LocationPicker({ label: dropdownLabel, data: dropdownData, locat
                     styles.dropdownListContainer,
                     {
                         backgroundColor: theme.dimContrast,
-                        borderColor: theme.dimContrast,
+                        borderColor: theme.lowContrast,
                     },
                 ]}
                 renderListItem={dropdownListItem}
@@ -144,8 +167,6 @@ export function LocationPicker({ label: dropdownLabel, data: dropdownData, locat
                     {
                         color: isSelected ? theme.dimContrast : theme.highContrast,
                         fontWeight: isRegion || isSelected ? 'bold' : 'normal',
-                        borderBottomColor: theme.dimContrast,
-                        borderBottomWidth: isSelected ? 1.5 : 0,
                         fontSize: isRegion ? 16 : undefined,
                     }
                 ]}>

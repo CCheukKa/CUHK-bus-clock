@@ -26,18 +26,21 @@ export function JourneyPlanner({ fromTo, setFromTo }: JourneyPlannerProps) {
 
     const [fromLocation, setFromLocation] = useState<LocationNullable>(fromTo.from);
     const [toLocation, setToLocation] = useState<LocationNullable>(fromTo.to);
-
     useEffect(() => {
         if (fromLocation && toLocation) { setFromTo({ from: fromLocation, to: toLocation }); }
     }, [fromLocation, toLocation]);
 
+    const [fromDropdownOpened, setFromDropdownOpened] = useState(false);
+    const [toDropdownOpened, setToDropdownOpened] = useState(false);
+
     return (
         <>
-            <LocationPicker data={data} label={'From'} location={fromLocation} setLocation={setFromLocation} />
+            <LocationPicker data={data} label={'From'} location={fromLocation} setLocation={setFromLocation} dropdownOpened={fromDropdownOpened} setDropdownOpened={setFromDropdownOpened} />
             <View style={{
                 display: 'flex',
                 justifyContent: 'center',
                 alignItems: 'center',
+                opacity: fromDropdownOpened ? 0 : 1,
             }}>
                 <MaterialCommunityIcons
                     name="arrow-down-thin"
@@ -59,7 +62,7 @@ export function JourneyPlanner({ fromTo, setFromTo }: JourneyPlannerProps) {
                     }}
                 />
             </View>
-            <LocationPicker data={data} label={'To'} location={toLocation} setLocation={setToLocation} />
+            <LocationPicker data={data} label={'To'} location={toLocation} setLocation={setToLocation} dropdownOpened={toDropdownOpened} setDropdownOpened={setToDropdownOpened} />
         </>
     );
 }
