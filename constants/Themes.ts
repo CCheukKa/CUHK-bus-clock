@@ -15,8 +15,15 @@ export type Theme = {
     dimContrast: string;
     minimalContrast: string;
     //
-    accent: string;
-    accentHeavy: string;
+    primary: string;
+    primaryHeavy: string;
+    primarySharp: string;
+    secondary: string;
+    secondaryHeavy: string;
+    secondarySharp: string;
+    tertiary: string;
+    tertiaryHeavy: string;
+    tertiarySharp: string;
 };
 
 export const Themes: Record<ThemeName, Theme> = {
@@ -32,12 +39,15 @@ export const Themes: Record<ThemeName, Theme> = {
         dimContrast: '#404040',
         minimalContrast: '#202020',
         //
-        accent: 'lightpink',
-        accentHeavy: 'hotpink',
-        // accent: 'lightblue',
-        // accentHeavy: 'deepskyblue',
-        // accent: 'lightgreen',
-        // accentHeavy: 'lightseagreen',
+        primary: 'lightpink',
+        primaryHeavy: 'hotpink',
+        primarySharp: 'deeppink',
+        secondary: 'lightblue',
+        secondaryHeavy: 'deepskyblue',
+        secondarySharp: 'royalblue',
+        tertiary: 'lightgreen',
+        tertiaryHeavy: 'lightseagreen',
+        tertiarySharp: 'seagreen',
     },
     light: {
         black: '#000000',
@@ -51,7 +61,14 @@ export const Themes: Record<ThemeName, Theme> = {
         dimContrast: '#c0c0c0',
         minimalContrast: '#e0e0e0',
         //
-        accent: 'hotpink',
-        accentHeavy: 'deeppink',
+        primary: 'hotpink',
+        primaryHeavy: 'deeppink',
+        primarySharp: 'firebrick',
+        secondary: 'deepskyblue',
+        secondaryHeavy: 'royalblue',
+        secondarySharp: 'midnightblue',
+        tertiary: 'lightseagreen',
+        tertiaryHeavy: 'seagreen',
+        tertiarySharp: 'forestgreen',
     },
 };

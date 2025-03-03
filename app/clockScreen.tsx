@@ -79,7 +79,7 @@ export default function ClockScreen() {
         ]
     );
     //
-    const dateTimeTextStyle = useMemo(() => !useRealTime ? { color: theme.accent } : null, [useRealTime]);
+    const dateTimeTextStyle = useMemo(() => !useRealTime ? { color: theme.primary } : null, [useRealTime]);
     return (
         <FullscreenView>
             <View style={styles.headerContainer}>
@@ -117,8 +117,8 @@ export default function ClockScreen() {
                                 style={({ pressed }) => [
                                     {
                                         backgroundColor: !pressed
-                                            ? theme.accent
-                                            : theme.accentHeavy,
+                                            ? theme.primary
+                                            : theme.primaryHeavy,
                                     },
                                     styles.button,
                                 ]}>
