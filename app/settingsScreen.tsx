@@ -3,7 +3,7 @@ import { FullscreenView } from '@/components/FullscreenView';
 import { ThemedText } from '@/components/ThemedText';
 import { useSettings } from '@/context/SettingsContext';
 import { StyleSheet, View } from 'react-native';
-import { TextInput } from 'react-native-paper';
+import { Switch, TextInput } from 'react-native-paper';
 import DropDownPicker from 'react-native-dropdown-picker';
 import { useEffect, useState } from 'react';
 
@@ -33,7 +33,7 @@ function Controls() {
                 <View style={styles.settingText}>
                     <ThemedText type='subtitle'> {name} </ThemedText>
                     <ThemedText type='default'> {description} </ThemedText>
-                    <ThemedText type='faded'> Default: {defaultValue} </ThemedText>
+                    <ThemedText type='faded'> Default: {String(defaultValue)} </ThemedText>
                 </View>
             );
 
@@ -78,6 +78,19 @@ function Controls() {
                                 contentStyle={{ textAlign: 'right' }}
                                 style={[styles.control]}
                                 outlineStyle={[styles.control]}
+                            />);
+                        }
+                    case 'boolean':
+                        {
+                            const [isSwitchOn, setIsSwitchOn] = useState(settings[key] as boolean);
+
+                            return (<Switch
+                                value={isSwitchOn}
+                                onValueChange={() => {
+                                    setSettings({ ...settings, [key]: !isSwitchOn });
+                                    setIsSwitchOn(!isSwitchOn);
+                                }}
+                                style={[styles.control]}
                             />);
                         }
                     default:

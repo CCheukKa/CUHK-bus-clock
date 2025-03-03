@@ -1,10 +1,10 @@
 import { Region, Station } from "@/constants/BusData";
-import { Theme } from "@/constants/Themes";
+import { useSettings } from "@/context/SettingsContext";
 import { useTheme } from "@/context/ThemeContext";
-import { MaterialCommunityIcons, MaterialIcons } from "@expo/vector-icons";
-import { useCallback, useState } from "react";
-import { StyleSheet, Text, View } from "react-native";
-import { Dropdown } from "react-native-element-dropdown";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { useState } from "react";
+import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import DropDownPicker, { RenderListItemPropsInterface } from "react-native-dropdown-picker";
 
 export type DropdownItem = {
     type: 'region' | 'station';
@@ -18,112 +18,144 @@ type LocationPickerProps = {
     location: Station | Region | null;
     setLocation: (location: Station | Region | null) => void;
 };
-
-export function LocationPicker({ label, data, location, setLocation }: LocationPickerProps) {
+export function LocationPicker({ label: dropdownLabel, data: dropdownData, location, setLocation }: LocationPickerProps) {
+    const { settings } = useSettings();
     const { theme } = useTheme();
 
-    const [dropdownExpanded, setDropdownExpanded] = useState(false);
-    const dropdownChange = useCallback((item: DropdownItem) => {
-        setLocation(item.value as Station | Region);
-        setDropdownExpanded(false);
-    }, []);
+    const [dropdownOpened, setDropdownOpened] = useState(false);
+    const [dropdownItems, setDropdownItems] = useState(dropdownData);
+    const [dropdownValue, setDropdownValue] = useState(location);
 
     return (
         <View style={styles.dropdownContainer}>
             <View style={[
                 styles.dropdownLabel,
-                { backgroundColor: theme.background },
+                {
+                    backgroundColor: dropdownOpened
+                        ? 'transparent'
+                        : theme.background,
+                },
             ]}>
-                <MaterialCommunityIcons name="bus-stop" size={24} color={theme.highContrast} />
+                <MaterialCommunityIcons
+                    name="bus-stop"
+                    size={24}
+                    color={dropdownOpened ? theme.highContrast : theme.halfContrast}
+                />
                 <Text style={[
                     styles.dropdownLabelText,
-                    { color: theme.highContrast },
-                ]}>{label}</Text>
+                    { color: dropdownOpened ? theme.highContrast : theme.halfContrast },
+                ]}>
+                    {dropdownLabel}
+                </Text>
             </View>
-            <Dropdown
-                data={data}
-                value={location}
-                labelField="label"
-                valueField="value"
-                onChange={dropdownChange}
+            <DropDownPicker
+                open={dropdownOpened}
+                value={dropdownValue}
+                items={dropdownItems}
+                setOpen={setDropdownOpened}
+                setValue={setDropdownValue}
+                setItems={setDropdownItems}
                 placeholder="Select a station/region"
-                placeholderStyle={{ color: theme.dimContrast }}
-                containerStyle={[
+                placeholderStyle={[
+                    styles.dropdownPlaceholder,
+                    { color: theme.lowContrast },
+                ]}
+                dropDownDirection="BOTTOM"
+                listMode={settings.locationPickerUseModal ? "MODAL" : "SCROLLVIEW"}
+                modalTitle={dropdownLabel}
+                modalTitleStyle={[
+                    styles.dropdownModalTitle,
+                    { color: theme.highContrast },
+                ]}
+                modalAnimationType="slide"
+                modalContentContainerStyle={{
+                    backgroundColor: theme.background,
+                    gap: 16,
+                    paddingBottom: 16,
+                }}
+                style={[
+                    styles.dropdownBar,
+                    {
+                        backgroundColor: dropdownOpened
+                            ? theme.dimContrast
+                            : theme.background,
+                        borderColor: theme.dimContrast,
+                    },
+                ]}
+                textStyle={[
+                    styles.dropdownText,
+                    { color: theme.highContrast },
+                ]}
+                dropDownContainerStyle={[
                     styles.dropdownListContainer,
                     {
                         backgroundColor: theme.dimContrast,
-                        borderColor: theme.lowContrast,
+                        borderColor: theme.dimContrast,
                     },
                 ]}
-                style={[
-                    styles.dropdownBar,
-                    { borderColor: theme.dimContrast },
-                    dropdownExpanded
-                        ? {
-                            backgroundColor: theme.dimContrast,
-                            borderBottomStartRadius: 0,
-                            borderBottomEndRadius: 0
-                        }
-                        : null
-                ]}
-                selectedTextStyle={[
-                    styles.dropdownSelectedText,
-                    { color: theme.highContrast },
-                ]}
-                renderRightIcon={() =>
-                    dropdownExpanded
-                        ? <MaterialIcons name="arrow-drop-up" size={24} color={theme.highContrast} />
-                        : <MaterialIcons name="arrow-drop-down" size={24} color={theme.highContrast} />
-                }
-                onFocus={() => { setDropdownExpanded(true); }}
-                onBlur={() => { setDropdownExpanded(false); }}
-                renderItem={(item, selected) => dropdownListItem(item, selected ?? false, theme)}
+                renderListItem={dropdownListItem}
             />
-        </View>
+        </View >
     );
+
+    /* -------------------------------------------------------------------------- */
+    function dropdownListItem({
+        item,
+        isSelected,
+        onPress,
+        ...otherProps
+    }: RenderListItemPropsInterface<string>) {
+
+        const listItem = item as DropdownItem;
+        const isRegion = listItem.type === 'region';
+        return (
+            <TouchableOpacity
+                {...otherProps}
+                onPress={() => {
+                    onPress(listItem.value);
+                    setDropdownValue(listItem.value as Station | Region);
+                    setLocation(listItem.value as Station | Region);
+                }}
+                style={[
+                    styles.dropdownItem,
+                    isSelected ? { backgroundColor: theme.highContrast } : null
+                ]}
+                key={listItem.value}
+            >
+                {isRegion
+                    ? <MaterialCommunityIcons
+                        name="map-marker-radius"
+                        size={24}
+                        style={{
+                            color: isSelected ? theme.dimContrast : theme.highContrast
+                        }}
+                    />
+                    : <MaterialCommunityIcons
+                        name="subdirectory-arrow-right"
+                        size={24}
+                        style={{
+                            color: isSelected ? theme.dimContrast : theme.highContrast,
+                            marginLeft: 24
+                        }}
+                    />
+                }
+                <Text style={[
+                    styles.dropdownItemText,
+                    {
+                        color: isSelected ? theme.dimContrast : theme.highContrast,
+                        fontWeight: isRegion || isSelected ? 'bold' : 'normal',
+                        borderBottomColor: theme.dimContrast,
+                        borderBottomWidth: isSelected ? 1.5 : 0,
+                        fontSize: isRegion ? 16 : undefined,
+                    }
+                ]}>
+                    {listItem.label}
+                </Text>
+            </TouchableOpacity>
+        );
+    }
 }
 
-function dropdownListItem(item: any, selected: boolean, theme: Theme) {
-    const dropdownItem = item as DropdownItem;
-    const isRegion = dropdownItem.type === 'region';
-    return (
-        <View
-            style={[
-                styles.dropdownItem,
-                selected ? { backgroundColor: theme.highContrast } : null
-            ]}
-            key={dropdownItem.value}
-        >
-            {isRegion
-                ? <MaterialCommunityIcons
-                    name="map-marker-radius"
-                    size={24}
-                    style={{
-                        color: selected ? theme.dimContrast : theme.highContrast
-                    }}
-                />
-                : <MaterialCommunityIcons
-                    name="subdirectory-arrow-right"
-                    size={24}
-                    style={{
-                        color: selected ? theme.dimContrast : theme.highContrast,
-                        marginLeft: 24
-                    }}
-                />
-            }
-            <Text style={[
-                styles.dropdownItemText,
-                {
-                    color: selected ? theme.dimContrast : theme.highContrast,
-                    fontWeight: isRegion ? 'bold' : 'normal',
-                    fontSize: isRegion ? 18 : 14,
-                }
-            ]}>
-                {dropdownItem.label}
-            </Text>
-        </View>
-    );
-};
 
 const styles = StyleSheet.create({
     dropdownContainer: {
@@ -134,12 +166,12 @@ const styles = StyleSheet.create({
         position: 'absolute',
         top: -10,
         left: -10,
-        zIndex: 1,
         display: 'flex',
         flexDirection: 'row',
         alignItems: 'center',
         gap: 6,
         paddingRight: 6,
+        zIndex: 10,
     },
     dropdownLabelText: {
         fontWeight: 'bold',
@@ -150,19 +182,22 @@ const styles = StyleSheet.create({
         paddingHorizontal: 16,
         borderRadius: 8,
         borderWidth: 2,
+        zIndex: 1,
+    },
+    dropdownPlaceholder: {
+        fontWeight: 'bold',
     },
     dropdownListContainer: {
-        borderTopStartRadius: 0,
-        borderTopEndRadius: 0,
-        borderRadius: 8,
         borderWidth: 2,
         paddingVertical: 8,
+    },
+    dropdownModalTitle: {
+        fontWeight: 'bold',
     },
     dropdownItem: {
         paddingHorizontal: 16,
         paddingVertical: 4,
         margin: 0,
-        fontWeight: 'bold',
         display: 'flex',
         flexDirection: 'row',
         alignItems: 'center',
@@ -170,7 +205,7 @@ const styles = StyleSheet.create({
     dropdownItemText: {
         marginLeft: 4,
     },
-    dropdownSelectedText: {
+    dropdownText: {
         fontWeight: 'bold',
-    }
+    },
 });

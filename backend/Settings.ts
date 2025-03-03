@@ -5,9 +5,10 @@ export type Settings = {
     theme: ThemeName;
     pastPeekMinutes: number;
     futurePeekMinutes: number;
+    locationPickerUseModal: boolean;
 };
 export const settingsSchema: Record<keyof Settings, {
-    type: 'enum' | 'number' | 'nonNegativeNumber';
+    type: 'enum' | 'number' | 'nonNegativeNumber' | 'boolean';
     enumValues?: any[];
     description: string;
     defaultValue: any;
@@ -27,7 +28,12 @@ export const settingsSchema: Record<keyof Settings, {
         type: 'nonNegativeNumber',
         description: 'Minutes in the future to show ETAs',
         defaultValue: 30,
-    }
+    },
+    locationPickerUseModal: {
+        type: 'boolean',
+        description: 'Use fullscreen modal for location picker',
+        defaultValue: false,
+    },
 };
 
 export function getDefaultSettings(): Settings {
