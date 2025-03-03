@@ -156,33 +156,43 @@ export function LocationPicker({
                 ]}
                 key={listItem.value}
             >
-                {isRegion
-                    ? <MaterialCommunityIcons
-                        name="map-marker-radius"
-                        size={24}
-                        style={{
-                            color: isSelected ? theme.dimContrast : theme.highContrast
-                        }}
-                    />
-                    : <MaterialCommunityIcons
-                        name="subdirectory-arrow-right"
-                        size={24}
-                        style={{
-                            color: isSelected ? theme.dimContrast : theme.highContrast,
-                            marginLeft: 24
-                        }}
-                    />
-                }
-                <Text style={[
-                    styles.dropdownItemText,
-                    {
-                        color: isSelected ? theme.dimContrast : theme.highContrast,
-                        fontWeight: isRegion || isSelected ? 'bold' : 'normal',
-                        fontSize: isRegion ? 16 : undefined,
+                <View style={styles.dropdownItemMain}>
+                    {isRegion
+                        ? <MaterialCommunityIcons
+                            name="map-marker-radius"
+                            size={24}
+                            style={{
+                                color: isSelected ? theme.dimContrast : theme.highContrast
+                            }}
+                        />
+                        : <MaterialCommunityIcons
+                            name="subdirectory-arrow-right"
+                            size={24}
+                            style={{
+                                color: isSelected ? theme.dimContrast : theme.highContrast,
+                                marginLeft: 24
+                            }}
+                        />
                     }
-                ]}>
-                    {listItem.label}
-                </Text>
+                    <Text style={[
+                        styles.dropdownItemText,
+                        {
+                            color: isSelected ? theme.dimContrast : theme.highContrast,
+                            fontWeight: isRegion || isSelected ? 'bold' : 'normal',
+                            fontSize: isRegion ? 16 : undefined,
+                        }
+                    ]}>
+                        {listItem.label}
+                    </Text>
+                </View>
+                {
+                    listItem.value === Region.MISCELLANEOUS
+                        ? <Text style={{
+                            color: isSelected ? theme.primarySharp : theme.primary,
+                            fontWeight: isSelected ? 'bold' : 'normal',
+                        }}>Choose a station instead</Text>
+                        : null
+                }
             </TouchableOpacity>
         );
     }
@@ -234,11 +244,17 @@ const styles = StyleSheet.create({
         display: 'flex',
         flexDirection: 'row',
         alignItems: 'center',
+        justifyContent: 'space-between',
     },
     dropdownItemText: {
         marginLeft: 4,
     },
     dropdownText: {
         fontWeight: 'bold',
+    },
+    dropdownItemMain: {
+        display: 'flex',
+        flexDirection: 'row',
+        alignItems: 'center',
     },
 });
