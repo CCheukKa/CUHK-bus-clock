@@ -8,7 +8,7 @@ type SettingsContextType = {
 
 const SettingsContext = createContext<SettingsContextType | undefined>(undefined);
 
-export const SettingsProvider = ({ children }: { children: ReactNode }) => {
+export const SettingsProvider = ({ children }: { children?: ReactNode }) => {
     const [settings, setSettings] = useState<Settings>(getDefaultSettings());
 
     return (

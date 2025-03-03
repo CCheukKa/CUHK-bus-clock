@@ -94,6 +94,34 @@ export class MathExtra {
 }
 
 /* -------------------------------------------------------------------------- */
+
+import IoniconsGlyphMap from '@expo/vector-icons/build/vendor/react-native-vector-icons/glyphmaps/Ionicons.json';
+import MaterialCommunityIconsGlyphMap from '@expo/vector-icons/build/vendor/react-native-vector-icons/glyphmaps/MaterialCommunityIcons.json';
+type IoniconsGlyphs = keyof typeof IoniconsGlyphMap;
+type MaterialCommunityIconsGlyphs = keyof typeof MaterialCommunityIconsGlyphMap;
+export type IconGlyphsType = IoniconsGlyphs | MaterialCommunityIconsGlyphs;
+export class IconGlyphs {
+    static Ionicons = Object.keys(IoniconsGlyphMap) as IoniconsGlyphs[];
+    static MaterialCommunityIcons = Object.keys(MaterialCommunityIconsGlyphMap) as MaterialCommunityIconsGlyphs[];
+
+    /**
+     * Checks if the given icon name is a valid Ionicons glyph.
+     *
+     * @param name - The name of the icon to check.
+     * @returns A boolean indicating whether the name is a valid Ionicons glyph.
+     */
+    static isIonicons(name: string): name is IoniconsGlyphs { return name in IoniconsGlyphMap; }
+    /**
+     * Checks if the given icon name is a valid Material Community Icons glyph.
+     *
+     * @param name - The name of the icon to check.
+     * @returns A boolean indicating whether the name is a valid Material Community Icons glyph.
+     */
+    static isMaterialCommunityIcons(name: string): name is MaterialCommunityIconsGlyphs { return name in MaterialCommunityIconsGlyphMap; }
+}
+
+
+/* -------------------------------------------------------------------------- */
 /**
  * Extends the global Date interface with additional methods.
  */

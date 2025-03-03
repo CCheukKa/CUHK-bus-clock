@@ -19,7 +19,6 @@
 - Add past/future peeking indicators on clock face
 - Add more colour themes
 - Shrink clock face size
-- Use a better looking bottom bar
 - Define back button behaviour
 ### Sustainability
 - Add a way for users to contribute data

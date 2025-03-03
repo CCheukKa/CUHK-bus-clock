@@ -9,7 +9,7 @@ type ThemeContext = {
 
 const ThemeContext = createContext<ThemeContext | undefined>(undefined);
 
-export const ThemeProvider = ({ children }: { children: ReactNode }) => {
+export const ThemeProvider = ({ children }: { children?: ReactNode }) => {
     const [theme, setTheme] = useState<Theme>(() => Themes.dark);
 
     return (

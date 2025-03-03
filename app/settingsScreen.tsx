@@ -1,4 +1,4 @@
-import { Settings, settingsSchema, Theme } from '@/backend/Settings';
+import { Settings, settingsSchema } from '@/backend/Settings';
 import { FullscreenView } from '@/components/FullscreenView';
 import { ThemedText } from '@/components/ThemedText';
 import { useSettings } from '@/context/SettingsContext';
@@ -13,8 +13,6 @@ export default function SettingsScreen() {
     const { settings, setSettings } = useSettings();
 
     const controls = (() => {
-        console.log(settings);
-
         return (Object.keys(settings) as (keyof Settings)[])
             .map(key => {
                 const schema = settingsSchema[key];

@@ -1,11 +1,16 @@
 import { useFonts } from 'expo-font';
-import { SplashScreen, Stack } from 'expo-router';
-import { useEffect } from 'react';
+import { SplashScreen } from 'expo-router';
+import { useEffect, useState } from 'react';
 import { SettingsProvider } from '@/context/SettingsContext';
 import { StatusBar } from 'expo-status-bar';
 import { PaperProvider } from 'react-native-paper';
-import { ThemeProvider } from '@/context/ThemeContext';
-import 'react-native-reanimated';
+import { ThemeProvider, useTheme } from '@/context/ThemeContext';
+import { BottomNavigation } from 'react-native-paper';
+import ClockScreen from '@/app/clockScreen';
+import InfoScreen from '@/app/infoScreen';
+import SettingsScreen from '@/app/settingsScreen';
+import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
+import { IconGlyphs, IconGlyphsType } from '@/backend/Helper';
 
 SplashScreen.preventAutoHideAsync();
 export default function RootLayout() {
@@ -27,15 +32,60 @@ export default function RootLayout() {
     return (
         <>
             <StatusBar style="auto" />
-            <PaperProvider>
+            <PaperProvider
+                settings={{
+                    icon: ({ name, ...otherProps }) => {
+                        if (IconGlyphs.isMaterialCommunityIcons(name)) {
+                            return <MaterialCommunityIcons name={name} {...otherProps} />;
+                        } else if (IconGlyphs.isIonicons(name)) {
+                            return <Ionicons name={name} {...otherProps} />;
+                        } else {
+                            return null;
+                        }
+                    }
+                }}
+            >
                 <SettingsProvider>
                     <ThemeProvider>
-                        <Stack>
-                            <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-                        </Stack>
+                        <WithinProviders />
                     </ThemeProvider>
                 </SettingsProvider>
             </PaperProvider>
         </>
+    );
+}
+
+function WithinProviders() {
+    const { theme } = useTheme();
+
+    const [index, setIndex] = useState(1);
+    const [routes] = useState<{ key: string, title: string, focusedIcon: IconGlyphsType, unfocusedIcon: IconGlyphsType }[]>([
+        { key: 'info', title: 'Info', focusedIcon: 'information', unfocusedIcon: 'information-outline' },
+        { key: 'clock', title: 'Clock', focusedIcon: 'clock-time-four', unfocusedIcon: 'clock-time-four-outline' },
+        { key: 'settings', title: 'Settings', focusedIcon: 'settings-sharp', unfocusedIcon: 'settings-outline' },
+    ]);
+    const renderScene = BottomNavigation.SceneMap({
+        info: InfoScreen,
+        clock: ClockScreen,
+        settings: SettingsScreen,
+    });
+
+    return (
+        <BottomNavigation
+            navigationState={{ index, routes }}
+            onIndexChange={setIndex}
+            renderScene={renderScene}
+            sceneAnimationEnabled={true}
+            sceneAnimationType='shifting'
+            barStyle={{
+                backgroundColor: theme.background,
+                borderTopColor: theme.dimContrast,
+                borderTopWidth: 1,
+                borderStyle: 'dashed',
+            }}
+            activeColor={theme.highContrast}
+            inactiveColor={theme.lowContrast}
+            activeIndicatorStyle={{ backgroundColor: theme.dimContrast }}
+        />
     );
 }
