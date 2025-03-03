@@ -3,11 +3,18 @@ import { FullscreenView } from '@/components/FullscreenView';
 import { ThemedText } from '@/components/ThemedText';
 import { useSettings } from '@/context/SettingsContext';
 import { StyleSheet, View } from 'react-native';
+import { TextInput } from 'react-native-paper';
+import DropDownPicker from 'react-native-dropdown-picker';
+import { useEffect, useState } from 'react';
+
+DropDownPicker.setTheme('DARK');
 
 export default function SettingsScreen() {
     const { settings, setSettings } = useSettings();
 
     const controls = (() => {
+        console.log(settings);
+
         return (Object.keys(settings) as (keyof Settings)[])
             .map(key => {
                 const schema = settingsSchema[key];
@@ -26,21 +33,32 @@ export default function SettingsScreen() {
                 const control = (() => {
                     switch (schema.type) {
                         case 'enum':
-                            return (
-                                <View>
-                                    {schema.enumValues?.map(value => (
-                                        <ThemedText key={value}>
-                                            {value === settings[key] ? `Selected: ${value}` : value}
-                                        </ThemedText>
-                                    ))}
-                                </View>
-                            );
+                            const [open, setOpen] = useState(false);
+                            const [items, setItems] = useState(schema.enumValues?.map(value => ({ label: String(value).toTitleString(), value })) ?? []);
+                            const [value, setValue] = useState(settings[key].toString());
+                            useEffect(() => {
+                                setSettings({ ...settings, [key]: value })
+                            }, [value]);
+                            return (<DropDownPicker
+                                open={open}
+                                value={value}
+                                items={items}
+                                setOpen={setOpen}
+                                setValue={setValue}
+                                setItems={setItems}
+                                style={[styles.control]}
+                            />);
                         case 'number':
-                            return <ThemedText>Number</ThemedText>;
-                        case 'string':
-                            return <ThemedText>String</ThemedText>;
-                        case 'boolean':
-                            return <ThemedText>Boolean</ThemedText>;
+                            return (<TextInput
+                                mode='outlined'
+                                keyboardType='numeric'
+                                outlineColor='transparent'
+                                contentStyle={{ textAlign: 'right' }}
+                                value={settings[key].toString()}
+                                onChangeText={value => setSettings({ ...settings, [key]: Number(value) })}
+                                style={[styles.control]}
+                                outlineStyle={[styles.control]}
+                            />);
                         default:
                             return <ThemedText>Unknown</ThemedText>;
                     }
@@ -49,7 +67,9 @@ export default function SettingsScreen() {
                 return (
                     <View style={styles.setting} key={name}>
                         {settingText}
-                        {control}
+                        <View style={styles.controlContainer}>
+                            {control}
+                        </View>
                     </View>
                 );
             });
@@ -64,6 +84,7 @@ export default function SettingsScreen() {
     );
 }
 
+const settingHeight = 24 + 24 + 32;
 const styles = StyleSheet.create({
     settingsContainer: {
         width: '90%',
@@ -82,9 +103,20 @@ const styles = StyleSheet.create({
     },
     setting: {
         width: '100%',
+        height: settingHeight,
         display: 'flex',
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
+    },
+    controlContainer: {
+        display: 'flex',
+        height: '100%',
+        width: '25%',
+    },
+    control: {
+        width: '100%',
+        height: settingHeight,
+        borderRadius: 8,
     },
 });

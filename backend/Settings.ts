@@ -11,7 +11,7 @@ export type Settings = {
     futurePeekMinutes: number;
 };
 export const settingsSchema: Record<keyof Settings, {
-    type: 'enum' | 'number' | 'string' | 'boolean';
+    type: 'enum' | 'number';
     enumValues?: any[];
     description: string;
     defaultValue: any;
