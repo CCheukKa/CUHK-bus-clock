@@ -58,18 +58,18 @@ export function JourneyPlanner({ fromTo, setFromTo }: JourneyPlannerProps) {
                     size={24}
                     color={theme.halfContrast}
                     style={{
-                        zIndex: 2,
+                        zIndex: 3,
                         transform: [{ scale: 2.5 }],
                     }}
                 />
                 <MaterialCommunityIcons
                     name="arrow-down-thin"
-                    size={28}
+                    size={24}
                     color={theme.background}
                     style={{
-                        zIndex: 1,
+                        zIndex: 2,
                         position: 'absolute',
-                        transform: [{ scale: 2.5 }],
+                        transform: [{ scale: 2.5 }, { translateY: 1.2 }],
                     }}
                 />
             </View>

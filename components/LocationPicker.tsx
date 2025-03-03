@@ -103,7 +103,7 @@ export function LocationPicker({
                 ]}
                 modalAnimationType="slide"
                 modalContentContainerStyle={{
-                    backgroundColor: theme.background,
+                    backgroundColor: theme.minimalContrast,
                     gap: 16,
                     paddingBottom: 16,
                 }}
@@ -112,7 +112,7 @@ export function LocationPicker({
                     {
                         backgroundColor: dropdownOpened
                             ? theme.dimContrast
-                            : theme.background,
+                            : theme.minimalContrast,
                         borderColor: theme.dimContrast,
                     },
                 ]}
@@ -204,6 +204,7 @@ const styles = StyleSheet.create({
         gap: 6,
         paddingRight: 6,
         zIndex: 10,
+        borderRadius: 4,
     },
     dropdownLabelText: {
         fontWeight: 'bold',
