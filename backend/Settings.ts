@@ -1,12 +1,8 @@
-export enum Theme {
-    SYSTEM = 'system',
-    DARK = 'dark',
-    LIGHT = 'light',
-}
+import { ThemeName } from "@/constants/Themes";
 
 /* -------------------------------------------------------------------------- */
 export type Settings = {
-    theme: Theme;
+    theme: ThemeName;
     pastPeekMinutes: number;
     futurePeekMinutes: number;
 };
@@ -18,19 +14,19 @@ export const settingsSchema: Record<keyof Settings, {
 }> = {
     theme: {
         type: 'enum',
-        enumValues: Object.values(Theme),
+        enumValues: Object.values(ThemeName),
         description: 'Colour theme of the app',
-        defaultValue: Theme.SYSTEM
+        defaultValue: ThemeName.DARK,
     },
     pastPeekMinutes: {
         type: 'nonNegativeNumber',
         description: 'Minutes in the past to show ETAs',
-        defaultValue: 10
+        defaultValue: 10,
     },
     futurePeekMinutes: {
         type: 'nonNegativeNumber',
         description: 'Minutes in the future to show ETAs',
-        defaultValue: 30
+        defaultValue: 30,
     }
 };
 

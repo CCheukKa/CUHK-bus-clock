@@ -1,4 +1,4 @@
-import { ThemeColours } from '@/constants/ThemeColours';
+import { useTheme } from '@/context/ThemeContext';
 import { StyleSheet, View } from 'react-native';
 
 type ClockHandProps = {
@@ -7,6 +7,8 @@ type ClockHandProps = {
 };
 
 export function ClockHand({ type, degrees }: ClockHandProps) {
+    const { theme } = useTheme();
+
     const width = (() => {
         switch (type) {
             case 'hour': return 4;
@@ -23,8 +25,8 @@ export function ClockHand({ type, degrees }: ClockHandProps) {
     })();
     const backgroundColor = (() => {
         switch (type) {
-            case 'hour': return ThemeColours.lowContrast;
-            case 'minute': return ThemeColours.highContrast;
+            case 'hour': return theme.lowContrast;
+            case 'minute': return theme.highContrast;
             default: return '0%';
         }
     })();

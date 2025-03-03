@@ -25,5 +25,4 @@
 - Add a way for users to contribute data
 
 ## Technical
-- Move colour theme system to be context based
 - Update @react-native-community/datetimepicker to ^8.3.0 after incompatibilities are fixed

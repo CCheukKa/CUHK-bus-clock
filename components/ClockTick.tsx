@@ -1,4 +1,4 @@
-import { ThemeColours } from '@/constants/ThemeColours';
+import { useTheme } from '@/context/ThemeContext';
 import { StyleSheet, View } from 'react-native';
 
 export enum ClockTickType {
@@ -12,11 +12,15 @@ type ClockTickProps = {
 };
 
 export function ClockTick({ type, degrees }: ClockTickProps) {
+    const { theme } = useTheme();
+
     const radians = degrees * Math.PI / 180;
     return (
         <View style={[
             styles.clockTick,
-            type === ClockTickType.MAJOR ? styles.clockTickMajor : styles.clockTickMinor,
+            type === ClockTickType.MAJOR
+                ? [styles.clockTickMajor, { backgroundColor: theme.halfContrast }]
+                : [styles.clockTickMinor, { backgroundColor: theme.lowContrast }],
             [{
                 top: `${-Math.cos(radians) * 50 + 50}%`, left: `${Math.sin(radians) * 50 + 50}%`,
                 transform: [
@@ -38,11 +42,9 @@ const styles = StyleSheet.create({
     clockTickMajor: {
         width: 3,
         height: '5%',
-        backgroundColor: ThemeColours.halfContrast,
     },
     clockTickMinor: {
         width: 2,
         height: '3%',
-        backgroundColor: ThemeColours.lowContrast,
     },
 });

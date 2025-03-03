@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { FromTo, LocationNullable } from "@/backend/Bus";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { View } from "react-native";
-import { ThemeColours } from "@/constants/ThemeColours";
+import { useTheme } from "@/context/ThemeContext";
 
 const data: DropdownItem[] = (() => {
     const entries: DropdownItem[] = [];
@@ -22,6 +22,8 @@ type JourneyPlannerProps = {
     setFromTo: (fromTo: FromTo) => void;
 };
 export function JourneyPlanner({ fromTo, setFromTo }: JourneyPlannerProps) {
+    const { theme } = useTheme();
+
     const [fromLocation, setFromLocation] = useState<LocationNullable>(fromTo.from);
     const [toLocation, setToLocation] = useState<LocationNullable>(fromTo.to);
 
@@ -40,7 +42,7 @@ export function JourneyPlanner({ fromTo, setFromTo }: JourneyPlannerProps) {
                 <MaterialCommunityIcons
                     name="arrow-down-thin"
                     size={24}
-                    color={ThemeColours.halfContrast}
+                    color={theme.halfContrast}
                     style={{
                         zIndex: 2,
                         transform: [{ scale: 2.5 }],
@@ -49,7 +51,7 @@ export function JourneyPlanner({ fromTo, setFromTo }: JourneyPlannerProps) {
                 <MaterialCommunityIcons
                     name="arrow-down-thin"
                     size={28}
-                    color={ThemeColours.background}
+                    color={theme.background}
                     style={{
                         zIndex: 1,
                         position: 'absolute',

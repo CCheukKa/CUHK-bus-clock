@@ -8,15 +8,16 @@ import DateTimePicker, { DateTimePickerEvent } from '@react-native-community/dat
 import { JourneyPlanner } from '@/components/JourneyPlanner';
 import { FromTo, getEtaInfos } from '@/backend/Bus';
 import { Region } from '@/constants/BusData';
-import { ThemeColours } from '@/constants/ThemeColours';
 import { DetailedEtaInfo } from '@/components/DetailedEtaInfo';
 import { useSettings } from '@/context/SettingsContext';
 import { FullscreenView } from '@/components/FullscreenView';
+import { useTheme } from '@/context/ThemeContext';
 
 const weekDays = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 
 export default function ClockScreen() {
     const { settings } = useSettings();
+    const { theme } = useTheme();
 
     const [realTime, setRealTime] = useState(new Date());
     const [customTime, setCustomTime] = useState(new Date());
@@ -78,7 +79,7 @@ export default function ClockScreen() {
         ]
     );
     //
-    const dateTimeTextStyle = useMemo(() => !useRealTime ? { color: ThemeColours.accent } : null, [useRealTime]);
+    const dateTimeTextStyle = useMemo(() => !useRealTime ? { color: theme.accent } : null, [useRealTime]);
     const clockView = useMemo(() =>
         <ClockFace
             time={logicTime}
@@ -137,12 +138,12 @@ export default function ClockScreen() {
                                 style={({ pressed }) => [
                                     {
                                         backgroundColor: !pressed
-                                            ? ThemeColours.accent
-                                            : ThemeColours.accentHeavy,
+                                            ? theme.accent
+                                            : theme.accentHeavy,
                                     },
                                     styles.button,
                                 ]}>
-                                <FontAwesome6 name="clock-rotate-left" color={ThemeColours.background} size={20} />
+                                <FontAwesome6 name="clock-rotate-left" color={theme.background} size={20} />
                             </Pressable>
                         </View>
                         : null

@@ -5,7 +5,7 @@ import { ClockHand } from '@/components/ClockHand';
 import { ClockTick, ClockTickType } from '@/components/ClockTick';
 import { getRouteThings } from '@/components/RouteThing';
 import { EtaInfo } from '@/backend/Bus';
-import { ThemeColours } from '@/constants/ThemeColours';
+import { useTheme } from '@/context/ThemeContext';
 
 type ClockViewProps = {
     time: Date;
@@ -13,6 +13,8 @@ type ClockViewProps = {
 };
 
 export function ClockFace({ time, etaInfos }: ClockViewProps) {
+    const { theme } = useTheme();
+
     const clockNumbers = useMemo(() => {
         return Array.from({ length: 12 }, (_, i) => i + 1).map(i => {
             return (
@@ -35,7 +37,14 @@ export function ClockFace({ time, etaInfos }: ClockViewProps) {
 
     return (
         <View style={styles.clockContainer}>
-            <View style={styles.clockFace}>
+            <View style={[
+                styles.clockFace,
+                {
+                    backgroundColor: theme.background,
+                    borderColor: theme.highContrast,
+                    shadowColor: theme.highContrast,
+                },
+            ]}>
                 {clockNumbers}
                 {clockTicks}
                 {routeThings}
@@ -59,11 +68,8 @@ const styles = StyleSheet.create({
         display: 'flex',
         width: '50%',
         aspectRatio: 1,
-        backgroundColor: ThemeColours.background,
         borderRadius: '50%',
         borderWidth: 2,
-        borderColor: ThemeColours.highContrast,
-        shadowColor: ThemeColours.highContrast,
         shadowOffset: {
             width: 0,
             height: 2,

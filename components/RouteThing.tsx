@@ -2,7 +2,7 @@ import { ClockThing, ClockThingType } from "@/components/ClockThing";
 import { EtaInfo } from "@/backend/Bus";
 import { busRouteInfos } from "@/constants/BusData";
 import { Colour, MathExtra } from "@/backend/Helper";
-import { ThemeColours } from "@/constants/ThemeColours";
+import { useTheme } from "@/context/ThemeContext";
 
 type RouteThingProps = {
     etaInfo: EtaInfo;
@@ -10,6 +10,8 @@ type RouteThingProps = {
 };
 
 export function RouteThing({ etaInfo, currentTime }: RouteThingProps) {
+    const { theme } = useTheme();
+
     const routeColour = busRouteInfos[etaInfo.journey.route].routeColour;
     const etaTime = etaInfo.etaTime;
     const angle = etaTime.getMinutes() * 6 + etaTime.getSeconds() / 10;
@@ -17,7 +19,7 @@ export function RouteThing({ etaInfo, currentTime }: RouteThingProps) {
     const etaMinutes = Math.floor(Math.abs(eta) / 60000);
     const etaSeconds = Math.floor(Math.abs(eta) % 60000 / 1000);
     const opacity = eta > 0 ? 1 : 0.75;
-    const contrastColour = Colour.getLuminance(routeColour) > 150 ? ThemeColours.black : ThemeColours.white;
+    const contrastColour = Colour.getLuminance(routeColour) > 150 ? theme.black : theme.white;
     const routeBubbleScale = MathExtra.interpolateBetweenPins(eta / 60000, [
         { pin: -5, value: 0.6 },
         { pin: 0, value: 1 },
@@ -41,7 +43,7 @@ export function RouteThing({ etaInfo, currentTime }: RouteThingProps) {
                 degrees={angle} distance={routeBubbleDistance}
                 type={ClockThingType.ROUTE_ANNOTATION_LINE}
                 style={{
-                    backgroundColour: Colour.mixRGBA(ThemeColours.background, routeColour, opacity),
+                    backgroundColour: Colour.mixRGBA(theme.background, routeColour, opacity),
                     height: routeAnnotationLineLength,
                 }}
             />
@@ -49,7 +51,7 @@ export function RouteThing({ etaInfo, currentTime }: RouteThingProps) {
                 degrees={angle} distance={routeBubbleDistance}
                 type={ClockThingType.ROUTE_NUMBER_BUBBLE}
                 style={{
-                    backgroundColour: Colour.mixRGBA(ThemeColours.background, routeColour, opacity),
+                    backgroundColour: Colour.mixRGBA(theme.background, routeColour, opacity),
                     textColour: contrastColour,
                     scale: routeBubbleScale,
                 }}
@@ -59,7 +61,7 @@ export function RouteThing({ etaInfo, currentTime }: RouteThingProps) {
             <ClockThing
                 degrees={angle} distance={routeEtaCountdownDistance}
                 type={ClockThingType.ROUTE_ETA_COUNTDOWN}
-                style={{ textColour: Colour.mixRGBA(ThemeColours.background, routeColour, opacity) }}
+                style={{ textColour: Colour.mixRGBA(theme.background, routeColour, opacity) }}
             >
                 {eta < 0 ? '-' : null}{etaMinutes}:{etaSeconds.toString().padStart(2, '0')}
             </ClockThing>

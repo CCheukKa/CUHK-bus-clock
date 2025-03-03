@@ -1,4 +1,4 @@
-import { ThemeColours } from '@/constants/ThemeColours';
+import { useTheme } from '@/context/ThemeContext';
 import { Text, type TextProps, StyleSheet } from 'react-native';
 
 export type ThemedTextProps = TextProps & {
@@ -10,8 +10,9 @@ export function ThemedText({
     type = 'default',
     ...rest
 }: ThemedTextProps) {
-    const colour = ThemeColours.text;
+    const { theme } = useTheme();
 
+    const colour = theme.text;
     return (
         <Text
             style={[
@@ -20,7 +21,7 @@ export function ThemedText({
                 type === 'title' ? styles.title : undefined,
                 type === 'defaultSemiBold' ? styles.defaultSemiBold : undefined,
                 type === 'subtitle' ? styles.subtitle : undefined,
-                type === 'faded' ? styles.faded : undefined,
+                type === 'faded' ? [styles.faded, { color: theme.halfContrast },] : undefined,
                 style,
             ]}
             {...rest}
@@ -41,7 +42,6 @@ const styles = StyleSheet.create({
     faded: {
         fontSize: 16,
         lineHeight: 24,
-        color: ThemeColours.halfContrast,
     },
     title: {
         fontSize: 32,

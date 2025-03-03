@@ -1,6 +1,6 @@
-import { ThemeColours } from '@/constants/ThemeColours';
 import { ReactNode } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
+import { useTheme } from '@/context/ThemeContext';
 
 export enum ClockThingType {
     CLOCK_CENTRE_DOT = 'clockCentreDot',
@@ -41,8 +41,9 @@ type ClockThingProps =
 
 
 export function ClockThing({ type, style, x, y, degrees, distance, children }: ClockThingProps) {
-    let left: number, top: number;
+    const { theme } = useTheme();
 
+    let left: number, top: number;
     if (degrees !== undefined && distance !== undefined) {
         const radians = ((-degrees + 90) * Math.PI) / 180;
         left = 50 + distance * Math.cos(radians) * 50;
@@ -58,9 +59,18 @@ export function ClockThing({ type, style, x, y, degrees, distance, children }: C
     const contentWithin = (() => {
         switch (type) {
             case ClockThingType.CLOCK_CENTRE_DOT:
-                return (<View style={styles.clockCentreDot} />);
+                return (<View style={[
+                    styles.clockCentreDot,
+                    {
+                        backgroundColor: theme.background,
+                        borderColor: theme.highContrast,
+                    },
+                ]} />);
             case ClockThingType.CLOCK_NUMBER:
-                return (<Text style={styles.clockNumber}>{children}</Text>);
+                return (<Text style={[
+                    styles.clockNumber,
+                    { color: theme.halfContrast },
+                ]}>{children}</Text>);
             case ClockThingType.ROUTE_NUMBER_BUBBLE:
                 return (
                     <View style={[
@@ -68,7 +78,7 @@ export function ClockThing({ type, style, x, y, degrees, distance, children }: C
                         {
                             backgroundColor: style?.backgroundColour,
                             transform: [{ scale: style?.scale ?? 1 }],
-                            shadowColor: ThemeColours.highContrast,
+                            shadowColor: theme.highContrast,
                             shadowOffset: { width: 0, height: 0 },
                             shadowOpacity: 0.5,
                             shadowRadius: 10,
@@ -100,7 +110,7 @@ export function ClockThing({ type, style, x, y, degrees, distance, children }: C
                     styles.routeEtaCountdown,
                     {
                         color: style?.textColour,
-                        textShadowColor: ThemeColours.dimContrast,
+                        textShadowColor: theme.dimContrast,
                         textShadowOffset: { width: 0, height: 0 },
                         shadowOpacity: 0.5,
                         textShadowRadius: 6,
@@ -138,14 +148,11 @@ const styles = StyleSheet.create({
         width: '30%',
         aspectRatio: 1,
         borderRadius: '50%',
-        backgroundColor: ThemeColours.background,
-        borderColor: ThemeColours.highContrast,
         borderWidth: 2.5,
     },
     clockNumber: {
         width: 30,
         textAlign: 'center',
-        color: ThemeColours.halfContrast,
         fontSize: 20,
         fontWeight: 'bold',
         transform: [{ translateY: -3 }],
