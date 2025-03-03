@@ -56,7 +56,6 @@ export default function SettingsScreen() {
                                     mode='outlined'
                                     keyboardType='numeric'
                                     outlineColor='transparent'
-                                    contentStyle={{ textAlign: 'right' }}
                                     value={value}
                                     onChangeText={setValue}
                                     onBlur={() => {
@@ -67,6 +66,7 @@ export default function SettingsScreen() {
                                         setSettings({ ...settings, [key]: inputValue })
                                         setValue(inputValue.toString());
                                     }}
+                                    contentStyle={{ textAlign: 'right' }}
                                     style={[styles.control]}
                                     outlineStyle={[styles.control]}
                                 />);

@@ -1,4 +1,4 @@
-import { createContext, useContext, useState, ReactNode } from 'react';
+import { createContext, useContext, useState, ReactNode, useEffect } from 'react';
 import { useSettings } from '@/context/SettingsContext';
 import { Theme, Themes } from '@/constants/Themes';
 
@@ -10,7 +10,12 @@ type ThemeContext = {
 const ThemeContext = createContext<ThemeContext | undefined>(undefined);
 
 export const ThemeProvider = ({ children }: { children?: ReactNode }) => {
+    const { settings } = useSettings();
     const [theme, setTheme] = useState<Theme>(() => Themes.dark);
+
+    useEffect(() => {
+        setTheme(Themes[settings.theme]);
+    }, [settings.theme]);
 
     return (
         <ThemeContext.Provider value={{ theme, setTheme }} >

@@ -80,27 +80,6 @@ export default function ClockScreen() {
     );
     //
     const dateTimeTextStyle = useMemo(() => !useRealTime ? { color: theme.accent } : null, [useRealTime]);
-    const clockView = useMemo(() =>
-        <ClockFace
-            time={logicTime}
-            etaInfos={etaInfos}
-        />, [etaInfos]
-    );
-    //
-    const journeyPlanner = useMemo(() =>
-        <JourneyPlanner
-            fromTo={fromTo}
-            setFromTo={setFromTo}
-        />, [fromTo]
-    );
-    //
-    const detailedEtaInfo = useMemo(() =>
-        <DetailedEtaInfo
-            time={logicTime}
-            etaInfos={etaInfos}
-        />, [etaInfos]
-    );
-    //
     return (
         <FullscreenView>
             <View style={styles.headerContainer}>
@@ -149,9 +128,24 @@ export default function ClockScreen() {
                         : null
                 }
             </View>
-            {clockView}
-            {journeyPlanner}
-            {detailedEtaInfo}
+            {useMemo(() =>
+                <ClockFace
+                    time={logicTime}
+                    etaInfos={etaInfos}
+                />, [etaInfos]
+            )}
+            {useMemo(() =>
+                <JourneyPlanner
+                    fromTo={fromTo}
+                    setFromTo={setFromTo}
+                />, [fromTo]
+            )}
+            {useMemo(() =>
+                <DetailedEtaInfo
+                    time={logicTime}
+                    etaInfos={etaInfos}
+                />, [etaInfos]
+            )}
         </FullscreenView>
     );
 }
