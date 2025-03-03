@@ -60,6 +60,7 @@ export function LocationPicker({ label, data, location, setLocation }: LocationP
                     { borderColor: theme.dimContrast },
                     dropdownExpanded
                         ? {
+                            backgroundColor: theme.dimContrast,
                             borderBottomStartRadius: 0,
                             borderBottomEndRadius: 0
                         }
