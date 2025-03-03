@@ -33,32 +33,46 @@ export default function SettingsScreen() {
                 const control = (() => {
                     switch (schema.type) {
                         case 'enum':
-                            const [open, setOpen] = useState(false);
-                            const [items, setItems] = useState(schema.enumValues?.map(value => ({ label: String(value).toTitleString(), value })) ?? []);
-                            const [value, setValue] = useState(settings[key].toString());
-                            useEffect(() => {
-                                setSettings({ ...settings, [key]: value })
-                            }, [value]);
-                            return (<DropDownPicker
-                                open={open}
-                                value={value}
-                                items={items}
-                                setOpen={setOpen}
-                                setValue={setValue}
-                                setItems={setItems}
-                                style={[styles.control]}
-                            />);
+                            {
+                                const [open, setOpen] = useState(false);
+                                const [items, setItems] = useState(schema.enumValues?.map(value => ({ label: String(value).toTitleString(), value })) ?? []);
+                                const [value, setValue] = useState(settings[key].toString());
+                                useEffect(() => {
+                                    setSettings({ ...settings, [key]: value })
+                                }, [value]);
+                                return (<DropDownPicker
+                                    open={open}
+                                    value={value}
+                                    items={items}
+                                    setOpen={setOpen}
+                                    setValue={setValue}
+                                    setItems={setItems}
+                                    style={[styles.control]}
+                                />);
+                            }
                         case 'number':
-                            return (<TextInput
-                                mode='outlined'
-                                keyboardType='numeric'
-                                outlineColor='transparent'
-                                contentStyle={{ textAlign: 'right' }}
-                                value={settings[key].toString()}
-                                onChangeText={value => setSettings({ ...settings, [key]: Number(value) })}
-                                style={[styles.control]}
-                                outlineStyle={[styles.control]}
-                            />);
+                        case 'nonNegativeNumber':
+                            {
+                                const [value, setValue] = useState(settings[key].toString());
+                                return (<TextInput
+                                    mode='outlined'
+                                    keyboardType='numeric'
+                                    outlineColor='transparent'
+                                    contentStyle={{ textAlign: 'right' }}
+                                    value={value}
+                                    onChangeText={setValue}
+                                    onBlur={() => {
+                                        console.log('onBlur', value);
+                                        let inputValue = Number(value);
+                                        if (isNaN(inputValue)) { inputValue = 0; }
+                                        if (schema.type === 'nonNegativeNumber' && !(inputValue >= 0)) { inputValue = 0; }
+                                        setSettings({ ...settings, [key]: inputValue })
+                                        setValue(inputValue.toString());
+                                    }}
+                                    style={[styles.control]}
+                                    outlineStyle={[styles.control]}
+                                />);
+                            }
                         default:
                             return <ThemedText>Unknown</ThemedText>;
                     }

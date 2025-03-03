@@ -11,7 +11,7 @@ export type Settings = {
     futurePeekMinutes: number;
 };
 export const settingsSchema: Record<keyof Settings, {
-    type: 'enum' | 'number';
+    type: 'enum' | 'number' | 'nonNegativeNumber';
     enumValues?: any[];
     description: string;
     defaultValue: any;
@@ -23,12 +23,12 @@ export const settingsSchema: Record<keyof Settings, {
         defaultValue: Theme.SYSTEM
     },
     pastPeekMinutes: {
-        type: 'number',
+        type: 'nonNegativeNumber',
         description: 'Minutes in the past to show ETAs',
         defaultValue: 10
     },
     futurePeekMinutes: {
-        type: 'number',
+        type: 'nonNegativeNumber',
         description: 'Minutes in the future to show ETAs',
         defaultValue: 30
     }
