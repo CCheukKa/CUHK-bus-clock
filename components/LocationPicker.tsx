@@ -52,7 +52,7 @@ export function LocationPicker({ label, data, location, setLocation }: LocationP
                     styles.dropdownListContainer,
                     {
                         backgroundColor: theme.dimContrast,
-                        borderColor: theme.highContrast,
+                        borderColor: theme.lowContrast,
                     },
                 ]}
                 style={[

@@ -1,4 +1,4 @@
-import { Region, Station, stationRegions } from "@/constants/BusData";
+import { Region, stationRegions } from "@/constants/BusData";
 import { DropdownItem, LocationPicker } from "@/components/LocationPicker";
 import { useEffect, useState } from "react";
 import { FromTo, LocationNullable } from "@/backend/Bus";
