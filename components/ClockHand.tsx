@@ -1,8 +1,12 @@
 import { useTheme } from '@/context/ThemeContext';
 import { StyleSheet, View } from 'react-native';
 
+export enum ClockHandType {
+    HOUR = 'hour',
+    MINUTE = 'minute',
+}
 type ClockHandProps = {
-    type: 'hour' | 'minute';
+    type: ClockHandType;
     degrees: number;
 };
 
@@ -11,22 +15,22 @@ export function ClockHand({ type, degrees }: ClockHandProps) {
 
     const width = (() => {
         switch (type) {
-            case 'hour': return 4;
-            case 'minute': return 3;
+            case ClockHandType.HOUR: return 4;
+            case ClockHandType.MINUTE: return 3;
             default: return '0%';
         }
     })();
     const height = (() => {
         switch (type) {
-            case 'hour': return '28%';
-            case 'minute': return '46%';
+            case ClockHandType.HOUR: return '28%';
+            case ClockHandType.MINUTE: return '46%';
             default: return '0%';
         }
     })();
     const backgroundColor = (() => {
         switch (type) {
-            case 'hour': return theme.lowContrast;
-            case 'minute': return theme.highContrast;
+            case ClockHandType.HOUR: return theme.lowContrast;
+            case ClockHandType.MINUTE: return theme.highContrast;
             default: return '0%';
         }
     })();

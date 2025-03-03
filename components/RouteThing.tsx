@@ -69,7 +69,11 @@ export function RouteThing({ etaInfo, currentTime }: RouteThingProps) {
     );
 }
 
-export function getRouteThings(etaInfos: EtaInfo[], currentTime: Date) {
+type RouteThingsProps = {
+    etaInfos: EtaInfo[];
+    currentTime: Date;
+};
+export function RouteThings({ etaInfos, currentTime }: RouteThingsProps) {
     if (etaInfos.length === 0) {
         // TODO: add a "no buses" message
         return null;

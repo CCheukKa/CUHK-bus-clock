@@ -1,4 +1,5 @@
 import { Region, Station } from "@/constants/BusData";
+import { Theme } from "@/constants/Themes";
 import { useTheme } from "@/context/ThemeContext";
 import { MaterialCommunityIcons, MaterialIcons } from "@expo/vector-icons";
 import { useCallback, useState } from "react";
@@ -26,48 +27,6 @@ export function LocationPicker({ label, data, location, setLocation }: LocationP
         setLocation(item.value as Station | Region);
         setDropdownExpanded(false);
     }, []);
-
-    const dropdownListItem = (item: any, selected?: boolean) => {
-        const dropdownItem = item as DropdownItem;
-        const isRegion = dropdownItem.type === 'region';
-        return (
-            <View
-                style={[
-                    styles.dropdownItem,
-                    selected ? { backgroundColor: theme.highContrast } : null
-                ]}
-                key={dropdownItem.value}
-            >
-                {isRegion
-                    ? <MaterialCommunityIcons
-                        name="map-marker-radius"
-                        size={24}
-                        style={{
-                            color: selected ? theme.dimContrast : theme.highContrast
-                        }}
-                    />
-                    : <MaterialCommunityIcons
-                        name="subdirectory-arrow-right"
-                        size={24}
-                        style={{
-                            color: selected ? theme.dimContrast : theme.highContrast,
-                            marginLeft: 24
-                        }}
-                    />
-                }
-                <Text style={[
-                    styles.dropdownItemText,
-                    {
-                        color: selected ? theme.dimContrast : theme.highContrast,
-                        fontWeight: isRegion ? 'bold' : 'normal',
-                        fontSize: isRegion ? 18 : 14,
-                    }
-                ]}>
-                    {dropdownItem.label}
-                </Text>
-            </View>
-        );
-    };
 
     return (
         <View style={styles.dropdownContainer}>
@@ -117,11 +76,53 @@ export function LocationPicker({ label, data, location, setLocation }: LocationP
                 }
                 onFocus={() => { setDropdownExpanded(true); }}
                 onBlur={() => { setDropdownExpanded(false); }}
-                renderItem={dropdownListItem}
+                renderItem={(item, selected) => dropdownListItem(item, selected ?? false, theme)}
             />
         </View>
     );
 }
+
+function dropdownListItem(item: any, selected: boolean, theme: Theme) {
+    const dropdownItem = item as DropdownItem;
+    const isRegion = dropdownItem.type === 'region';
+    return (
+        <View
+            style={[
+                styles.dropdownItem,
+                selected ? { backgroundColor: theme.highContrast } : null
+            ]}
+            key={dropdownItem.value}
+        >
+            {isRegion
+                ? <MaterialCommunityIcons
+                    name="map-marker-radius"
+                    size={24}
+                    style={{
+                        color: selected ? theme.dimContrast : theme.highContrast
+                    }}
+                />
+                : <MaterialCommunityIcons
+                    name="subdirectory-arrow-right"
+                    size={24}
+                    style={{
+                        color: selected ? theme.dimContrast : theme.highContrast,
+                        marginLeft: 24
+                    }}
+                />
+            }
+            <Text style={[
+                styles.dropdownItemText,
+                {
+                    color: selected ? theme.dimContrast : theme.highContrast,
+                    fontWeight: isRegion ? 'bold' : 'normal',
+                    fontSize: isRegion ? 18 : 14,
+                }
+            ]}>
+                {dropdownItem.label}
+            </Text>
+        </View>
+    );
+};
 
 const styles = StyleSheet.create({
     dropdownContainer: {

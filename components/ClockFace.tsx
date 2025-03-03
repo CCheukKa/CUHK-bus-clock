@@ -1,39 +1,18 @@
 import { StyleSheet, View } from 'react-native';
 import { useMemo } from 'react';
 import { ClockThing, ClockThingType } from '@/components/ClockThing';
-import { ClockHand } from '@/components/ClockHand';
+import { ClockHand, ClockHandType } from '@/components/ClockHand';
 import { ClockTick, ClockTickType } from '@/components/ClockTick';
-import { getRouteThings } from '@/components/RouteThing';
+import { RouteThings } from '@/components/RouteThing';
 import { EtaInfo } from '@/backend/Bus';
 import { useTheme } from '@/context/ThemeContext';
 
-type ClockViewProps = {
+type ClockFaceProps = {
     time: Date;
     etaInfos: EtaInfo[];
 };
-
-export function ClockFace({ time, etaInfos }: ClockViewProps) {
+export function ClockFace({ time, etaInfos }: ClockFaceProps) {
     const { theme } = useTheme();
-
-    const clockNumbers = useMemo(() => {
-        return Array.from({ length: 12 }, (_, i) => i + 1).map(i => {
-            return (
-                <ClockThing type={ClockThingType.CLOCK_NUMBER} key={i} degrees={360 / 12 * i} distance={0.76}>
-                    {i}
-                </ClockThing>
-            );
-        });
-    }, []);
-    const clockTicks = useMemo(() => {
-        return Array.from({ length: 60 }, (_, i) => i + 1).map(i => {
-            const degrees = 360 / 60 * i;
-            return (
-                <ClockTick type={i % 5 === 0 ? ClockTickType.MAJOR : ClockTickType.MINOR} degrees={degrees} key={i} />
-            );
-        });
-    }, []);
-
-    const routeThings = getRouteThings(etaInfos, time);
 
     return (
         <View style={styles.clockContainer}>
@@ -45,14 +24,49 @@ export function ClockFace({ time, etaInfos }: ClockViewProps) {
                     shadowColor: theme.highContrast,
                 },
             ]}>
-                {clockNumbers}
-                {clockTicks}
-                {routeThings}
-                <ClockHand type='hour' degrees={360 / 12 * time.getHours() + 360 / 12 / 60 * time.getMinutes()} />
-                <ClockHand type='minute' degrees={360 / 60 * time.getMinutes() + 360 / 60 / 60 * time.getSeconds()} />
+                <ClockNumbers />
+                <ClockTicks />
+                <ClockHands time={time} />
                 <ClockThing type={ClockThingType.CLOCK_CENTRE_DOT} x={0} y={0} />
+
+                <RouteThings currentTime={time} etaInfos={etaInfos} />
             </View>
         </View>
+    );
+}
+
+function ClockNumbers() {
+    return useMemo(() => {
+        return Array.from({ length: 12 }, (_, i) => i + 1).map(i => {
+            return (
+                <ClockThing type={ClockThingType.CLOCK_NUMBER} key={i} degrees={360 / 12 * i} distance={0.76}>
+                    {i}
+                </ClockThing>
+            );
+        });
+    }, []);
+}
+
+function ClockTicks() {
+    return useMemo(() => {
+        return Array.from({ length: 60 }, (_, i) => i + 1).map(i => {
+            const degrees = 360 / 60 * i;
+            return (
+                <ClockTick type={i % 5 === 0 ? ClockTickType.MAJOR : ClockTickType.MINOR} degrees={degrees} key={i} />
+            );
+        });
+    }, []);
+}
+
+type ClockHandsProps = {
+    time: Date;
+};
+function ClockHands({ time }: ClockHandsProps) {
+    return (
+        <>
+            <ClockHand type={ClockHandType.HOUR} degrees={360 / 12 * time.getHours() + 360 / 12 / 60 * time.getMinutes()} />
+            <ClockHand type={ClockHandType.MINUTE} degrees={360 / 60 * time.getMinutes() + 360 / 60 / 60 * time.getSeconds()} />
+        </>
     );
 }
 
