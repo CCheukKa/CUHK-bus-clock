@@ -9,6 +9,7 @@
 ### Backend
 - Scrape public holiday data from [https://www.gov.hk/en/about/abouthk/holiday/2025.htm]
 - Add ability to fetch timing data from repo
+- Fix route search stopping on first instance of end station
 ### UI
 - Dropdown styling follow colour theme
 - Make ETA text distance adjust dynamically based on location
