@@ -49,7 +49,7 @@ export function DetailedEtaInfo({ time, etaInfos }: DetailedEtaInfoProps) {
                     isEtaInfoArray(etaInfos)
                         ? etaInfos.map((etaInfo) => (
                             <EtaInfoCard
-                                key={Math.random()}
+                                key={etaInfo.journey.route + etaInfo.etaFromTime}
                                 time={time}
                                 etaInfo={etaInfo}
                             />
@@ -155,7 +155,7 @@ function EtaTime({ time, etaTime }: { time: Date, etaTime: Date }) {
                 fontWeight: 'bold',
                 fontSize: 12,
             }}>
-                {`(${toTimeString([etaMinutes, etaSeconds])})`}
+                {`[ ${toTimeString([etaMinutes, etaSeconds])} ]`}
             </Text>
         </View>
     );
