@@ -30,7 +30,7 @@ export default function RootLayout() {
     /* -------------------------------------------------------------------------- */
 
     return (
-        <StrictMode>
+        <>
             <StatusBar style="auto" />
             <PaperProvider
                 settings={{
@@ -51,7 +51,7 @@ export default function RootLayout() {
                     </ThemeProvider>
                 </SettingsProvider>
             </PaperProvider>
-        </StrictMode>
+        </>
     );
 }
 
