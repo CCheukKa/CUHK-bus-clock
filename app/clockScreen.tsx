@@ -13,7 +13,7 @@ import { useSettings } from '@/context/SettingsContext';
 import { FullscreenView } from '@/components/FullscreenView';
 import { useTheme } from '@/context/ThemeContext';
 
-export const weekDays = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+const weekDays = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 
 export default function ClockScreen() {
     const { settings } = useSettings();

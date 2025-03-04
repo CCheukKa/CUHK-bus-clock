@@ -3,7 +3,8 @@ import { EtaError, EtaErrorType, EtaInfo, isEtaError, NoServiceTodayError, OutOf
 import { busRouteInfos } from "@/constants/BusData";
 import { Colour, MathExtra } from "@/backend/Helper";
 import { useTheme } from "@/context/ThemeContext";
-import { weekDays } from "@/app/clockScreen";
+
+const weekDays = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 
 type RouteThingProps = {
     etaInfo: EtaInfo;
