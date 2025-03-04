@@ -120,6 +120,23 @@ export class IconGlyphs {
     static isMaterialCommunityIcons(name: string): name is MaterialCommunityIconsGlyphs { return name in MaterialCommunityIconsGlyphMap; }
 }
 
+/* -------------------------------------------------------------------------- */
+/**
+ * Converts a tuple of two numbers into a formatted time string.
+ *
+ * @param param0 - A tuple containing two numbers. The first number represents hours/minutes, and the second number represents minutes/seconds.
+ * @param padFront - A boolean indicating whether to pad the first number with a leading zero if it is a single digit.
+ * @returns A string representing the formatted time.
+ * 
+ * @example
+ * ```typescript
+ * const time = toTimeString([1, 30], true);
+ * console.log(time); // Output will be '01:30'
+ * ```
+ */
+export function toTimeString([a, b]: [number, number], padFront: boolean): string {
+    return `${padFront ? a.toString().padStart(2, '0') : a}:${b.toString().padStart(2, '0')}`;
+}
 
 /* -------------------------------------------------------------------------- */
 /**

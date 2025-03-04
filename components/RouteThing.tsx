@@ -1,7 +1,7 @@
 import { ClockThing, ClockThingType } from "@/components/ClockThing";
 import { EtaError, EtaErrorType, EtaInfo, isEtaError, NoServiceTodayError, OutOfServiceHoursError } from "@/backend/Bus";
 import { busRouteInfos } from "@/constants/BusData";
-import { Colour, MathExtra } from "@/backend/Helper";
+import { Colour, MathExtra, toTimeString } from "@/backend/Helper";
 import { useTheme } from "@/context/ThemeContext";
 import { useMemo } from "react";
 
@@ -66,7 +66,7 @@ export function RouteThing({ etaInfo, currentTime }: RouteThingProps) {
                 type={ClockThingType.ROUTE_ETA_COUNTDOWN}
                 style={{ textColour: Colour.mixRGBA(theme.background, routeColour, opacity) }}
             >
-                {eta < 0 ? '-' : null}{etaMinutes}:{etaSeconds.toString().padStart(2, '0')}
+                {eta < 0 ? '-' : null}{toTimeString([etaMinutes, etaSeconds], false)}
             </ClockThing>
         </>
     );
@@ -89,7 +89,7 @@ export function RouteThings({ etaInfos, currentTime }: RouteThingsProps) {
                         {
                             let msg = 'Out of service hours';
                             (etaInfos as OutOfServiceHoursError).routes.forEach(route => {
-                                msg += `\nRoute ${route.replaceAll('_', '')} - ${busRouteInfos[route].firstService.map(n => n.toString().padStart(2, '0')).join(':')}-${busRouteInfos[route].lastService.map(n => n.toString().padStart(2, '0')).join(':')}`;
+                                msg += `\nRoute ${route.replaceAll('_', '')} - ${toTimeString(busRouteInfos[route].firstService, true)}-${toTimeString(busRouteInfos[route].lastService, true)}`;
                             });
                             return msg;
                         }
