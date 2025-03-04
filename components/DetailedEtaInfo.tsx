@@ -44,16 +44,19 @@ export function DetailedEtaInfo({ time, etaInfos }: DetailedEtaInfoProps) {
                     { zIndex: 2 },
                 ]}
                 contentContainerStyle={styles.etaScrollContainerContent}
+                showsVerticalScrollIndicator={false}
             >
                 {
                     isEtaInfoArray(etaInfos)
-                        ? etaInfos.map((etaInfo) => (
-                            <EtaInfoCard
-                                key={etaInfo.journey.route + etaInfo.etaFromTime}
-                                time={time}
-                                etaInfo={etaInfo}
-                            />
-                        ))
+                        ? etaInfos
+                            .sort((a, b) => a.etaFromTime.getTime() - b.etaFromTime.getTime())
+                            .map((etaInfo) => (
+                                <EtaInfoCard
+                                    key={etaInfo.journey.route + etaInfo.etaFromTime}
+                                    time={time}
+                                    etaInfo={etaInfo}
+                                />
+                            ))
                         : null
                 }
             </ScrollView>
@@ -65,11 +68,12 @@ function EtaInfoCard({ time, etaInfo }: { time: Date, etaInfo: EtaInfo }) {
     const { theme } = useTheme();
     const routeColour = busRouteInfos[etaInfo.journey.route].routeColour;
     const contrastColour = Colour.getLuminance(routeColour) > 150 ? theme.black : theme.white;
+    const isPast = etaInfo.etaFromTime.getTime() < time.getTime();
     return (
         <View style={[
             styles.etaInfoCard,
             {
-                backgroundColor: theme.dimContrast,
+                backgroundColor: isPast ? theme.background : theme.dimContrast,
             },
         ]}>
             <Text style={[
@@ -77,18 +81,18 @@ function EtaInfoCard({ time, etaInfo }: { time: Date, etaInfo: EtaInfo }) {
                 {
                     left: 0,
                     textAlign: 'left',
-                    color: theme.highContrast,
+                    color: isPast ? theme.halfContrast : theme.highContrast,
                 },
             ]}>
                 {stationAbbreviations[etaInfo.journey.fromStation]}
             </Text>
             <View style={styles.etaInfoCardCenter}>
-                <EtaTime time={time} etaTime={etaInfo.etaFromTime} />
+                <EtaTime time={time} etaTime={etaInfo.etaFromTime} isPast={isPast} />
                 <View style={styles.arrowContainer}>
                     <View style={[
                         styles.routeNumberBubble,
                         {
-                            backgroundColor: routeColour,
+                            backgroundColor: isPast ? Colour.mixRGBA(theme.dimContrast, routeColour, 0.5) : routeColour,
                             shadowColor: contrastColour,
                             shadowRadius: 4,
                             elevation: 1,
@@ -96,13 +100,16 @@ function EtaInfoCard({ time, etaInfo }: { time: Date, etaInfo: EtaInfo }) {
                     ]}>
                         <Text style={[
                             styles.routeNumberBubbleText,
-                            { color: contrastColour },
+                            {
+                                color: contrastColour,
+                                opacity: isPast ? 0.8 : 1,
+                            },
                         ]}>{etaInfo.journey.route}</Text>
                     </View>
                     <FontAwesome
                         name='long-arrow-right'
                         size={40}
-                        color={routeColour}
+                        color={isPast ? Colour.mixRGBA(theme.dimContrast, routeColour, 0.5) : routeColour}
                         style={{
                             position: 'relative',
                             left: 12,
@@ -113,7 +120,7 @@ function EtaInfoCard({ time, etaInfo }: { time: Date, etaInfo: EtaInfo }) {
                     <FontAwesome
                         name='long-arrow-right'
                         size={40}
-                        color={routeColour}
+                        color={isPast ? Colour.mixRGBA(theme.dimContrast, routeColour, 0.5) : routeColour}
                         style={{
                             position: 'relative',
                             right: 6,
@@ -122,14 +129,15 @@ function EtaInfoCard({ time, etaInfo }: { time: Date, etaInfo: EtaInfo }) {
                         }}
                     />
                 </View>
-                <EtaTime time={time} etaTime={etaInfo.etaToTime} />
+                <EtaTime time={time} etaTime={etaInfo.etaToTime} isPast={isPast} />
             </View>
             <Text style={[
                 styles.etaInfoCardStation,
                 {
                     right: 0,
                     textAlign: 'right',
-                    color: theme.highContrast,
+                    color: isPast ? theme.halfContrast : theme.highContrast,
+
                 },
             ]}>
                 {stationAbbreviations[etaInfo.journey.toStation].replace(/ \(.*\)/, '')}
@@ -138,20 +146,20 @@ function EtaInfoCard({ time, etaInfo }: { time: Date, etaInfo: EtaInfo }) {
     );
 }
 
-function EtaTime({ time, etaTime }: { time: Date, etaTime: Date }) {
+function EtaTime({ time, etaTime, isPast }: { time: Date, etaTime: Date, isPast: boolean }) {
     const { theme } = useTheme();
     const { etaMinutes, etaSeconds } = getEta(time, etaTime);
     return (
         <View style={styles.etaTimeContainer}>
             <Text style={{
-                color: theme.highContrast,
+                color: isPast ? theme.lowContrast : theme.highContrast,
                 fontWeight: 'bold',
                 fontSize: 18,
             }}>
                 {etaTime.toLocaleTimeString('en-GB').slice(0, 5)}
             </Text>
             <Text style={{
-                color: theme.halfContrast,
+                color: isPast ? theme.lowContrast : theme.halfContrast,
                 fontWeight: 'bold',
                 fontSize: 12,
             }}>
