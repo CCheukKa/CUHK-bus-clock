@@ -3,7 +3,7 @@ import { DropdownItem, LocationPicker } from "@/components/LocationPicker";
 import { useEffect, useState } from "react";
 import { FromTo, LocationNullable } from "@/backend/Bus";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
-import { View } from "react-native";
+import { StyleSheet, Text, View } from "react-native";
 import { useTheme } from "@/context/ThemeContext";
 
 const data: DropdownItem[] = (() => {
@@ -36,6 +36,20 @@ export function JourneyPlanner({ fromTo, setFromTo }: JourneyPlannerProps) {
     const fromOnOpen = () => { setToDropdownOpened(false); };
     const toOnOpen = () => { setFromDropdownOpened(false); };
 
+    let hideArrow = false;
+    const warningMessage: string | null = (() => {
+        hideArrow = false;
+        switch (true) {
+            case fromLocation && toLocation && fromLocation === toLocation:
+                return 'start = end !';
+            case fromLocation === Region.MISCELLANEOUS || toLocation === Region.MISCELLANEOUS:
+                hideArrow = true;
+                return 'choosing miscellaneous is not recommended';
+            default:
+                return null;
+        }
+    })();
+
     return (
         <>
             <LocationPicker
@@ -47,31 +61,35 @@ export function JourneyPlanner({ fromTo, setFromTo }: JourneyPlannerProps) {
                 setDropdownOpened={setFromDropdownOpened}
                 onOpen={fromOnOpen}
             />
-            <View style={{
-                display: 'flex',
-                justifyContent: 'center',
-                alignItems: 'center',
-                opacity: fromDropdownOpened ? 0 : 1,
-            }}>
-                <MaterialCommunityIcons
-                    name="arrow-down-thin"
-                    size={24}
-                    color={theme.halfContrast}
-                    style={{
-                        zIndex: 3,
-                        transform: [{ scale: 2.5 }],
-                    }}
-                />
-                <MaterialCommunityIcons
-                    name="arrow-down-thin"
-                    size={24}
-                    color={theme.background}
-                    style={{
-                        zIndex: 2,
-                        position: 'absolute',
-                        transform: [{ scale: 2.5 }, { translateY: 1.2 }],
-                    }}
-                />
+            <View style={styles.middleContainer}>
+                <View style={{ opacity: fromDropdownOpened || hideArrow ? 0 : 1 }}>
+                    <MaterialCommunityIcons
+                        name="arrow-down-thin"
+                        size={24}
+                        color={theme.halfContrast}
+                        style={{
+                            zIndex: 1,
+                            transform: [{ scale: 2.5 }],
+                        }}
+                    />
+                    <MaterialCommunityIcons
+                        name="arrow-down-thin"
+                        size={24}
+                        color={theme.background}
+                        style={{
+                            position: 'absolute',
+                            transform: [{ scale: 2.5 }, { translateY: 1.2 }],
+                        }}
+                    />
+                </View>
+                <Text
+                    style={[
+                        styles.warningText,
+                        { color: theme.primary },
+                    ]}
+                >
+                    {warningMessage}
+                </Text>
             </View>
             <LocationPicker
                 data={data}
@@ -85,3 +103,20 @@ export function JourneyPlanner({ fromTo, setFromTo }: JourneyPlannerProps) {
         </>
     );
 }
+
+const styles = StyleSheet.create({
+    middleContainer: {
+        display: 'flex',
+        flexDirection: 'row',
+        justifyContent: 'center',
+        alignItems: 'center',
+        width: '80%',
+        zIndex: 2,
+    },
+    warningText: {
+        position: 'absolute',
+        right: 0,
+        fontWeight: 'bold',
+        textAlign: 'right',
+    }
+});
