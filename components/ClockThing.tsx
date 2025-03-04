@@ -80,10 +80,6 @@ export function ClockThing({ type, style, x, y, degrees, distance, children }: C
                             backgroundColor: style?.backgroundColour,
                             transform: [{ scale: style?.scale ?? 1 }],
                             shadowColor: theme.highContrast,
-                            shadowOffset: { width: 0, height: 0 },
-                            shadowOpacity: 0.5,
-                            shadowRadius: 10,
-                            elevation: 1,
                         }
                     ]}>
                         <Text style={[
@@ -112,9 +108,6 @@ export function ClockThing({ type, style, x, y, degrees, distance, children }: C
                     {
                         color: style?.textColour,
                         textShadowColor: theme.dimContrast,
-                        textShadowOffset: { width: 0, height: 0 },
-                        shadowOpacity: 0.5,
-                        textShadowRadius: 6,
                     }
                 ]}>{children}</Text>);
             case ClockThingType.ERROR_TEXT:
@@ -178,6 +171,9 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         width: 32,
+        shadowOpacity: 0.5,
+        shadowRadius: 10,
+        elevation: 1,
     },
     routeNumber: {
         fontSize: 20,
@@ -189,6 +185,9 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         width: 80,
         textAlign: 'center',
+        textShadowOffset: { width: 0, height: 0 },
+        shadowOpacity: 0.5,
+        textShadowRadius: 6,
     },
     errorText: {
         position: 'absolute',
