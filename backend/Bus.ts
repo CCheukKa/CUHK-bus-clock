@@ -60,7 +60,8 @@ export class NotWithinPeekTimeError extends EtaError {
         super(EtaErrorType.NO_SERVICE_WITHIN_PEEK_TIME);
     }
 }
-export function isNotEtaError(value: EtaInfo | EtaInfo[] | EtaError): value is EtaInfo { return !isEtaError(value); }
+export function isEtaInfo(value: EtaInfo | EtaInfo[] | EtaError): value is EtaInfo { return !isEtaError(value); }
+export function isEtaInfoArray(value: EtaInfo | EtaInfo[] | EtaError): value is EtaInfo[] { return Array.isArray(value) && value.every(isEtaInfo); }
 export function isEtaError(value: EtaInfo | EtaInfo[] | EtaError): value is EtaError { return value instanceof EtaError; }
 /* -------------------------------------------------------------------------- */
 
@@ -105,7 +106,7 @@ export function getEtaInfos({ from, to }: FromTo, currentTime: Date, pastPeekMin
         etaInfos.push(...[getStationRouteETA(shortestRouteJourney, currentTime)].flat());
     });
 
-    const validEtaInfos = etaInfos.filter(etaInfo => isNotEtaError(etaInfo));
+    const validEtaInfos = etaInfos.filter(etaInfo => isEtaInfo(etaInfo));
     if (validEtaInfos.length !== 0) {
         const withinPeekValidEtaInfos = validEtaInfos.filter(eta => eta.etaTime >= pastPeekTimestamp && eta.etaTime <= futurePeekTimestamp);
         return withinPeekValidEtaInfos.length === 0 ? new NotWithinPeekTimeError : withinPeekValidEtaInfos;
