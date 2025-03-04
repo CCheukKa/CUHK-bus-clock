@@ -16,7 +16,7 @@ export function RouteThing({ etaInfo, currentTime }: RouteThingProps) {
     const { theme } = useTheme();
 
     const routeColour = busRouteInfos[etaInfo.journey.route].routeColour;
-    const etaTime = etaInfo.etaTime;
+    const etaTime = etaInfo.etaFromTime;
     const angle = etaTime.getMinutes() * 6 + etaTime.getSeconds() / 10;
     const { etaTotalMinutes, etaMinutes, etaSeconds } = getEta(currentTime, etaTime);
     const opacity = etaTotalMinutes > 0 ? 1 : 0.75;
@@ -118,7 +118,7 @@ export function RouteThings({ etaInfos, currentTime }: RouteThingsProps) {
             <RouteThing
                 etaInfo={etaInfo}
                 currentTime={currentTime}
-                key={`${etaInfo.journey.route}-${etaInfo.etaTime.getTime()}`}
+                key={`${etaInfo.journey.route}-${etaInfo.etaFromTime.getTime()}`}
             />
         ));
     }, [etaInfos]);

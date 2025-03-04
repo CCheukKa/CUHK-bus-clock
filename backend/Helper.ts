@@ -166,6 +166,9 @@ declare global {
         /**
          * Adds the specified amount of time to the current date.
          * 
+         * @param years - The number of years to add. Defaults to 0.
+         * @param months - The number of months to add. Defaults to 0.
+         * @param days - The number of days to add. Defaults to 0.
          * @param hours - The number of hours to add. Defaults to 0.
          * @param minutes - The number of minutes to add. Defaults to 0.
          * @param seconds - The number of seconds to add. Defaults to 0.
@@ -173,10 +176,15 @@ declare global {
          * @returns The updated Date object.
          */
         add(
-            hours?: number,
-            minutes?: number,
-            seconds?: number,
-            milliseconds?: number,
+            { years, months, days, hours, minutes, seconds, milliseconds }: {
+                years?: number,
+                months?: number,
+                days?: number,
+                hours?: number,
+                minutes?: number,
+                seconds?: number,
+                milliseconds?: number,
+            }
         ): Date;
 
         /**
@@ -191,8 +199,25 @@ declare global {
         ): Date;
     }
 }
-Date.prototype.add = function (this: Date, hours?, minutes?, seconds?, milliseconds?): Date {
-    return new Date(this.getTime() + (hours ?? 0) * 3600000 + (minutes ?? 0) * 60000 + (seconds ?? 0) * 1000 + (milliseconds ?? 0));
+Date.prototype.add = function (this: Date,
+    { years, months, days, hours, minutes, seconds, milliseconds }: {
+        years?: number,
+        months?: number,
+        days?: number,
+        hours?: number,
+        minutes?: number,
+        seconds?: number,
+        milliseconds?: number,
+    }
+): Date {
+    years = years ?? 0;
+    months = months ?? 0;
+    days = days ?? 0;
+    hours = hours ?? 0;
+    minutes = minutes ?? 0;
+    seconds = seconds ?? 0;
+    milliseconds = milliseconds ?? 0;
+    return new Date(this.getTime() + (years * 31536000000) + (months * 2592000000) + (days * 86400000) + (hours * 3600000) + (minutes * 60000) + (seconds * 1000) + (milliseconds));
 };
 type DateUnits = 'year' | 'month' | 'day' | 'hour' | 'minute' | 'second' | 'millisecond';
 Date.prototype.truncateTo = function (this: Date, unit: DateUnits): Date {

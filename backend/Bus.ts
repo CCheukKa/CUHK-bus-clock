@@ -6,7 +6,9 @@ import { BusRoute, busRouteInfos, busStationTimings, Region, Station, stationReg
 
 export type EtaInfo = {
     journey: Journey,
-    etaTime: Date,
+    etaFromTime: Date,
+    etaToTime: Date,
+    isLastService: boolean,
 }
 export type LocationNullable = Station | Region | null;
 export type FromTo = {
@@ -106,23 +108,28 @@ export function getEtaInfos({ from, to }: FromTo, currentTime: Date, pastPeekMin
         etaInfos.push(...[getStationRouteETA(shortestRouteJourney, currentTime)].flat());
     });
 
-    const validEtaInfos = etaInfos.filter(etaInfo => isEtaInfo(etaInfo));
-    if (validEtaInfos.length !== 0) {
-        const withinPeekValidEtaInfos = validEtaInfos.filter(eta => eta.etaTime >= pastPeekTimestamp && eta.etaTime <= futurePeekTimestamp);
-        return withinPeekValidEtaInfos.length === 0 ? new NotWithinPeekTimeError : withinPeekValidEtaInfos;
-    }
-
     const etaErrors = etaInfos.filter(etaInfo => isEtaError(etaInfo));
+    const errorlessEtaInfos = etaInfos.filter(etaInfo => isEtaInfo(etaInfo));
+    const withinPeekValidEtaInfos = errorlessEtaInfos.filter(eta => eta.etaFromTime >= pastPeekTimestamp && eta.etaFromTime <= futurePeekTimestamp);
 
-    if (etaErrors.some(etaError => etaError.isType(EtaErrorType.INTERNAL_API_ERROR))) { return new InternalApiError; }
-    if (etaErrors.some(etaError => etaError.isType(EtaErrorType.OUT_OF_SERVICE_HOURS))) {
+    const hasNotWithinPeekTime = errorlessEtaInfos.length !== 0 && withinPeekValidEtaInfos.length !== errorlessEtaInfos.length;
+    const hasInternalApiError = etaErrors.some(etaError => etaError.isType(EtaErrorType.INTERNAL_API_ERROR));
+    const hasOutOfServiceHoursError = etaErrors.some(etaError => etaError.isType(EtaErrorType.OUT_OF_SERVICE_HOURS));
+    const hasNoServiceTodayError = etaErrors.some(etaError => etaError.isType(EtaErrorType.NO_SERVICE_TODAY));
+    const hasLastService = errorlessEtaInfos.some(eta => eta.isLastService);
+
+    if (hasInternalApiError) { return new InternalApiError; }
+    if (errorlessEtaInfos.length !== 0 && withinPeekValidEtaInfos.length !== 0) { return withinPeekValidEtaInfos; }
+    if (hasNotWithinPeekTime && !hasLastService) { return new NotWithinPeekTimeError; }
+    if (hasOutOfServiceHoursError || (hasNotWithinPeekTime && hasLastService)) {
         return new OutOfServiceHoursError(
             etaErrors.filter(etaError => etaError.isType(EtaErrorType.OUT_OF_SERVICE_HOURS))
                 .map(etaError => (etaError as OutOfServiceHoursError).routes)
                 .flat()
         );
     }
-    if (etaErrors.some(etaError => etaError.isType(EtaErrorType.NO_SERVICE_TODAY))) {
+    if (errorlessEtaInfos.length !== 0 && withinPeekValidEtaInfos.length == 0) { return new NotWithinPeekTimeError; }
+    if (hasNoServiceTodayError) {
         return new NoServiceTodayError(
             etaErrors.filter(etaError => etaError.isType(EtaErrorType.NO_SERVICE_TODAY))
                 .map(etaError => (etaError as NoServiceTodayError).routes)
@@ -130,8 +137,8 @@ export function getEtaInfos({ from, to }: FromTo, currentTime: Date, pastPeekMin
         );
     }
     return new InternalApiError;
-    /* -------------------------------------------------------------------------- */
 
+    /* -------------------------------------------------------------------------- */
     function scoredJourney(journey: Journey): number {
         // Lower score is better
         const { route, fromIndex, toIndex } = journey;
@@ -167,29 +174,55 @@ function getStationRouteETA(journey: Journey, currentTime: Date): EtaInfo[] | Et
     if (!routeInfo) { return new InternalApiError; }
     if (!routeInfo.days.includes(currentTime.getDay())) { return new NoServiceTodayError([journey.route]); }
     if (!routeInfo.stations.find(s => s === journey.fromStation)) { return new InternalApiError; }
-    const routeStationTime = getRouteStationTime();
+    const routeStartStationTimeOffsetSeconds = getRouteStationTimeOffsetSeconds(journey.fromIndex);
+    const routeEndStationTimeOffsetSeconds = getRouteStationTimeOffsetSeconds(journey.toIndex);
 
     const currentHour = currentTime.getHours();
 
     const etaInfos: (EtaInfo | null)[] = [];
 
     routeInfo.minuteMarks.forEach(minuteMark => {
-        const pastHourStartTime = new Date(currentTime);
-        const currentHourStartTime = new Date(currentTime);
-        const futureHourStartTime = new Date(currentTime);
+        const pastHourMarkTime = new Date(currentTime);
+        const currentHourMarkTime = new Date(currentTime);
+        const futureHourMarkTime = new Date(currentTime);
 
-        pastHourStartTime.setHours(currentHour - 1, minuteMark, 0, 0);
-        currentHourStartTime.setHours(currentHour, minuteMark, 0, 0);
-        futureHourStartTime.setHours(currentHour + 1, minuteMark, 0, 0);
+        pastHourMarkTime.setHours(currentHour - 1, minuteMark, 0, 0);
+        currentHourMarkTime.setHours(currentHour, minuteMark, 0, 0);
+        futureHourMarkTime.setHours(currentHour + 1, minuteMark, 0, 0);
 
-        const pastHourEtaTime = pastHourStartTime.add(0, 0, routeStationTime);
-        const currentHourEtaTime = currentHourStartTime.add(0, 0, routeStationTime);
-        const futureHourEtaTime = futureHourStartTime.add(0, 0, routeStationTime);
+        const pastHourEtaFromTime = pastHourMarkTime.add({ seconds: routeStartStationTimeOffsetSeconds });
+        const currentHourEtaFromTime = currentHourMarkTime.add({ seconds: routeStartStationTimeOffsetSeconds });
+        const futureHourEtaFromTime = futureHourMarkTime.add({ seconds: routeStartStationTimeOffsetSeconds });
+
+        const pastHourEtaToTime = pastHourMarkTime.add({ seconds: routeEndStationTimeOffsetSeconds });
+        const currentHourEtaToTime = currentHourMarkTime.add({ seconds: routeEndStationTimeOffsetSeconds });
+        const futureHourEtaToTime = futureHourMarkTime.add({ seconds: routeEndStationTimeOffsetSeconds });
 
         etaInfos.push(
-            isWithinServiceHours(pastHourStartTime) ? { journey, etaTime: pastHourEtaTime } : null,
-            isWithinServiceHours(currentHourStartTime) ? { journey, etaTime: currentHourEtaTime } : null,
-            isWithinServiceHours(futureHourStartTime) ? { journey, etaTime: futureHourEtaTime } : null,
+            isWithinServiceHours(pastHourMarkTime)
+                ? {
+                    journey,
+                    etaFromTime: pastHourEtaFromTime,
+                    etaToTime: pastHourEtaToTime,
+                    isLastService: !isWithinServiceHours(pastHourEtaFromTime),
+                }
+                : null,
+            isWithinServiceHours(currentHourMarkTime)
+                ? {
+                    journey,
+                    etaFromTime: currentHourEtaFromTime,
+                    etaToTime: currentHourEtaToTime,
+                    isLastService: !isWithinServiceHours(currentHourEtaFromTime),
+                }
+                : null,
+            isWithinServiceHours(futureHourMarkTime)
+                ? {
+                    journey,
+                    etaFromTime: futureHourEtaFromTime,
+                    etaToTime: futureHourEtaToTime,
+                    isLastService: !isWithinServiceHours(futureHourEtaFromTime),
+                }
+                : null,
         );
     });
 
@@ -197,12 +230,12 @@ function getStationRouteETA(journey: Journey, currentTime: Date): EtaInfo[] | Et
     return inServiceHoursEtaInfos.length === 0 ? new OutOfServiceHoursError([journey.route]) : inServiceHoursEtaInfos;
 
     /* -------------------------------------------------------------------------- */
-    function getRouteStationTime(): number {
+    function getRouteStationTimeOffsetSeconds(stationIndex: number): number {
         if (!routeInfo) { throw new Error('Route info not found but getRouteStationTime() is called'); }
         const stations = routeInfo.stations;
 
         let stationTime = 0;
-        for (let i = 1; i < journey.fromIndex; i++) {
+        for (let i = 1; i < stationIndex; i++) {
             stationTime += busStationTimings[`${stations[i - 1]}>>${stations[i]}`]
                 ?? (() => { throw new Error(`Timing ${stations[i - 1]} -> ${stations[i]} not found!`) })();
         }
@@ -210,12 +243,23 @@ function getStationRouteETA(journey: Journey, currentTime: Date): EtaInfo[] | Et
     }
     function isWithinServiceHours(time: Date): boolean {
         if (!routeInfo) { throw new Error('Route info not found but isWithinServiceHours() is called'); }
-        // 
-        const hour = time.getHours();
-        const minute = time.getMinutes();
-        if (hour < routeInfo.firstService[0] || hour > routeInfo.lastService[0]) { return false; }
-        if (hour === routeInfo.firstService[0] && minute < routeInfo.firstService[1]) { return false; }
-        if (hour === routeInfo.lastService[0] && minute > routeInfo.lastService[1]) { return false; }
-        return true;
+
+        const yesterdayFirstService = new Date(currentTime).add({ days: -1 });
+        const yesterdayLastService = new Date(currentTime).add({ days: -1 });
+        const todayFirstService = new Date(currentTime);
+        const todayLastService = new Date(currentTime);
+        const tomorrowFirstService = new Date(currentTime).add({ days: 1 });
+        const tomorrowLastService = new Date(currentTime).add({ days: 1 });
+
+        yesterdayFirstService.setHours(routeInfo.firstService[0], routeInfo.firstService[1], 0, 0);
+        yesterdayLastService.setHours(routeInfo.lastService[0], routeInfo.lastService[1], 0, 0);
+        todayFirstService.setHours(routeInfo.firstService[0], routeInfo.firstService[1], 0, 0);
+        todayLastService.setHours(routeInfo.lastService[0], routeInfo.lastService[1], 0, 0);
+        tomorrowFirstService.setHours(routeInfo.firstService[0], routeInfo.firstService[1], 0, 0);
+        tomorrowLastService.setHours(routeInfo.lastService[0], routeInfo.lastService[1], 0, 0);
+
+        return (time >= yesterdayFirstService && time <= yesterdayLastService)
+            || (time >= todayFirstService && time <= todayLastService)
+            || (time >= tomorrowFirstService && time <= tomorrowLastService);
     }
 }
