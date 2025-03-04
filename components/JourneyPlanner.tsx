@@ -63,7 +63,8 @@ export function JourneyPlanner({ fromTo, setFromTo }: JourneyPlannerProps) {
 
         switch (true) {
             case fromLocation && toLocation && fromLocation === toLocation:
-                return 'start = end !';
+                hideArrow = true;
+                return 'avoiding choosing same start/end';
             case fromLocation === Region.MISCELLANEOUS || toLocation === Region.MISCELLANEOUS:
                 hideArrow = true;
                 return 'choosing miscellaneous is not recommended';
