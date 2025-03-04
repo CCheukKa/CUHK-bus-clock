@@ -1,7 +1,7 @@
 import { ClockThing, ClockThingType } from "@/components/ClockThing";
 import { EtaError, EtaErrorType, EtaInfo, isEtaError, NoServiceTodayError, OutOfServiceHoursError } from "@/backend/Bus";
 import { busRouteInfos } from "@/constants/BusData";
-import { Colour, MathExtra, toTimeString } from "@/backend/Helper";
+import { Colour, getEta, MathExtra, toTimeString } from "@/backend/Helper";
 import { useTheme } from "@/context/ThemeContext";
 import { useMemo } from "react";
 
@@ -18,23 +18,21 @@ export function RouteThing({ etaInfo, currentTime }: RouteThingProps) {
     const routeColour = busRouteInfos[etaInfo.journey.route].routeColour;
     const etaTime = etaInfo.etaTime;
     const angle = etaTime.getMinutes() * 6 + etaTime.getSeconds() / 10;
-    const eta = etaTime.getTime() - currentTime.getTime();
-    const etaMinutes = Math.floor(Math.abs(eta) / 60000);
-    const etaSeconds = Math.floor(Math.abs(eta) % 60000 / 1000);
-    const opacity = eta > 0 ? 1 : 0.75;
+    const { etaTotalMinutes, etaMinutes, etaSeconds } = getEta(currentTime, etaTime);
+    const opacity = etaTotalMinutes > 0 ? 1 : 0.75;
     const contrastColour = Colour.getLuminance(routeColour) > 150 ? theme.black : theme.white;
-    const routeBubbleScale = MathExtra.interpolateBetweenPins(eta / 60000, [
+    const routeBubbleScale = MathExtra.interpolateBetweenPins(etaTotalMinutes, [
         { pin: -5, value: 0.6 },
         { pin: 0, value: 1 },
         { pin: 15, value: 0.6 },
     ]);
-    const routeAnnotationLineLength = MathExtra.interpolateBetweenPins(eta / 60000, [
+    const routeAnnotationLineLength = MathExtra.interpolateBetweenPins(etaTotalMinutes, [
         { pin: -5, value: 75 },
         { pin: 0, value: 160 },
         { pin: 15, value: 75 },
     ]);
     const routeBubbleDistance = 1.3;
-    const routeEtaCountdownDistance = MathExtra.interpolateBetweenPins(eta / 60000, [
+    const routeEtaCountdownDistance = MathExtra.interpolateBetweenPins(etaTotalMinutes, [
         { pin: -5, value: routeBubbleDistance + 0.32 },
         { pin: 0, value: routeBubbleDistance + 0.38 },
         { pin: 15, value: routeBubbleDistance + 0.32 },
@@ -66,7 +64,7 @@ export function RouteThing({ etaInfo, currentTime }: RouteThingProps) {
                 type={ClockThingType.ROUTE_ETA_COUNTDOWN}
                 style={{ textColour: Colour.mixRGBA(theme.background, routeColour, opacity) }}
             >
-                {eta < 0 ? '-' : null}{toTimeString([etaMinutes, etaSeconds], false)}
+                {toTimeString([etaMinutes, etaSeconds])}
             </ClockThing>
         </>
     );

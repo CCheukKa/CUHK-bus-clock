@@ -125,7 +125,7 @@ export class IconGlyphs {
  * Converts a tuple of two numbers into a formatted time string.
  *
  * @param param0 - A tuple containing two numbers. The first number represents hours/minutes, and the second number represents minutes/seconds.
- * @param padFront - A boolean indicating whether to pad the first number with a leading zero if it is a single digit.
+ * @param padFront - A boolean indicating whether to pad the first number with a leading zero if it is a single digit. Defaults to `false`.
  * @returns A string representing the formatted time.
  * 
  * @example
@@ -134,8 +134,27 @@ export class IconGlyphs {
  * console.log(time); // Output will be '01:30'
  * ```
  */
-export function toTimeString([a, b]: [number, number], padFront: boolean): string {
-    return `${padFront ? a.toString().padStart(2, '0') : a}:${b.toString().padStart(2, '0')}`;
+export function toTimeString([a, b]: [number, number], padFront: boolean = false): string {
+    return `${padFront ? a.toString().padStart(2, '0') : a}:${Math.abs(b).toString().padStart(2, '0')}`;
+}
+
+/**
+ * Calculates the estimated time of arrival (ETA) in total seconds, minutes, and seconds.
+ *
+ * @param currentTime - The current time as a Date object.
+ * @param etaTime - The estimated time of arrival as a Date object.
+ * @returns An object containing the ETA in total seconds, minutes, and seconds.
+ * @property etaTotalSeconds - The total ETA in seconds.
+ * @property etaTotalMinutes - The total ETA in minutes.
+ * @property etaMinutes - The ETA in minutes.
+ * @property etaSeconds - The remaining seconds after calculating minutes.
+ */
+export function getEta(currentTime: Date, etaTime: Date): { etaTotalMinutes: number, etaTotalSeconds: number, etaMinutes: number, etaSeconds: number } {
+    const etaTotalSeconds = (etaTime.getTime() - currentTime.getTime()) / 1000;
+    const etaMinutes = Math.floor(etaTotalSeconds / 60);
+    const etaSeconds = Math.floor(etaTotalSeconds % 60);
+    const etaTotalMinutes = Math.floor(etaTotalSeconds / 60);
+    return { etaTotalMinutes, etaTotalSeconds, etaMinutes, etaSeconds };
 }
 
 /* -------------------------------------------------------------------------- */
