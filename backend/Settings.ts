@@ -12,12 +12,14 @@ export const settingsSchema: Record<keyof Settings, {
     enumValues?: any[];
     description: string;
     defaultValue: any;
+    disabled?: boolean;
 }> = {
     theme: {
         type: 'enum',
         enumValues: Object.values(ThemeName),
         description: 'Colour theme of the app',
         defaultValue: ThemeName.DARK,
+        disabled: true,
     },
     pastPeekMinutes: {
         type: 'nonNegativeNumber',

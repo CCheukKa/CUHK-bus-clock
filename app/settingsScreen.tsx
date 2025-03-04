@@ -58,9 +58,13 @@ function Controls() {
                                 setItems={setItems}
                                 style={[
                                     styles.control,
-                                    { backgroundColor: theme.minimalContrast }
+                                    {
+                                        backgroundColor: schema.disabled ? theme.background : theme.minimalContrast,
+                                        opacity: schema.disabled ? 0.4 : 1,
+                                    },
                                 ]}
                                 dropDownContainerStyle={{ backgroundColor: theme.minimalContrast }}
+                                disabled={schema.disabled}
                             />);
                         }
                     case 'number':
