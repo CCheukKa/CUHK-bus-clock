@@ -18,7 +18,62 @@ function isRegion(x: Exclude<LocationNullable, null>): x is Region {
     return Object.values(Region).includes(x as Region);
 }
 
-export function getEtaInfos({ from, to }: FromTo, currentTime: Date, pastPeekMinutes: number, futurePeekMinutes: number): EtaInfo[] {
+/* -------------------------------------------------------------------------- */
+export enum EtaErrorType {
+    INTERNAL_API_ERROR,
+    NO_ROUTE_FOUND,
+    OUT_OF_SERVICE_HOURS,
+    NO_SERVICE_TODAY,
+    NO_SERVICE_WITHIN_PEEK_TIME,
+}
+export class EtaError {
+    private readonly type: EtaErrorType;
+    constructor(type: EtaErrorType) { this.type = type; }
+    isType(type: EtaErrorType): boolean { return this.type === type; }
+}
+export class InternalApiError extends EtaError {
+    constructor() {
+        super(EtaErrorType.INTERNAL_API_ERROR);
+    }
+}
+export class NoRouteFoundError extends EtaError {
+    constructor() {
+        super(EtaErrorType.NO_ROUTE_FOUND);
+    }
+}
+export class OutOfServiceHoursError extends EtaError {
+    readonly routes: BusRoute[];
+    constructor(routes: BusRoute[]) {
+        super(EtaErrorType.OUT_OF_SERVICE_HOURS);
+        this.routes = routes;
+    }
+}
+export class NoServiceTodayError extends EtaError {
+    readonly routes: BusRoute[];
+    constructor(routes: BusRoute[]) {
+        super(EtaErrorType.NO_SERVICE_TODAY);
+        this.routes = routes;
+    }
+}
+export class NotWithinPeekTimeError extends EtaError {
+    constructor() {
+        super(EtaErrorType.NO_SERVICE_WITHIN_PEEK_TIME);
+    }
+}
+export function isNotEtaError(value: EtaInfo | EtaInfo[] | EtaError): value is EtaInfo { return !isEtaError(value); }
+export function isEtaError(value: EtaInfo | EtaInfo[] | EtaError): value is EtaError { return value instanceof EtaError; }
+/* -------------------------------------------------------------------------- */
+
+export function getEtaInfos({ from, to }: FromTo, currentTime: Date, pastPeekMinutes: number, futurePeekMinutes: number): EtaInfo[] | EtaError {
+    /*
+    !   Error handling order:
+        - Internal API error
+        - No route found
+        - Out of service hours
+        - No service today
+        - Not within peek time
+    */
+
     if (!from || !to) { return []; }
 
     const pastPeekTimestamp = new Date(currentTime.getTime() - pastPeekMinutes * 60000);
@@ -27,35 +82,53 @@ export function getEtaInfos({ from, to }: FromTo, currentTime: Date, pastPeekMin
     const fromStations = isRegion(from) ? stationRegions[from] : [from];
     const toStations = isRegion(to) ? stationRegions[to] : [to];
 
-    const etaInfos: EtaInfo[] = [];
+    const etaInfos: (EtaInfo | EtaError)[] = [];
     const journeys: Journey[] = [];
     fromStations.forEach(fromStation => {
         toStations.forEach(toStation => {
             journeys.push(...findJourney(fromStation, toStation));
         });
     });
+    if (journeys.length === 0) { return new NoRouteFoundError; }
 
     type ScoredJourney = Journey & { score: number };
     const scoredJourneys: ScoredJourney[] = journeys.map(journey => ({ ...journey, score: scoredJourney(journey) }));
-    const filteredJourneys: Journey[] = [];
+    const shortestRouteJourneys: Journey[] = [];
     const routes = new Set(scoredJourneys.map(journey => journey.route));
     routes.forEach(route => {
         const routeJourneys = scoredJourneys.filter(journey => journey.route === route);
         const minScore = Math.min(...routeJourneys.map(journey => journey.score));
-        filteredJourneys.push(...routeJourneys.filter(journey => journey.score === minScore));
+        shortestRouteJourneys.push(...routeJourneys.filter(journey => journey.score === minScore));
     });
 
-    filteredJourneys.forEach(filteredJourney => {
-        etaInfos.push(...getStationRouteETA(
-            filteredJourney,
-            currentTime,
-            pastPeekTimestamp,
-            futurePeekTimestamp)
-            ?? []
+    shortestRouteJourneys.forEach(shortestRouteJourney => {
+        etaInfos.push(...[getStationRouteETA(shortestRouteJourney, currentTime)].flat());
+    });
+
+    const validEtaInfos = etaInfos.filter(etaInfo => isNotEtaError(etaInfo));
+    if (validEtaInfos.length !== 0) {
+        const withinPeekValidEtaInfos = validEtaInfos.filter(eta => eta.etaTime >= pastPeekTimestamp && eta.etaTime <= futurePeekTimestamp);
+        return withinPeekValidEtaInfos.length === 0 ? new NotWithinPeekTimeError : withinPeekValidEtaInfos;
+    }
+
+    const etaErrors = etaInfos.filter(etaInfo => isEtaError(etaInfo));
+
+    if (etaErrors.some(etaError => etaError.isType(EtaErrorType.INTERNAL_API_ERROR))) { return new InternalApiError; }
+    if (etaErrors.some(etaError => etaError.isType(EtaErrorType.OUT_OF_SERVICE_HOURS))) {
+        return new OutOfServiceHoursError(
+            etaErrors.filter(etaError => etaError.isType(EtaErrorType.OUT_OF_SERVICE_HOURS))
+                .map(etaError => (etaError as OutOfServiceHoursError).routes)
+                .flat()
         );
-    });
-
-    return etaInfos;
+    }
+    if (etaErrors.some(etaError => etaError.isType(EtaErrorType.NO_SERVICE_TODAY))) {
+        return new NoServiceTodayError(
+            etaErrors.filter(etaError => etaError.isType(EtaErrorType.NO_SERVICE_TODAY))
+                .map(etaError => (etaError as NoServiceTodayError).routes)
+                .flat()
+        );
+    }
+    return new InternalApiError;
     /* -------------------------------------------------------------------------- */
 
     function scoredJourney(journey: Journey): number {
@@ -88,16 +161,16 @@ function findJourney(fromStation: Station, toStation: Station): Journey[] {
     return journeys;
 }
 
-function getStationRouteETA(journey: Journey, currentTime: Date, pastPeekTimestamp: Date, futurePeekTimestamp: Date): EtaInfo[] | void {
+function getStationRouteETA(journey: Journey, currentTime: Date): EtaInfo[] | EtaError {
     const routeInfo = busRouteInfos[journey.route];
-    if (!routeInfo) { return; }
-    if (!routeInfo.days.includes(currentTime.getDay())) { return; }
-    if (!routeInfo.stations.find(s => s === journey.fromStation)) { return; }
+    if (!routeInfo) { return new InternalApiError; }
+    if (!routeInfo.days.includes(currentTime.getDay())) { return new NoServiceTodayError([journey.route]); }
+    if (!routeInfo.stations.find(s => s === journey.fromStation)) { return new InternalApiError; }
     const routeStationTime = getRouteStationTime();
 
     const currentHour = currentTime.getHours();
 
-    const etaInfos: EtaInfo[] = [];
+    const etaInfos: (EtaInfo | null)[] = [];
 
     routeInfo.minuteMarks.forEach(minuteMark => {
         const pastHourStartTime = new Date(currentTime);
@@ -113,13 +186,14 @@ function getStationRouteETA(journey: Journey, currentTime: Date, pastPeekTimesta
         const futureHourEtaTime = futureHourStartTime.add(0, 0, routeStationTime);
 
         etaInfos.push(
-            { journey, etaTime: isWithinServiceHours(pastHourStartTime) ? pastHourEtaTime : new Date(Infinity) },
-            { journey, etaTime: isWithinServiceHours(currentHourStartTime) ? currentHourEtaTime : new Date(Infinity) },
-            { journey, etaTime: isWithinServiceHours(futureHourStartTime) ? futureHourEtaTime : new Date(Infinity) },
+            isWithinServiceHours(pastHourStartTime) ? { journey, etaTime: pastHourEtaTime } : null,
+            isWithinServiceHours(currentHourStartTime) ? { journey, etaTime: currentHourEtaTime } : null,
+            isWithinServiceHours(futureHourStartTime) ? { journey, etaTime: futureHourEtaTime } : null,
         );
     });
 
-    return etaInfos.filter(eta => eta.etaTime >= pastPeekTimestamp && eta.etaTime <= futurePeekTimestamp);
+    const inServiceHoursEtaInfos = etaInfos.filter(eta => eta !== null)
+    return inServiceHoursEtaInfos.length === 0 ? new OutOfServiceHoursError([journey.route]) : inServiceHoursEtaInfos;
 
     /* -------------------------------------------------------------------------- */
     function getRouteStationTime(): number {

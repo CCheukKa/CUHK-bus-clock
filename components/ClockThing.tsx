@@ -111,15 +111,17 @@ export function ClockThing({ type, style, x, y, degrees, distance, children }: C
                     }
                 ]}>{children}</Text>);
             case ClockThingType.ERROR_TEXT:
-                return (<Text
-                    style={[
-                        styles.errorText,
-                        {
-                            color: theme.primaryHeavy,
-                            textShadowColor: theme.primarySharp,
-                        },
-                    ]}
-                >{children}</Text>);
+                return (<View style={styles.errorTextContainer}>
+                    <Text
+                        style={[
+                            styles.errorText,
+                            {
+                                color: theme.primaryHeavy,
+                                textShadowColor: theme.primarySharp,
+                            },
+                        ]}
+                    >{children}</Text>
+                </View>);
             default:
                 return children;
         }
@@ -189,13 +191,19 @@ const styles = StyleSheet.create({
         shadowOpacity: 0.5,
         textShadowRadius: 6,
     },
-    errorText: {
+    errorTextContainer: {
+        height: 90,
+        width: 400,
         position: 'absolute',
         top: 0,
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    errorText: {
+        paddingVertical: 6,
         fontSize: 16,
         fontWeight: 'bold',
-        height: 40,
-        width: 400,
         textAlign: 'center',
         textShadowRadius: 40,
     },

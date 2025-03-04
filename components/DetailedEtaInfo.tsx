@@ -1,9 +1,9 @@
-import { EtaInfo } from "@/backend/Bus";
+import { EtaError, EtaInfo } from "@/backend/Bus";
 import { StyleSheet, View } from "react-native";
 
 type DetailedEtaInfoProps = {
     time: Date;
-    etaInfos: EtaInfo[];
+    etaInfos: EtaInfo[] | EtaError;
 };
 export function DetailedEtaInfo({ time, etaInfos }: DetailedEtaInfoProps) {
     return (

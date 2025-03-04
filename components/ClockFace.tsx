@@ -4,12 +4,12 @@ import { ClockThing, ClockThingType } from '@/components/ClockThing';
 import { ClockHand, ClockHandType } from '@/components/ClockHand';
 import { ClockTick, ClockTickType } from '@/components/ClockTick';
 import { RouteThings } from '@/components/RouteThing';
-import { EtaInfo } from '@/backend/Bus';
+import { EtaError, EtaInfo } from '@/backend/Bus';
 import { useTheme } from '@/context/ThemeContext';
 
 type ClockFaceProps = {
     time: Date;
-    etaInfos: EtaInfo[];
+    etaInfos: EtaInfo[] | EtaError;
 };
 export function ClockFace({ time, etaInfos }: ClockFaceProps) {
     const { theme } = useTheme();
