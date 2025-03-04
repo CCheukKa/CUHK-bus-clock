@@ -1,11 +1,11 @@
 import { StyleSheet, View } from 'react-native';
-import { useMemo } from 'react';
 import { ClockThing, ClockThingType } from '@/components/ClockThing';
 import { ClockHand, ClockHandType } from '@/components/ClockHand';
-import { ClockTick, ClockTickType } from '@/components/ClockTick';
+import ClockTicks from '@/components/ClockTicks';
 import { RouteThings } from '@/components/RouteThing';
 import { EtaError, EtaInfo } from '@/backend/Bus';
 import { useTheme } from '@/context/ThemeContext';
+import ClockNumbers from '@/components/ClockNumbers';
 
 type ClockFaceProps = {
     time: Date;
@@ -33,29 +33,6 @@ export function ClockFace({ time, etaInfos }: ClockFaceProps) {
             </View>
         </View>
     );
-}
-
-function ClockNumbers() {
-    return useMemo(() => {
-        return Array.from({ length: 12 }, (_, i) => i + 1).map(i => {
-            return (
-                <ClockThing type={ClockThingType.CLOCK_NUMBER} key={i} degrees={360 / 12 * i} distance={0.76}>
-                    {i}
-                </ClockThing>
-            );
-        });
-    }, []);
-}
-
-function ClockTicks() {
-    return useMemo(() => {
-        return Array.from({ length: 60 }, (_, i) => i + 1).map(i => {
-            const degrees = 360 / 60 * i;
-            return (
-                <ClockTick type={i % 5 === 0 ? ClockTickType.MAJOR : ClockTickType.MINOR} degrees={degrees} key={i} />
-            );
-        });
-    }, []);
 }
 
 type ClockHandsProps = {

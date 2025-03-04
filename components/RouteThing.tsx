@@ -3,6 +3,7 @@ import { EtaError, EtaErrorType, EtaInfo, isEtaError, NoServiceTodayError, OutOf
 import { busRouteInfos } from "@/constants/BusData";
 import { Colour, MathExtra } from "@/backend/Helper";
 import { useTheme } from "@/context/ThemeContext";
+import { useMemo } from "react";
 
 const weekDays = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 
@@ -76,49 +77,51 @@ type RouteThingsProps = {
     currentTime: Date;
 };
 export function RouteThings({ etaInfos, currentTime }: RouteThingsProps) {
-    if (isEtaError(etaInfos)) {
-        const errorMessage: string = (() => {
-            switch (true) {
-                case etaInfos.isType(EtaErrorType.INTERNAL_API_ERROR):
-                    return 'Internal API error';
-                case etaInfos.isType(EtaErrorType.NO_ROUTE_FOUND):
-                    return 'No route found between these locations';
-                case etaInfos.isType(EtaErrorType.OUT_OF_SERVICE_HOURS):
-                    {
-                        let msg = 'Out of service hours';
-                        (etaInfos as OutOfServiceHoursError).routes.forEach(route => {
-                            msg += `\nRoute ${route.replaceAll('_', '')} - ${busRouteInfos[route].firstService.map(n => n.toString().padStart(2, '0')).join(':')}-${busRouteInfos[route].lastService.map(n => n.toString().padStart(2, '0')).join(':')}`;
-                        });
-                        return msg;
-                    }
-                case etaInfos.isType(EtaErrorType.NO_SERVICE_TODAY):
-                    {
-                        let msg = 'No service between these locations today';
-                        (etaInfos as NoServiceTodayError).routes.forEach(route => {
-                            msg += `\nRoute ${route.replaceAll('_', '')} - ${busRouteInfos[route].days.map(day => weekDays[day]).join(', ')} only`;
-                        });
-                        return msg;
-                    }
-                case etaInfos.isType(EtaErrorType.NO_SERVICE_WITHIN_PEEK_TIME):
-                    return 'No service within peek time\nTry increasing peek time in settings';
-                default:
-                    return 'Unknown error';
-            }
-        })();
-        return (
-            <ClockThing
-                degrees={180} distance={1.2}
-                type={ClockThingType.ERROR_TEXT}
-            >
-                {errorMessage}
-            </ClockThing>
-        );
-    }
-    return etaInfos.map(etaInfo => (
-        <RouteThing
-            etaInfo={etaInfo}
-            currentTime={currentTime}
-            key={`${etaInfo.journey.route}-${etaInfo.etaTime.getTime()}`}
-        />
-    ));
+    return useMemo(() => {
+        if (isEtaError(etaInfos)) {
+            const errorMessage: string = (() => {
+                switch (true) {
+                    case etaInfos.isType(EtaErrorType.INTERNAL_API_ERROR):
+                        return 'Internal API error';
+                    case etaInfos.isType(EtaErrorType.NO_ROUTE_FOUND):
+                        return 'No route found between these locations';
+                    case etaInfos.isType(EtaErrorType.OUT_OF_SERVICE_HOURS):
+                        {
+                            let msg = 'Out of service hours';
+                            (etaInfos as OutOfServiceHoursError).routes.forEach(route => {
+                                msg += `\nRoute ${route.replaceAll('_', '')} - ${busRouteInfos[route].firstService.map(n => n.toString().padStart(2, '0')).join(':')}-${busRouteInfos[route].lastService.map(n => n.toString().padStart(2, '0')).join(':')}`;
+                            });
+                            return msg;
+                        }
+                    case etaInfos.isType(EtaErrorType.NO_SERVICE_TODAY):
+                        {
+                            let msg = 'No service between these locations today';
+                            (etaInfos as NoServiceTodayError).routes.forEach(route => {
+                                msg += `\nRoute ${route.replaceAll('_', '')} - ${busRouteInfos[route].days.map(day => weekDays[day]).join(', ')} only`;
+                            });
+                            return msg;
+                        }
+                    case etaInfos.isType(EtaErrorType.NO_SERVICE_WITHIN_PEEK_TIME):
+                        return 'No service within peek time\nTry increasing peek time in settings';
+                    default:
+                        return 'Unknown error';
+                }
+            })();
+            return (
+                <ClockThing
+                    degrees={180} distance={1.2}
+                    type={ClockThingType.ERROR_TEXT}
+                >
+                    {errorMessage}
+                </ClockThing>
+            );
+        }
+        return etaInfos.map(etaInfo => (
+            <RouteThing
+                etaInfo={etaInfo}
+                currentTime={currentTime}
+                key={`${etaInfo.journey.route}-${etaInfo.etaTime.getTime()}`}
+            />
+        ));
+    }, [etaInfos]);
 }

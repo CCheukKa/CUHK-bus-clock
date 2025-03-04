@@ -1,3 +1,4 @@
+import { memo } from "react";
 import { useTheme } from '@/context/ThemeContext';
 import { StyleSheet, View } from 'react-native';
 
@@ -11,7 +12,7 @@ type ClockTickProps = {
     degrees: number;
 };
 
-export function ClockTick({ type, degrees }: ClockTickProps) {
+function ClockTick({ type, degrees }: ClockTickProps) {
     const { theme } = useTheme();
 
     const radians = degrees * Math.PI / 180;
@@ -32,6 +33,17 @@ export function ClockTick({ type, degrees }: ClockTickProps) {
         ]} />
     );
 }
+
+function ClockTicks() {
+    return Array.from({ length: 60 }, (_, i) => i + 1).map(i => {
+        const degrees = 360 / 60 * i;
+        return (
+            <ClockTick type={i % 5 === 0 ? ClockTickType.MAJOR : ClockTickType.MINOR} degrees={degrees} key={i} />
+        );
+    });
+}
+
+export default memo(ClockTicks);
 
 const styles = StyleSheet.create({
     clockTick: {
