@@ -77,7 +77,12 @@ function EtaInfoCard({ time, etaInfo }: { time: Date, etaInfo: EtaInfo }) {
                 <View style={styles.arrowContainer}>
                     <View style={[
                         styles.routeNumberBubble,
-                        { backgroundColor: routeColour },
+                        {
+                            backgroundColor: routeColour,
+                            shadowColor: contrastColour,
+                            shadowRadius: 4,
+                            elevation: 1,
+                        },
                     ]}>
                         <Text style={[
                             styles.routeNumberBubbleText,
@@ -91,6 +96,8 @@ function EtaInfoCard({ time, etaInfo }: { time: Date, etaInfo: EtaInfo }) {
                         style={{
                             position: 'relative',
                             left: 12,
+                            textShadowColor: contrastColour,
+                            textShadowRadius: 4,
                         }}
                     />
                     <FontAwesome
@@ -100,6 +107,8 @@ function EtaInfoCard({ time, etaInfo }: { time: Date, etaInfo: EtaInfo }) {
                         style={{
                             position: 'relative',
                             right: 6,
+                            textShadowColor: contrastColour,
+                            textShadowRadius: 4
                         }}
                     />
                 </View>
