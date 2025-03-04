@@ -1,10 +1,11 @@
-import { Region, stationRegions } from "@/constants/BusData";
+import { Region, Station, stationRegions } from "@/constants/BusData";
 import { DropdownItem, LocationPicker } from "@/components/LocationPicker";
 import { useEffect, useState } from "react";
 import { FromTo, LocationNullable } from "@/backend/Bus";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { StyleSheet, Text, View } from "react-native";
 import { useTheme } from "@/context/ThemeContext";
+
 
 const data: DropdownItem[] = (() => {
     const entries: DropdownItem[] = [];
@@ -16,6 +17,26 @@ const data: DropdownItem[] = (() => {
     });
     return entries;
 })();
+// compile this auto?
+const termini: Station[] = [
+    Station.CHUNG_CHI_TEACHING_BUILDING_TERMINUS,
+    Station.CWC_COLLEGE_DOWNWARD_TERMINUS,
+    Station.UNIVERSITY_STATION_PIAZZA_TERMINUS,
+    Station.UNIVERSITY_STATION_TERMINUS,
+];
+const fromData: DropdownItem[] = data.filter(item => {
+    return !termini.includes(item.value as Station);
+});
+// compile this auto?
+const starts: Station[] = [
+    Station.CHUNG_CHI_TEACHING_BUILDING,
+    Station.UNIVERSITY_STATION,
+    Station.YIA,
+];
+const toData: DropdownItem[] = data.filter(item => {
+    return !starts.includes(item.value as Station);
+});
+
 
 type JourneyPlannerProps = {
     fromTo: FromTo;
@@ -39,6 +60,7 @@ export function JourneyPlanner({ fromTo, setFromTo }: JourneyPlannerProps) {
     let hideArrow = false;
     const warningMessage: string | null = (() => {
         hideArrow = false;
+
         switch (true) {
             case fromLocation && toLocation && fromLocation === toLocation:
                 return 'start = end !';
@@ -53,7 +75,7 @@ export function JourneyPlanner({ fromTo, setFromTo }: JourneyPlannerProps) {
     return (
         <>
             <LocationPicker
-                data={data}
+                data={fromData}
                 label={'From'}
                 location={fromLocation}
                 setLocation={setFromLocation}
@@ -92,7 +114,7 @@ export function JourneyPlanner({ fromTo, setFromTo }: JourneyPlannerProps) {
                 </Text>
             </View>
             <LocationPicker
-                data={data}
+                data={toData}
                 label={'To'}
                 location={toLocation}
                 setLocation={setToLocation}
