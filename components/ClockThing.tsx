@@ -8,6 +8,7 @@ export enum ClockThingType {
     ROUTE_NUMBER_BUBBLE = 'routeNumber',
     ROUTE_ANNOTATION_LINE = 'routeAnnotationLine',
     ROUTE_ETA_COUNTDOWN = 'routeEtaCountdown',
+    ERROR_TEXT = 'errorText',
 };
 
 /**
@@ -116,6 +117,16 @@ export function ClockThing({ type, style, x, y, degrees, distance, children }: C
                         textShadowRadius: 6,
                     }
                 ]}>{children}</Text>);
+            case ClockThingType.ERROR_TEXT:
+                return (<Text
+                    style={[
+                        styles.errorText,
+                        {
+                            color: theme.primaryHeavy,
+                            textShadowColor: theme.primarySharp,
+                        },
+                    ]}
+                >{children}</Text>);
             default:
                 return children;
         }
@@ -178,5 +189,15 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         width: 80,
         textAlign: 'center',
+    },
+    errorText: {
+        position: 'absolute',
+        top: 0,
+        fontSize: 16,
+        fontWeight: 'bold',
+        height: 40,
+        width: 400,
+        textAlign: 'center',
+        textShadowRadius: 40,
     },
 });

@@ -3,6 +3,7 @@ import { EtaInfo } from "@/backend/Bus";
 import { busRouteInfos } from "@/constants/BusData";
 import { Colour, MathExtra } from "@/backend/Helper";
 import { useTheme } from "@/context/ThemeContext";
+import { StyleSheet, Text } from "react-native";
 
 type RouteThingProps = {
     etaInfo: EtaInfo;
@@ -75,8 +76,14 @@ type RouteThingsProps = {
 };
 export function RouteThings({ etaInfos, currentTime }: RouteThingsProps) {
     if (etaInfos.length === 0) {
-        // TODO: add a "no buses" message
-        return null;
+        return (
+            <ClockThing
+                degrees={180} distance={1.4}
+                type={ClockThingType.ERROR_TEXT}
+            >
+                No route available between these locations
+            </ClockThing>
+        );
     }
     return etaInfos.map(etaInfo => (
         <RouteThing

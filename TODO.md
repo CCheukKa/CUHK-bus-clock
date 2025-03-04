@@ -5,7 +5,6 @@
 - Add station matching based on GPS location
 - Add ability to search for stations?
 - Add walking/running icons
-- Add "no available bus" message
 - Add first/last bus indicator
 ### Backend
 - Scrape public holiday data from [https://www.gov.hk/en/about/abouthk/holiday/2025.htm]
