@@ -1,6 +1,6 @@
 import { EtaError, EtaInfo, isEtaInfoArray } from "@/backend/Bus";
 import { Colour, getEta, toTimeString } from "@/backend/Helper";
-import { busRouteInfos } from "@/constants/BusData";
+import { busRouteInfos, stationAbbreviations } from "@/constants/BusData";
 import { useTheme } from "@/context/ThemeContext";
 import { FontAwesome } from "@expo/vector-icons";
 import { ScrollView, StyleSheet, Text, View } from "react-native";
@@ -72,6 +72,16 @@ function EtaInfoCard({ time, etaInfo }: { time: Date, etaInfo: EtaInfo }) {
                 backgroundColor: theme.dimContrast,
             },
         ]}>
+            <Text style={[
+                styles.etaInfoCardStation,
+                {
+                    left: 0,
+                    textAlign: 'left',
+                    color: theme.highContrast,
+                },
+            ]}>
+                {stationAbbreviations[etaInfo.journey.fromStation]}
+            </Text>
             <View style={styles.etaInfoCardCenter}>
                 <EtaTime time={time} etaTime={etaInfo.etaFromTime} />
                 <View style={styles.arrowContainer}>
@@ -114,6 +124,16 @@ function EtaInfoCard({ time, etaInfo }: { time: Date, etaInfo: EtaInfo }) {
                 </View>
                 <EtaTime time={time} etaTime={etaInfo.etaToTime} />
             </View>
+            <Text style={[
+                styles.etaInfoCardStation,
+                {
+                    right: 0,
+                    textAlign: 'right',
+                    color: theme.highContrast,
+                },
+            ]}>
+                {stationAbbreviations[etaInfo.journey.toStation].replace(/ \(.*\)/, '')}
+            </Text>
         </View>
     );
 }
@@ -228,5 +248,11 @@ const styles = StyleSheet.create({
         flexDirection: 'column',
         justifyContent: 'center',
         alignItems: 'center',
-    }
+    },
+    etaInfoCardStation: {
+        position: 'absolute',
+        fontSize: 16,
+        marginHorizontal: 8,
+        width: '25%',
+    },
 });
