@@ -86,6 +86,7 @@ function WithinProviders() {
             activeColor={theme.highContrast}
             inactiveColor={theme.lowContrast}
             activeIndicatorStyle={{ backgroundColor: theme.dimContrast }}
+            keyboardHidesNavigationBar={false}
         />
     );
 }
