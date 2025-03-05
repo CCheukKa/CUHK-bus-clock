@@ -151,9 +151,10 @@ export function toTimeString([a, b]: [number, number], padFront: boolean = false
  */
 export function getEta(currentTime: Date, etaTime: Date): { etaTotalMinutes: number, etaTotalSeconds: number, etaMinutes: number, etaSeconds: number } {
     const etaTotalSeconds = (etaTime.getTime() - currentTime.getTime()) / 1000;
-    const etaMinutes = Math.floor(etaTotalSeconds / 60);
-    const etaSeconds = Math.floor(etaTotalSeconds % 60);
-    const etaTotalMinutes = Math.floor(etaTotalSeconds / 60);
+    const etaTotalMinutes = etaTotalSeconds / 60;
+    const etaSign = Math.sign(etaTotalSeconds);
+    const etaMinutes = Math.floor(Math.abs(etaTotalSeconds) / 60) * etaSign;
+    const etaSeconds = Math.floor(Math.abs(etaTotalSeconds) % 60) * etaSign;
     return { etaTotalMinutes, etaTotalSeconds, etaMinutes, etaSeconds };
 }
 
