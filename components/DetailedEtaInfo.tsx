@@ -137,7 +137,6 @@ function EtaInfoCard({ time, etaInfo }: { time: Date, etaInfo: EtaInfo }) {
                     right: 0,
                     textAlign: 'right',
                     color: isPast ? theme.halfContrast : theme.highContrast,
-
                 },
             ]}>
                 {stationAbbreviations[etaInfo.journey.toStation].replace(/ \(.*\)/, '')}
