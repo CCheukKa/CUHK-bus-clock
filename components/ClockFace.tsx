@@ -6,6 +6,7 @@ import { RouteThings } from '@/components/RouteThing';
 import { EtaError, EtaInfo } from '@/backend/Bus';
 import { useTheme } from '@/context/ThemeContext';
 import ClockNumbers from '@/components/ClockNumbers';
+import { useSettings } from '@/context/SettingsContext';
 
 type ClockFaceProps = {
     time: Date;
@@ -13,25 +14,28 @@ type ClockFaceProps = {
 };
 export function ClockFace({ time, etaInfos }: ClockFaceProps) {
     const { theme } = useTheme();
+    const { settings } = useSettings();
 
     return (
-        <View style={styles.clockContainer}>
-            <View style={[
-                styles.clockFace,
-                {
-                    backgroundColor: theme.background,
-                    borderColor: theme.highContrast,
-                    shadowColor: theme.highContrast,
-                },
-            ]}>
-                <ClockNumbers />
-                <ClockTicks />
-                <ClockHands time={time} />
-                <ClockThing type={ClockThingType.CLOCK_CENTRE_DOT} x={0} y={0} />
+        settings.showClockFace
+            ? <View style={styles.clockContainer}>
+                <View style={[
+                    styles.clockFace,
+                    {
+                        backgroundColor: theme.background,
+                        borderColor: theme.highContrast,
+                        shadowColor: theme.highContrast,
+                    },
+                ]}>
+                    <ClockNumbers />
+                    <ClockTicks />
+                    <ClockHands time={time} />
+                    <ClockThing type={ClockThingType.CLOCK_CENTRE_DOT} x={0} y={0} />
 
-                <RouteThings currentTime={time} etaInfos={etaInfos} />
+                    <RouteThings currentTime={time} etaInfos={etaInfos} />
+                </View>
             </View>
-        </View>
+            : <View style={styles.clockFaceBuffer} />
     );
 }
 
@@ -54,6 +58,10 @@ const styles = StyleSheet.create({
         aspectRatio: 1,
         justifyContent: 'center',
         alignItems: 'center',
+    },
+    clockFaceBuffer: {
+        width: '100%',
+        height: 10,
     },
     clockFace: {
         display: 'flex',
