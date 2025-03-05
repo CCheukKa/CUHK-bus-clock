@@ -4,6 +4,7 @@ import { busRouteInfos } from "@/constants/BusData";
 import { Colour, getCountdown, MathExtra, toTimeString } from "@/backend/Helper";
 import { useTheme } from "@/context/ThemeContext";
 import { useMemo } from "react";
+import { useSettings } from "@/context/SettingsContext";
 
 const weekDays = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 
@@ -14,6 +15,7 @@ type RouteThingProps = {
 
 export function RouteThing({ etaInfo, currentTime }: RouteThingProps) {
     const { theme } = useTheme();
+    const { settings } = useSettings();
 
     const routeColour = busRouteInfos[etaInfo.journey.route].routeColour;
     const etaTime = etaInfo.etaFromTime;
@@ -64,7 +66,10 @@ export function RouteThing({ etaInfo, currentTime }: RouteThingProps) {
                 type={ClockThingType.ROUTE_ETA_COUNTDOWN}
                 style={{ textColour: Colour.mixRGBA(theme.background, routeColour, opacity) }}
             >
-                {toTimeString([minutes, seconds])}
+                {settings.showCountdown
+                    ? toTimeString([minutes, seconds])
+                    : etaTime.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' })
+                }
             </ClockThing>
         </>
     );
