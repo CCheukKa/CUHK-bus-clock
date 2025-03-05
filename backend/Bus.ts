@@ -157,14 +157,16 @@ export type Journey = {
 function findJourney(fromStation: Station, toStation: Station): Journey[] {
     const journeys: Journey[] = [];
     Object.entries(busRouteInfos).forEach(([route, routeInfo]) => {
-        const fromIndex = routeInfo.stations.findIndex(s => s === fromStation);
-        if (fromIndex == -1) { return; }
-        const toIndex = routeInfo.stations.findIndex(s => s === toStation);
-        if (toIndex == -1) { return; }
+        const fromIndices: number[] = routeInfo.stations.map((station, index) => station === fromStation ? index : NaN);
+        const toIndices: number[] = routeInfo.stations.map((station, index) => station === toStation ? index : NaN);
 
-        if (fromIndex < toIndex) {
-            journeys.push({ route: route as BusRoute, fromIndex, toIndex, fromStation, toStation });
-        }
+        fromIndices.forEach(fromIndex => {
+            toIndices.forEach(toIndex => {
+                if (fromIndex < toIndex) {
+                    journeys.push({ route: route as BusRoute, fromIndex, toIndex, fromStation, toStation });
+                }
+            });
+        });
     });
     return journeys;
 }
