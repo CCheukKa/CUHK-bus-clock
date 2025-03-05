@@ -5,7 +5,7 @@ export type Settings = {
     theme: ThemeName;
     pastPeekMinutes: number;
     futurePeekMinutes: number;
-    locationPickerUseModal: boolean;
+    useModalLocationPicker: boolean;
 };
 export const settingsSchema: Record<keyof Settings, {
     type: 'enum' | 'number' | 'nonNegativeNumber' | 'boolean';
@@ -31,7 +31,7 @@ export const settingsSchema: Record<keyof Settings, {
         description: 'Minutes in the future to show ETAs',
         defaultValue: 30,
     },
-    locationPickerUseModal: {
+    useModalLocationPicker: {
         type: 'boolean',
         description: 'Use fullscreen modal for location picker',
         defaultValue: false,

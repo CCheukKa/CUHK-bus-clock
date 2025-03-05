@@ -95,7 +95,7 @@ export function LocationPicker({
                 ]}
                 dropDownDirection="BOTTOM"
                 maxHeight={distanceFromBottom - 34}
-                listMode={settings.locationPickerUseModal ? "MODAL" : "SCROLLVIEW"}
+                listMode={settings.useModalLocationPicker ? "MODAL" : "SCROLLVIEW"}
                 modalTitle={pickerLabel}
                 modalTitleStyle={[
                     styles.dropdownModalTitle,
