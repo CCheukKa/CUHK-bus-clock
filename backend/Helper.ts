@@ -139,23 +139,23 @@ export function toTimeString([a, b]: [number, number], padFront: boolean = false
 }
 
 /**
- * Calculates the estimated time of arrival (ETA) in total seconds, minutes, and seconds.
+ * Calculates the countdown from the current time to the estimated time of arrival (ETA).
  *
  * @param currentTime - The current time as a Date object.
  * @param etaTime - The estimated time of arrival as a Date object.
  * @returns An object containing the ETA in total seconds, minutes, and seconds.
- * @property etaTotalSeconds - The total ETA in seconds.
- * @property etaTotalMinutes - The total ETA in minutes.
- * @property etaMinutes - The ETA in minutes.
- * @property etaSeconds - The remaining seconds after calculating minutes.
+ * @property totalSeconds - The total ETA in seconds.
+ * @property totalMinutes - The total ETA in minutes.
+ * @property minutes - The ETA in minutes.
+ * @property seconds - The remaining seconds after calculating minutes.
  */
-export function getEta(currentTime: Date, etaTime: Date): { etaTotalMinutes: number, etaTotalSeconds: number, etaMinutes: number, etaSeconds: number } {
-    const etaTotalSeconds = (etaTime.getTime() - currentTime.getTime()) / 1000;
-    const etaTotalMinutes = etaTotalSeconds / 60;
-    const etaSign = Math.sign(etaTotalSeconds);
-    const etaMinutes = Math.floor(Math.abs(etaTotalSeconds) / 60) * etaSign;
-    const etaSeconds = Math.floor(Math.abs(etaTotalSeconds) % 60) * etaSign;
-    return { etaTotalMinutes, etaTotalSeconds, etaMinutes, etaSeconds };
+export function getCountdown(currentTime: Date, etaTime: Date): { totalMinutes: number, totalSeconds: number, minutes: number, seconds: number } {
+    const totalSeconds = (etaTime.getTime() - currentTime.getTime()) / 1000;
+    const totalMinutes = totalSeconds / 60;
+    const sign = Math.sign(totalSeconds);
+    const minutes = Math.floor(Math.abs(totalSeconds) / 60) * sign;
+    const seconds = Math.floor(Math.abs(totalSeconds) % 60) * sign;
+    return { totalMinutes, totalSeconds, minutes, seconds };
 }
 
 /* -------------------------------------------------------------------------- */

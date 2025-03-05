@@ -1,5 +1,5 @@
 import { EtaError, EtaInfo, isEtaInfoArray } from "@/backend/Bus";
-import { Colour, getEta, toTimeString } from "@/backend/Helper";
+import { Colour, getCountdown, toTimeString } from "@/backend/Helper";
 import { busRouteInfos, stationAbbreviations } from "@/constants/BusData";
 import { useTheme } from "@/context/ThemeContext";
 import { FontAwesome } from "@expo/vector-icons";
@@ -148,7 +148,7 @@ function EtaInfoCard({ time, etaInfo }: { time: Date, etaInfo: EtaInfo }) {
 
 function EtaTime({ time, etaTime, isPast }: { time: Date, etaTime: Date, isPast: boolean }) {
     const { theme } = useTheme();
-    const { etaMinutes, etaSeconds } = getEta(time, etaTime);
+    const { minutes, seconds } = getCountdown(time, etaTime);
     return (
         <View style={styles.etaTimeContainer}>
             <Text style={{
@@ -163,7 +163,7 @@ function EtaTime({ time, etaTime, isPast }: { time: Date, etaTime: Date, isPast:
                 fontWeight: 'bold',
                 fontSize: 12,
             }}>
-                {`[ ${toTimeString([etaMinutes, etaSeconds])} ]`}
+                {`[ ${toTimeString([minutes, seconds])} ]`}
             </Text>
         </View>
     );
