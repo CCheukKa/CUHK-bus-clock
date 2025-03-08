@@ -69,6 +69,8 @@ function EtaInfoCard({ time, etaInfo }: { time: Date, etaInfo: EtaInfo }) {
     const routeColour = busRouteInfos[etaInfo.journey.route].routeColour;
     const contrastColour = Colour.getLuminance(routeColour) > 150 ? theme.black : theme.white;
     const isPast = etaInfo.etaFromTime.getTime() < time.getTime();
+
+    const arrowDistance = 35;
     return (
         <View style={[
             styles.etaInfoCard,
@@ -87,7 +89,7 @@ function EtaInfoCard({ time, etaInfo }: { time: Date, etaInfo: EtaInfo }) {
                 {stationAbbreviations[etaInfo.journey.fromStation]}
             </Text>
             <View style={styles.etaInfoCardCenter}>
-                <EtaTime time={time} etaTime={etaInfo.etaFromTime} isPast={isPast} />
+                <EtaTime time={time} etaTime={etaInfo.etaFromTime} isPast={isPast} right={arrowDistance} />
                 <View style={styles.arrowContainer}>
                     <View style={[
                         styles.routeNumberBubble,
@@ -123,13 +125,13 @@ function EtaInfoCard({ time, etaInfo }: { time: Date, etaInfo: EtaInfo }) {
                         color={isPast ? Colour.mixRGBA(theme.dimContrast, routeColour, 0.5) : routeColour}
                         style={{
                             position: 'relative',
-                            right: 6,
+                            right: 8,
                             textShadowColor: contrastColour,
                             textShadowRadius: 4
                         }}
                     />
                 </View>
-                <EtaTime time={time} etaTime={etaInfo.etaToTime} isPast={isPast} />
+                <EtaTime time={time} etaTime={etaInfo.etaToTime} isPast={isPast} left={arrowDistance} />
             </View>
             <Text style={[
                 styles.etaInfoCardStation,
@@ -145,11 +147,14 @@ function EtaInfoCard({ time, etaInfo }: { time: Date, etaInfo: EtaInfo }) {
     );
 }
 
-function EtaTime({ time, etaTime, isPast }: { time: Date, etaTime: Date, isPast: boolean }) {
+function EtaTime({ time, etaTime, isPast, left, right }: { time: Date, etaTime: Date, isPast: boolean, left?: number, right?: number }) {
     const { theme } = useTheme();
     const remainingSeconds = getCountdown(time, etaTime);
     return (
-        <View style={styles.etaTimeContainer}>
+        <View style={[
+            styles.etaTimeContainer,
+            { left, right },
+        ]}>
             <Text style={{
                 color: isPast ? theme.lowContrast : theme.highContrast,
                 fontWeight: 'bold',
@@ -215,6 +220,7 @@ const styles = StyleSheet.create({
     },
     etaInfoCard: {
         width: '100%',
+        height: 48,
         display: 'flex',
         flexDirection: 'row',
         justifyContent: 'center',
@@ -229,6 +235,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     arrowContainer: {
+        position: 'absolute',
         display: 'flex',
         flexDirection: 'row',
         justifyContent: 'center',
@@ -251,6 +258,7 @@ const styles = StyleSheet.create({
         textAlign: 'center',
     },
     etaTimeContainer: {
+        position: 'absolute',
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'center',
