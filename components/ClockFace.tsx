@@ -30,7 +30,7 @@ export function ClockFace({ time, etaInfos }: ClockFaceProps) {
                     <ClockNumbers />
                     <ClockTicks />
                     <ClockHands time={time} />
-                    <ClockThing type={ClockThingType.CLOCK_CENTRE_DOT} x={0} y={0} />
+                    <ClockThing type={ClockThingType.CLOCK_CENTRE_DOT} degrees={0} distance={0} />
 
                     <RouteThings currentTime={time} etaInfos={etaInfos} />
                 </View>

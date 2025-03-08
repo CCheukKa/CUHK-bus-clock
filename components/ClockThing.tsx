@@ -12,6 +12,20 @@ export enum ClockThingType {
 };
 
 /**
+ * Calculates the left and top positions based on the given degrees and distance.
+ *
+ * @param degrees - The angle in degrees.
+ * @param distance - The distance from the center.
+ * @returns An object containing the `left` and `top` positions.
+ */
+function getLeftTop(degrees: number, distance: number): { left: number; top: number; } {
+    const radians = ((-degrees + 90) * Math.PI) / 180;
+    const left = 50 + distance * Math.cos(radians) * 50;
+    const top = 50 - distance * Math.sin(radians) * 50;
+    return { left, top };
+}
+
+/**
  * ClockThing component renders a circular clock element at a specified position.
  * 
  * @param {ClockThingType} [props.type] - The type of the clock thing.
@@ -19,8 +33,6 @@ export enum ClockThingType {
  * @param {string} [props.style.backgroundColour] - The background colour of the clock thing.
  * @param {string} [props.style.textColour] - The text colour of the clock thing.
  * @param {number} [props.style.opacity] - The opacity of the clock thing.
- * @param {number} [props.x] - The [-1,1] x-coordinate of the clock thing.
- * @param {number} [props.y] - The [-1,1] y-coordinate of the clock thing.
  * @param {number} [props.degrees] - The angle in degrees of the clock thing. (0 is 12 o'clock; clockwise)
  * @param {number} [props.distance] - The distance from the center of the clock thing.
  */
@@ -33,29 +45,16 @@ type ClockThingProps =
             textColour?: string;
             scale?: number;
         };
-    } & (
-        { x: number; y: number; degrees?: never; distance?: never } |
-        { degrees: number; distance: number; x?: never; y?: never }
-    ) & {
+        degrees: number;
+        distance: number;
         children?: ReactNode;
     };
 
 
-export function ClockThing({ type, style, x, y, degrees, distance, children }: ClockThingProps) {
+export function ClockThing({ type, style, degrees, distance, children }: ClockThingProps) {
     const { theme } = useTheme();
 
-    let left: number, top: number;
-    if (degrees !== undefined && distance !== undefined) {
-        const radians = ((-degrees + 90) * Math.PI) / 180;
-        left = 50 + distance * Math.cos(radians) * 50;
-        top = 50 - distance * Math.sin(radians) * 50;
-    } else if (x !== undefined && y !== undefined) {
-        left = 50 + x * 50;
-        top = 50 - y * 50;
-    } else {
-        left = 50;
-        top = 50;
-    }
+    const { left, top } = getLeftTop(degrees, distance);
 
     const contentWithin = (() => {
         switch (type) {
