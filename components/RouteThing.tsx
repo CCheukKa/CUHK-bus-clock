@@ -17,6 +17,7 @@ export function RouteThing({ etaInfo, currentTime }: RouteThingProps) {
     const { theme } = useTheme();
     const { settings } = useSettings();
 
+    const angle = etaInfo.etaFromTime.getMinutes() * 6 + etaInfo.etaFromTime.getSeconds() / 10;
     const routeColour = busRouteInfos[etaInfo.journey.route].routeColour;
     const remainingSeconds = getCountdown(currentTime, etaInfo.etaFromTime);
     const opacity = remainingSeconds > 0 ? 1 : 0.75;
