@@ -147,7 +147,7 @@ function EtaInfoCard({ time, etaInfo }: { time: Date, etaInfo: EtaInfo }) {
 
 function EtaTime({ time, etaTime, isPast }: { time: Date, etaTime: Date, isPast: boolean }) {
     const { theme } = useTheme();
-    const { minutes, seconds } = getCountdown(time, etaTime);
+    const remainingSeconds = getCountdown(time, etaTime);
     return (
         <View style={styles.etaTimeContainer}>
             <Text style={{
@@ -162,7 +162,7 @@ function EtaTime({ time, etaTime, isPast }: { time: Date, etaTime: Date, isPast:
                 fontWeight: 'bold',
                 fontSize: 12,
             }}>
-                {`[ ${toTimeString([minutes, seconds])} ]`}
+                {`[ ${toTimeString(remainingSeconds)} ]`}
             </Text>
         </View>
     );

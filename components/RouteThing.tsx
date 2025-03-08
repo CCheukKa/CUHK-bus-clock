@@ -18,11 +18,10 @@ export function RouteThing({ etaInfo, currentTime }: RouteThingProps) {
     const { settings } = useSettings();
 
     const routeColour = busRouteInfos[etaInfo.journey.route].routeColour;
-    const etaTime = etaInfo.etaFromTime;
-    const angle = etaTime.getMinutes() * 6 + etaTime.getSeconds() / 10;
-    const { totalMinutes, minutes, seconds } = getCountdown(currentTime, etaTime);
-    const opacity = totalMinutes > 0 ? 1 : 0.75;
+    const remainingSeconds = getCountdown(currentTime, etaInfo.etaFromTime);
+    const opacity = remainingSeconds > 0 ? 1 : 0.75;
     const contrastColour = Colour.getLuminance(routeColour) > 150 ? theme.black : theme.white;
+    const totalMinutes = remainingSeconds / 60;
     const routeBubbleScale = MathExtra.interpolateBetweenPins(totalMinutes, [
         { pin: -5, value: 0.6 },
         { pin: 0, value: 1 },
@@ -67,8 +66,8 @@ export function RouteThing({ etaInfo, currentTime }: RouteThingProps) {
                 style={{ textColour: Colour.mixRGBA(theme.background, routeColour, opacity) }}
             >
                 {settings.showCountdown
-                    ? toTimeString([minutes, seconds])
-                    : etaTime.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' })
+                    ? toTimeString(remainingSeconds)
+                    : etaInfo.etaFromTime.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' })
                 }
             </ClockThing>
         </>

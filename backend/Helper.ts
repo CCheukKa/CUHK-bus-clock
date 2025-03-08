@@ -120,42 +120,53 @@ export class IconGlyphs {
     static isMaterialCommunityIcons(name: string): name is MaterialCommunityIconsGlyphs { return name in MaterialCommunityIconsGlyphMap; }
 }
 
+
 /* -------------------------------------------------------------------------- */
+
 /**
- * Converts a tuple of two numbers into a formatted time string.
+ * Converts an array of minutes and seconds into a time string.
  *
- * @param param0 - A tuple containing two numbers. The first number represents hours/minutes, and the second number represents minutes/seconds.
- * @param padFront - A boolean indicating whether to pad the first number with a leading zero if it is a single digit. Defaults to `false`.
- * @returns A string representing the formatted time.
- * 
- * @example
- * ```typescript
- * const time = toTimeString([1, 30], true);
- * console.log(time); // Output will be '01:30'
- * ```
+ * @param param0 - An array containing two numbers: the first is the number of minutes, and the second is the number of seconds.
+ * @param padFront - An optional boolean that, if true, will pad the front of the time string with zeros.
+ * @returns A string representing the time in "MM:SS" format.
  */
-export function toTimeString([a, b]: [number, number], padFront: boolean = false): string {
-    return `${padFront ? a.toString().padStart(2, '0') : a}:${Math.abs(b).toString().padStart(2, '0')}`;
+export function toTimeString([minutes, seconds]: [number, number], padFront?: boolean): string;
+/**
+ * Converts a total number of seconds into a time string in the format "HH:MM:SS".
+ *
+ * @param totalSeconds - The total number of seconds to convert.
+ * @param padFront - Optional. If true, pads the front of the time string with zeros to ensure it is always in the format "HH:MM:SS".
+ * @returns The formatted time string.
+ */
+export function toTimeString(totalSeconds: number, padFront?: boolean): string;
+export function toTimeString(input: number | [number, number], padFront: boolean = false): string {
+    let min: number;
+    let sec: number;
+    let isNegative = false;
+
+    if (Array.isArray(input)) {
+        isNegative = input[0] < 0 || input[1] < 0;
+        min = Math.abs(input[0]);
+        sec = Math.abs(input[1]);
+    } else {
+        isNegative = input < 0;
+        min = Math.floor(Math.abs(input) / 60);
+        sec = Math.abs(input) % 60;
+    }
+
+    return `${isNegative ? '-' : ''}${padFront ? min.toString().padStart(2, '0') : min}:${sec.toString().padStart(2, '0')}`;
 }
 
 /**
- * Calculates the countdown from the current time to the estimated time of arrival (ETA).
+ * Calculates the countdown in seconds between the current time and the estimated time of arrival (ETA).
  *
- * @param currentTime - The current time as a Date object.
- * @param etaTime - The estimated time of arrival as a Date object.
- * @returns An object containing the ETA in total seconds, minutes, and seconds.
- * @property totalSeconds - The total ETA in seconds.
- * @property totalMinutes - The total ETA in minutes.
- * @property minutes - The ETA in minutes.
- * @property seconds - The remaining seconds after calculating minutes.
+ * @param currentTime - The current date and time.
+ * @param etaTime - The estimated date and time of arrival.
+ * @returns The countdown in seconds as a number.
  */
-export function getCountdown(currentTime: Date, etaTime: Date): { totalMinutes: number, totalSeconds: number, minutes: number, seconds: number } {
+export function getCountdown(currentTime: Date, etaTime: Date): number {
     const totalSeconds = (etaTime.getTime() - currentTime.getTime()) / 1000;
-    const totalMinutes = totalSeconds / 60;
-    const sign = Math.sign(totalSeconds);
-    const minutes = Math.floor(Math.abs(totalSeconds) / 60) * sign;
-    const seconds = Math.floor(Math.abs(totalSeconds) % 60) * sign;
-    return { totalMinutes, totalSeconds, minutes, seconds };
+    return totalSeconds;
 }
 
 /* -------------------------------------------------------------------------- */
