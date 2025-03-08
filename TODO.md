@@ -13,6 +13,9 @@
 - Dropdown styling follow colour theme
 - Make ETA text distance adjust dynamically based on location
 - Make route bubbles avoid overlapping
+  - Adjust tolerableDistance based on bubble size
+  - Adjust the route annotation line to still point at the correct time
+  - Group buses arriving at the same time?
 - Add past/future peeking indicators on clock face
 - Add more colour themes
 - Pressing setting controls dismiss everything
