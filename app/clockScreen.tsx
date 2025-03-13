@@ -75,7 +75,7 @@ export default function ClockScreen() {
         getEtaInfos(fromTo, logicTime, settings.pastPeekMinutes, settings.futurePeekMinutes),
         [
             fromTo,
-            logicTime.truncateTo('second')
+            logicTime.truncateTo('second').getTime(),
         ]
     );
     //
