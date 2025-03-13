@@ -67,10 +67,12 @@ export function ClockThing({ type, style, degrees, distance, children }: ClockTh
                     },
                 ]} />);
             case ClockThingType.CLOCK_NUMBER:
-                return (<Text style={[
-                    styles.clockNumber,
-                    { color: theme.halfContrast },
-                ]}>{children}</Text>);
+                return (<View style={styles.clockNumberContainer}>
+                    <Text style={[
+                        styles.clockNumber,
+                        { color: theme.halfContrast },
+                    ]}>{children}</Text>
+                </View>);
             case ClockThingType.ROUTE_NUMBER_BUBBLE:
                 return (
                     <View style={[
@@ -155,12 +157,20 @@ const styles = StyleSheet.create({
         borderRadius: '50%',
         borderWidth: 2.5,
     },
-    clockNumber: {
+    clockNumberContainer: {
         width: 30,
+        aspectRatio: 1,
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    clockNumber: {
+        width: '100%',
+        aspectRatio: 1,
         textAlign: 'center',
         fontSize: 20,
         fontWeight: 'bold',
-        transform: [{ translateY: -3 }],
+        transform: [{ translateY: 1 }],
     },
     routeAnnotationLine: {
         width: 5,
