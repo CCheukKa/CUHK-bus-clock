@@ -18,7 +18,7 @@ export enum ClockThingType {
  * @param distance - The distance from the center.
  * @returns An object containing the `left` and `top` positions.
  */
-function getLeftTop(degrees: number, distance: number): { left: number; top: number; } {
+function polarToLeftTop(degrees: number, distance: number): { left: number; top: number; } {
     const radians = ((-degrees + 90) * Math.PI) / 180;
     const left = 50 + distance * Math.cos(radians) * 50;
     const top = 50 - distance * Math.sin(radians) * 50;
@@ -54,7 +54,7 @@ type ClockThingProps =
 export function ClockThing({ type, style, degrees, distance, children }: ClockThingProps) {
     const { theme } = useTheme();
 
-    const { left, top } = getLeftTop(degrees, distance);
+    const { left, top } = polarToLeftTop(degrees, distance);
 
     const contentWithin = (() => {
         switch (type) {

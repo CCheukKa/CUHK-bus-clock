@@ -60,11 +60,11 @@ function computeRouteThingInfos(etaInfos: EtaInfo[], currentTime: Date): RouteTh
         ]);
         const routeAnnotationLineLength = MathExtra.interpolateBetweenPins(totalMinutes, [
             { pin: -5, value: 60 },
-            { pin: 0, value: 160 },
+            { pin: 0, value: 150 },
             { pin: 15, value: 60 },
         ]) + routeBubbleOrbit * MathExtra.interpolateBetweenPins(totalMinutes, [
             { pin: -5, value: 100 },
-            { pin: 0, value: 160 },
+            { pin: 0, value: 180 },
             { pin: 15, value: 100 },
         ]);
         const routeBubbleDistance = MathExtra.interpolateBetweenPins(totalMinutes, [
@@ -73,7 +73,7 @@ function computeRouteThingInfos(etaInfos: EtaInfo[], currentTime: Date): RouteTh
             { pin: 15, value: 1.2 },
         ]) + routeBubbleOrbit * MathExtra.interpolateBetweenPins(totalMinutes, [
             { pin: -5, value: 0.2 },
-            { pin: 0, value: 0.32 },
+            { pin: 0, value: 0.36 },
             { pin: 15, value: 0.2 },
         ]);
         const routeEtaCountdownDistance = MathExtra.interpolateBetweenPins(totalMinutes, [

@@ -66,7 +66,7 @@ const styles = StyleSheet.create({
         height: 10,
     },
     clockFaceContainer: {
-        width: '50%',
+        width: 200,
         aspectRatio: 1,
     },
     clockFace: {
