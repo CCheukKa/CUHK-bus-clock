@@ -103,17 +103,17 @@ function handleErrors(etaError: EtaError) {
             case etaError.isType(EtaErrorType.OUT_OF_SERVICE_HOURS):
                 {
                     let msg = 'Out of service hours';
-                    (etaError as OutOfServiceHoursError).routes.forEach(route => {
+                    for (const route of (etaError as OutOfServiceHoursError).routes) {
                         msg += `\nRoute ${route.replaceAll('_', '')} - ${toTimeString(busRouteInfos[route].firstService, true)}-${toTimeString(busRouteInfos[route].lastService, true)}`;
-                    });
+                    }
                     return msg;
                 }
             case etaError.isType(EtaErrorType.NO_SERVICE_TODAY):
                 {
                     let msg = 'No service between these locations today';
-                    (etaError as NoServiceTodayError).routes.forEach(route => {
+                    for (const route of (etaError as NoServiceTodayError).routes) {
                         msg += `\nRoute ${route.replaceAll('_', '')} - ${busRouteInfos[route].days.map(day => weekDays[day]).join(', ')} only`;
-                    });
+                    }
                     return msg;
                 }
             case etaError.isType(EtaErrorType.NO_SERVICE_WITHIN_PEEK_TIME):

@@ -9,12 +9,14 @@ import { useTheme } from "@/context/ThemeContext";
 
 const data: DropdownItem[] = (() => {
     const entries: DropdownItem[] = [];
-    (Object.keys(stationRegions) as Region[]).forEach(region => {
+    for (const r in stationRegions) {
+        const region = r as Region;
+
         entries.push({ type: 'region', label: region, value: region });
-        stationRegions[region].forEach(station => {
+        for (const station of stationRegions[region]) {
             entries.push({ type: 'station', label: station, value: station });
-        });
-    });
+        }
+    }
     return entries;
 })();
 // compile this auto?

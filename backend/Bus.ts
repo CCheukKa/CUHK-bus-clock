@@ -87,26 +87,26 @@ export function getEtaInfos({ from, to }: FromTo, currentTime: Date, pastPeekMin
 
     const etaInfos: (EtaInfo | EtaError)[] = [];
     const journeys: Journey[] = [];
-    fromStations.forEach(fromStation => {
-        toStations.forEach(toStation => {
+    for (const fromStation of fromStations) {
+        for (const toStation of toStations) {
             journeys.push(...findJourney(fromStation, toStation));
-        });
-    });
+        }
+    }
     if (journeys.length === 0) { return new NoRouteFoundError; }
 
     type ScoredJourney = Journey & { score: number };
     const scoredJourneys: ScoredJourney[] = journeys.map(journey => ({ ...journey, score: scoredJourney(journey) }));
     const shortestRouteJourneys: Journey[] = [];
     const routes = new Set(scoredJourneys.map(journey => journey.route));
-    routes.forEach(route => {
+    for (const route of routes) {
         const routeJourneys = scoredJourneys.filter(journey => journey.route === route);
         const minScore = Math.min(...routeJourneys.map(journey => journey.score));
         shortestRouteJourneys.push(...routeJourneys.filter(journey => journey.score === minScore));
-    });
+    }
 
-    shortestRouteJourneys.forEach(shortestRouteJourney => {
-        etaInfos.push(...[getStationRouteETA(shortestRouteJourney, currentTime)].flat());
-    });
+    for (const journey of shortestRouteJourneys) {
+        etaInfos.push(...[getStationRouteETA(journey, currentTime)].flat());
+    }
 
     const etaErrors = etaInfos.filter(etaInfo => isEtaError(etaInfo));
     const errorlessEtaInfos = etaInfos.filter(etaInfo => isEtaInfo(etaInfo));
@@ -156,18 +156,21 @@ export type Journey = {
 };
 function findJourney(fromStation: Station, toStation: Station): Journey[] {
     const journeys: Journey[] = [];
-    Object.entries(busRouteInfos).forEach(([route, routeInfo]) => {
+    for (const r in busRouteInfos) {
+        const route = r as BusRoute;
+        const routeInfo = busRouteInfos[route];
+
         const fromIndices: number[] = routeInfo.stations.map((station, index) => station === fromStation ? index : NaN);
         const toIndices: number[] = routeInfo.stations.map((station, index) => station === toStation ? index : NaN);
 
-        fromIndices.forEach(fromIndex => {
-            toIndices.forEach(toIndex => {
+        for (const fromIndex of fromIndices) {
+            for (const toIndex of toIndices) {
                 if (fromIndex < toIndex) {
-                    journeys.push({ route: route as BusRoute, fromIndex, toIndex, fromStation, toStation });
+                    journeys.push({ route, fromIndex, toIndex, fromStation, toStation });
                 }
-            });
-        });
-    });
+            }
+        }
+    };
     return journeys;
 }
 
@@ -183,7 +186,7 @@ function getStationRouteETA(journey: Journey, currentTime: Date): EtaInfo[] | Et
 
     const etaInfos: (EtaInfo | null)[] = [];
 
-    routeInfo.minuteMarks.forEach(minuteMark => {
+    for (const minuteMark of routeInfo.minuteMarks) {
         const pastHourMarkTime = new Date(currentTime);
         const currentHourMarkTime = new Date(currentTime);
         const futureHourMarkTime = new Date(currentTime);
@@ -226,7 +229,7 @@ function getStationRouteETA(journey: Journey, currentTime: Date): EtaInfo[] | Et
                 }
                 : null,
         );
-    });
+    };
 
     const inServiceHoursEtaInfos = etaInfos.filter(eta => eta !== null)
     return inServiceHoursEtaInfos.length === 0 ? new OutOfServiceHoursError([journey.route]) : inServiceHoursEtaInfos;
