@@ -18,9 +18,9 @@ type RouteThingInfo = {
     routeBubbleDistance: number;
     routeEtaCountdownDistance: number;
 };
-const MAXIMUM_ORBIT_COUNT = 3;
+const MAX_ORBIT_COUNT = 3;
 function computeRouteThingInfos(etaInfos: EtaInfo[], currentTime: Date): RouteThingInfo[] {
-    const routeBubbleOrbits: number[][] = Array.from({ length: MAXIMUM_ORBIT_COUNT }, () => []);
+    const routeBubbleOrbits: number[][] = Array.from({ length: MAX_ORBIT_COUNT }, () => []);
 
     return etaInfos
         .map(etaInfo => computeRouteThingInfo(etaInfo, currentTime))
@@ -39,7 +39,7 @@ function computeRouteThingInfos(etaInfos: EtaInfo[], currentTime: Date): RouteTh
         const angle = etaInfo.etaFromTime.getMinutes() * 6 + etaInfo.etaFromTime.getSeconds() / 10;
         let routeBubbleOrbit: number | null = null;
         let placed = false;
-        for (let i = 0; i < MAXIMUM_ORBIT_COUNT; i++) {
+        for (let i = 0; i < MAX_ORBIT_COUNT; i++) {
             const orbitAngles = routeBubbleOrbits[i];
             if (orbitAngles.every(existingAngle => getAngularDistance(existingAngle, angle) >= TOLERABLE_ANGULAR_DISTANCE)) {
                 orbitAngles.push(angle);
@@ -158,7 +158,7 @@ export function RouteThings({ etaInfos, currentTime }: RouteThingsProps) {
 
         const routeThingInfos: RouteThingInfo[] = [];
         const rawRouteThingInfos = computeRouteThingInfos(etaInfos.sort((a, b) => a.etaFromTime.getTime() - b.etaFromTime.getTime()), currentTime);
-        for (let i = MAXIMUM_ORBIT_COUNT - 1; i >= 0; i--) {
+        for (let i = MAX_ORBIT_COUNT - 1; i >= 0; i--) {
             routeThingInfos.push(...rawRouteThingInfos.filter(info => info.routeBubbleOrbit === i));
         }
 
