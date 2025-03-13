@@ -1,6 +1,7 @@
 import { ReactNode } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { useTheme } from '@/context/ThemeContext';
+import { MathExtra } from '@/backend/Helper';
 
 export enum ClockThingType {
     CLOCK_CENTRE_DOT = 'clockCentreDot',
@@ -10,20 +11,6 @@ export enum ClockThingType {
     ROUTE_ETA_COUNTDOWN = 'routeEtaCountdown',
     ERROR_TEXT = 'errorText',
 };
-
-/**
- * Calculates the left and top positions based on the given degrees and distance.
- *
- * @param degrees - The angle in degrees.
- * @param distance - The distance from the center.
- * @returns An object containing the `left` and `top` positions.
- */
-function polarToLeftTop(degrees: number, distance: number): { left: number; top: number; } {
-    const radians = ((-degrees + 90) * Math.PI) / 180;
-    const left = 50 + distance * Math.cos(radians) * 50;
-    const top = 50 - distance * Math.sin(radians) * 50;
-    return { left, top };
-}
 
 /**
  * ClockThing component renders a circular clock element at a specified position.
@@ -54,7 +41,9 @@ type ClockThingProps =
 export function ClockThing({ type, style, degrees, distance, children }: ClockThingProps) {
     const { theme } = useTheme();
 
-    const { left, top } = polarToLeftTop(degrees, distance);
+    const { x, y } = MathExtra.clockPolarToXY(degrees, distance);
+    const left = x * 50 + 50;
+    const top = -y * 50 + 50;
 
     const contentWithin = (() => {
         switch (type) {

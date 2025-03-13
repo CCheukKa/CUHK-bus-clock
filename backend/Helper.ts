@@ -91,6 +91,62 @@ export class MathExtra {
 
         throw new Error(`interpolateBetweenPins() failed to interpolate ${inputPin} between ${JSON.stringify(sortedPinValues, null, 1)}`);
     }
+
+    /**
+     * Converts Cartesian coordinates (x, y) to polar coordinates.
+     *
+     * @param x - The x-coordinate in Cartesian coordinates.
+     * @param y - The y-coordinate in Cartesian coordinates.
+     * @returns An object containing the polar coordinates:
+     *   - `degrees`: The angle in degrees from the positive x-axis; anti-clockwise.
+     *   - `distance`: The distance from the origin to the point (x, y).
+     */
+    public static xyToPolar(x: number, y: number) {
+        const degrees = Math.atan2(y, x) * 180 / Math.PI;
+        const distance = Math.sqrt(x ** 2 + y ** 2);
+        return { degrees, distance };
+    }
+
+    /**
+     * Converts Cartesian coordinates (x, y) to polar coordinates (degrees, distance) 
+     * relative to a clock face where 0 degrees is at the 12 o'clock position.
+     *
+     * @param x - The x-coordinate in Cartesian space.
+     * @param y - The y-coordinate in Cartesian space.
+     * @returns An object containing:
+     *   - `degrees`: The angle in degrees, where 0 degrees is at the 12 o'clock position; clockwise.
+     *   - `distance`: The distance from the origin to the point (x, y).
+     */
+    public static xyToClockPolar(x: number, y: number) {
+        const { degrees, distance } = MathExtra.xyToPolar(x, y);
+        return { degrees: -degrees + 90, distance };
+    }
+
+    /**
+     * Converts polar coordinates (angle in degrees and distance) to Cartesian coordinates (x, y).
+     *
+     * @param degrees - The angle in degrees, where 0 degrees is along the positive x-axis; anti-clockwise.
+     * @param distance - The distance from the origin.
+     * @returns An object containing the x and y coordinates.
+     */
+    public static polarToXY(degrees: number, distance: number) {
+        const radians = ((-degrees + 90) * Math.PI) / 180;
+        const x = distance * Math.sin(radians);
+        const y = distance * Math.cos(radians);
+        return { x, y };
+    }
+
+    /**
+     * Converts clock-based polar coordinates to Cartesian coordinates.
+     *
+     * @param degrees - The angle in degrees, where 0 degrees points to 12 o'clock; clockwise.
+     * @param distance - The distance from the origin.
+     * @returns An object containing the Cartesian coordinates { x, y }.
+     */
+    public static clockPolarToXY(degrees: number, distance: number) {
+        const { x, y } = MathExtra.polarToXY(-degrees + 90, distance);
+        return { x, y };
+    }
 }
 
 /* -------------------------------------------------------------------------- */
