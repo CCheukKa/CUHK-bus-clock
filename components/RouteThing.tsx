@@ -5,14 +5,13 @@ import { Colour, getCountdown, MathExtra, toTimeString } from "@/backend/Helper"
 import { useTheme } from "@/context/ThemeContext";
 import { useMemo } from "react";
 import { useSettings } from "@/context/SettingsContext";
-import { info } from "console";
 
 const weekDays = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 
 type RouteThingInfo = {
     etaInfo: EtaInfo;
     angle: number;
-    orbit: number;
+    routeBubbleOrbit: number;
     remainingSeconds: number;
     routeBubbleScale: number;
     routeAnnotationLineLength: number;
@@ -21,7 +20,7 @@ type RouteThingInfo = {
 };
 const MAXIMUM_ORBIT_COUNT = 3;
 function computeRouteThingInfos(etaInfos: EtaInfo[], currentTime: Date): RouteThingInfo[] {
-    const orbits: number[][] = Array.from({ length: MAXIMUM_ORBIT_COUNT }, () => []);
+    const routeBubbleOrbits: number[][] = Array.from({ length: MAXIMUM_ORBIT_COUNT }, () => []);
 
     return etaInfos
         .map(etaInfo => computeRouteThingInfo(etaInfo, currentTime))
@@ -38,18 +37,18 @@ function computeRouteThingInfos(etaInfos: EtaInfo[], currentTime: Date): RouteTh
         ]);
 
         const angle = etaInfo.etaFromTime.getMinutes() * 6 + etaInfo.etaFromTime.getSeconds() / 10;
-        let orbit: number | null = null;
+        let routeBubbleOrbit: number | null = null;
         let placed = false;
         for (let i = 0; i < MAXIMUM_ORBIT_COUNT; i++) {
-            const orbitAngles = orbits[i];
+            const orbitAngles = routeBubbleOrbits[i];
             if (orbitAngles.every(existingAngle => getAngularDistance(existingAngle, angle) >= TOLERABLE_ANGULAR_DISTANCE)) {
                 orbitAngles.push(angle);
                 placed = true;
-                orbit = i;
+                routeBubbleOrbit = i;
                 break;
             }
         }
-        if (!placed || orbit === null) {
+        if (!placed || routeBubbleOrbit === null) {
             console.warn(`RouteThing not placed, route ${etaInfo.journey.route}, ${angle}deg`);
             return null;
         }
@@ -63,7 +62,7 @@ function computeRouteThingInfos(etaInfos: EtaInfo[], currentTime: Date): RouteTh
             { pin: -5, value: 60 },
             { pin: 0, value: 160 },
             { pin: 15, value: 60 },
-        ]) + orbit * MathExtra.interpolateBetweenPins(totalMinutes, [
+        ]) + routeBubbleOrbit * MathExtra.interpolateBetweenPins(totalMinutes, [
             { pin: -5, value: 100 },
             { pin: 0, value: 160 },
             { pin: 15, value: 100 },
@@ -72,7 +71,7 @@ function computeRouteThingInfos(etaInfos: EtaInfo[], currentTime: Date): RouteTh
             { pin: -5, value: 1.2 },
             { pin: 0, value: 1.3 },
             { pin: 15, value: 1.2 },
-        ]) + orbit * MathExtra.interpolateBetweenPins(totalMinutes, [
+        ]) + routeBubbleOrbit * MathExtra.interpolateBetweenPins(totalMinutes, [
             { pin: -5, value: 0.2 },
             { pin: 0, value: 0.32 },
             { pin: 15, value: 0.2 },
@@ -86,7 +85,7 @@ function computeRouteThingInfos(etaInfos: EtaInfo[], currentTime: Date): RouteTh
         return {
             etaInfo,
             angle,
-            orbit,
+            routeBubbleOrbit,
             remainingSeconds,
             routeBubbleScale,
             routeAnnotationLineLength,
@@ -160,7 +159,7 @@ export function RouteThings({ etaInfos, currentTime }: RouteThingsProps) {
         const routeThingInfos: RouteThingInfo[] = [];
         const rawRouteThingInfos = computeRouteThingInfos(etaInfos.sort((a, b) => a.etaFromTime.getTime() - b.etaFromTime.getTime()), currentTime);
         for (let i = MAXIMUM_ORBIT_COUNT - 1; i >= 0; i--) {
-            routeThingInfos.push(...rawRouteThingInfos.filter(info => info.orbit === i));
+            routeThingInfos.push(...rawRouteThingInfos.filter(info => info.routeBubbleOrbit === i));
         }
 
         return routeThingInfos.map(routeThingInfo => (
