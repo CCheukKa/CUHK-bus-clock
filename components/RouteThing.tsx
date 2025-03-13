@@ -5,40 +5,103 @@ import { Colour, getCountdown, MathExtra, toTimeString } from "@/backend/Helper"
 import { useTheme } from "@/context/ThemeContext";
 import { useMemo } from "react";
 import { useSettings } from "@/context/SettingsContext";
+import { info } from "console";
 
 const weekDays = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 
-type RouteThingProps = {
+type RouteThingInfo = {
     etaInfo: EtaInfo;
-    currentTime: Date;
+    angle: number;
+    orbit: number;
+    remainingSeconds: number;
+    routeBubbleScale: number;
+    routeAnnotationLineLength: number;
+    routeBubbleDistance: number;
+    routeEtaCountdownDistance: number;
 };
+const MAXIMUM_ORBIT_COUNT = 3;
+function computeRouteThingInfos(etaInfos: EtaInfo[], currentTime: Date): RouteThingInfo[] {
+    const TOLERABLE_ANGULAR_DISTANCE = 15;
+    const orbits: number[][] = Array.from({ length: MAXIMUM_ORBIT_COUNT }, () => []);
 
-export function RouteThing({ etaInfo, currentTime }: RouteThingProps) {
+    return etaInfos
+        .map(etaInfo => computeRouteThingInfo(etaInfo, currentTime))
+        .filter(info => info !== null);
+    /* -------------------------------------------------------------------------- */
+    function computeRouteThingInfo(etaInfo: EtaInfo, currentTime: Date): RouteThingInfo | null {
+        const angle = etaInfo.etaFromTime.getMinutes() * 6 + etaInfo.etaFromTime.getSeconds() / 10;
+        let orbit: number | null = null;
+
+        let placed = false;
+        for (let i = 0; i < MAXIMUM_ORBIT_COUNT; i++) {
+            const orbitAngles = orbits[i];
+            if (orbitAngles.every(existingAngle => getAngularDistance(existingAngle, angle) >= TOLERABLE_ANGULAR_DISTANCE)) {
+                orbitAngles.push(angle);
+                placed = true;
+                orbit = i;
+                break;
+            }
+        }
+        if (!placed || orbit === null) {
+            console.warn(`RouteThing not placed, route ${etaInfo.journey.route}, ${angle}deg`);
+            return null;
+        }
+
+        const remainingSeconds = getCountdown(currentTime, etaInfo.etaFromTime);
+        const totalMinutes = remainingSeconds / 60;
+        const routeBubbleScale = MathExtra.interpolateBetweenPins(totalMinutes, [
+            { pin: -5, value: 0.6 },
+            { pin: 0, value: 1 },
+            { pin: 15, value: 0.6 },
+        ]);
+        const routeAnnotationLineLength = 800;
+        const firstOrbitDistance = MathExtra.interpolateBetweenPins(totalMinutes, [
+            { pin: -5, value: 1.15 },
+            { pin: 0, value: 1.3 },
+            { pin: 15, value: 1.15 },
+        ]);
+        const orbitGap = MathExtra.interpolateBetweenPins(totalMinutes, [
+            { pin: -5, value: 0.25 },
+            { pin: 0, value: 0.32 },
+            { pin: 15, value: 0.25 },
+        ]);
+        const routeBubbleDistance = firstOrbitDistance + orbit * orbitGap;
+        const routeEtaCountdownDistance = MathExtra.interpolateBetweenPins(totalMinutes, [
+            { pin: -5, value: routeBubbleDistance + 0.32 },
+            { pin: 0, value: routeBubbleDistance + 0.38 },
+            { pin: 15, value: routeBubbleDistance + 0.32 },
+        ]);
+
+        return {
+            etaInfo,
+            angle,
+            orbit,
+            remainingSeconds,
+            routeBubbleScale,
+            routeAnnotationLineLength,
+            routeBubbleDistance,
+            routeEtaCountdownDistance,
+        };
+    }
+}
+
+export function RouteThing({ routeThingInfo }: { routeThingInfo: RouteThingInfo }) {
+    const {
+        etaInfo,
+        angle,
+        remainingSeconds,
+        routeBubbleScale,
+        routeAnnotationLineLength,
+        routeBubbleDistance,
+        routeEtaCountdownDistance
+    } = routeThingInfo;
+    // 
     const { theme } = useTheme();
     const { settings } = useSettings();
 
-    const angle = etaInfo.etaFromTime.getMinutes() * 6 + etaInfo.etaFromTime.getSeconds() / 10;
     const routeColour = busRouteInfos[etaInfo.journey.route].routeColour;
-    const remainingSeconds = getCountdown(currentTime, etaInfo.etaFromTime);
     const opacity = remainingSeconds > 0 ? 1 : 0.75;
     const contrastColour = Colour.getLuminance(routeColour) > 150 ? theme.black : theme.white;
-    const totalMinutes = remainingSeconds / 60;
-    const routeBubbleScale = MathExtra.interpolateBetweenPins(totalMinutes, [
-        { pin: -5, value: 0.6 },
-        { pin: 0, value: 1 },
-        { pin: 15, value: 0.6 },
-    ]);
-    const routeAnnotationLineLength = MathExtra.interpolateBetweenPins(totalMinutes, [
-        { pin: -5, value: 75 },
-        { pin: 0, value: 160 },
-        { pin: 15, value: 75 },
-    ]);
-    const routeBubbleDistance = 1.3;
-    const routeEtaCountdownDistance = MathExtra.interpolateBetweenPins(totalMinutes, [
-        { pin: -5, value: routeBubbleDistance + 0.32 },
-        { pin: 0, value: routeBubbleDistance + 0.38 },
-        { pin: 15, value: routeBubbleDistance + 0.32 },
-    ]);
 
     return (
         <>
@@ -83,11 +146,12 @@ export function RouteThings({ etaInfos, currentTime }: RouteThingsProps) {
     return useMemo(() => {
         if (isEtaError(etaInfos)) { return handleErrors(etaInfos); }
 
-        return etaInfos.map(etaInfo => (
+        const routeThingInfos = computeRouteThingInfos(etaInfos.sort((a, b) => a.etaFromTime.getTime() - b.etaFromTime.getTime()), currentTime).sort((a, b) => b.orbit - a.orbit);
+
+        return routeThingInfos.map(routeThingInfo => (
             <RouteThing
-                etaInfo={etaInfo}
-                currentTime={currentTime}
-                key={`${etaInfo.journey.route}-${etaInfo.etaFromTime.getTime()}`}
+                routeThingInfo={routeThingInfo}
+                key={`${routeThingInfo.etaInfo.journey.route}-${routeThingInfo.etaInfo.etaFromTime.getTime()}`}
             />
         ));
     }, [etaInfos]);
@@ -130,4 +194,9 @@ function handleErrors(etaError: EtaError) {
             {errorMessage}
         </ClockThing>
     );
+}
+
+function getAngularDistance(a: number, b: number) {
+    const diff = Math.abs(a - b);
+    return diff > 180 ? 360 - diff : diff;
 }

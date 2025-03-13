@@ -98,7 +98,7 @@ export function ClockThing({ type, style, degrees, distance, children }: ClockTh
                         transform: [
                             { rotate: `${degrees}deg` },
                             { translateY: '50%' }
-                        ]
+                        ],
                     }
                 ]} />);
             case ClockThingType.ROUTE_ETA_COUNTDOWN:

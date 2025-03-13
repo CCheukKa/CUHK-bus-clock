@@ -19,20 +19,22 @@ export function ClockFace({ time, etaInfos }: ClockFaceProps) {
     return (
         settings.showClockFace
             ? <View style={styles.clockContainer}>
-                <View style={[
-                    styles.clockFace,
-                    {
-                        backgroundColor: theme.background,
-                        borderColor: theme.highContrast,
-                        shadowColor: theme.highContrast,
-                    },
-                ]}>
-                    <ClockNumbers />
-                    <ClockTicks />
-                    <ClockHands time={time} />
-                    <ClockThing type={ClockThingType.CLOCK_CENTRE_DOT} degrees={0} distance={0} />
-
+                <View style={styles.clockFaceContainer}>
                     <RouteThings currentTime={time} etaInfos={etaInfos} />
+
+                    <View style={[
+                        styles.clockFace,
+                        {
+                            backgroundColor: theme.background,
+                            borderColor: theme.highContrast,
+                            shadowColor: theme.highContrast,
+                        },
+                    ]}>
+                        <ClockNumbers />
+                        <ClockTicks />
+                        <ClockHands time={time} />
+                        <ClockThing type={ClockThingType.CLOCK_CENTRE_DOT} degrees={0} distance={0} />
+                    </View>
                 </View>
             </View>
             : <View style={styles.clockFaceBuffer} />
@@ -63,9 +65,13 @@ const styles = StyleSheet.create({
         width: '100%',
         height: 10,
     },
+    clockFaceContainer: {
+        width: '50%',
+        aspectRatio: 1,
+    },
     clockFace: {
         display: 'flex',
-        width: '50%',
+        width: '100%',
         aspectRatio: 1,
         borderRadius: '50%',
         borderWidth: 2,
