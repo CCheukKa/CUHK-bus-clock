@@ -183,7 +183,7 @@ const styles = StyleSheet.create({
     routeEtaCountdown: {
         fontSize: 16,
         fontWeight: 'bold',
-        width: 80,
+        width: 60,
         textAlign: 'center',
         textShadowOffset: { width: 0, height: 0 },
         shadowOpacity: 0.5,
