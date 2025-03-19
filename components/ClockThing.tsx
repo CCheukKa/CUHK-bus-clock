@@ -120,7 +120,8 @@ export function ClockThing({ type, style, degrees, distance, children }: ClockTh
     return (
         <View style={[
             styles.clockThing,
-            { left: `${left}%`, top: `${top}%` }
+            { left: `${left}%`, top: `${top}%` },
+            type === ClockThingType.ROUTE_ANNOTATION_LINE ? { width: '10%' } : null, //TODO: find an actual solution
         ]}>
             {contentWithin}
         </View>
@@ -132,7 +133,6 @@ const styles = StyleSheet.create({
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
-        width: '10%',
         aspectRatio: 1,
         borderRadius: '50%',
         position: 'absolute',
@@ -141,7 +141,7 @@ const styles = StyleSheet.create({
         left: '50%',
     },
     clockCentreDot: {
-        width: '30%',
+        width: '3%',
         aspectRatio: 1,
         borderRadius: '50%',
         borderWidth: 2.5,
@@ -183,11 +183,11 @@ const styles = StyleSheet.create({
     routeEtaCountdown: {
         fontSize: 16,
         fontWeight: 'bold',
-        width: 60,
         textAlign: 'center',
         textShadowOffset: { width: 0, height: 0 },
         shadowOpacity: 0.5,
         textShadowRadius: 6,
+        // backgroundColor: 'red',
     },
     errorTextContainer: {
         height: 90,

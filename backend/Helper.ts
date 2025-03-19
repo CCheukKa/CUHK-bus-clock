@@ -37,6 +37,8 @@ export class Colour {
     }
 }
 
+type Circle = { x: number, y: number, r: number };
+type Rectangle = { x: number, y: number, w2: number, h2: number };
 /**
  * A utility class providing additional mathematical functions.
  */
@@ -146,6 +148,43 @@ export class MathExtra {
     public static clockPolarToXY(degrees: number, distance: number) {
         const { x, y } = MathExtra.polarToXY(-degrees + 90, distance);
         return { x, y };
+    }
+
+    /**
+     * Determines if a circle collides with a rectangle.
+     *
+     * @param circle - The circle object with properties `x`, `y`, and `r` (radius).
+     * @param rect - The rectangle object with properties `x`, `y`, `w2` (width/2), and `h2` (height/2).
+     * @param tolerance - The tolerance value to use when checking for collision. Positive values favour collision; negative values favour non-collision.
+     * @returns `true` if the circle collides with the rectangle, otherwise `false`.
+     */
+    public static circleRectangleCollide(circle: Circle, rect: Rectangle, tolerance: number): boolean {
+        circle.r += tolerance;
+
+        const dx = Math.abs(circle.x - rect.x);
+        const dy = Math.abs(circle.y - rect.y);
+
+        if (dx > rect.w2 + circle.r) { return false; }
+        if (dy > rect.h2 + circle.r) { return false; }
+        if (dx <= rect.w2) { return true; }
+        if (dy <= rect.h2) { return true; }
+
+        return (dx - rect.w2) ** 2 + (dy - rect.h2) ** 2 <= (circle.r) ** 2;
+    }
+
+    /**
+     * Determines if two rectangles collide with each other, considering a tolerance value.
+     *
+     * @param rect1 - The first rectangle to check for collision.
+     * @param rect2 - The second rectangle to check for collision.
+     * @param tolerance - The tolerance value to be added to the width and height of the first rectangle. Positive values favour collision; negative values favour non-collision.
+     * @returns `true` if the rectangles collide, `false` otherwise.
+     */
+    public static rectangleRectangleCollide(rect1: Rectangle, rect2: Rectangle, tolerance: number): boolean {
+        rect1.w2 += tolerance;
+        rect1.h2 += tolerance;
+
+        return Math.abs(rect1.x - rect2.x) < rect1.w2 + rect2.w2 && Math.abs(rect1.y - rect2.y) < rect1.h2 + rect2.h2;
     }
 
     /**
