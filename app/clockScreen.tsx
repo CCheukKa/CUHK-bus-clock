@@ -8,7 +8,7 @@ import DateTimePicker, { DateTimePickerEvent } from '@react-native-community/dat
 import { JourneyPlanner } from '@/components/JourneyPlanner';
 import { FromTo, getEtaInfos } from '@/backend/Bus';
 import { Region } from '@/constants/BusData';
-import { DetailedEtaInfo } from '@/components/DetailedEtaInfo';
+import { EtaInfoPanel } from '@/components/EtaInfoPanel';
 import { useSettings } from '@/context/SettingsContext';
 import { FullscreenView } from '@/components/FullscreenView';
 import { useTheme } from '@/context/ThemeContext';
@@ -141,7 +141,7 @@ export default function ClockScreen() {
                 />, [fromTo]
             )}
             {useMemo(() =>
-                <DetailedEtaInfo
+                <EtaInfoPanel
                     time={logicTime}
                     etaInfos={etaInfos}
                 />, [etaInfos, settings]

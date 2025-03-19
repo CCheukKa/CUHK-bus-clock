@@ -5,11 +5,11 @@ import { useTheme } from "@/context/ThemeContext";
 import { FontAwesome } from "@expo/vector-icons";
 import { ScrollView, StyleSheet, Text, View } from "react-native";
 
-type DetailedEtaInfoProps = {
+type EtaInfoPanelProps = {
     time: Date;
     etaInfos: EtaInfo[] | EtaError;
 };
-export function DetailedEtaInfo({ time, etaInfos }: DetailedEtaInfoProps) {
+export function EtaInfoPanel({ time, etaInfos }: EtaInfoPanelProps) {
     const { theme } = useTheme();
 
     return (
@@ -29,7 +29,7 @@ export function DetailedEtaInfo({ time, etaInfos }: DetailedEtaInfoProps) {
                     zIndex: 2,
                     color: theme.halfContrast,
                 },
-            ]}>ETA Info</Text>
+            ]}>ETA Info Panel</Text>
             <Text style={[
                 styles.infoTitle,
                 {
@@ -37,7 +37,7 @@ export function DetailedEtaInfo({ time, etaInfos }: DetailedEtaInfoProps) {
                     color: 'transparent',
                     backgroundColor: theme.background,
                 },
-            ]}>ETA Info</Text>
+            ]}>ETA Info Panel</Text>
             <ScrollView
                 style={[
                     styles.etaScrollContainer,
