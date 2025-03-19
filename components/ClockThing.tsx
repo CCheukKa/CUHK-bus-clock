@@ -8,7 +8,7 @@ export enum ClockThingType {
     CLOCK_NUMBER = 'clockNumber',
     ROUTE_BUBBLE = 'routeNumber',
     ROUTE_ANNOTATION_LINE = 'routeAnnotationLine',
-    ROUTE_ETA_COUNTDOWN = 'routeEtaCountdown',
+    ROUTE_TIMING = 'routeTiming',
     ERROR_TEXT = 'errorText',
 };
 
@@ -92,9 +92,9 @@ export function ClockThing({ type, style, degrees, distance, children }: ClockTh
                         ],
                     }
                 ]} />);
-            case ClockThingType.ROUTE_ETA_COUNTDOWN:
+            case ClockThingType.ROUTE_TIMING:
                 return (<Text style={[
-                    styles.routeEtaCountdown,
+                    styles.routeTiming,
                     {
                         color: style?.textColour,
                         textShadowColor: theme.dimContrast,
@@ -180,7 +180,7 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         textAlign: 'center',
     },
-    routeEtaCountdown: {
+    routeTiming: {
         fontSize: 16,
         fontWeight: 'bold',
         textAlign: 'center',

@@ -17,18 +17,18 @@ type RouteBubbleInfo = {
 type RouteAnnotationLineInfo = {
     annotationLineLength: number;
 };
-type RouteEtaCountdownInfo = {
-    etaCountdownX: number;
-    etaCountdownY: number;
+type RouteTimingInfo = {
+    timingX: number;
+    timingY: number;
 };
 type RouteThingBasicInfo = {
     etaInfo: EtaInfo;
     remainingSeconds: number;
 };
-type RouteThingInfo = RouteThingBasicInfo & RouteBubbleInfo & RouteAnnotationLineInfo & RouteEtaCountdownInfo;
+type RouteThingInfo = RouteThingBasicInfo & RouteBubbleInfo & RouteAnnotationLineInfo & RouteTimingInfo;
 type RouteThingPreInfo = RouteThingBasicInfo & RouteBubbleInfo & RouteAnnotationLineInfo;
 const MAX_ORBIT_COUNT = 3;
-function computeRouteThingInfos(etaInfos: EtaInfo[], currentTime: Date, etaCountdownHideMinutes: number): RouteThingInfo[] {
+function computeRouteThingInfos(etaInfos: EtaInfo[], currentTime: Date, timingHideMinutes: number): RouteThingInfo[] {
     const routeThingPreInfos: RouteThingPreInfo[] = [];
     const bubbleOrbits: number[][] = Array.from({ length: MAX_ORBIT_COUNT }, () => []);
     for (let i = 0; i < etaInfos.length; i++) {
@@ -46,21 +46,21 @@ function computeRouteThingInfos(etaInfos: EtaInfo[], currentTime: Date, etaCount
     }
 
     const routeThingInfos: RouteThingInfo[] = [];
-    const routeEtaCountdownPositions: { x: number, y: number }[] = [];
+    const routeTimingPositions: { x: number, y: number }[] = [];
     const currentMinuteAngle = currentTime.getMinutes() * 6 + currentTime.getSeconds() / 10;
     routeThingPreInfos.sort((a, b) =>
         MathExtra.getAngularDistance(a.bubbleAngle, currentMinuteAngle)
         - MathExtra.getAngularDistance(b.bubbleAngle, currentMinuteAngle)
     );
     for (const routeThingPreInfo of routeThingPreInfos) {
-        const routeEtaCountdownInfo =
-            Math.abs(routeThingPreInfo.remainingSeconds) <= etaCountdownHideMinutes * 60
-                ? computeRouteEtaCountdownInfo(routeThingPreInfos, routeThingPreInfo)
-                : { etaCountdownX: 0, etaCountdownY: 0 };
-        routeEtaCountdownPositions.push({ x: routeEtaCountdownInfo.etaCountdownX, y: routeEtaCountdownInfo.etaCountdownY });
+        const routeTimingInfo =
+            Math.abs(routeThingPreInfo.remainingSeconds) <= timingHideMinutes * 60
+                ? computeRouteTimingInfo(routeThingPreInfos, routeThingPreInfo)
+                : { timingX: 0, timingY: 0 };
+        routeTimingPositions.push({ x: routeTimingInfo.timingX, y: routeTimingInfo.timingY });
         routeThingInfos.push({
             ...routeThingPreInfo,
-            ...routeEtaCountdownInfo,
+            ...routeTimingInfo,
         });
     }
 
@@ -124,20 +124,20 @@ function computeRouteThingInfos(etaInfos: EtaInfo[], currentTime: Date, etaCount
         ]);
         return { annotationLineLength };
     }
-    function computeRouteEtaCountdownInfo(routeThingPreInfos: RouteThingPreInfo[], routeThingPreInfo: RouteThingPreInfo): RouteEtaCountdownInfo {
+    function computeRouteTimingInfo(routeThingPreInfos: RouteThingPreInfo[], routeThingPreInfo: RouteThingPreInfo): RouteTimingInfo {
         const clockFaceRadius = 1;
         //TODO: find a way to calculate this exactly
         const bubbleRadius = routeThingPreInfo.bubbleScale * 0.1;
         //TODO: find a way to calculate this exactly based on rendered size
-        const etaCountdownHalfWidth = 0.32;
+        const timingHalfWidth = 0.32;
         //TODO: find a way to calculate this exactly based on rendered size
-        const etaCountdownHalfHeight = 0.15;
+        const timingHalfHeight = 0.15;
         const { x: bubbleX, y: bubbleY } = MathExtra.clockPolarToXY(routeThingPreInfo.bubbleAngle, routeThingPreInfo.bubbleDistance);
 
         const isUpperHalf = bubbleY >= 0;
         const isRightHalf = bubbleX >= 0;
-        const etaCountdownRelativeAngleOffsets = [0, -10, 10, -20, 20, -30, 30, -40, 40, -45, 45];
-        const etaCountdownRelativeAngle = etaCountdownRelativeAngleOffsets.map(angleOffset => [
+        const timingRelativeAngleOffsets = [0, -10, 10, -20, 20, -30, 30, -40, 40, -45, 45];
+        const timingRelativeAngle = timingRelativeAngleOffsets.map(angleOffset => [
             isRightHalf
                 ? [angleOffset + 90, angleOffset + 270]
                 : [angleOffset + 270, angleOffset + 90],
@@ -146,38 +146,38 @@ function computeRouteThingInfos(etaInfos: EtaInfo[], currentTime: Date, etaCount
                 : [angleOffset + 180, angleOffset + 0],
             angleOffset + routeThingPreInfo.bubbleAngle,
         ]).flat(2);
-        const etaCountdownDistances = [0, 0.05, 0.1, 0.15];
+        const timingDistances = [0, 0.05, 0.1, 0.15];
 
         //TODO: Implement recursive backtracking on failure
-        for (let distance of etaCountdownDistances) {
-            for (let clockAngle of etaCountdownRelativeAngle) {
+        for (let distance of timingDistances) {
+            for (let clockAngle of timingRelativeAngle) {
                 const buffer = 0;
 
-                const offset = getEtaCountdownOffset(
+                const offset = getTimingOffset(
                     (-clockAngle + 90) * Math.PI / 180,
                     bubbleRadius + distance,
-                    etaCountdownHalfWidth + buffer,
-                    etaCountdownHalfHeight + buffer,
+                    timingHalfWidth + buffer,
+                    timingHalfHeight + buffer,
                 );
 
                 const testX = bubbleX + offset.x;
                 const testY = bubbleY + offset.y;
                 if (isValidPosition(testX, testY, bubbleRadius)) {
                     return {
-                        etaCountdownX: testX,
-                        etaCountdownY: testY,
+                        timingX: testX,
+                        timingY: testY,
                     };
                 }
             }
         }
-        console.warn(`RouteEtaCountdown not placed, route ${routeThingPreInfo.etaInfo.journey.route}, ${routeThingPreInfo.bubbleAngle}deg`);
+        console.warn(`RouteTiming not placed, route ${routeThingPreInfo.etaInfo.journey.route}, ${routeThingPreInfo.bubbleAngle}deg`);
         return {
-            etaCountdownX: 0,
-            etaCountdownY: 0,
+            timingX: 0,
+            timingY: 0,
         };
 
         /* -------------------------------------------------------------------------- */
-        function getEtaCountdownOffset(θ: number, r: number, w: number, h: number): { x: number, y: number } {
+        function getTimingOffset(θ: number, r: number, w: number, h: number): { x: number, y: number } {
             const cos_θ = Math.cos(θ);
             const sin_θ = Math.sin(θ);
 
@@ -214,13 +214,13 @@ function computeRouteThingInfos(etaInfos: EtaInfo[], currentTime: Date, etaCount
             const absX = Math.abs(testX);
             const absY = Math.abs(testY);
 
-            const MAX_EtaCountdown_X = 1.9;
-            const MAX_EtaCountdown_Y = 2;
-            const withinScreen = absX <= MAX_EtaCountdown_X && absY <= MAX_EtaCountdown_Y;
+            const MAX_TIMING_X = 1.9;
+            const MAX_TIMING_Y = 2;
+            const withinScreen = absX <= MAX_TIMING_X && absY <= MAX_TIMING_Y;
 
             const collideClockFace = MathExtra.circleRectangleCollide(
                 { x: 0, y: 0, r: clockFaceRadius },
-                { x: testX, y: testY, w2: etaCountdownHalfWidth, h2: etaCountdownHalfHeight },
+                { x: testX, y: testY, w2: timingHalfWidth, h2: timingHalfHeight },
                 -0.01,
             );
 
@@ -228,22 +228,22 @@ function computeRouteThingInfos(etaInfos: EtaInfo[], currentTime: Date, etaCount
                 const { x: bubbleX, y: bubbleY } = MathExtra.clockPolarToXY(info.bubbleAngle, info.bubbleDistance);
                 return MathExtra.circleRectangleCollide(
                     { x: bubbleX, y: bubbleY, r: bubbleRadius },
-                    { x: testX, y: testY, w2: etaCountdownHalfWidth, h2: etaCountdownHalfHeight },
+                    { x: testX, y: testY, w2: timingHalfWidth, h2: timingHalfHeight },
                     -0.01,
                 );
             });
 
-            const collideRouteEtaCountdowns = routeEtaCountdownPositions.some(pos => {
+            const collideRouteTimings = routeTimingPositions.some(pos => {
                 return MathExtra.rectangleRectangleCollide(
-                    { x: testX, y: testY, w2: etaCountdownHalfWidth, h2: etaCountdownHalfHeight },
-                    { x: pos.x, y: pos.y, w2: etaCountdownHalfWidth, h2: etaCountdownHalfHeight },
+                    { x: testX, y: testY, w2: timingHalfWidth, h2: timingHalfHeight },
+                    { x: pos.x, y: pos.y, w2: timingHalfWidth, h2: timingHalfHeight },
                     -0.1,
                 );
             });
 
             //TODO: Implement collision with route annotation lines
 
-            return withinScreen && !collideClockFace && !collideRouteBubbles && !collideRouteEtaCountdowns;
+            return withinScreen && !collideClockFace && !collideRouteBubbles && !collideRouteTimings;
         }
     }
 }
@@ -256,8 +256,8 @@ export function RouteThing({ routeThingInfo }: { routeThingInfo: RouteThingInfo 
         bubbleAngle,
         bubbleDistance,
         annotationLineLength,
-        etaCountdownX,
-        etaCountdownY,
+        timingX,
+        timingY,
     } = routeThingInfo;
     // 
     const { theme } = useTheme();
@@ -267,7 +267,7 @@ export function RouteThing({ routeThingInfo }: { routeThingInfo: RouteThingInfo 
     const opacity = remainingSeconds > 0 ? 1 : 0.75;
     const contrastColour = Colour.getLuminance(routeColour) > 150 ? theme.black : theme.white;
 
-    const { degrees: etaCountdownAngle, distance: etaCountdownDistance } = MathExtra.xyToClockPolar(etaCountdownX, etaCountdownY);
+    const { degrees: timingAngle, distance: timingDistance } = MathExtra.xyToClockPolar(timingX, timingY);
 
     return (
         <>
@@ -291,8 +291,8 @@ export function RouteThing({ routeThingInfo }: { routeThingInfo: RouteThingInfo 
                 {etaInfo.journey.route}
             </ClockThing>
             <ClockThing
-                degrees={etaCountdownAngle} distance={etaCountdownDistance}
-                type={ClockThingType.ROUTE_ETA_COUNTDOWN}
+                degrees={timingAngle} distance={timingDistance}
+                type={ClockThingType.ROUTE_TIMING}
                 style={{ textColour: Colour.mixRGBA(theme.background, routeColour, opacity) }}
             >
                 {settings.showCountdown
