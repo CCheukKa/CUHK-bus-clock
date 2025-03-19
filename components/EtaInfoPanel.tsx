@@ -8,8 +8,9 @@ import { ScrollView, StyleSheet, Text, View } from "react-native";
 type EtaInfoPanelProps = {
     time: Date;
     etaInfos: EtaInfo[] | EtaError;
+    ref: React.RefObject<ScrollView>;
 };
-export function EtaInfoPanel({ time, etaInfos }: EtaInfoPanelProps) {
+export function EtaInfoPanel({ time, etaInfos, ref }: EtaInfoPanelProps) {
     const { theme } = useTheme();
 
     return (
@@ -45,6 +46,7 @@ export function EtaInfoPanel({ time, etaInfos }: EtaInfoPanelProps) {
                 ]}
                 contentContainerStyle={styles.etaScrollContainerContent}
                 showsVerticalScrollIndicator={false}
+                ref={ref}
             >
                 {
                     isEtaInfoArray(etaInfos)

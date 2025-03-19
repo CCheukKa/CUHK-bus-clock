@@ -5,6 +5,7 @@ import { Colour, getCountdown, MathExtra, toTimeString } from "@/backend/Helper"
 import { useTheme } from "@/context/ThemeContext";
 import { useMemo } from "react";
 import { useSettings } from "@/context/SettingsContext";
+import { ScrollView, TouchableOpacity } from "react-native";
 
 const weekDays = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 
@@ -248,7 +249,11 @@ function computeRouteThingInfos(etaInfos: EtaInfo[], currentTime: Date, timingHi
     }
 }
 
-export function RouteThing({ routeThingInfo }: { routeThingInfo: RouteThingInfo }) {
+type RouteThingProps = {
+    routeThingInfo: RouteThingInfo;
+    etaInfoPanelRef: React.RefObject<ScrollView>;
+};
+export function RouteThing({ routeThingInfo, etaInfoPanelRef }: RouteThingProps) {
     const {
         etaInfo,
         remainingSeconds,
@@ -270,7 +275,15 @@ export function RouteThing({ routeThingInfo }: { routeThingInfo: RouteThingInfo 
     const { degrees: timingAngle, distance: timingDistance } = MathExtra.xyToClockPolar(timingX, timingY);
 
     return (
-        <>
+        <TouchableOpacity
+            style={{ position: 'absolute', width: '100%', height: '100%' }}
+            onPress={() => {
+                console.log(etaInfo);
+                console.log(etaInfoPanelRef.current);
+                etaInfoPanelRef.current?.scrollTo({ y: 0, animated: false });
+                //TODO: //FIXME: make this work
+            }}
+        >
             <ClockThing
                 degrees={bubbleAngle} distance={bubbleDistance}
                 type={ClockThingType.ROUTE_ANNOTATION_LINE}
@@ -300,15 +313,16 @@ export function RouteThing({ routeThingInfo }: { routeThingInfo: RouteThingInfo 
                     : etaInfo.etaFromTime.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' })
                 }
             </ClockThing>
-        </>
+        </TouchableOpacity>
     );
 }
 
 type RouteThingsProps = {
     etaInfos: EtaInfo[] | EtaError;
     currentTime: Date;
+    etaInfoPanelRef: React.RefObject<ScrollView>;
 };
-export function RouteThings({ etaInfos, currentTime }: RouteThingsProps) {
+export function RouteThings({ etaInfos, currentTime, etaInfoPanelRef }: RouteThingsProps) {
     const { settings } = useSettings();
 
     return useMemo(() => {
@@ -328,6 +342,7 @@ export function RouteThings({ etaInfos, currentTime }: RouteThingsProps) {
             <RouteThing
                 routeThingInfo={routeThingInfo}
                 key={`${routeThingInfo.etaInfo.journey.route}-${routeThingInfo.etaInfo.etaFromTime.getTime()}`}
+                etaInfoPanelRef={etaInfoPanelRef}
             />
         ));
     }, [etaInfos]);

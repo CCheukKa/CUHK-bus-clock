@@ -1,5 +1,5 @@
 import { useEffect, useState, useRef, useMemo, useCallback } from 'react';
-import { Pressable, StyleSheet, TouchableOpacity, View } from 'react-native';
+import { Pressable, ScrollView, StyleSheet, TouchableOpacity, View } from 'react-native';
 
 import { ThemedText } from '@/components/ThemedText';
 import { ClockFace } from '@/components/ClockFace';
@@ -78,6 +78,7 @@ export default function ClockScreen() {
             logicTime.truncateTo('second').getTime(),
         ]
     );
+    const etaInfoPanelRef = useRef<ScrollView>(null);
     //
     const dateTimeTextStyle = useMemo(() => !useRealTime ? { color: theme.primary } : null, [useRealTime]);
     return (
@@ -132,6 +133,7 @@ export default function ClockScreen() {
                 <ClockFace
                     time={logicTime}
                     etaInfos={etaInfos}
+                    etaInfoPanelRef={etaInfoPanelRef}
                 />, [etaInfos, settings]
             )}
             {useMemo(() =>
@@ -144,6 +146,7 @@ export default function ClockScreen() {
                 <EtaInfoPanel
                     time={logicTime}
                     etaInfos={etaInfos}
+                    ref={etaInfoPanelRef}
                 />, [etaInfos, settings]
             )}
         </FullscreenView>

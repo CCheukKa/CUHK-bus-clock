@@ -1,4 +1,4 @@
-import { StyleSheet, View } from 'react-native';
+import { ScrollView, StyleSheet, View } from 'react-native';
 import { ClockThing, ClockThingType } from '@/components/ClockThing';
 import { ClockHand, ClockHandType } from '@/components/ClockHand';
 import ClockTicks from '@/components/ClockTicks';
@@ -11,8 +11,9 @@ import { useSettings } from '@/context/SettingsContext';
 type ClockFaceProps = {
     time: Date;
     etaInfos: EtaInfo[] | EtaError;
+    etaInfoPanelRef: React.RefObject<ScrollView>;
 };
-export function ClockFace({ time, etaInfos }: ClockFaceProps) {
+export function ClockFace({ time, etaInfos, etaInfoPanelRef }: ClockFaceProps) {
     const { theme } = useTheme();
     const { settings } = useSettings();
 
@@ -20,7 +21,7 @@ export function ClockFace({ time, etaInfos }: ClockFaceProps) {
         settings.showClockFace
             ? <View style={styles.clockContainer}>
                 <View style={styles.clockFaceContainer}>
-                    <RouteThings currentTime={time} etaInfos={etaInfos} />
+                    <RouteThings currentTime={time} etaInfos={etaInfos} etaInfoPanelRef={etaInfoPanelRef} />
 
                     <View style={[
                         styles.clockFace,
