@@ -130,9 +130,9 @@ export class MathExtra {
      * @returns An object containing the x and y coordinates.
      */
     public static polarToXY(degrees: number, distance: number) {
-        const radians = ((-degrees + 90) * Math.PI) / 180;
-        const x = distance * Math.sin(radians);
-        const y = distance * Math.cos(radians);
+        const radians = (degrees * Math.PI) / 180;
+        const x = distance * Math.cos(radians);
+        const y = distance * Math.sin(radians);
         return { x, y };
     }
 
