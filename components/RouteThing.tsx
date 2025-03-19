@@ -123,7 +123,7 @@ function computeRouteThingInfos(etaInfos: EtaInfo[], currentTime: Date): RouteTh
         //TODO: find a way to calculate this exactly based on rendered size
         const etaCountdownHalfWidth = 0.32;
         //TODO: find a way to calculate this exactly based on rendered size
-        const etaCountdownHalfHeight = 0.14;
+        const etaCountdownHalfHeight = 0.15;
         const { x: bubbleX, y: bubbleY } = MathExtra.clockPolarToXY(routeThingPreInfo.bubbleAngle, routeThingPreInfo.bubbleDistance);
 
         const isUpperHalf = bubbleY >= 0;
