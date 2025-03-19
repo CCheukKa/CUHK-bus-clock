@@ -121,9 +121,9 @@ function computeRouteThingInfos(etaInfos: EtaInfo[], currentTime: Date): RouteTh
         //TODO: find a way to calculate this exactly
         const bubbleRadius = routeThingPreInfo.bubbleScale * 0.1;
         //TODO: find a way to calculate this exactly based on rendered size
-        const etaCountdownWidth = 0.32; // width / 2
+        const etaCountdownHalfWidth = 0.32;
         //TODO: find a way to calculate this exactly based on rendered size
-        const etaCountdownHeight = 0.14; // height / 2
+        const etaCountdownHalfHeight = 0.14;
         const { x: bubbleX, y: bubbleY } = MathExtra.clockPolarToXY(routeThingPreInfo.bubbleAngle, routeThingPreInfo.bubbleDistance);
 
         const isUpperHalf = bubbleY >= 0;
@@ -148,8 +148,8 @@ function computeRouteThingInfos(etaInfos: EtaInfo[], currentTime: Date): RouteTh
                 const offset = getEtaCountdownOffset(
                     (-clockAngle + 90) * Math.PI / 180,
                     bubbleRadius + distance,
-                    etaCountdownWidth + buffer,
-                    etaCountdownHeight + buffer,
+                    etaCountdownHalfWidth + buffer,
+                    etaCountdownHalfHeight + buffer,
                 );
 
                 const testX = bubbleX + offset.x;
@@ -212,7 +212,7 @@ function computeRouteThingInfos(etaInfos: EtaInfo[], currentTime: Date): RouteTh
 
             const collideClockFace = MathExtra.circleRectangleCollide(
                 { x: 0, y: 0, r: clockFaceRadius },
-                { x: testX, y: testY, w2: etaCountdownWidth, h2: etaCountdownHeight },
+                { x: testX, y: testY, w2: etaCountdownHalfWidth, h2: etaCountdownHalfHeight },
                 -0.01,
             );
 
@@ -220,15 +220,15 @@ function computeRouteThingInfos(etaInfos: EtaInfo[], currentTime: Date): RouteTh
                 const { x: bubbleX, y: bubbleY } = MathExtra.clockPolarToXY(info.bubbleAngle, info.bubbleDistance);
                 return MathExtra.circleRectangleCollide(
                     { x: bubbleX, y: bubbleY, r: bubbleRadius },
-                    { x: testX, y: testY, w2: etaCountdownWidth, h2: etaCountdownHeight },
+                    { x: testX, y: testY, w2: etaCountdownHalfWidth, h2: etaCountdownHalfHeight },
                     -0.01,
                 );
             });
 
             const collideRouteEtaCountdowns = routeEtaCountdownPositions.some(pos => {
                 return MathExtra.rectangleRectangleCollide(
-                    { x: testX, y: testY, w2: etaCountdownWidth, h2: etaCountdownHeight },
-                    { x: pos.x, y: pos.y, w2: etaCountdownWidth, h2: etaCountdownHeight },
+                    { x: testX, y: testY, w2: etaCountdownHalfWidth, h2: etaCountdownHalfHeight },
+                    { x: pos.x, y: pos.y, w2: etaCountdownHalfWidth, h2: etaCountdownHalfHeight },
                     -0.1,
                 );
             });
