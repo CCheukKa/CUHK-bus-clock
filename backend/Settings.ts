@@ -35,7 +35,7 @@ export const settingsSchema: Record<keyof Settings, {
     },
     showClockFace: {
         type: 'boolean',
-        description: 'Show ETA clock face',
+        description: 'Show clock face',
         defaultValue: true,
     },
     showCountdown: {
