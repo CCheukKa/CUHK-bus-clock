@@ -17,7 +17,6 @@
 - Pressing setting controls dismiss everything
 - Improve light theme colour usage
 - Add swap button for origin and destination
-- Fade far away ETAs
 ### Sustainability
 - Add a way for users to contribute data
 

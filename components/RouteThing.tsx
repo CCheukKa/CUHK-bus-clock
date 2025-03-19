@@ -28,7 +28,7 @@ type RouteThingBasicInfo = {
 type RouteThingInfo = RouteThingBasicInfo & RouteBubbleInfo & RouteAnnotationLineInfo & RouteEtaCountdownInfo;
 type RouteThingPreInfo = RouteThingBasicInfo & RouteBubbleInfo & RouteAnnotationLineInfo;
 const MAX_ORBIT_COUNT = 3;
-function computeRouteThingInfos(etaInfos: EtaInfo[], currentTime: Date): RouteThingInfo[] {
+function computeRouteThingInfos(etaInfos: EtaInfo[], currentTime: Date, etaCountdownHideMinutes: number): RouteThingInfo[] {
     const routeThingPreInfos: RouteThingPreInfo[] = [];
     const bubbleOrbits: number[][] = Array.from({ length: MAX_ORBIT_COUNT }, () => []);
     for (let i = 0; i < etaInfos.length; i++) {
@@ -53,7 +53,10 @@ function computeRouteThingInfos(etaInfos: EtaInfo[], currentTime: Date): RouteTh
         - MathExtra.getAngularDistance(b.bubbleAngle, currentMinuteAngle)
     );
     for (const routeThingPreInfo of routeThingPreInfos) {
-        const routeEtaCountdownInfo = computeRouteEtaCountdownInfo(routeThingPreInfos, routeThingPreInfo);
+        const routeEtaCountdownInfo =
+            Math.abs(routeThingPreInfo.remainingSeconds) <= etaCountdownHideMinutes * 60
+                ? computeRouteEtaCountdownInfo(routeThingPreInfos, routeThingPreInfo)
+                : { etaCountdownX: 0, etaCountdownY: 0 };
         routeEtaCountdownPositions.push({ x: routeEtaCountdownInfo.etaCountdownX, y: routeEtaCountdownInfo.etaCountdownY });
         routeThingInfos.push({
             ...routeThingPreInfo,
@@ -306,11 +309,17 @@ type RouteThingsProps = {
     currentTime: Date;
 };
 export function RouteThings({ etaInfos, currentTime }: RouteThingsProps) {
+    const { settings } = useSettings();
+
     return useMemo(() => {
         if (isEtaError(etaInfos)) { return handleErrors(etaInfos); }
 
         const routeThingInfos: RouteThingInfo[] = [];
-        const rawRouteThingInfos = computeRouteThingInfos(etaInfos.sort((a, b) => a.etaFromTime.getTime() - b.etaFromTime.getTime()), currentTime);
+        const rawRouteThingInfos = computeRouteThingInfos(
+            etaInfos.sort((a, b) => a.etaFromTime.getTime() - b.etaFromTime.getTime()),
+            currentTime,
+            settings.timingShowMinutes,
+        );
         for (let i = MAX_ORBIT_COUNT - 1; i >= 0; i--) {
             routeThingInfos.push(...rawRouteThingInfos.filter(info => info.bubbleOrbit === i));
         }

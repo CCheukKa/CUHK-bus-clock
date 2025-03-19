@@ -7,6 +7,7 @@ export type Settings = {
     futurePeekMinutes: number;
     showClockFace: boolean;
     showCountdown: boolean;
+    timingShowMinutes: number;
     useModalLocationPicker: boolean;
 };
 export const settingsSchema: Record<keyof Settings, {
@@ -42,6 +43,11 @@ export const settingsSchema: Record<keyof Settings, {
         type: 'boolean',
         description: 'Show countdown instead of ETA on clock',
         defaultValue: true,
+    },
+    timingShowMinutes: {
+        type: 'nonNegativeNumber',
+        description: 'Minutes within to show timings',
+        defaultValue: 10,
     },
     useModalLocationPicker: {
         type: 'boolean',
