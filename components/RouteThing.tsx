@@ -41,7 +41,7 @@ function computeRouteThingInfos(etaInfos: EtaInfo[], currentTime: Date): RouteTh
         let placed = false;
         for (let i = 0; i < MAX_ORBIT_COUNT; i++) {
             const orbitAngles = routeBubbleOrbits[i];
-            if (orbitAngles.every(existingAngle => getAngularDistance(existingAngle, angle) >= TOLERABLE_ANGULAR_DISTANCE)) {
+            if (orbitAngles.every(existingAngle => MathExtra.getAngularDistance(existingAngle, angle) >= TOLERABLE_ANGULAR_DISTANCE)) {
                 orbitAngles.push(angle);
                 placed = true;
                 routeBubbleOrbit = i;
@@ -208,9 +208,4 @@ function handleErrors(etaError: EtaError) {
             {errorMessage}
         </ClockThing>
     );
-}
-
-function getAngularDistance(a: number, b: number) {
-    const diff = Math.abs(a - b);
-    return diff > 180 ? 360 - diff : diff;
 }

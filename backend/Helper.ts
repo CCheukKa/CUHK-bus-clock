@@ -147,6 +147,22 @@ export class MathExtra {
         const { x, y } = MathExtra.polarToXY(-degrees + 90, distance);
         return { x, y };
     }
+
+    /**
+     * Calculates the angular distance between two angles.
+     * 
+     * The angular distance is the smallest angle between two points on a circle,
+     * measured in degrees. This function ensures that the distance is always
+     * between 0 and 180 degrees.
+     * 
+     * @param a - The first angle in degrees.
+     * @param b - The second angle in degrees.
+     * @returns The angular distance between the two angles in degrees.
+     */
+    public static getAngularDistance(a: number, b: number) {
+        const diff = Math.abs(a - b);
+        return diff > 180 ? 360 - diff : diff;
+    }
 }
 
 /* -------------------------------------------------------------------------- */
