@@ -128,8 +128,8 @@ function computeRouteThingInfos(etaInfos: EtaInfo[], currentTime: Date): RouteTh
 
         const isUpperHalf = bubbleY >= 0;
         const isRightHalf = bubbleX >= 0;
-        const relativeAngleOffsets = [0, -10, 10, -20, 20, -30, 30, -40, 40, -45, 45];
-        const etaCountdownRelativeAngle = relativeAngleOffsets.map(angleOffset => [
+        const etaCountdownRelativeAngleOffsets = [0, -10, 10, -20, 20, -30, 30, -40, 40, -45, 45];
+        const etaCountdownRelativeAngle = etaCountdownRelativeAngleOffsets.map(angleOffset => [
             isRightHalf
                 ? [angleOffset + 90, angleOffset + 270]
                 : [angleOffset + 270, angleOffset + 90],
@@ -138,28 +138,30 @@ function computeRouteThingInfos(etaInfos: EtaInfo[], currentTime: Date): RouteTh
                 : [angleOffset + 180, angleOffset + 0],
             angleOffset + routeThingPreInfo.bubbleAngle,
         ]).flat(2);
+        const etaCountdownDistances = [0, 0.05, 0.1, 0.15];
 
         //TODO: Implement recursive backtracking on failure
-        for (let clockAngle of etaCountdownRelativeAngle) {
-            const buffer = 0;
+        for (let distance of etaCountdownDistances) {
+            for (let clockAngle of etaCountdownRelativeAngle) {
+                const buffer = 0;
 
-            const offset = getEtaCountdownOffset(
-                (-clockAngle + 90) * Math.PI / 180,
-                bubbleRadius,
-                etaCountdownWidth + buffer,
-                etaCountdownHeight + buffer,
-            );
+                const offset = getEtaCountdownOffset(
+                    (-clockAngle + 90) * Math.PI / 180,
+                    bubbleRadius + distance,
+                    etaCountdownWidth + buffer,
+                    etaCountdownHeight + buffer,
+                );
 
-            const testX = bubbleX + offset.x;
-            const testY = bubbleY + offset.y;
-            if (isValidPosition(testX, testY, bubbleRadius)) {
-                return {
-                    etaCountdownX: testX,
-                    etaCountdownY: testY,
-                };
+                const testX = bubbleX + offset.x;
+                const testY = bubbleY + offset.y;
+                if (isValidPosition(testX, testY, bubbleRadius)) {
+                    return {
+                        etaCountdownX: testX,
+                        etaCountdownY: testY,
+                    };
+                }
             }
         }
-
         console.warn(`RouteEtaCountdown not placed, route ${routeThingPreInfo.etaInfo.journey.route}, ${routeThingPreInfo.bubbleAngle}deg`);
         return {
             etaCountdownX: 0,
