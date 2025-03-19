@@ -46,7 +46,7 @@ export function LocationPicker({
         const screenHeight = Dimensions.get('window').height;
 
         if (!dropdownContainerRef.current) { return; }
-        dropdownContainerRef.current.measure((x, y, width, height, pageX, pageY) => {
+        dropdownContainerRef.current.measure((_x, _y, _width, height, _pageX, pageY) => {
             const bottomEdgeOfComponent = pageY + height;
             const distanceFromBottom = screenHeight - bottomEdgeOfComponent;
             setDistanceFromBottom(distanceFromBottom);
