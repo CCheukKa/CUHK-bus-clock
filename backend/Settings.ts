@@ -25,12 +25,12 @@ export const settingsSchema: Record<keyof Settings, {
     },
     pastPeekMinutes: {
         type: 'nonNegativeNumber',
-        description: 'Minutes in the past to show ETAs',
+        description: 'Minutes in the past to show bubbles',
         defaultValue: 10,
     },
     futurePeekMinutes: {
         type: 'nonNegativeNumber',
-        description: 'Minutes in the future to show ETAs',
+        description: 'Minutes in the future to show bubbles',
         defaultValue: 30,
     },
     showClockFace: {
