@@ -47,6 +47,11 @@ function computeRouteThingInfos(etaInfos: EtaInfo[], currentTime: Date): RouteTh
 
     const routeThingInfos: RouteThingInfo[] = [];
     const routeEtaCountdownPositions: { x: number, y: number }[] = [];
+    const currentMinuteAngle = currentTime.getMinutes() * 6 + currentTime.getSeconds() / 10;
+    routeThingPreInfos.sort((a, b) =>
+        MathExtra.getAngularDistance(a.bubbleAngle, currentMinuteAngle)
+        - MathExtra.getAngularDistance(b.bubbleAngle, currentMinuteAngle)
+    );
     for (const routeThingPreInfo of routeThingPreInfos) {
         const routeEtaCountdownInfo = computeRouteEtaCountdownInfo(routeThingPreInfos, routeThingPreInfo);
         routeEtaCountdownPositions.push({ x: routeEtaCountdownInfo.etaCountdownX, y: routeEtaCountdownInfo.etaCountdownY });
