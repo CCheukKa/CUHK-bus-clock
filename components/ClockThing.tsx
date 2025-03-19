@@ -6,7 +6,7 @@ import { MathExtra } from '@/backend/Helper';
 export enum ClockThingType {
     CLOCK_CENTRE_DOT = 'clockCentreDot',
     CLOCK_NUMBER = 'clockNumber',
-    ROUTE_NUMBER_BUBBLE = 'routeNumber',
+    ROUTE_BUBBLE = 'routeNumber',
     ROUTE_ANNOTATION_LINE = 'routeAnnotationLine',
     ROUTE_ETA_COUNTDOWN = 'routeEtaCountdown',
     ERROR_TEXT = 'errorText',
@@ -62,10 +62,10 @@ export function ClockThing({ type, style, degrees, distance, children }: ClockTh
                         { color: theme.halfContrast },
                     ]}>{children}</Text>
                 </View>);
-            case ClockThingType.ROUTE_NUMBER_BUBBLE:
+            case ClockThingType.ROUTE_BUBBLE:
                 return (
                     <View style={[
-                        styles.routeNumberContainer,
+                        styles.routeBubble,
                         {
                             backgroundColor: style?.backgroundColour,
                             transform: [{ scale: style?.scale ?? 1 }],
@@ -164,7 +164,7 @@ const styles = StyleSheet.create({
     routeAnnotationLine: {
         width: 5,
     },
-    routeNumberContainer: {
+    routeBubble: {
         borderRadius: '50%',
         aspectRatio: 1,
         display: 'flex',

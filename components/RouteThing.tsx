@@ -125,7 +125,7 @@ export function RouteThing({ routeThingInfo }: { routeThingInfo: RouteThingInfo 
             />
             <ClockThing
                 degrees={angle} distance={routeBubbleDistance}
-                type={ClockThingType.ROUTE_NUMBER_BUBBLE}
+                type={ClockThingType.ROUTE_BUBBLE}
                 style={{
                     backgroundColour: Colour.mixRGBA(theme.background, routeColour, opacity),
                     textColour: contrastColour,
