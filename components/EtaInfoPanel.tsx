@@ -1,6 +1,7 @@
 import { EtaError, EtaInfo, isEtaInfoArray } from "@/backend/Bus";
 import { Colour, getCountdown, toTimeString } from "@/backend/Helper";
 import { busRouteInfos, stationAbbreviations } from "@/constants/BusData";
+import { useSettings } from "@/context/SettingsContext";
 import { useTheme } from "@/context/ThemeContext";
 import { FontAwesome } from "@expo/vector-icons";
 import { ScrollView, StyleSheet, Text, View } from "react-native";
@@ -149,7 +150,10 @@ function EtaInfoCard({ time, etaInfo }: { time: Date, etaInfo: EtaInfo }) {
 
 function EtaTime({ time, etaTime, isPast, left, right }: { time: Date, etaTime: Date, isPast: boolean, left?: number, right?: number }) {
     const { theme } = useTheme();
-    const remainingSeconds = getCountdown(time, etaTime);
+    const { settings } = useSettings();
+
+    const countdownString = toTimeString(getCountdown(time, etaTime));
+    const etaString = etaTime.toLocaleTimeString('en-GB').slice(0, 5);
     return (
         <View style={[
             styles.etaTimeContainer,
@@ -160,14 +164,20 @@ function EtaTime({ time, etaTime, isPast, left, right }: { time: Date, etaTime: 
                 fontWeight: 'bold',
                 fontSize: 18,
             }}>
-                {etaTime.toLocaleTimeString('en-GB').slice(0, 5)}
+                {settings.bigCountdownInPanel
+                    ? countdownString
+                    : etaString
+                }
             </Text>
             <Text style={{
                 color: isPast ? theme.lowContrast : theme.halfContrast,
                 fontWeight: 'bold',
                 fontSize: 12,
             }}>
-                {`[ ${toTimeString(remainingSeconds)} ]`}
+                {settings.bigCountdownInPanel
+                    ? `[ ${etaString} ]`
+                    : `[ ${countdownString} ]`
+                }
             </Text>
         </View>
     );

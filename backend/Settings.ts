@@ -9,6 +9,7 @@ export type Settings = {
     showCountdown: boolean;
     timingShowMinutes: number;
     useModalLocationPicker: boolean;
+    bigCountdownInPanel: boolean;
 };
 export const settingsSchema: Record<keyof Settings, {
     type: 'enum' | 'number' | 'nonNegativeNumber' | 'boolean';
@@ -52,6 +53,11 @@ export const settingsSchema: Record<keyof Settings, {
     useModalLocationPicker: {
         type: 'boolean',
         description: 'Use fullscreen modal for location picker',
+        defaultValue: false,
+    },
+    bigCountdownInPanel: {
+        type: 'boolean',
+        description: 'Show big countdown in panel',
         defaultValue: false,
     },
 };
