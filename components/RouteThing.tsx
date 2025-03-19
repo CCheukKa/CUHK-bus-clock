@@ -130,13 +130,13 @@ function computeRouteThingInfos(etaInfos: EtaInfo[], currentTime: Date): RouteTh
         const isRightHalf = bubbleX >= 0;
         const relativeAngleOffsets = [0, -10, 10, -20, 20, -30, 30, -40, 40, -45, 45];
         const etaCountdownRelativeAngle = relativeAngleOffsets.map(angleOffset => [
-            angleOffset + routeThingPreInfo.bubbleAngle,
-            isUpperHalf
-                ? [angleOffset + 0, angleOffset + 180]
-                : [angleOffset + 180, angleOffset + 0],
             isRightHalf
                 ? [angleOffset + 90, angleOffset + 270]
                 : [angleOffset + 270, angleOffset + 90],
+            isUpperHalf
+                ? [angleOffset + 0, angleOffset + 180]
+                : [angleOffset + 180, angleOffset + 0],
+            angleOffset + routeThingPreInfo.bubbleAngle,
         ]).flat(2);
 
         //TODO: Implement recursive backtracking on failure
