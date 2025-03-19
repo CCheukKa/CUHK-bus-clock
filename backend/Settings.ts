@@ -46,7 +46,7 @@ export const settingsSchema: Record<keyof Settings, {
     },
     timingShowMinutes: {
         type: 'nonNegativeNumber',
-        description: 'Minutes within to show timings',
+        description: 'Minutes within which to show timings',
         defaultValue: 10,
     },
     useModalLocationPicker: {
