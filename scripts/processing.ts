@@ -1,4 +1,4 @@
-import { BusRoute, busRouteInfos, Coordinates, Station, stationCoordinates } from '@/constants/BusData';
+import { BusRoute, busRouteInfos, busStationTimings, Coordinates, Station, stationCoordinates } from '@/constants/BusData';
 import fs from 'fs';
 
 type BusLogEntry = {
@@ -23,18 +23,47 @@ type ProcessedBusLogEntry = BusLogEntry & {
     station: Station,
 };
 
-
 const log: BusLogEntry[] = JSON.parse(fs.readFileSync('./data/bus-log.json', 'utf8'));
 const oldProcessedLog: ProcessedBusLogEntry[] = JSON.parse(fs.readFileSync('./data/processed-bus-log.json', 'utf8'));
 
-const filteredLog = log.filter(entry => !oldProcessedLog.some(oldEntry => oldEntry.timeStamp === entry.timeStamp));
+const filteredLog: BusLogEntry[] = log.filter(entry => !oldProcessedLog.some(oldEntry => oldEntry.timeStamp === entry.timeStamp));
 
-const processedLog: ProcessedBusLogEntry[] = filteredLog.map(entry => {
+const newProcessedLog: ProcessedBusLogEntry[] = filteredLog.map(entry => {
     const station = getStation(entry.route, entry.location.coords.latitude, entry.location.coords.longitude);
     return { ...entry, station };
 });
+console.log(`Added ${newProcessedLog.length} new entries`);
 
-fs.writeFileSync('./data/processed-bus-log.json', JSON.stringify([...oldProcessedLog, ...processedLog], null, 4));
+const processedLog: ProcessedBusLogEntry[] = [...oldProcessedLog, ...newProcessedLog];
+processedLog.sort((a, b) => new Date(a.timeStamp).getTime() - new Date(b.timeStamp).getTime());
+
+console.log(`Total entries: ${processedLog.length}`);
+
+fs.writeFileSync('./data/processed-bus-log.json', JSON.stringify(processedLog, null, 4));
+
+const stationTimes = Object.keys(busStationTimings).reduce((acc, key) => {
+    acc[key] = [];
+    return acc;
+}, {} as Record<string, number[]>);
+for (let i = 0; i < processedLog.length - 1; i++) {
+    const thisEntry = processedLog[i];
+    const nextEntry = processedLog[i + 1];
+
+    if (thisEntry.route !== nextEntry.route) { continue; }
+
+    const timeElapsed = Math.round((new Date(nextEntry.timeStamp).getTime() - new Date(thisEntry.timeStamp).getTime()) / 1000);
+    if (timeElapsed > 300) { continue; }
+
+    const string = `${thisEntry.station}>>${nextEntry.station}`;
+    if (!stationTimes[string]) {
+        console.log(`Dropped route ${thisEntry.route} ${string} (${thisEntry.timeStamp} >> ${nextEntry.timeStamp})`);
+        continue;
+    }
+
+    stationTimes[string].push(timeElapsed);
+}
+
+fs.writeFileSync('./data/station-times.json', JSON.stringify(stationTimes, null, 4));
 
 /* -------------------------------------------------------------------------- */
 

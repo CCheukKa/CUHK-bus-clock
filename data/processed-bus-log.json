@@ -285,7 +285,7 @@
             "mocked": false,
             "timestamp": 1740215658634
         },
-        "station": "Shaw College (Upward)"
+        "station": "Shaw College (Downward)"
     },
     {
         "route": "3",
@@ -357,7 +357,7 @@
             "mocked": false,
             "timestamp": 1740216099632
         },
-        "station": "YIA"
+        "station": "University Station Piazza (Terminus)"
     },
     {
         "route": "3",
@@ -537,7 +537,7 @@
             "mocked": false,
             "timestamp": 1740565402874
         },
-        "station": "Area 39 (Upward)"
+        "station": "Area 39 (Downward)"
     },
     {
         "route": "8",
@@ -555,7 +555,7 @@
             "mocked": false,
             "timestamp": 1740565540874
         },
-        "station": "CW Chu College (Downward)"
+        "station": "Campus Circuit North"
     },
     {
         "route": "8",
@@ -591,7 +591,7 @@
             "mocked": false,
             "timestamp": 1740565793875
         },
-        "station": "University Station Piazza"
+        "station": "University Station (Terminus)"
     },
     {
         "route": "3",
