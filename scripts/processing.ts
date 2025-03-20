@@ -1,4 +1,4 @@
-import { BusRoute, busRouteInfos, Coordinates, Region, Station, stationCoordinates, stationRegions } from '@/constants/BusData';
+import { BusRoute, busRouteInfos, Coordinates, Station, stationCoordinates } from '@/constants/BusData';
 import fs from 'fs';
 
 type BusLogEntry = {
@@ -25,13 +25,16 @@ type ProcessedBusLogEntry = BusLogEntry & {
 
 
 const log: BusLogEntry[] = JSON.parse(fs.readFileSync('./data/bus-log.json', 'utf8'));
+const oldProcessedLog: ProcessedBusLogEntry[] = JSON.parse(fs.readFileSync('./data/processed-bus-log.json', 'utf8'));
 
-const processedLog: ProcessedBusLogEntry[] = log.map(entry => {
+const filteredLog = log.filter(entry => !oldProcessedLog.some(oldEntry => oldEntry.timeStamp === entry.timeStamp));
+
+const processedLog: ProcessedBusLogEntry[] = filteredLog.map(entry => {
     const station = getStation(entry.route, entry.location.coords.latitude, entry.location.coords.longitude);
     return { ...entry, station };
 });
 
-fs.writeFileSync('./data/processed-bus-log.json', JSON.stringify(processedLog, null, 4));
+fs.writeFileSync('./data/processed-bus-log.json', JSON.stringify([...oldProcessedLog, ...processedLog], null, 4));
 
 /* -------------------------------------------------------------------------- */
 
@@ -51,7 +54,7 @@ function haversineDistance(lat1: number, lon1: number, lat2: number, lon2: numbe
 }
 
 function getStation(route: BusRoute, latitude: number, longitude: number): Station {
-    const routeInfo = busRouteInfos.get(route);
+    const routeInfo = busRouteInfos[route];
     if (!routeInfo) { throw new Error(`Route ${route} not found`); }
 
     const stationDistances = routeInfo.stations.map(station => {
