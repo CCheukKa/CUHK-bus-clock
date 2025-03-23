@@ -17,6 +17,7 @@
 - Improve light theme colour usage
 - Fix location picker flickering
   - Merge into same file?
+- Add warning for past + future peek time >= 60 minutes
 ### Sustainability
 - Add a way for users to contribute data
 
