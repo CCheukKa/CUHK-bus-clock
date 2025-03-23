@@ -276,7 +276,7 @@ export function RouteThing({ routeThingInfo }: { routeThingInfo: RouteThingInfo 
     const contrastColour = Colour.getLuminance(routeColour) > 150 ? theme.black : theme.white;
     const bubbleColour = Colour.mixRGBA(theme.background, routeColour, opacity);
     const routeTextColour = Colour.mixRGBA(bubbleColour, contrastColour, opacity + 0.2);
-    const timingColour = bubbleColour;
+    const timingColour = Colour.mixRGBA(theme.background, routeColour, opacity + 0.15);
 
     const { degrees: timingAngle, distance: timingDistance } = MathExtra.xyToClockPolar(timingX, timingY);
 
