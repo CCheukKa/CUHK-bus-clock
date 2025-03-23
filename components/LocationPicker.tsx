@@ -1,4 +1,5 @@
-import { Region, Station } from "@/constants/BusData";
+import { LocationNullable } from "@/backend/Bus";
+import { Region } from "@/constants/BusData";
 import { useSettings } from "@/context/SettingsContext";
 import { useTheme } from "@/context/ThemeContext";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
@@ -15,8 +16,8 @@ export type DropdownItem = {
 type LocationPickerProps = {
     label: string;
     data: DropdownItem[];
-    location: Station | Region | null;
-    setLocation: React.Dispatch<React.SetStateAction<Station | Region | null>>;
+    location: LocationNullable;
+    setLocation: React.Dispatch<React.SetStateAction<LocationNullable>>;
     dropdownOpened: boolean;
     setDropdownOpened: React.Dispatch<React.SetStateAction<boolean>>;
     onOpen: () => void;
@@ -33,7 +34,6 @@ export function LocationPicker({
     const { theme } = useTheme();
 
     const [dropdownItems, setDropdownItems] = useState(pickerData);
-    const [dropdownValue, setDropdownValue] = useState(location);
 
     const dropdownContainerRef = useRef<View>(null);
     const [distanceFromBottom, setDistanceFromBottom] = useState(200);
@@ -82,10 +82,10 @@ export function LocationPicker({
             <DropDownPicker
                 onOpen={onOpen}
                 open={dropdownOpened}
-                value={dropdownValue}
+                value={location}
                 items={dropdownItems}
                 setOpen={setDropdownOpened}
-                setValue={setDropdownValue}
+                setValue={setLocation}
                 setItems={setDropdownItems}
                 closeOnBackPressed={true}
                 placeholder="Select a station/region"
@@ -147,8 +147,7 @@ export function LocationPicker({
                 {...otherProps}
                 onPress={() => {
                     onPress(listItem.value);
-                    setDropdownValue(listItem.value as Station | Region);
-                    setLocation(listItem.value as Station | Region);
+                    setLocation(listItem.value as LocationNullable);
                 }}
                 style={[
                     styles.dropdownItem,
@@ -201,8 +200,8 @@ export function LocationPicker({
 
 const styles = StyleSheet.create({
     dropdownContainer: {
-        height: '6%',
-        width: '80%',
+        height: 48,
+        width: '100%',
     },
     dropdownLabel: {
         position: 'absolute',

@@ -3,7 +3,7 @@ import { DropdownItem, LocationPicker } from "@/components/LocationPicker";
 import { useEffect, useState } from "react";
 import { FromTo, LocationNullable } from "@/backend/Bus";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { useTheme } from "@/context/ThemeContext";
 
 
@@ -42,10 +42,11 @@ const toData: DropdownItem[] = data.filter(item => {
 
 type JourneyPlannerProps = {
     fromTo: FromTo;
-    setFromTo: (fromTo: FromTo) => void;
+    setFromTo: React.Dispatch<React.SetStateAction<FromTo>>;
 };
 export function JourneyPlanner({ fromTo, setFromTo }: JourneyPlannerProps) {
     const { theme } = useTheme();
+
 
     const [fromLocation, setFromLocation] = useState<LocationNullable>(fromTo.from);
     const [toLocation, setToLocation] = useState<LocationNullable>(fromTo.to);
@@ -64,10 +65,10 @@ export function JourneyPlanner({ fromTo, setFromTo }: JourneyPlannerProps) {
         hideArrow = false;
 
         switch (true) {
-            case fromLocation && toLocation && fromLocation === toLocation:
+            case fromTo.from && fromTo.to && fromTo.from === fromTo.to:
                 hideArrow = true;
                 return 'avoiding choosing same start/end';
-            case fromLocation === Region.MISCELLANEOUS || toLocation === Region.MISCELLANEOUS:
+            case fromTo.from === Region.MISCELLANEOUS || fromTo.to === Region.MISCELLANEOUS:
                 hideArrow = true;
                 return 'choosing miscellaneous is not recommended';
             default:
@@ -76,66 +77,88 @@ export function JourneyPlanner({ fromTo, setFromTo }: JourneyPlannerProps) {
     })();
 
     return (
-        <>
-            <LocationPicker
-                data={fromData}
-                label={'From'}
-                location={fromLocation}
-                setLocation={setFromLocation}
-                dropdownOpened={fromDropdownOpened}
-                setDropdownOpened={setFromDropdownOpened}
-                onOpen={fromOnOpen}
-            />
-            <View style={styles.middleContainer}>
-                <View style={{ opacity: fromDropdownOpened || hideArrow ? 0 : 1 }}>
-                    <MaterialCommunityIcons
-                        name="arrow-down-thin"
-                        size={24}
-                        color={theme.halfContrast}
-                        style={{
-                            zIndex: 1,
-                            transform: [{ scale: 2.5 }],
-                        }}
-                    />
-                    <MaterialCommunityIcons
-                        name="arrow-down-thin"
-                        size={24}
-                        color={theme.background}
-                        style={{
-                            position: 'absolute',
-                            transform: [{ scale: 2.5 }, { translateY: 1.2 }],
-                        }}
-                    />
+        <View style={styles.journeyPlannerContainer}>
+            <View style={styles.locationPickersContainer}>
+                <LocationPicker
+                    data={fromData}
+                    label={'From'}
+                    location={fromLocation}
+                    setLocation={setFromLocation}
+                    dropdownOpened={fromDropdownOpened}
+                    setDropdownOpened={setFromDropdownOpened}
+                    onOpen={fromOnOpen}
+                />
+                <View style={styles.middleContainer}>
+                    <View style={{ opacity: fromDropdownOpened || hideArrow ? 0 : 0 }}>
+                        <MaterialCommunityIcons
+                            name="arrow-down-thin"
+                            size={24}
+                            color={theme.halfContrast}
+                            style={{
+                                zIndex: 1,
+                                transform: [{ scale: 2.5 }],
+                            }}
+                        />
+                        <MaterialCommunityIcons
+                            name="arrow-down-thin"
+                            size={24}
+                            color={theme.background}
+                            style={{
+                                position: 'absolute',
+                                transform: [{ scale: 2.5 }, { translateY: 1.2 }],
+                            }}
+                        />
+                    </View>
+                    <Text
+                        style={[
+                            styles.warningText,
+                            { color: theme.primary },
+                        ]}
+                    >
+                        {warningMessage}
+                    </Text>
                 </View>
-                <Text
-                    style={[
-                        styles.warningText,
-                        { color: theme.primary },
-                    ]}
-                >
-                    {warningMessage}
-                </Text>
+                <LocationPicker
+                    data={toData}
+                    label={'To'}
+                    location={toLocation}
+                    setLocation={setToLocation}
+                    dropdownOpened={toDropdownOpened}
+                    setDropdownOpened={setToDropdownOpened}
+                    onOpen={toOnOpen}
+                />
             </View>
-            <LocationPicker
-                data={toData}
-                label={'To'}
-                location={toLocation}
-                setLocation={setToLocation}
-                dropdownOpened={toDropdownOpened}
-                setDropdownOpened={setToDropdownOpened}
-                onOpen={toOnOpen}
-            />
-        </>
+            <View style={styles.swapButtonContainer}>
+                <TouchableOpacity
+                    onPress={() => {
+                        setFromLocation(fromTo.to);
+                        setToLocation(fromTo.from);
+                    }}
+                >
+                    <MaterialCommunityIcons
+                        name="swap-vertical"
+                        size={36}
+                        color={theme.highContrast}
+                    />
+                </TouchableOpacity>
+            </View>
+        </View>
     );
 }
 
 const styles = StyleSheet.create({
+    journeyPlannerContainer: {
+        width: '80%',
+    },
+    locationPickersContainer: {
+        width: '90%',
+    },
     middleContainer: {
         display: 'flex',
         flexDirection: 'row',
         justifyContent: 'center',
         alignItems: 'center',
-        width: '80%',
+        width: '100%',
         zIndex: 2,
     },
     warningText: {
@@ -143,5 +166,12 @@ const styles = StyleSheet.create({
         right: 0,
         fontWeight: 'bold',
         textAlign: 'right',
-    }
+    },
+    swapButtonContainer: {
+        position: 'absolute',
+        top: '50%',
+        right: -10,
+        transform: [{ translateY: '-50%' }],
+        zIndex: 1,
+    },
 });
