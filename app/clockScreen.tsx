@@ -85,14 +85,20 @@ export default function ClockScreen() {
             <View style={styles.headerContainer}>
                 <View style={styles.dateTimeContainer}>
                     <TouchableOpacity onPress={() => { showDateTimePicker('date') }}>
-                        <ThemedText type="subtitle" style={dateTimeTextStyle}>
-                            {`${logicTime.toLocaleDateString('en-GB')} (${weekDays[logicTime.getDay()]})`}
-                        </ThemedText>
+                        {useMemo(() =>
+                            <ThemedText type="subtitle" style={dateTimeTextStyle}>
+                                {`${logicTime.toLocaleDateString('en-GB')} (${weekDays[logicTime.getDay()]})`}
+                            </ThemedText>
+                            , [new Date(logicTime).truncateTo('day').getTime()]
+                        )}
                     </TouchableOpacity>
                     <TouchableOpacity onPress={() => { showDateTimePicker('time') }}>
-                        <ThemedText type="title" style={dateTimeTextStyle}>
-                            {logicTime.toLocaleTimeString('en-GB')}
-                        </ThemedText>
+                        {useMemo(() =>
+                            <ThemedText type="title" style={dateTimeTextStyle}>
+                                {logicTime.toLocaleTimeString('en-GB')}
+                            </ThemedText>
+                            , [new Date(logicTime).truncateTo('second').getTime()]
+                        )}
                     </TouchableOpacity>
                 </View>
                 {dateTimePickerMode
