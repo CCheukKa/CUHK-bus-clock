@@ -24,6 +24,7 @@ export class Colour {
      * @returns The mixed hex colour code in the format `#RRGGBB`.
      */
     public static mixRGBA(colour1: string, colour2: string, ratio: number): string {
+        ratio = MathExtra.clamp(ratio, { min: 0, max: 1 });
         const r1 = parseInt(colour1.slice(1, 3), 16);
         const g1 = parseInt(colour1.slice(3, 5), 16);
         const b1 = parseInt(colour1.slice(5, 7), 16);
@@ -43,6 +44,19 @@ type Rectangle = { x: number, y: number, w2: number, h2: number };
  * A utility class providing additional mathematical functions.
  */
 export class MathExtra {
+    /**
+     * Clamps a number between a minimum and maximum value.
+     *
+     * @param value - The number to clamp.
+     * @param options - An object containing the minimum and maximum values.
+     * @param options.min - The minimum value. Defaults to -Infinity.
+     * @param options.max - The maximum value. Defaults to Infinity.
+     * @returns The clamped value.
+     */
+    public static clamp(value: number, options: { min: number | undefined, max: number | undefined }): number {
+        return Math.min(Math.max(value, options.min ?? -Infinity), options.max ?? Infinity);
+    }
+
     /**
      * Calculates the average of the given numbers.
      *
