@@ -132,7 +132,7 @@ export default function ClockScreen() {
                 <ClockFace
                     time={logicTime}
                     etaInfos={etaInfos}
-                />, [etaInfos, settings]
+                />, [logicTime, etaInfos, settings]
             )}
             {useMemo(() =>
                 <JourneyPlanner
@@ -144,7 +144,7 @@ export default function ClockScreen() {
                 <EtaInfoPanel
                     time={logicTime}
                     etaInfos={etaInfos}
-                />, [etaInfos, settings]
+                />, [JSON.stringify(etaInfos), JSON.stringify(fromTo), settings]
             )}
         </FullscreenView>
     );
