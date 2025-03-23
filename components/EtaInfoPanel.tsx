@@ -6,6 +6,36 @@ import { useTheme } from "@/context/ThemeContext";
 import { FontAwesome } from "@expo/vector-icons";
 import { ScrollView, StyleSheet, Text, View } from "react-native";
 
+const noInfoTexts = [
+    [
+        'No buses in this universe... 🌌',
+        'No buses in this timeline... ⏳',
+        'No buses in this reality... 🌐',
+        'No buses in this world... 🌍',
+        'Oops! No buses... 🤷🏻',
+        'WTF NO BUS?! OMG INSANE 🤯',
+        'No buses found... 🚫',
+        'Beep boop beep... 🤖',
+        'Teehee! No buses... 🤭',
+    ],
+    [
+        '🤔 Try something else..?',
+        '🕒 Try again later..?',
+        '🛸 Try somewhere else..?',
+        '🦵🏻 Try walking..?',
+        '🌀 Try teleporting..?',
+        '🦸🏻‍♂️ Try flying..?',
+        '🏊🏻 Try swimming..?',
+        '⏪ Try rewinding time..?',
+        '🤨 Complain to CUHK Transport Office..?',
+        '🚦 Blame the traffic..?',
+        '🌦️ Blame the weather..?',
+        '🌌 Blame the universe..?',
+        '😴 Just wait..?',
+        '🚌 Drive it yourself..?',
+    ],
+];
+
 type EtaInfoPanelProps = {
     time: Date;
     etaInfos: EtaInfo[] | EtaError;
@@ -39,28 +69,34 @@ export function EtaInfoPanel({ time, etaInfos }: EtaInfoPanelProps) {
                     backgroundColor: theme.background,
                 },
             ]}>ETA Info Panel</Text>
-            <ScrollView
-                style={[
-                    styles.etaScrollContainer,
-                    { zIndex: 2 },
-                ]}
-                contentContainerStyle={styles.etaScrollContainerContent}
-                showsVerticalScrollIndicator={false}
-            >
-                {
-                    isEtaInfoArray(etaInfos)
-                        ? etaInfos
-                            .sort((a, b) => a.etaFromTime.getTime() - b.etaFromTime.getTime())
-                            .map((etaInfo) => (
-                                <EtaInfoCard
-                                    key={etaInfo.journey.route + etaInfo.etaFromTime}
-                                    time={time}
-                                    etaInfo={etaInfo}
-                                />
-                            ))
-                        : null
-                }
-            </ScrollView>
+            {
+                isEtaInfoArray(etaInfos)
+                    ? <ScrollView
+                        style={styles.etaScrollContainer}
+                        contentContainerStyle={styles.etaScrollContainerContent}
+                        showsVerticalScrollIndicator={false}
+                    >
+                        {
+                            etaInfos
+                                .sort((a, b) => a.etaFromTime.getTime() - b.etaFromTime.getTime())
+                                .map((etaInfo) => (
+                                    <EtaInfoCard
+                                        key={etaInfo.journey.route + etaInfo.etaFromTime}
+                                        time={time}
+                                        etaInfo={etaInfo}
+                                    />
+                                ))
+                        }
+                    </ScrollView>
+                    : <View style={styles.noInfoContainer}>
+                        <Text style={[
+                            styles.noInfoText,
+                            { color: theme.lowContrast },
+                        ]}>
+                            {`${noInfoTexts[0][Math.floor(Math.random() * noInfoTexts[0].length)]}\n\n${noInfoTexts[1][Math.floor(Math.random() * noInfoTexts[1].length)]}`}
+                        </Text>
+                    </View>
+            }
         </View>
     );
 }
@@ -214,7 +250,22 @@ const styles = StyleSheet.create({
         paddingBottom: 2,
         borderRadius: 6,
     },
+    noInfoContainer: {
+        zIndex: 2,
+        width: '100%',
+        height: '100%',
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    noInfoText: {
+        fontSize: 16,
+        fontWeight: 'bold',
+        textAlign: 'center',
+    },
     etaScrollContainer: {
+        zIndex: 2,
         marginTop: 15,
         width: '95%',
         height: '100%',
