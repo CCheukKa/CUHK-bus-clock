@@ -12,7 +12,6 @@
 ### UI
 - Dropdown styling follow colour theme
 - Group buses arriving at the same time?
-- Add past/future peeking indicators on clock face
 - Add more colour themes
 - Pressing setting controls dismiss everything
 - Improve light theme colour usage
