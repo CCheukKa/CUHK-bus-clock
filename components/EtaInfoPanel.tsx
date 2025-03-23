@@ -45,24 +45,24 @@ export function EtaInfoPanel({ time, etaInfos }: EtaInfoPanelProps) {
 
     return (
         <View style={[
-            styles.panelContainer,
+            panelStyles.panelContainer,
             {
                 borderColor: theme.lowContrast,
             },
         ]}>
             <View style={[
-                styles.panelContainerBackground,
+                panelStyles.panelContainerBackground,
                 { backgroundColor: theme.minimalContrast },
             ]} />
             <Text style={[
-                styles.panelTitle,
+                panelStyles.panelTitle,
                 {
                     zIndex: 2,
                     color: theme.halfContrast,
                 },
             ]}>ETA Info Panel</Text>
             <Text style={[
-                styles.panelTitle,
+                panelStyles.panelTitle,
                 {
                     zIndex: 0,
                     color: 'transparent',
@@ -72,8 +72,8 @@ export function EtaInfoPanel({ time, etaInfos }: EtaInfoPanelProps) {
             {
                 isEtaInfoArray(etaInfos)
                     ? <ScrollView
-                        style={styles.etaScrollContainer}
-                        contentContainerStyle={styles.etaScrollContainerContent}
+                        style={etaStyles.etaScrollContainer}
+                        contentContainerStyle={etaStyles.etaScrollContainerContent}
                         showsVerticalScrollIndicator={false}
                     >
                         {
@@ -88,9 +88,9 @@ export function EtaInfoPanel({ time, etaInfos }: EtaInfoPanelProps) {
                                 ))
                         }
                     </ScrollView>
-                    : <View style={styles.noInfoContainer}>
+                    : <View style={noInfoStyles.noInfoContainer}>
                         <Text style={[
-                            styles.noInfoText,
+                            noInfoStyles.noInfoText,
                             { color: theme.lowContrast },
                         ]}>
                             {`${noInfoTexts[0][Math.floor(Math.random() * noInfoTexts[0].length)]}\n\n${noInfoTexts[1][Math.floor(Math.random() * noInfoTexts[1].length)]}`}
@@ -110,13 +110,13 @@ function EtaInfoCard({ time, etaInfo }: { time: Date, etaInfo: EtaInfo }) {
     const arrowDistance = 35;
     return (
         <View style={[
-            styles.etaInfoCard,
+            etaStyles.etaInfoCard,
             {
                 backgroundColor: isPast ? theme.background : theme.dimContrast,
             },
         ]}>
             <Text style={[
-                styles.etaInfoCardStation,
+                etaStyles.etaInfoCardStation,
                 {
                     left: 0,
                     textAlign: 'left',
@@ -125,11 +125,11 @@ function EtaInfoCard({ time, etaInfo }: { time: Date, etaInfo: EtaInfo }) {
             ]}>
                 {stationAbbreviations[etaInfo.journey.fromStation]}
             </Text>
-            <View style={styles.etaInfoCardCenter}>
+            <View style={etaStyles.etaInfoCardCenter}>
                 <EtaTime time={time} etaTime={etaInfo.etaFromTime} isPast={isPast} right={arrowDistance} />
-                <View style={styles.arrowContainer}>
+                <View style={etaStyles.arrowContainer}>
                     <View style={[
-                        styles.routeNumberBubble,
+                        etaStyles.routeNumberBubble,
                         {
                             backgroundColor: isPast ? Colour.mixRGBA(theme.dimContrast, routeColour, 0.5) : routeColour,
                             shadowColor: contrastColour,
@@ -138,7 +138,7 @@ function EtaInfoCard({ time, etaInfo }: { time: Date, etaInfo: EtaInfo }) {
                         },
                     ]}>
                         <Text style={[
-                            styles.routeNumberBubbleText,
+                            etaStyles.routeNumberBubbleText,
                             {
                                 color: contrastColour,
                                 opacity: isPast ? 0.8 : 1,
@@ -171,7 +171,7 @@ function EtaInfoCard({ time, etaInfo }: { time: Date, etaInfo: EtaInfo }) {
                 <EtaTime time={time} etaTime={etaInfo.etaToTime} isPast={isPast} left={arrowDistance} />
             </View>
             <Text style={[
-                styles.etaInfoCardStation,
+                etaStyles.etaInfoCardStation,
                 {
                     right: 0,
                     textAlign: 'right',
@@ -192,7 +192,7 @@ function EtaTime({ time, etaTime, isPast, left, right }: { time: Date, etaTime: 
     const etaString = etaTime.toLocaleTimeString('en-GB').slice(0, 5);
     return (
         <View style={[
-            styles.etaTimeContainer,
+            etaStyles.etaTimeContainer,
             { left, right },
         ]}>
             <Text style={{
@@ -219,8 +219,7 @@ function EtaTime({ time, etaTime, isPast, left, right }: { time: Date, etaTime: 
     );
 }
 
-
-const styles = StyleSheet.create({
+const panelStyles = StyleSheet.create({
     panelContainer: {
         width: '90%',
         flex: 1,
@@ -250,6 +249,9 @@ const styles = StyleSheet.create({
         paddingBottom: 2,
         borderRadius: 6,
     },
+});
+
+const noInfoStyles = StyleSheet.create({
     noInfoContainer: {
         zIndex: 2,
         width: '100%',
@@ -264,6 +266,9 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         textAlign: 'center',
     },
+});
+
+const etaStyles = StyleSheet.create({
     etaScrollContainer: {
         zIndex: 2,
         marginTop: 15,

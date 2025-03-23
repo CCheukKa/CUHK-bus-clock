@@ -49,23 +49,23 @@ export function ClockThing({ type, style, degrees, distance, children }: ClockTh
         switch (type) {
             case ClockThingType.CLOCK_CENTRE_DOT:
                 return (<View style={[
-                    styles.clockCentreDot,
+                    mainStyles.clockCentreDot,
                     {
                         backgroundColor: theme.background,
                         borderColor: theme.highContrast,
                     },
                 ]} />);
             case ClockThingType.CLOCK_NUMBER:
-                return (<View style={styles.clockNumberContainer}>
+                return (<View style={mainStyles.clockNumberContainer}>
                     <Text style={[
-                        styles.clockNumber,
+                        mainStyles.clockNumber,
                         { color: theme.halfContrast },
                     ]}>{children}</Text>
                 </View>);
             case ClockThingType.ROUTE_BUBBLE:
                 return (
                     <View style={[
-                        styles.routeBubble,
+                        auxiliaryStyles.routeBubble,
                         {
                             backgroundColor: style?.backgroundColour,
                             transform: [{ scale: style?.scale ?? 1 }],
@@ -73,7 +73,7 @@ export function ClockThing({ type, style, degrees, distance, children }: ClockTh
                         }
                     ]}>
                         <Text style={[
-                            styles.routeNumber,
+                            auxiliaryStyles.routeNumber,
                             { color: style?.textColour }
                         ]}>
                             {children}
@@ -82,7 +82,7 @@ export function ClockThing({ type, style, degrees, distance, children }: ClockTh
                 );
             case ClockThingType.ROUTE_ANNOTATION_LINE:
                 return (<View style={[
-                    styles.routeAnnotationLine,
+                    auxiliaryStyles.routeAnnotationLine,
                     {
                         height: style?.height ? `${style.height}%` : undefined,
                         backgroundColor: style?.backgroundColour,
@@ -94,17 +94,17 @@ export function ClockThing({ type, style, degrees, distance, children }: ClockTh
                 ]} />);
             case ClockThingType.ROUTE_TIMING:
                 return (<Text style={[
-                    styles.routeTiming,
+                    auxiliaryStyles.routeTiming,
                     {
                         color: style?.textColour,
                         textShadowColor: theme.dimContrast,
                     }
                 ]}>{children}</Text>);
             case ClockThingType.ERROR_TEXT:
-                return (<View style={styles.errorTextContainer}>
+                return (<View style={auxiliaryStyles.errorTextContainer}>
                     <Text
                         style={[
-                            styles.errorText,
+                            auxiliaryStyles.errorText,
                             {
                                 color: theme.primaryHeavy,
                                 textShadowColor: theme.primarySharp,
@@ -119,7 +119,7 @@ export function ClockThing({ type, style, degrees, distance, children }: ClockTh
 
     return (
         <View style={[
-            styles.clockThing,
+            mainStyles.clockThing,
             { left: `${left}%`, top: `${top}%` },
             type === ClockThingType.ROUTE_ANNOTATION_LINE ? { width: '10%' } : null, //TODO: find an actual solution
         ]}>
@@ -128,7 +128,7 @@ export function ClockThing({ type, style, degrees, distance, children }: ClockTh
     );
 }
 
-const styles = StyleSheet.create({
+const mainStyles = StyleSheet.create({
     clockThing: {
         display: 'flex',
         justifyContent: 'center',
@@ -161,6 +161,9 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         transform: [{ translateY: 1 }],
     },
+});
+
+const auxiliaryStyles = StyleSheet.create({
     routeAnnotationLine: {
         width: 5,
     },
@@ -187,7 +190,6 @@ const styles = StyleSheet.create({
         textShadowOffset: { width: 0, height: 0 },
         shadowOpacity: 0.5,
         textShadowRadius: 6,
-        // backgroundColor: 'red',
     },
     errorTextContainer: {
         height: 90,
