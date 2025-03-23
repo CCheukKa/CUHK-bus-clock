@@ -1,12 +1,12 @@
 import { StyleSheet, View } from 'react-native';
 import { ClockThing, ClockThingType } from '@/components/ClockThing';
-import { ClockHand, ClockHandType } from '@/components/ClockHand';
 import ClockTicks from '@/components/ClockTicks';
 import { RouteThings } from '@/components/RouteThing';
 import { EtaError, EtaInfo } from '@/backend/Bus';
 import { useTheme } from '@/context/ThemeContext';
 import ClockNumbers from '@/components/ClockNumbers';
 import { useSettings } from '@/context/SettingsContext';
+import { ClockHands } from '@/components/ClockHands';
 
 type ClockFaceProps = {
     time: Date;
@@ -38,18 +38,6 @@ export function ClockFace({ time, etaInfos }: ClockFaceProps) {
                 </View>
             </View>
             : <View style={styles.clockFaceBuffer} />
-    );
-}
-
-type ClockHandsProps = {
-    time: Date;
-};
-function ClockHands({ time }: ClockHandsProps) {
-    return (
-        <>
-            <ClockHand type={ClockHandType.HOUR} degrees={360 / 12 * time.getHours() + 360 / 12 / 60 * time.getMinutes()} />
-            <ClockHand type={ClockHandType.MINUTE} degrees={360 / 60 * time.getMinutes() + 360 / 60 / 60 * time.getSeconds()} />
-        </>
     );
 }
 

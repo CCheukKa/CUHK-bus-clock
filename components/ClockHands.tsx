@@ -1,7 +1,8 @@
+
 import { useTheme } from '@/context/ThemeContext';
 import { StyleSheet, View } from 'react-native';
 
-export enum ClockHandType {
+enum ClockHandType {
     HOUR = 'hour',
     MINUTE = 'minute',
 }
@@ -9,8 +10,7 @@ type ClockHandProps = {
     type: ClockHandType;
     degrees: number;
 };
-
-export function ClockHand({ type, degrees }: ClockHandProps) {
+function ClockHand({ type, degrees }: ClockHandProps) {
     const { theme } = useTheme();
 
     const width = (() => {
@@ -48,6 +48,18 @@ export function ClockHand({ type, degrees }: ClockHandProps) {
                 ],
             }],
         ]} />
+    );
+}
+
+type ClockHandsProps = {
+    time: Date;
+};
+export function ClockHands({ time }: ClockHandsProps) {
+    return (
+        <>
+            <ClockHand type={ClockHandType.HOUR} degrees={360 / 12 * time.getHours() + 360 / 12 / 60 * time.getMinutes()} />
+            <ClockHand type={ClockHandType.MINUTE} degrees={360 / 60 * time.getMinutes() + 360 / 60 / 60 * time.getSeconds()} />
+        </>
     );
 }
 
