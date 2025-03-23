@@ -85,7 +85,7 @@ export function LocationPicker({
                 value={location}
                 items={dropdownItems}
                 setOpen={setDropdownOpened}
-                setValue={setLocation}
+                setValue={() => { }}
                 setItems={setDropdownItems}
                 closeOnBackPressed={true}
                 placeholder="Select a station/region"

@@ -16,7 +16,7 @@
 - Add more colour themes
 - Pressing setting controls dismiss everything
 - Improve light theme colour usage
-- Add swap button for origin and destination
+- Fix location picker flickering
 ### Sustainability
 - Add a way for users to contribute data
 
