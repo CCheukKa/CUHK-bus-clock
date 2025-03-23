@@ -1,6 +1,6 @@
 import { Region, Station, stationRegions } from "@/constants/BusData";
 import { DropdownItem, LocationPicker } from "@/components/LocationPicker";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { FromTo, LocationNullable } from "@/backend/Bus";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
@@ -47,7 +47,6 @@ type JourneyPlannerProps = {
 export function JourneyPlanner({ fromTo, setFromTo }: JourneyPlannerProps) {
     const { theme } = useTheme();
 
-
     const [fromLocation, setFromLocation] = useState<LocationNullable>(fromTo.from);
     const [toLocation, setToLocation] = useState<LocationNullable>(fromTo.to);
     useEffect(() => {
@@ -79,15 +78,17 @@ export function JourneyPlanner({ fromTo, setFromTo }: JourneyPlannerProps) {
     return (
         <View style={styles.journeyPlannerContainer}>
             <View style={styles.locationPickersContainer}>
-                <LocationPicker
-                    data={fromData}
-                    label={'From'}
-                    location={fromLocation}
-                    setLocation={setFromLocation}
-                    dropdownOpened={fromDropdownOpened}
-                    setDropdownOpened={setFromDropdownOpened}
-                    onOpen={fromOnOpen}
-                />
+                {useMemo(() =>
+                    <LocationPicker
+                        data={fromData}
+                        label={'From'}
+                        location={fromLocation}
+                        setLocation={setFromLocation}
+                        dropdownOpened={fromDropdownOpened}
+                        setDropdownOpened={setFromDropdownOpened}
+                        onOpen={fromOnOpen}
+                    />, [fromLocation, fromDropdownOpened]
+                )}
                 <View style={styles.middleContainer}>
                     <View style={{ opacity: fromDropdownOpened || showingErrorMessage ? 0 : 1 }}>
                         <MaterialCommunityIcons
@@ -118,15 +119,18 @@ export function JourneyPlanner({ fromTo, setFromTo }: JourneyPlannerProps) {
                         {warningMessage}
                     </Text>
                 </View>
-                <LocationPicker
-                    data={toData}
-                    label={'To'}
-                    location={toLocation}
-                    setLocation={setToLocation}
-                    dropdownOpened={toDropdownOpened}
-                    setDropdownOpened={setToDropdownOpened}
-                    onOpen={toOnOpen}
-                />
+                {useMemo(() =>
+                    <LocationPicker
+                        data={toData}
+                        label={'To'}
+                        location={toLocation}
+                        setLocation={setToLocation}
+                        dropdownOpened={toDropdownOpened}
+                        setDropdownOpened={setToDropdownOpened}
+                        onOpen={toOnOpen}
+                    />
+                    , [toLocation, toDropdownOpened]
+                )}
             </View>
             <View style={[
                 styles.swapButtonContainer,

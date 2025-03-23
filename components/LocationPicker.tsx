@@ -29,7 +29,6 @@ export function LocationPicker({
     dropdownOpened, setDropdownOpened,
     onOpen
 }: LocationPickerProps) {
-
     const { settings } = useSettings();
     const { theme } = useTheme();
 
