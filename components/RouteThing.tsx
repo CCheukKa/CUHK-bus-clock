@@ -351,8 +351,14 @@ function handleErrors(etaError: EtaError) {
             case etaError.isType(EtaErrorType.NO_SERVICE_TODAY):
                 {
                     let msg = 'No service between these locations today';
+                    const condensedRouteDays: { [route: string]: number[] } = {};
                     for (const route of (etaError as NoServiceTodayError).routes) {
-                        msg += `\nRoute ${route.replaceAll('_', '')} - ${busRouteInfos[route].days.map(day => weekDays[day]).join(', ')} only`;
+                        const routeName = route.replaceAll('_', '');
+                        const routeDays = busRouteInfos[route].days;
+                        condensedRouteDays[routeName] = (condensedRouteDays[routeName] ?? []).concat(routeDays);
+                    }
+                    for (const route in condensedRouteDays) {
+                        msg += `\nRoute ${route} - ${condensedRouteDays[route].sort((a, b) => a - b).map(day => weekDays[day]).join(', ')} only`;
                     }
                     return msg;
                 }
