@@ -138,7 +138,7 @@ export function JourneyPlanner({ fromTo, setFromTo }: JourneyPlannerProps) {
                     <MaterialCommunityIcons
                         name="swap-vertical"
                         size={36}
-                        color={theme.highContrast}
+                        color={theme.lowContrast}
                     />
                 </TouchableOpacity>
             </View>
@@ -151,7 +151,7 @@ const styles = StyleSheet.create({
         width: '80%',
     },
     locationPickersContainer: {
-        width: '90%',
+        width: '100%',
     },
     middleContainer: {
         display: 'flex',
@@ -170,7 +170,7 @@ const styles = StyleSheet.create({
     swapButtonContainer: {
         position: 'absolute',
         top: '50%',
-        right: -10,
+        right: -32,
         transform: [{ translateY: '-50%' }],
         zIndex: 1,
     },
