@@ -7,15 +7,19 @@ import { Switch, TextInput } from 'react-native-paper';
 import DropDownPicker from 'react-native-dropdown-picker';
 import { useEffect, useState } from 'react';
 import { useTheme } from '@/context/ThemeContext';
+import { ScrollView } from 'react-native';
 
 DropDownPicker.setTheme('DARK');
 
 export default function SettingsScreen() {
     return (
         <FullscreenView>
-            <View style={styles.settingsContainer}>
+            <ScrollView
+                style={styles.settingsScrollview}
+                contentContainerStyle={styles.settingsScrollviewContainer}
+            >
                 <Controls />
-            </View>
+            </ScrollView>
         </FullscreenView>
     );
 }
@@ -123,14 +127,17 @@ function Controls() {
 
 const settingHeight = 24 + 24 + 32;
 const styles = StyleSheet.create({
-    settingsContainer: {
+    settingsScrollview: {
         width: '90%',
         height: '90%',
+    },
+    settingsScrollviewContainer: {
         display: 'flex',
         flexDirection: 'column',
+        paddingVertical: 48,
+        gap: 16,
         justifyContent: 'flex-start',
         alignItems: 'center',
-        gap: 16,
     },
     settingText: {
         display: 'flex',
