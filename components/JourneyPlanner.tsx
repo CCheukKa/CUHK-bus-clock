@@ -60,16 +60,16 @@ export function JourneyPlanner({ fromTo, setFromTo }: JourneyPlannerProps) {
     const fromOnOpen = () => { setToDropdownOpened(false); };
     const toOnOpen = () => { setFromDropdownOpened(false); };
 
-    let hideArrow = false;
+    let showingErrorMessage = false;
     const warningMessage: string | null = (() => {
-        hideArrow = false;
+        showingErrorMessage = false;
 
         switch (true) {
             case fromTo.from && fromTo.to && fromTo.from === fromTo.to:
-                hideArrow = true;
+                showingErrorMessage = true;
                 return 'avoiding choosing same start/end';
             case fromTo.from === Region.MISCELLANEOUS || fromTo.to === Region.MISCELLANEOUS:
-                hideArrow = true;
+                showingErrorMessage = true;
                 return 'choosing miscellaneous is not recommended';
             default:
                 return null;
@@ -89,7 +89,7 @@ export function JourneyPlanner({ fromTo, setFromTo }: JourneyPlannerProps) {
                     onOpen={fromOnOpen}
                 />
                 <View style={styles.middleContainer}>
-                    <View style={{ opacity: fromDropdownOpened || hideArrow ? 0 : 1 }}>
+                    <View style={{ opacity: fromDropdownOpened || showingErrorMessage ? 0 : 1 }}>
                         <MaterialCommunityIcons
                             name="arrow-down-thin"
                             size={24}
@@ -128,7 +128,10 @@ export function JourneyPlanner({ fromTo, setFromTo }: JourneyPlannerProps) {
                     onOpen={toOnOpen}
                 />
             </View>
-            <View style={styles.swapButtonContainer}>
+            <View style={[
+                styles.swapButtonContainer,
+                { opacity: showingErrorMessage ? 0 : 1 },
+            ]}>
                 <TouchableOpacity
                     onPress={() => {
                         setFromLocation(fromTo.to);
