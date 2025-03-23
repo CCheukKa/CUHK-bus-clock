@@ -6,6 +6,7 @@ export type Settings = {
     pastPeekMinutes: number;
     futurePeekMinutes: number;
     showClockFace: boolean;
+    showPeekArcs: boolean;
     showCountdown: boolean;
     dimDistantInfo: boolean;
     timingShowMinutes: number;
@@ -39,6 +40,11 @@ export const settingsSchema: Record<keyof Settings, {
     showClockFace: {
         type: 'boolean',
         description: 'Show clock face',
+        defaultValue: true,
+    },
+    showPeekArcs: {
+        type: 'boolean',
+        description: 'Show arcs for peek times on clock',
         defaultValue: true,
     },
     showCountdown: {

@@ -28,13 +28,15 @@ export function ClockFace({ time, etaInfos }: ClockFaceProps) {
                         styles.clockFace,
                         {
                             backgroundColor: theme.background,
-                            borderColor: theme.dimContrast,
+                            borderColor: settings.showPeekArcs ? theme.dimContrast : theme.highContrast,
                             shadowColor: theme.highContrast,
                         },
                     ]}>
                         {useMemo(() =>
-                            <ClockArcs time={time} />
-                            , [time.truncateTo('second').getTime()]
+                            settings.showPeekArcs
+                                ? <ClockArcs time={time} />
+                                : null
+                            , [time.truncateTo('second').getTime(), settings.showPeekArcs]
                         )}
                         {useMemo(() => <ClockNumbers />, [])}
                         {useMemo(() => <ClockTicks />, [])}
