@@ -1,4 +1,3 @@
-import { memo } from "react";
 import { useTheme } from '@/context/ThemeContext';
 import { StyleSheet, View } from 'react-native';
 
@@ -34,7 +33,7 @@ function ClockTick({ type, degrees }: ClockTickProps) {
     );
 }
 
-function ClockTicks() {
+export function ClockTicks() {
     return Array.from({ length: 60 }, (_, i) => i + 1).map(i => {
         const degrees = 360 / 60 * i;
         return (
@@ -42,8 +41,6 @@ function ClockTicks() {
         );
     });
 }
-
-export default memo(ClockTicks);
 
 const styles = StyleSheet.create({
     clockTick: {

@@ -1,13 +1,14 @@
 import { StyleSheet, View } from 'react-native';
 import { ClockThing, ClockThingType } from '@/components/ClockThing';
-import ClockTicks from '@/components/ClockTicks';
+import { ClockTicks } from '@/components/ClockTicks';
 import { RouteThings } from '@/components/RouteThing';
 import { EtaError, EtaInfo } from '@/backend/Bus';
 import { useTheme } from '@/context/ThemeContext';
-import ClockNumbers from '@/components/ClockNumbers';
+import { ClockNumbers } from '@/components/ClockNumbers';
 import { useSettings } from '@/context/SettingsContext';
 import { ClockHands } from '@/components/ClockHands';
 import { ClockArcs } from '@/components/ClockArcs';
+import { useMemo } from 'react';
 
 type ClockFaceProps = {
     time: Date;
@@ -31,11 +32,17 @@ export function ClockFace({ time, etaInfos }: ClockFaceProps) {
                             shadowColor: theme.highContrast,
                         },
                     ]}>
-                        <ClockArcs time={time} />
-                        <ClockNumbers />
-                        <ClockTicks />
-                        <ClockHands time={time} />
-                        <ClockThing type={ClockThingType.CLOCK_CENTRE_DOT} degrees={0} distance={0} />
+                        {useMemo(() =>
+                            <ClockArcs time={time} />
+                            , [time.truncateTo('second').getTime()]
+                        )}
+                        {useMemo(() => <ClockNumbers />, [])}
+                        {useMemo(() => <ClockTicks />, [])}
+                        {useMemo(() =>
+                            <ClockHands time={time} />
+                            , [time.truncateTo('second').getTime()]
+                        )}
+                        {useMemo(() => <ClockThing type={ClockThingType.CLOCK_CENTRE_DOT} degrees={0} distance={0} />, [])}
                     </View>
                 </View>
             </View>
