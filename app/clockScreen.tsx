@@ -89,7 +89,7 @@ export default function ClockScreen() {
                             <ThemedText type="subtitle" style={dateTimeTextStyle}>
                                 {`${logicTime.toLocaleDateString('en-GB')} (${weekDays[logicTime.getDay()]})`}
                             </ThemedText>
-                            , [new Date(logicTime).truncateTo('day').getTime()]
+                            , [new Date(logicTime).truncateTo('day').getTime(), dateTimeTextStyle]
                         )}
                     </TouchableOpacity>
                     <TouchableOpacity onPress={() => { showDateTimePicker('time') }}>
@@ -97,7 +97,7 @@ export default function ClockScreen() {
                             <ThemedText type="title" style={dateTimeTextStyle}>
                                 {logicTime.toLocaleTimeString('en-GB')}
                             </ThemedText>
-                            , [new Date(logicTime).truncateTo('second').getTime()]
+                            , [new Date(logicTime).truncateTo('second').getTime(), dateTimeTextStyle]
                         )}
                     </TouchableOpacity>
                 </View>
