@@ -87,7 +87,7 @@ function computeRouteThingInfos(etaInfos: EtaInfo[], currentTime: Date, timingHi
             }
         }
         if (!placed || bubbleOrbit === null) {
-            console.warn(`RouteBubble not placed, route ${etaInfo.journey.route}, ${bubbleAngle}deg`);
+            console.warn(`[RouteThing][computeRouteBubbleInfo] RouteBubble not placed, route ${etaInfo.journey.route}, ${bubbleAngle}deg`);
             return null;
         }
 
@@ -177,7 +177,7 @@ function computeRouteThingInfos(etaInfos: EtaInfo[], currentTime: Date, timingHi
                 }
             }
         }
-        console.warn(`RouteTiming not placed, route ${routeThingPreInfo.etaInfo.journey.route}, ${routeThingPreInfo.bubbleAngle}deg`);
+        console.warn(`[RouteThing][computeRouteTimingInfo] RouteTiming not placed, route ${routeThingPreInfo.etaInfo.journey.route}, ${routeThingPreInfo.bubbleAngle}deg`);
         return {
             timingX: 0,
             timingY: 0,

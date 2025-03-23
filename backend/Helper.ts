@@ -378,7 +378,7 @@ Date.prototype.truncateTo = function (this: Date, unit: DateUnits): Date {
             this.setMilliseconds(0);
             break;
         case 'millisecond':
-            console.warn('Date.prototype.truncateTo("millisecond") is a null operation.');
+            console.warn('[Helper][truncateTo] Date.prototype.truncateTo("millisecond") is a null operation.');
             break;
     }
     return this;

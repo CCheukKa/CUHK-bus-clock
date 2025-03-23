@@ -11,7 +11,7 @@ type TriangleProps = {
 };
 function Triangle({ angle, startDegrees, colour }: TriangleProps) {
     if (angle < 0 || angle > TRIANGLE_ANGLE_LIMIT) {
-        console.warn(`Triangle degrees must be between 0 and ${TRIANGLE_ANGLE_LIMIT}`);
+        console.warn(`[ClockArcs][Triangle] Triangle degrees must be between 0 and ${TRIANGLE_ANGLE_LIMIT}, got ${angle}`);
         return null;
     }
     // tan(θ/2) = b/h
