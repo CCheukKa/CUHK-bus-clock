@@ -13,6 +13,7 @@ type RouteBubbleInfo = {
     bubbleAngle: number;
     bubbleDistance: number;
     bubbleOrbit: number;
+    bubbleAlpha: number;
 };
 type RouteAnnotationLineInfo = {
     annotationLineLength: number;
@@ -104,12 +105,18 @@ function computeRouteThingInfos(etaInfos: EtaInfo[], currentTime: Date, timingHi
             { pin: 0, value: 0.36 },
             { pin: 15, value: 0.24 },
         ]);
+        const bubbleAlpha = MathExtra.interpolateBetweenPins(remainingMinutes, [
+            { pin: -10, value: 0.2 },
+            { pin: 0, value: 1 },
+            { pin: 15, value: 0.2 },
+        ]);
 
         return {
             bubbleScale,
             bubbleAngle,
             bubbleDistance,
             bubbleOrbit,
+            bubbleAlpha,
         };
     }
     function computeRouteAnnotationLineInfo(bubbleOrbit: number, remainingMinutes: number): RouteAnnotationLineInfo {
@@ -255,6 +262,7 @@ export function RouteThing({ routeThingInfo }: { routeThingInfo: RouteThingInfo 
         bubbleScale,
         bubbleAngle,
         bubbleDistance,
+        bubbleAlpha,
         annotationLineLength,
         timingX,
         timingY,
@@ -264,8 +272,11 @@ export function RouteThing({ routeThingInfo }: { routeThingInfo: RouteThingInfo 
     const { settings } = useSettings();
 
     const routeColour = busRouteInfos[etaInfo.journey.route].routeColour;
-    const opacity = remainingSeconds > 0 ? 1 : 0.75;
+    const opacity = bubbleAlpha * (remainingSeconds > 0 ? 1 : 0.5);
     const contrastColour = Colour.getLuminance(routeColour) > 150 ? theme.black : theme.white;
+    const bubbleColour = Colour.mixRGBA(theme.background, routeColour, opacity);
+    const routeTextColour = Colour.mixRGBA(bubbleColour, contrastColour, opacity + 0.2);
+    const timingColour = bubbleColour;
 
     const { degrees: timingAngle, distance: timingDistance } = MathExtra.xyToClockPolar(timingX, timingY);
 
@@ -275,7 +286,7 @@ export function RouteThing({ routeThingInfo }: { routeThingInfo: RouteThingInfo 
                 degrees={bubbleAngle} distance={bubbleDistance}
                 type={ClockThingType.ROUTE_ANNOTATION_LINE}
                 style={{
-                    backgroundColour: Colour.mixRGBA(theme.background, routeColour, opacity),
+                    backgroundColour: bubbleColour,
                     height: annotationLineLength,
                 }}
             />
@@ -283,8 +294,8 @@ export function RouteThing({ routeThingInfo }: { routeThingInfo: RouteThingInfo 
                 degrees={bubbleAngle} distance={bubbleDistance}
                 type={ClockThingType.ROUTE_BUBBLE}
                 style={{
-                    backgroundColour: Colour.mixRGBA(theme.background, routeColour, opacity),
-                    textColour: contrastColour,
+                    backgroundColour: bubbleColour,
+                    textColour: routeTextColour,
                     scale: bubbleScale,
                 }}
             >
@@ -293,7 +304,7 @@ export function RouteThing({ routeThingInfo }: { routeThingInfo: RouteThingInfo 
             <ClockThing
                 degrees={timingAngle} distance={timingDistance}
                 type={ClockThingType.ROUTE_TIMING}
-                style={{ textColour: Colour.mixRGBA(theme.background, routeColour, opacity) }}
+                style={{ textColour: timingColour }}
             >
                 {settings.showCountdown
                     ? toTimeString(remainingSeconds)
