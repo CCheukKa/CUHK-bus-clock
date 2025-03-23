@@ -89,7 +89,7 @@ export function JourneyPlanner({ fromTo, setFromTo }: JourneyPlannerProps) {
                     onOpen={fromOnOpen}
                 />
                 <View style={styles.middleContainer}>
-                    <View style={{ opacity: fromDropdownOpened || hideArrow ? 0 : 0 }}>
+                    <View style={{ opacity: fromDropdownOpened || hideArrow ? 0 : 1 }}>
                         <MaterialCommunityIcons
                             name="arrow-down-thin"
                             size={24}
