@@ -7,6 +7,7 @@ import { useTheme } from '@/context/ThemeContext';
 import ClockNumbers from '@/components/ClockNumbers';
 import { useSettings } from '@/context/SettingsContext';
 import { ClockHands } from '@/components/ClockHands';
+import { ClockArcs } from '@/components/ClockArcs';
 
 type ClockFaceProps = {
     time: Date;
@@ -26,10 +27,11 @@ export function ClockFace({ time, etaInfos }: ClockFaceProps) {
                         styles.clockFace,
                         {
                             backgroundColor: theme.background,
-                            borderColor: theme.highContrast,
+                            borderColor: theme.dimContrast,
                             shadowColor: theme.highContrast,
                         },
                     ]}>
+                        <ClockArcs time={time} />
                         <ClockNumbers />
                         <ClockTicks />
                         <ClockHands time={time} />
