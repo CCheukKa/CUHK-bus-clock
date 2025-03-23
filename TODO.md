@@ -17,6 +17,7 @@
 - Pressing setting controls dismiss everything
 - Improve light theme colour usage
 - Fix location picker flickering
+  - Merge into same file?
 ### Sustainability
 - Add a way for users to contribute data
 
