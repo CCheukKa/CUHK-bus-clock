@@ -45,24 +45,24 @@ export function EtaInfoPanel({ time, etaInfos }: EtaInfoPanelProps) {
 
     return (
         <View style={[
-            styles.infoContainer,
+            styles.panelContainer,
             {
                 borderColor: theme.lowContrast,
             },
         ]}>
             <View style={[
-                styles.infoContainerBackground,
+                styles.panelContainerBackground,
                 { backgroundColor: theme.minimalContrast },
             ]} />
             <Text style={[
-                styles.infoTitle,
+                styles.panelTitle,
                 {
                     zIndex: 2,
                     color: theme.halfContrast,
                 },
             ]}>ETA Info Panel</Text>
             <Text style={[
-                styles.infoTitle,
+                styles.panelTitle,
                 {
                     zIndex: 0,
                     color: 'transparent',
@@ -221,7 +221,7 @@ function EtaTime({ time, etaTime, isPast, left, right }: { time: Date, etaTime: 
 
 
 const styles = StyleSheet.create({
-    infoContainer: {
+    panelContainer: {
         width: '90%',
         flex: 1,
         borderWidth: 2,
@@ -235,13 +235,13 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
     },
-    infoContainerBackground: {
+    panelContainerBackground: {
         position: 'absolute',
         height: '100%',
         width: '100%',
         zIndex: 1,
     },
-    infoTitle: {
+    panelTitle: {
         fontSize: 20,
         fontWeight: 'bold',
         position: 'absolute',
