@@ -244,7 +244,7 @@ function getStationRouteETA(journey: Journey, currentTime: Date): EtaInfo[] | Et
             stationTime += busStationTimings[`${stations[i - 1]}>>${stations[i]}`]
                 ?? (() => { throw new Error(`Timing ${stations[i - 1]} -> ${stations[i]} not found!`) })();
         }
-        return stationTime;
+        return Math.round(stationTime);
     }
     function isWithinServiceHours(time: Date): boolean {
         if (!routeInfo) { throw new Error('Route info not found but isWithinServiceHours() is called'); }
