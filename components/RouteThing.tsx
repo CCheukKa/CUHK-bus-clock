@@ -272,7 +272,7 @@ export function RouteThing({ routeThingInfo }: { routeThingInfo: RouteThingInfo 
     const { settings } = useSettings();
 
     const routeColour = busRouteInfos[etaInfo.journey.route].routeColour;
-    const opacity = bubbleAlpha * (remainingSeconds > 0 ? 1 : 0.5);
+    const opacity = (settings.dimDistantInfo ? bubbleAlpha : 1) * (remainingSeconds > 0 ? 1 : 0.5);
     const contrastColour = Colour.getLuminance(routeColour) > 150 ? theme.black : theme.white;
     const bubbleColour = Colour.mixRGBA(theme.background, routeColour, opacity);
     const routeTextColour = Colour.mixRGBA(bubbleColour, contrastColour, opacity + 0.2);

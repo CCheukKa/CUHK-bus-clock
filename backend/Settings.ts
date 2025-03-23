@@ -7,6 +7,7 @@ export type Settings = {
     futurePeekMinutes: number;
     showClockFace: boolean;
     showCountdown: boolean;
+    dimDistantInfo: boolean;
     timingShowMinutes: number;
     useModalLocationPicker: boolean;
     bigCountdownInPanel: boolean;
@@ -43,6 +44,11 @@ export const settingsSchema: Record<keyof Settings, {
     showCountdown: {
         type: 'boolean',
         description: 'Show countdown instead of ETA on clock',
+        defaultValue: true,
+    },
+    dimDistantInfo: {
+        type: 'boolean',
+        description: 'Dim distant info on clock',
         defaultValue: true,
     },
     timingShowMinutes: {
