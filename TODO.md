@@ -20,6 +20,7 @@
 - Add warning for past + future peek time >= 60 minutes
 - Shrink everything
 - Fix dropdown size not updating on showClockFace change
+- Fix errorText overflow clipping
 ### Sustainability
 - Add a way for users to contribute data
 

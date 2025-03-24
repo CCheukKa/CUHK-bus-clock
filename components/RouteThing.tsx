@@ -354,7 +354,7 @@ function handleErrors(etaError: EtaError) {
             case etaError.isType(EtaErrorType.OUT_OF_SERVICE_HOURS):
                 {
                     let msg = 'Out of service hours';
-                    for (const route of (etaError as OutOfServiceHoursError).routes) {
+                    for (const route of (etaError as OutOfServiceHoursError).routes.sort()) {
                         msg += `\nRoute ${route.replaceAll('_', '')} - ${toTimeString(busRouteInfos[route].firstService, true)}-${toTimeString(busRouteInfos[route].lastService, true)}`;
                     }
                     return msg;
@@ -363,7 +363,7 @@ function handleErrors(etaError: EtaError) {
                 {
                     let msg = 'No service between these locations today';
                     const condensedRouteDays: { [route: string]: number[] } = {};
-                    for (const route of (etaError as NoServiceTodayError).routes) {
+                    for (const route of (etaError as NoServiceTodayError).routes.sort()) {
                         const routeName = route.replaceAll('_', '');
                         const routeDays = busRouteInfos[route].days;
                         condensedRouteDays[routeName] = (condensedRouteDays[routeName] ?? []).concat(routeDays);
