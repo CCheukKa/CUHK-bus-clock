@@ -66,7 +66,7 @@ export function JourneyPlanner({ fromTo, setFromTo }: JourneyPlannerProps) {
         switch (true) {
             case fromTo.from && fromTo.to && fromTo.from === fromTo.to:
                 showingErrorMessage = true;
-                return 'avoiding choosing same start/end';
+                return 'avoid choosing same start/end';
             case fromTo.from === Region.MISCELLANEOUS || fromTo.to === Region.MISCELLANEOUS:
                 showingErrorMessage = true;
                 return 'choosing miscellaneous is not recommended';
