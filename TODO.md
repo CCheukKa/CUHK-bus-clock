@@ -19,6 +19,7 @@
   - Merge into same file?
 - Add warning for past + future peek time >= 60 minutes
 - Shrink everything
+- Fix dropdown size not updating on showClockFace change
 ### Sustainability
 - Add a way for users to contribute data
 
