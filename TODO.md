@@ -18,6 +18,7 @@
 - Fix location picker flickering
   - Merge into same file?
 - Add warning for past + future peek time >= 60 minutes
+- Shrink everything
 ### Sustainability
 - Add a way for users to contribute data
 
