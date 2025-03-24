@@ -1,7 +1,7 @@
 {
     "expo": {
-        "name": "CUHK-bus-clock-app",
-        "slug": "CUHK-bus-clock-app",
+        "name": "CUHK-bus-clock",
+        "slug": "CUHK-bus-clock",
         "version": "1.0.0",
         "orientation": "portrait",
         "icon": "./assets/images/icon.png",
@@ -16,7 +16,7 @@
                 "foregroundImage": "./assets/images/adaptive-icon.png",
                 "backgroundColor": "#ffffff"
             },
-            "package": "com.anonymous.CUHKbusclockapp"
+            "package": "com.anonymous.CUHKbusclock"
         },
         "web": {
             "bundler": "metro",

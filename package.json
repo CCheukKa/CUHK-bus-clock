@@ -1,5 +1,5 @@
 {
-    "name": "cuhk-bus-clock-app",
+    "name": "cuhk-bus-clock",
     "main": "expo-router/entry",
     "version": "1.0.0",
     "scripts": {
