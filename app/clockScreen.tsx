@@ -150,7 +150,7 @@ export default function ClockScreen() {
                 <EtaInfoPanel
                     time={logicTime}
                     etaInfos={etaInfos}
-                />, [JSON.stringify(etaInfos), JSON.stringify(fromTo), settings]
+                />, [JSON.stringify(etaInfos), fromTo, settings]
             )}
         </FullscreenView>
     );
