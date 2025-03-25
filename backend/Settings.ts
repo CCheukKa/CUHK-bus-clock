@@ -30,7 +30,7 @@ export const settingsSchema: Record<keyof Settings, {
     pastPeekMinutes: {
         type: 'nonNegativeNumber',
         description: 'Minutes in the past to show bubbles',
-        defaultValue: 10,
+        defaultValue: 5,
     },
     futurePeekMinutes: {
         type: 'nonNegativeNumber',
