@@ -241,9 +241,9 @@ function getStationRouteETA(journey: Journey, currentTime: Date): EtaInfo[] | Et
         const stations = routeInfo.stations;
 
         let stationTime = 0;
-        for (let i = 1; i < stationIndex; i++) {
-            stationTime += MathExtra.average(...busStationTimings[`${stations[i - 1]}>>${stations[i]}`])
-                ?? (() => { throw new Error(`Timing ${stations[i - 1]} -> ${stations[i]} not found!`) })();
+        for (let i = 0; i < stationIndex; i++) {
+            stationTime += MathExtra.average(...busStationTimings[`${stations[i]}>>${stations[i + 1]}`])
+                ?? (() => { throw new Error(`Timing ${stations[i]} -> ${stations[i + 1]} not found!`) })();
         }
         return Math.round(stationTime);
     }
