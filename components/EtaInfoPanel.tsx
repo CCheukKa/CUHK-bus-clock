@@ -4,8 +4,8 @@ import { busRouteInfos, stationAbbreviations } from "@/constants/BusData";
 import { useSettings } from "@/context/SettingsContext";
 import { useTheme } from "@/context/ThemeContext";
 import { FontSizes } from "@/utils/Typography";
-import { FontAwesome } from "@expo/vector-icons";
-import { ScrollView, StyleSheet, Text, View } from "react-native";
+import { FontAwesome, MaterialCommunityIcons } from "@expo/vector-icons";
+import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
 const noInfoTexts = [
     [
@@ -43,6 +43,7 @@ type EtaInfoPanelProps = {
 };
 export function EtaInfoPanel({ time, etaInfos }: EtaInfoPanelProps) {
     const { theme } = useTheme();
+    const { settings, setSettings } = useSettings();
 
     return (
         <View style={[
@@ -51,6 +52,20 @@ export function EtaInfoPanel({ time, etaInfos }: EtaInfoPanelProps) {
                 borderColor: theme.lowContrast,
             },
         ]}>
+            <View style={[
+                etaStyles.expandButton,
+                { backgroundColor: theme.background },
+            ]}>
+                <TouchableOpacity
+                    onPress={() => setSettings({ ...settings, showClockFace: !settings.showClockFace })}
+                >
+                    <MaterialCommunityIcons
+                        name={settings.showClockFace ? "arrow-expand" : "arrow-collapse"}
+                        size={24}
+                        color={theme.halfContrast}
+                    />
+                </TouchableOpacity>
+            </View>
             <View style={[
                 panelStyles.panelContainerBackground,
                 { backgroundColor: theme.minimalContrast },
@@ -336,5 +351,13 @@ const etaStyles = StyleSheet.create({
         fontSize: FontSizes.small,
         marginHorizontal: 8,
         width: '25%',
+    },
+    expandButton: {
+        position: 'absolute',
+        top: -20,
+        right: -8,
+        zIndex: 2,
+        padding: 2,
+        borderRadius: 4,
     },
 });
