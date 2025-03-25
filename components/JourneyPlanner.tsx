@@ -166,10 +166,11 @@ export function JourneyPlanner({ fromTo, setFromTo }: JourneyPlannerProps) {
                                 if (!gpsLocation) { throw new Error('[JourneyPlanner][GPS] Location is null'); }
                                 const location: LocationNullable = getRegionFromGPS(gpsLocation.coords) || getStationFromGPS(gpsLocation.coords);
                                 console.log(`[JourneyPlanner][GPS] Location: ${location}`);
-                                if (location !== null) { setFromLocation(location); }
+                                if (!location) { throw new Error('[JourneyPlanner][GPS] Location is null'); }
+                                setFromLocation(location);
                                 ToastAndroid.show('Set start to current location', ToastAndroid.SHORT);
                             }).catch(err => {
-                                console.error(err);
+                                console.warn(err);
                                 ToastAndroid.show('Failed to get current location', ToastAndroid.SHORT);
                             }).finally(() => {
                                 setGpsQuerying(false);
