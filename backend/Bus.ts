@@ -141,7 +141,7 @@ export function getEtaInfos({ from, to }: FromTo, currentTime: Date, pastPeekMin
     /* -------------------------------------------------------------------------- */
     function scoredJourney(journey: Journey): number {
         // Lower score is better
-        const { route, fromIndex, toIndex } = journey;
+        const { fromIndex, toIndex } = journey;
 
         return toIndex - fromIndex;
     }
