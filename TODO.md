@@ -20,6 +20,7 @@
 - Shrink everything
 - Fix dropdown size not updating on showClockFace change
 - Fix errorText overflow clipping
+- Find a better way to display error messages
 ### Sustainability
 - Add a way for users to contribute data
 
