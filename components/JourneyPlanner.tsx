@@ -1,11 +1,13 @@
-import { Region, Station, stationRegions } from "@/constants/BusData";
+import { Region, starts, Station, stationRegions, termini } from "@/constants/BusData";
 import { DropdownItem, LocationPicker } from "@/components/LocationPicker";
 import { useEffect, useMemo, useState } from "react";
 import { FromTo, LocationNullable } from "@/backend/Bus";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
-import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { StyleSheet, Text, ToastAndroid, TouchableOpacity, View } from "react-native";
 import { useTheme } from "@/context/ThemeContext";
-
+import * as Location from "expo-location";
+import Animated, { cancelAnimation, Easing, useAnimatedStyle, useSharedValue, withRepeat, withTiming } from "react-native-reanimated";
+import { LocationExtra } from "@/backend/Helper";
 
 const data: DropdownItem[] = (() => {
     const entries: DropdownItem[] = [];
@@ -19,26 +21,13 @@ const data: DropdownItem[] = (() => {
     }
     return entries;
 })();
-// compile this auto?
-const termini: Station[] = [
-    Station.CHUNG_CHI_TEACHING_BUILDING_TERMINUS,
-    Station.CWC_COLLEGE_DOWNWARD_TERMINUS,
-    Station.UNIVERSITY_STATION_PIAZZA_TERMINUS,
-    Station.UNIVERSITY_STATION_TERMINUS,
-];
+
 const fromData: DropdownItem[] = data.filter(item => {
     return !termini.includes(item.value as Station);
 });
-// compile this auto?
-const starts: Station[] = [
-    Station.CHUNG_CHI_TEACHING_BUILDING,
-    Station.UNIVERSITY_STATION,
-    Station.YIA,
-];
 const toData: DropdownItem[] = data.filter(item => {
     return !starts.includes(item.value as Station);
 });
-
 
 type JourneyPlannerProps = {
     fromTo: FromTo;
@@ -74,6 +63,33 @@ export function JourneyPlanner({ fromTo, setFromTo }: JourneyPlannerProps) {
                 return null;
         }
     })();
+
+    const [gpsQuerying, setGpsQuerying] = useState<boolean>(false);
+    const gpsSpinnerRotation = useSharedValue(0);
+    useEffect(() => {
+        if (gpsQuerying) {
+            gpsSpinnerRotation.value = 0;
+            gpsSpinnerRotation.value = withRepeat(
+                withTiming(360, {
+                    duration: 1000,
+                    easing: Easing.linear
+                }),
+                -1,
+                false
+            );
+        } else {
+            cancelAnimation(gpsSpinnerRotation);
+        }
+    }, [gpsQuerying]);
+    const gpsSpinnerAnimatedStyle = useAnimatedStyle(() => {
+        return {
+            transform: [
+                { rotateZ: `${gpsSpinnerRotation.value}deg` },
+                { scale: 2 },
+            ],
+            opacity: gpsQuerying ? 1 : 0,
+        };
+    });
 
     return (
         <View style={styles.journeyPlannerContainer}>
@@ -132,6 +148,42 @@ export function JourneyPlanner({ fromTo, setFromTo }: JourneyPlannerProps) {
                     , [toLocation, toDropdownOpened]
                 )}
             </View>
+            <View style={styles.gpsButtonContainer}>
+                <Animated.View style={[styles.gpsSpinner, gpsSpinnerAnimatedStyle]}>
+                    <MaterialCommunityIcons
+                        name="loading"
+                        size={24}
+                        color={theme.primarySharp}
+                    />
+                </Animated.View>
+                <TouchableOpacity
+                    onPress={() => {
+                        if (gpsQuerying) { return; }
+                        setGpsQuerying(true);
+                        console.log('[JourneyPlanner][GPS] gps queried');
+                        getCurrentLocation()
+                            .then(gpsLocation => {
+                                console.log('[JourneyPlanner][GPS] gpsLocation:', gpsLocation);
+                                if (!gpsLocation) { throw new Error('[JourneyPlanner][GPS] Location is null'); }
+                                const location: LocationNullable = LocationExtra.getRegionFromGPS(gpsLocation.coords) || LocationExtra.getStationFromGPS(gpsLocation.coords);
+                                console.log('[JourneyPlanner][GPS] location:', location);
+                                if (location !== null) { setFromLocation(location); }
+                                ToastAndroid.show('Set start to current location', ToastAndroid.SHORT);
+                            }).catch(err => {
+                                console.error(err);
+                                ToastAndroid.show('Failed to get current location', ToastAndroid.SHORT);
+                            }).finally(() => {
+                                setGpsQuerying(false);
+                            });
+                    }}
+                >
+                    <MaterialCommunityIcons
+                        name="crosshairs-gps"
+                        size={28}
+                        color={gpsQuerying ? theme.primaryHeavy : theme.lowContrast}
+                    />
+                </TouchableOpacity>
+            </View>
             <View style={[
                 styles.swapButtonContainer,
                 { opacity: showingErrorMessage ? 0 : 1 },
@@ -151,6 +203,17 @@ export function JourneyPlanner({ fromTo, setFromTo }: JourneyPlannerProps) {
             </View>
         </View>
     );
+}
+
+async function getCurrentLocation() {
+    let { status } = await Location.requestForegroundPermissionsAsync();
+    if (status !== 'granted') {
+        console.error('Permission to access location was denied');
+        return;
+    }
+    const location = await Location.getLastKnownPositionAsync({ maxAge: 20000 });
+    if (location !== null) { return location; }
+    return await Location.getCurrentPositionAsync({ accuracy: Location.Accuracy.BestForNavigation });
 }
 
 const styles = StyleSheet.create({
@@ -173,6 +236,22 @@ const styles = StyleSheet.create({
         right: 0,
         fontWeight: 'bold',
         textAlign: 'right',
+    },
+    gpsSpinner: {
+        position: 'absolute',
+        zIndex: 1,
+        pointerEvents: 'none',
+        aspectRatio: 1,
+    },
+    gpsButtonContainer: {
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        position: 'absolute',
+        top: -10,
+        right: -28,
+        transform: [{ translateY: '-50%' }],
+        zIndex: 1,
     },
     swapButtonContainer: {
         position: 'absolute',

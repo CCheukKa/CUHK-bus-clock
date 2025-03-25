@@ -1,4 +1,5 @@
 import { BusRoute, busRouteInfos, busStationTimings, Region, Station, stationRegions } from "@/constants/BusData";
+import { MathExtra } from "./Helper";
 
 //! TODO:
 //! add support for public holidays
@@ -241,7 +242,7 @@ function getStationRouteETA(journey: Journey, currentTime: Date): EtaInfo[] | Et
 
         let stationTime = 0;
         for (let i = 1; i < stationIndex; i++) {
-            stationTime += busStationTimings[`${stations[i - 1]}>>${stations[i]}`]
+            stationTime += MathExtra.average(...busStationTimings[`${stations[i - 1]}>>${stations[i]}`])
                 ?? (() => { throw new Error(`Timing ${stations[i - 1]} -> ${stations[i]} not found!`) })();
         }
         return Math.round(stationTime);

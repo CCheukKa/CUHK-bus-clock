@@ -1,3 +1,4 @@
+import { LocationExtra } from '@/backend/Helper';
 import { BusRoute, busRouteInfos, busStationTimings, Coordinates, Station, stationCoordinates } from '@/constants/BusData';
 import fs from 'fs';
 
@@ -67,28 +68,13 @@ fs.writeFileSync('./data/station-times.json', JSON.stringify(stationTimes, null,
 
 /* -------------------------------------------------------------------------- */
 
-function haversineDistance(lat1: number, lon1: number, lat2: number, lon2: number) {
-    const R = 6371e3; // metres
-    const φ1 = lat1 * Math.PI / 180; // φ, λ in radians
-    const φ2 = lat2 * Math.PI / 180;
-    const Δφ = (lat2 - lat1) * Math.PI / 180;
-    const Δλ = (lon2 - lon1) * Math.PI / 180;
-
-    const a = Math.sin(Δφ / 2) * Math.sin(Δφ / 2) +
-        Math.cos(φ1) * Math.cos(φ2) *
-        Math.sin(Δλ / 2) * Math.sin(Δλ / 2);
-    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-
-    return R * c; // in metres
-}
-
 function getStation(route: BusRoute, latitude: number, longitude: number): Station {
     const routeInfo = busRouteInfos[route];
     if (!routeInfo) { throw new Error(`Route ${route} not found`); }
 
     const stationDistances = routeInfo.stations.map(station => {
         const stationCoords: Coordinates = stationCoordinates[station];
-        return haversineDistance(latitude, longitude, stationCoords.latitude, stationCoords.longitude);
+        return LocationExtra.haversineDistance(latitude, longitude, stationCoords.latitude, stationCoords.longitude);
     });
     const closestStation = routeInfo.stations[stationDistances.indexOf(Math.min(...stationDistances))];
     return closestStation;

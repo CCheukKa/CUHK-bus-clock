@@ -2,7 +2,6 @@
 
 ## Features
 ### Core
-- Add station matching based on GPS location
 - Add ability to search for stations?
 - Add walking/running icons
 - Add first/last bus indicator
