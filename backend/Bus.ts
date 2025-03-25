@@ -237,18 +237,18 @@ function getStationRouteETA(journey: Journey, currentTime: Date): EtaInfo[] | Et
 
     /* -------------------------------------------------------------------------- */
     function getRouteStationTimeOffsetSeconds(stationIndex: number): number {
-        if (!routeInfo) { throw new Error('Route info not found but getRouteStationTime() is called'); }
+        if (!routeInfo) { throw new Error('[Bus][getRouteStationTimeOffsetSeconds] Route info not found'); }
         const stations = routeInfo.stations;
 
         let stationTime = 0;
         for (let i = 0; i < stationIndex; i++) {
             stationTime += MathExtra.average(...busStationTimings[`${stations[i]}>>${stations[i + 1]}`])
-                ?? (() => { throw new Error(`Timing ${stations[i]} -> ${stations[i + 1]} not found!`) })();
+                ?? (() => { throw new Error(`[Bus][getRouteStationTimeOffsetSeconds] Timing ${stations[i]} -> ${stations[i + 1]} not found!`) })();
         }
         return Math.round(stationTime);
     }
     function isWithinServiceHours(time: Date): boolean {
-        if (!routeInfo) { throw new Error('Route info not found but isWithinServiceHours() is called'); }
+        if (!routeInfo) { throw new Error('[Bus][isWithinServiceHours] Route info not found'); }
 
         const yesterdayFirstService = new Date(currentTime).add({ days: -1 });
         const yesterdayLastService = new Date(currentTime).add({ days: -1 });
@@ -274,7 +274,7 @@ function getStationRouteETA(journey: Journey, currentTime: Date): EtaInfo[] | Et
 export function getRegionFromGPS(gpsLocation: Coordinates): Region | null {
     for (const [regionName, polygon] of Object.entries(regionPolygons)) {
         if (LocationExtra.pointIsInPolygon(gpsLocation, polygon)) {
-            console.log('[JourneyPlanner][getRegionFromGPS] region found:', regionName);
+            console.log(`[JourneyPlanner][getRegionFromGPS] GPS within region: ${regionName}`);
             return regionName as Region;
         }
     }
@@ -292,6 +292,6 @@ export function getStationFromGPS(gpsLocation: Coordinates): Station | null {
     const minStationDistance = Math.min(...stationDistances);
     if (minStationDistance > MAX_TOLERABLE_DISTANCE) { return null; }
     const closestStation = stations[stationDistances.indexOf(minStationDistance)];
-    console.log('[JourneyPlanner][getStationFromGPS] closestStation:', closestStation);
+    console.log(`[JourneyPlanner][getStationFromGPS] GPS closest station: ${closestStation}`);
     return closestStation;
 }

@@ -85,8 +85,7 @@ export class MathExtra {
      *   { pin: 3, value: 30 },
      *   { pin: 2, value: 20 }
      * ];
-     * const result = Helper.interpolateBetweenPins(2.5, pinValues);
-     * console.log(result); // Output will be 25
+     * const result = Helper.interpolateBetweenPins(2.5, pinValues); // 25
      * ```
      */
     public static interpolateBetweenPins(inputPin: number, pinValues: { pin: number, value: number }[]): number {
@@ -107,7 +106,7 @@ export class MathExtra {
             }
         }
 
-        throw new Error(`interpolateBetweenPins() failed to interpolate ${inputPin} between ${JSON.stringify(sortedPinValues, null, 1)}`);
+        throw new Error(`[Helper][interpolateBetweenPins] Failed to interpolate ${inputPin} between ${JSON.stringify(sortedPinValues, null, 1)}`);
     }
 
     /**
@@ -465,8 +464,7 @@ declare global {
          * 
          * @example
          * ```typescript
-         * const string = 'camelCaseString'.toTitleString();
-         * console.log(string); // Output will be 'Camel Case String'
+         * const string = 'camelCaseString'.toTitleString(); // 'Camel Case String'
          * ```
          */
         toTitleString(): string;

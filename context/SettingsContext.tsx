@@ -21,7 +21,7 @@ export const SettingsProvider = ({ children }: { children?: ReactNode }) => {
 export const useSettings = () => {
     const context = useContext(SettingsContext);
     if (!context) {
-        throw new Error('useSettings must be used within a SettingsProvider');
+        throw new Error('[SettingsContext][useSettings] useSettings() must be used within a SettingsProvider');
     }
     return context;
 };
