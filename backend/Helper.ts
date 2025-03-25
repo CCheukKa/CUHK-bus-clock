@@ -38,6 +38,8 @@ export class Colour {
     }
 }
 
+/* -------------------------------------------------------------------------- */
+
 type Circle = { x: number, y: number, r: number };
 type Rectangle = { x: number, y: number, w2: number, h2: number };
 /**
