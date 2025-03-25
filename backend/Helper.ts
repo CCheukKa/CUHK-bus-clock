@@ -220,6 +220,119 @@ export class MathExtra {
 
 /* -------------------------------------------------------------------------- */
 
+import { Coordinates, Region, regionPolygons, Station, stationCoordinates, termini } from '@/constants/BusData';
+/**
+ * A utility class for performing location-based operations such as determining
+ * if a point is within a polygon, calculating distances, and finding regions or
+ * stations based on GPS coordinates.
+ */
+export class LocationExtra {
+    /**
+     * Determines whether a given point is inside a polygon.
+     *
+     * This method uses the ray-casting algorithm to check if the point lies within the boundaries
+     * of the polygon. The polygon is defined as an array of coordinates, where each coordinate
+     * represents a vertex of the polygon.
+     *
+     * @param point - The point to check, represented as an object with `latitude` and `longitude` properties.
+     * @param polygon - An array of coordinates representing the vertices of the polygon. Each coordinate
+     *                  is an object with `latitude` and `longitude` properties.
+     * @returns `true` if the point is inside the polygon, otherwise `false`.
+     */
+    public static pointIsInPolygon(point: Coordinates, polygon: Coordinates[]): boolean {
+        if (polygon.length === 0) return false;
+
+        const { latitude: lat, longitude: lng } = point;
+        let inside = false;
+        for (let i = 0, j = polygon.length - 1; i < polygon.length; j = i++) {
+            const { latitude: latI, longitude: lngI } = polygon[i];
+            const { latitude: latJ, longitude: lngJ } = polygon[j];
+
+            const intersect = ((lngI > lng) !== (lngJ > lng)) &&
+                (lat < (latJ - latI) * (lng - lngI) / (lngJ - lngI) + latI);
+            if (intersect) { inside = !inside; }
+        }
+        return inside;
+    }
+
+    /**
+     * Determines the region corresponding to a given GPS location.
+     *
+     * This method iterates through a collection of predefined region polygons
+     * and checks if the provided GPS location falls within any of them. If a match
+     * is found, the corresponding region name is returned. If no match is found,
+     * the method returns `null`.
+     *
+     * @param gpsLocation - The GPS coordinates to check, represented as a `Coordinates` object.
+     * @returns The name of the region as a `Region` if the GPS location is within a region polygon,
+     *          or `null` if no region matches the location.
+     */
+    public static getRegionFromGPS(gpsLocation: Coordinates): Region | null {
+        for (const [regionName, polygon] of Object.entries(regionPolygons)) {
+            if (LocationExtra.pointIsInPolygon(gpsLocation, polygon)) {
+                console.log('[JourneyPlanner][getRegionFromGPS] region found:', regionName);
+                return regionName as Region;
+            }
+        }
+        return null;
+    }
+
+    /**
+     * Calculates the Haversine distance between two geographical points
+     * specified by their latitude and longitude in decimal degrees.
+     *
+     * The Haversine formula determines the great-circle distance between
+     * two points on a sphere given their longitudes and latitudes. This
+     * is useful for calculating distances between points on the Earth's surface.
+     *
+     * @param lat1 - Latitude of the first point in decimal degrees.
+     * @param lon1 - Longitude of the first point in decimal degrees.
+     * @param lat2 - Latitude of the second point in decimal degrees.
+     * @param lon2 - Longitude of the second point in decimal degrees.
+     * @returns The distance between the two points in meters.
+     */
+    public static haversineDistance(lat1: number, lon1: number, lat2: number, lon2: number) {
+        const R = 6371e3; // metres
+        const φ1 = lat1 * Math.PI / 180; // φ, λ in radians
+        const φ2 = lat2 * Math.PI / 180;
+        const Δφ = (lat2 - lat1) * Math.PI / 180;
+        const Δλ = (lon2 - lon1) * Math.PI / 180;
+
+        const a = Math.sin(Δφ / 2) * Math.sin(Δφ / 2) +
+            Math.cos(φ1) * Math.cos(φ2) *
+            Math.sin(Δλ / 2) * Math.sin(Δλ / 2);
+        const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+
+        return R * c; // in metres
+    }
+
+    /**
+     * Determines the closest station to a given GPS location, excluding termini, 
+     * based on the haversine distance. If the closest station is farther than 
+     * the maximum tolerable distance, returns `null`.
+     *
+     * @param gpsLocation - The GPS coordinates of the location to check.
+     * @returns The closest station within the tolerable distance, or `null` if no station is close enough.
+     */
+    public static getStationFromGPS(gpsLocation: Coordinates): Station | null {
+        const MAX_TOLERABLE_DISTANCE = 200; // in metres
+
+        const stations = (Object.keys(stationCoordinates) as Station[])
+            .filter(station => !termini.includes(station));
+        const stationDistances = stations.map(station => {
+            const stationCoords: Coordinates = stationCoordinates[station];
+            return LocationExtra.haversineDistance(gpsLocation.latitude, gpsLocation.longitude, stationCoords.latitude, stationCoords.longitude);
+        });
+        const minStationDistance = Math.min(...stationDistances);
+        if (minStationDistance > MAX_TOLERABLE_DISTANCE) { return null; }
+        const closestStation = stations[stationDistances.indexOf(minStationDistance)];
+        console.log('[JourneyPlanner][getStationFromGPS] closestStation:', closestStation);
+        return closestStation;
+    }
+}
+
+/* -------------------------------------------------------------------------- */
+
 import IoniconsGlyphMap from '@expo/vector-icons/build/vendor/react-native-vector-icons/glyphmaps/Ionicons.json';
 import MaterialCommunityIconsGlyphMap from '@expo/vector-icons/build/vendor/react-native-vector-icons/glyphmaps/MaterialCommunityIcons.json';
 type IoniconsGlyphs = keyof typeof IoniconsGlyphMap;
@@ -244,7 +357,6 @@ export class IconGlyphs {
      */
     static isMaterialCommunityIcons(name: string): name is MaterialCommunityIconsGlyphs { return name in MaterialCommunityIconsGlyphMap; }
 }
-
 
 /* -------------------------------------------------------------------------- */
 

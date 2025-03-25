@@ -1,4 +1,4 @@
-import { Region, Station, stationRegions } from "@/constants/BusData";
+import { Region, starts, Station, stationRegions, termini } from "@/constants/BusData";
 import { DropdownItem, LocationPicker } from "@/components/LocationPicker";
 import { useEffect, useMemo, useState } from "react";
 import { FromTo, LocationNullable } from "@/backend/Bus";
@@ -7,6 +7,7 @@ import { StyleSheet, Text, ToastAndroid, TouchableOpacity, View } from "react-na
 import { useTheme } from "@/context/ThemeContext";
 import * as Location from "expo-location";
 import Animated, { cancelAnimation, Easing, useAnimatedStyle, useSharedValue, withRepeat, withTiming } from "react-native-reanimated";
+import { LocationExtra } from "@/backend/Helper";
 
 const data: DropdownItem[] = (() => {
     const entries: DropdownItem[] = [];
@@ -20,22 +21,10 @@ const data: DropdownItem[] = (() => {
     }
     return entries;
 })();
-// compile this auto?
-const termini: Station[] = [
-    Station.CHUNG_CHI_TEACHING_BUILDING_TERMINUS,
-    Station.CWC_COLLEGE_DOWNWARD_TERMINUS,
-    Station.UNIVERSITY_STATION_PIAZZA_TERMINUS,
-    Station.UNIVERSITY_STATION_TERMINUS,
-];
+
 const fromData: DropdownItem[] = data.filter(item => {
     return !termini.includes(item.value as Station);
 });
-// compile this auto?
-const starts: Station[] = [
-    Station.CHUNG_CHI_TEACHING_BUILDING,
-    Station.UNIVERSITY_STATION,
-    Station.YIA,
-];
 const toData: DropdownItem[] = data.filter(item => {
     return !starts.includes(item.value as Station);
 });
@@ -171,12 +160,15 @@ export function JourneyPlanner({ fromTo, setFromTo }: JourneyPlannerProps) {
                     onPress={() => {
                         if (gpsQuerying) { return; }
                         setGpsQuerying(true);
-                        console.log('[JourneyPlanner][GPS] gps button pressed');
+                        console.log('[JourneyPlanner][GPS] gps queried');
                         getCurrentLocation()
-                            .then(location => {
+                            .then(gpsLocation => {
+                                console.log('[JourneyPlanner][GPS] gpsLocation:', gpsLocation);
+                                if (!gpsLocation) { throw new Error('[JourneyPlanner][GPS] Location is null'); }
+                                const location: LocationNullable = LocationExtra.getRegionFromGPS(gpsLocation.coords) || LocationExtra.getStationFromGPS(gpsLocation.coords);
                                 console.log('[JourneyPlanner][GPS] location:', location);
-                                if (location === null) { throw new Error('[JourneyPlanner][GPS] Location is null'); }
-                                ToastAndroid.show('Starting station set to current location', ToastAndroid.SHORT);
+                                if (location !== null) { setFromLocation(location); }
+                                ToastAndroid.show('Set start to current location', ToastAndroid.SHORT);
                             }).catch(err => {
                                 console.error(err);
                                 ToastAndroid.show('Failed to get current location', ToastAndroid.SHORT);
