@@ -1,5 +1,5 @@
-import { BusRoute, busRouteInfos, busStationTimings, Region, Station, stationRegions } from "@/constants/BusData";
-import { MathExtra } from "./Helper";
+import { BusRoute, busRouteInfos, busStationTimings, Coordinates, Region, regionPolygons, Station, stationCoordinates, stationRegions, termini } from "@/constants/BusData";
+import { LocationExtra, MathExtra } from "./Helper";
 
 //! TODO:
 //! add support for public holidays
@@ -268,4 +268,30 @@ function getStationRouteETA(journey: Journey, currentTime: Date): EtaInfo[] | Et
             || (time >= todayFirstService && time <= todayLastService)
             || (time >= tomorrowFirstService && time <= tomorrowLastService);
     }
+}
+
+/* -------------------------------------------------------------------------- */
+export function getRegionFromGPS(gpsLocation: Coordinates): Region | null {
+    for (const [regionName, polygon] of Object.entries(regionPolygons)) {
+        if (LocationExtra.pointIsInPolygon(gpsLocation, polygon)) {
+            console.log('[JourneyPlanner][getRegionFromGPS] region found:', regionName);
+            return regionName as Region;
+        }
+    }
+    return null;
+}
+export function getStationFromGPS(gpsLocation: Coordinates): Station | null {
+    const MAX_TOLERABLE_DISTANCE = 200; // in metres
+
+    const stations = (Object.keys(stationCoordinates) as Station[])
+        .filter(station => !termini.includes(station));
+    const stationDistances = stations.map(station => {
+        const stationCoords: Coordinates = stationCoordinates[station];
+        return LocationExtra.haversineDistance(gpsLocation.latitude, gpsLocation.longitude, stationCoords.latitude, stationCoords.longitude);
+    });
+    const minStationDistance = Math.min(...stationDistances);
+    if (minStationDistance > MAX_TOLERABLE_DISTANCE) { return null; }
+    const closestStation = stations[stationDistances.indexOf(minStationDistance)];
+    console.log('[JourneyPlanner][getStationFromGPS] closestStation:', closestStation);
+    return closestStation;
 }

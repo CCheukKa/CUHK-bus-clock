@@ -1,13 +1,12 @@
 import { Region, starts, Station, stationRegions, termini } from "@/constants/BusData";
 import { DropdownItem, LocationPicker } from "@/components/LocationPicker";
 import { useEffect, useMemo, useState } from "react";
-import { FromTo, LocationNullable } from "@/backend/Bus";
+import { FromTo, getRegionFromGPS, getStationFromGPS, LocationNullable } from "@/backend/Bus";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { StyleSheet, Text, ToastAndroid, TouchableOpacity, View } from "react-native";
 import { useTheme } from "@/context/ThemeContext";
 import * as Location from "expo-location";
 import Animated, { cancelAnimation, Easing, useAnimatedStyle, useSharedValue, withRepeat, withTiming } from "react-native-reanimated";
-import { LocationExtra } from "@/backend/Helper";
 
 const data: DropdownItem[] = (() => {
     const entries: DropdownItem[] = [];
@@ -165,7 +164,7 @@ export function JourneyPlanner({ fromTo, setFromTo }: JourneyPlannerProps) {
                             .then(gpsLocation => {
                                 console.log('[JourneyPlanner][GPS] gpsLocation:', gpsLocation);
                                 if (!gpsLocation) { throw new Error('[JourneyPlanner][GPS] Location is null'); }
-                                const location: LocationNullable = LocationExtra.getRegionFromGPS(gpsLocation.coords) || LocationExtra.getStationFromGPS(gpsLocation.coords);
+                                const location: LocationNullable = getRegionFromGPS(gpsLocation.coords) || getStationFromGPS(gpsLocation.coords);
                                 console.log('[JourneyPlanner][GPS] location:', location);
                                 if (location !== null) { setFromLocation(location); }
                                 ToastAndroid.show('Set start to current location', ToastAndroid.SHORT);

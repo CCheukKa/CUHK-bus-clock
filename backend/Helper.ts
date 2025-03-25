@@ -222,7 +222,7 @@ export class MathExtra {
 
 /* -------------------------------------------------------------------------- */
 
-import { Coordinates, Region, regionPolygons, Station, stationCoordinates, termini } from '@/constants/BusData';
+import { Coordinates } from '@/constants/BusData';
 /**
  * A utility class for performing location-based operations such as determining
  * if a point is within a polygon, calculating distances, and finding regions or
@@ -258,28 +258,6 @@ export class LocationExtra {
     }
 
     /**
-     * Determines the region corresponding to a given GPS location.
-     *
-     * This method iterates through a collection of predefined region polygons
-     * and checks if the provided GPS location falls within any of them. If a match
-     * is found, the corresponding region name is returned. If no match is found,
-     * the method returns `null`.
-     *
-     * @param gpsLocation - The GPS coordinates to check, represented as a `Coordinates` object.
-     * @returns The name of the region as a `Region` if the GPS location is within a region polygon,
-     *          or `null` if no region matches the location.
-     */
-    public static getRegionFromGPS(gpsLocation: Coordinates): Region | null {
-        for (const [regionName, polygon] of Object.entries(regionPolygons)) {
-            if (LocationExtra.pointIsInPolygon(gpsLocation, polygon)) {
-                console.log('[JourneyPlanner][getRegionFromGPS] region found:', regionName);
-                return regionName as Region;
-            }
-        }
-        return null;
-    }
-
-    /**
      * Calculates the Haversine distance between two geographical points
      * specified by their latitude and longitude in decimal degrees.
      *
@@ -306,30 +284,6 @@ export class LocationExtra {
         const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
 
         return R * c; // in metres
-    }
-
-    /**
-     * Determines the closest station to a given GPS location, excluding termini, 
-     * based on the haversine distance. If the closest station is farther than 
-     * the maximum tolerable distance, returns `null`.
-     *
-     * @param gpsLocation - The GPS coordinates of the location to check.
-     * @returns The closest station within the tolerable distance, or `null` if no station is close enough.
-     */
-    public static getStationFromGPS(gpsLocation: Coordinates): Station | null {
-        const MAX_TOLERABLE_DISTANCE = 200; // in metres
-
-        const stations = (Object.keys(stationCoordinates) as Station[])
-            .filter(station => !termini.includes(station));
-        const stationDistances = stations.map(station => {
-            const stationCoords: Coordinates = stationCoordinates[station];
-            return LocationExtra.haversineDistance(gpsLocation.latitude, gpsLocation.longitude, stationCoords.latitude, stationCoords.longitude);
-        });
-        const minStationDistance = Math.min(...stationDistances);
-        if (minStationDistance > MAX_TOLERABLE_DISTANCE) { return null; }
-        const closestStation = stations[stationDistances.indexOf(minStationDistance)];
-        console.log('[JourneyPlanner][getStationFromGPS] closestStation:', closestStation);
-        return closestStation;
     }
 }
 
