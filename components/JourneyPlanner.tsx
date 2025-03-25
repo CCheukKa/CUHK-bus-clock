@@ -47,16 +47,16 @@ export function JourneyPlanner({ fromTo, setFromTo }: JourneyPlannerProps) {
     const fromOnOpen = () => { setToDropdownOpened(false); };
     const toOnOpen = () => { setFromDropdownOpened(false); };
 
-    let showingErrorMessage = false;
+    let showingWarningMessage = false;
     const warningMessage: string | null = (() => {
-        showingErrorMessage = false;
+        showingWarningMessage = false;
 
         switch (true) {
             case fromTo.from && fromTo.to && fromTo.from === fromTo.to:
-                showingErrorMessage = true;
+                showingWarningMessage = true;
                 return 'avoid choosing same start/end';
             case fromTo.from === Region.MISCELLANEOUS || fromTo.to === Region.MISCELLANEOUS:
-                showingErrorMessage = true;
+                showingWarningMessage = true;
                 return 'choosing miscellaneous is not recommended';
             default:
                 return null;
