@@ -98,13 +98,10 @@ function Controls() {
                         }
                     case 'boolean':
                         {
-                            const [isSwitchOn, setIsSwitchOn] = useState(settings[key] as boolean);
-
                             return (<Switch
-                                value={isSwitchOn}
+                                value={settings[key] as boolean}
                                 onValueChange={() => {
-                                    setSettings({ ...settings, [key]: !isSwitchOn });
-                                    setIsSwitchOn(!isSwitchOn);
+                                    setSettings({ ...settings, [key]: !(settings[key] as boolean) });
                                 }}
                                 style={[styles.control]}
                             />);
