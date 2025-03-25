@@ -117,7 +117,10 @@ export default function ClockScreen() {
                 }
                 {
                     showResetToCurrentTimeButton
-                        ? <View style={styles.buttonContainer}>
+                        ? <View style={[
+                            styles.buttonContainer,
+                            { right: settings.showClockFace ? 0 : 30 },
+                        ]}>
                             <Pressable
                                 onPress={handleResetToCurrentTimeButtonPress}
                                 style={({ pressed }) => [
@@ -170,7 +173,6 @@ const styles = StyleSheet.create({
     },
     buttonContainer: {
         position: 'absolute',
-        right: 0,
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
