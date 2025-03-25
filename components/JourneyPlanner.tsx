@@ -1,7 +1,7 @@
 import { Region, starts, Station, stationRegions, termini } from "@/constants/BusData";
 import { DropdownItem, LocationPicker } from "@/components/LocationPicker";
 import { useEffect, useMemo, useState } from "react";
-import { FromTo, getRegionFromGPS, getStationFromGPS, LocationNullable } from "@/backend/Bus";
+import { FromTo, getRegionFromGPS, getStationFromGPS, LocationNullable } from "@/utils/Bus";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { StyleSheet, Text, ToastAndroid, TouchableOpacity, View } from "react-native";
 import { useTheme } from "@/context/ThemeContext";
@@ -105,7 +105,7 @@ export function JourneyPlanner({ fromTo, setFromTo }: JourneyPlannerProps) {
                     />, [fromLocation, fromDropdownOpened]
                 )}
                 <View style={styles.middleContainer}>
-                    <View style={{ opacity: fromDropdownOpened || showingErrorMessage ? 0 : 1 }}>
+                    <View style={{ opacity: fromDropdownOpened || showingWarningMessage ? 0 : 1 }}>
                         <MaterialCommunityIcons
                             name="arrow-down-thin"
                             size={24}
@@ -186,7 +186,7 @@ export function JourneyPlanner({ fromTo, setFromTo }: JourneyPlannerProps) {
             </View>
             <View style={[
                 styles.swapButtonContainer,
-                { opacity: showingErrorMessage ? 0 : 1 },
+                { opacity: showingWarningMessage ? 0 : 1 },
             ]}>
                 <TouchableOpacity
                     onPress={() => {

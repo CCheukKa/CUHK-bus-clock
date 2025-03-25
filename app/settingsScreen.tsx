@@ -1,4 +1,4 @@
-import { Settings, settingsSchema } from '@/backend/Settings';
+import { Settings, settingsSchema } from '@/utils/Settings';
 import { FullscreenView } from '@/components/FullscreenView';
 import { ThemedText } from '@/components/ThemedText';
 import { useSettings } from '@/context/SettingsContext';
@@ -125,10 +125,10 @@ function Controls() {
         });
 }
 
-const settingHeight = 24 + 24 + 32;
+const settingHeight = 24 + 24 + 16;
 const styles = StyleSheet.create({
     settingsScrollview: {
-        width: '90%',
+        width: '100%',
         height: '90%',
     },
     settingsScrollviewContainer: {
@@ -146,7 +146,7 @@ const styles = StyleSheet.create({
         alignItems: 'flex-start',
     },
     setting: {
-        width: '100%',
+        width: '90%',
         height: settingHeight,
         display: 'flex',
         flexDirection: 'row',

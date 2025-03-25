@@ -1,5 +1,6 @@
 import { useTheme } from '@/context/ThemeContext';
 import { Text, type TextProps, StyleSheet } from 'react-native';
+import { FontSizes, normalize } from '@/utils/Typography';
 
 export type ThemedTextProps = TextProps & {
     type?: 'default' | 'title' | 'defaultSemiBold' | 'subtitle' | 'link' | 'faded';
@@ -31,25 +32,25 @@ export function ThemedText({
 
 const styles = StyleSheet.create({
     default: {
-        fontSize: 16,
-        lineHeight: 24,
+        fontSize: FontSizes.small,
+        lineHeight: normalize(24),
     },
     defaultSemiBold: {
-        fontSize: 16,
-        lineHeight: 24,
+        fontSize: FontSizes.small,
+        lineHeight: normalize(24),
         fontWeight: '600',
     },
     faded: {
-        fontSize: 16,
-        lineHeight: 24,
+        fontSize: FontSizes.small,
+        lineHeight: normalize(12),
     },
     title: {
-        fontSize: 32,
+        fontSize: FontSizes.xxlarge,
         fontWeight: 'bold',
-        lineHeight: 32,
+        lineHeight: normalize(32),
     },
     subtitle: {
-        fontSize: 20,
+        fontSize: FontSizes.large,
         fontWeight: 'bold',
     },
 });

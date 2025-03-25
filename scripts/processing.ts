@@ -1,4 +1,4 @@
-import { LocationExtra } from '@/backend/Helper';
+import { LocationExtra } from '@/utils/Helper';
 import { BusRoute, busRouteInfos, busStationTimings, Coordinates, Station, stationCoordinates } from '@/constants/BusData';
 import fs from 'fs';
 

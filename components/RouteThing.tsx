@@ -1,7 +1,7 @@
 import { ClockThing, ClockThingType } from "@/components/ClockThing";
-import { EtaError, EtaErrorType, EtaInfo, isEtaError, NoServiceTodayError, OutOfServiceHoursError } from "@/backend/Bus";
+import { EtaError, EtaErrorType, EtaInfo, isEtaError, NoServiceTodayError, OutOfServiceHoursError } from "@/utils/Bus";
 import { busRouteInfos } from "@/constants/BusData";
-import { Colour, getCountdown, MathExtra, toTimeString } from "@/backend/Helper";
+import { Colour, getCountdown, MathExtra, toTimeString } from "@/utils/Helper";
 import { useTheme } from "@/context/ThemeContext";
 import { useMemo } from "react";
 import { useSettings } from "@/context/SettingsContext";
@@ -354,7 +354,6 @@ function handleErrors(etaError: EtaError) {
             case etaError.isType(EtaErrorType.OUT_OF_SERVICE_HOURS):
                 {
                     let msg = 'Out of service hours';
-                    // TODO: sort this but don't cus it forces etaInfoPanel to rerender for some reason???
                     for (const route of (etaError as OutOfServiceHoursError).routes) {
                         msg += `\nRoute ${route.replaceAll('_', '')} - ${toTimeString(busRouteInfos[route].firstService, true)}-${toTimeString(busRouteInfos[route].lastService, true)}`;
                     }
@@ -364,7 +363,6 @@ function handleErrors(etaError: EtaError) {
                 {
                     let msg = 'No service between these locations today';
                     const condensedRouteDays: { [route: string]: number[] } = {};
-                    // TODO: sort this but don't cus it forces etaInfoPanel to rerender for some reason???
                     for (const route of (etaError as NoServiceTodayError).routes) {
                         const routeName = route.replaceAll('_', '');
                         const routeDays = busRouteInfos[route].days;
@@ -383,7 +381,7 @@ function handleErrors(etaError: EtaError) {
     })();
     return (
         <ClockThing
-            degrees={180} distance={1.2}
+            degrees={180} distance={0.2}
             type={ClockThingType.ERROR_TEXT}
         >
             {errorMessage}

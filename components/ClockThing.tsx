@@ -1,7 +1,8 @@
 import { ReactNode } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { useTheme } from '@/context/ThemeContext';
-import { MathExtra } from '@/backend/Helper';
+import { MathExtra } from '@/utils/Helper';
+import { FontSizes } from '@/utils/Typography';
 
 export enum ClockThingType {
     CLOCK_CENTRE_DOT = 'clockCentreDot',
@@ -157,9 +158,9 @@ const mainStyles = StyleSheet.create({
         width: '100%',
         aspectRatio: 1,
         textAlign: 'center',
-        fontSize: 20,
+        fontSize: FontSizes.large,
         fontWeight: 'bold',
-        transform: [{ translateY: 1 }],
+        transform: [{ translateY: 4 }],
     },
 });
 
@@ -179,12 +180,12 @@ const auxiliaryStyles = StyleSheet.create({
         elevation: 1,
     },
     routeNumber: {
-        fontSize: 20,
+        fontSize: FontSizes.medium,
         fontWeight: 'bold',
         textAlign: 'center',
     },
     routeTiming: {
-        fontSize: 16,
+        fontSize: FontSizes.small,
         fontWeight: 'bold',
         textAlign: 'center',
         textShadowOffset: { width: 0, height: 0 },
@@ -192,7 +193,7 @@ const auxiliaryStyles = StyleSheet.create({
         textShadowRadius: 6,
     },
     errorTextContainer: {
-        height: 90,
+        height: 170,
         width: 400,
         position: 'absolute',
         top: 0,
@@ -201,8 +202,8 @@ const auxiliaryStyles = StyleSheet.create({
         alignItems: 'center',
     },
     errorText: {
-        paddingVertical: 6,
-        fontSize: 16,
+        paddingVertical: 8,
+        fontSize: FontSizes.small,
         fontWeight: 'bold',
         textAlign: 'center',
         textShadowRadius: 40,

@@ -6,7 +6,7 @@ import { ClockFace } from '@/components/ClockFace';
 import { FontAwesome6 } from '@expo/vector-icons';
 import DateTimePicker, { DateTimePickerEvent } from '@react-native-community/datetimepicker';
 import { JourneyPlanner } from '@/components/JourneyPlanner';
-import { FromTo, getEtaInfos } from '@/backend/Bus';
+import { FromTo, getEtaInfos } from '@/utils/Bus';
 import { Region } from '@/constants/BusData';
 import { EtaInfoPanel } from '@/components/EtaInfoPanel';
 import { useSettings } from '@/context/SettingsContext';
@@ -159,6 +159,7 @@ export default function ClockScreen() {
 const styles = StyleSheet.create({
     headerContainer: {
         width: '90%',
+        marginTop: 24,
     },
     dateTimeContainer: {
         display: 'flex',

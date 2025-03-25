@@ -1,7 +1,8 @@
-import { LocationNullable } from "@/backend/Bus";
+import { LocationNullable } from "@/utils/Bus";
 import { Region } from "@/constants/BusData";
 import { useSettings } from "@/context/SettingsContext";
 import { useTheme } from "@/context/ThemeContext";
+import { FontSizes } from "@/utils/Typography";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { useEffect, useRef, useState } from "react";
 import { Dimensions, StyleSheet, Text, TouchableOpacity, View } from "react-native";
@@ -177,7 +178,7 @@ export function LocationPicker({
                         {
                             color: isSelected ? theme.dimContrast : theme.highContrast,
                             fontWeight: isRegion || isSelected ? 'bold' : 'normal',
-                            fontSize: isRegion ? 16 : undefined,
+                            fontSize: isRegion ? FontSizes.small : undefined,
                         }
                     ]}>
                         {listItem.label}
@@ -218,7 +219,6 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
     },
     dropdownBar: {
-        height: '100%',
         width: '100%',
         paddingHorizontal: 16,
         borderRadius: 8,

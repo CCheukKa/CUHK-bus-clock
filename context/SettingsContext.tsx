@@ -1,5 +1,5 @@
 import { createContext, useContext, useState, ReactNode } from 'react';
-import { getDefaultSettings, Settings } from '@/backend/Settings';
+import { getDefaultSettings, Settings } from '@/utils/Settings';
 
 type SettingsContextType = {
     settings: Settings;

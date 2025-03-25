@@ -2,7 +2,7 @@ import { StyleSheet, View } from 'react-native';
 import { ClockThing, ClockThingType } from '@/components/ClockThing';
 import { ClockTicks } from '@/components/ClockTicks';
 import { RouteThings } from '@/components/RouteThing';
-import { EtaError, EtaInfo } from '@/backend/Bus';
+import { EtaError, EtaInfo, isEtaError } from '@/utils/Bus';
 import { useTheme } from '@/context/ThemeContext';
 import { ClockNumbers } from '@/components/ClockNumbers';
 import { useSettings } from '@/context/SettingsContext';
@@ -30,6 +30,7 @@ export function ClockFace({ time, etaInfos }: ClockFaceProps) {
                             backgroundColor: theme.background,
                             borderColor: settings.showPeekArcs ? theme.dimContrast : theme.highContrast,
                             shadowColor: theme.highContrast,
+                            transform: [{ translateY: isEtaError(etaInfos) ? -80 : 0 }],
                         },
                     ]}>
                         {useMemo(() =>
@@ -55,8 +56,9 @@ export function ClockFace({ time, etaInfos }: ClockFaceProps) {
 const styles = StyleSheet.create({
     clockContainer: {
         display: 'flex',
-        width: '100%',
+        width: '90%',
         aspectRatio: 1,
+        transform: [{ scale: 0.9 }],
         justifyContent: 'center',
         alignItems: 'center',
     },
@@ -65,7 +67,7 @@ const styles = StyleSheet.create({
         height: 10,
     },
     clockFaceContainer: {
-        width: 200,
+        width: 180,
         aspectRatio: 1,
     },
     clockFace: {

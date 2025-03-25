@@ -10,7 +10,8 @@ import ClockScreen from '@/app/clockScreen';
 import InfoScreen from '@/app/infoScreen';
 import SettingsScreen from '@/app/settingsScreen';
 import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
-import { IconGlyphs, IconGlyphsType } from '@/backend/Helper';
+import { IconGlyphs, IconGlyphsType } from '@/utils/Helper';
+import { ResponsiveProvider } from '@/context/ResponsiveContext';
 
 SplashScreen.preventAutoHideAsync();
 export default function RootLayout() {
@@ -47,7 +48,9 @@ export default function RootLayout() {
             >
                 <SettingsProvider>
                     <ThemeProvider>
-                        <WithinProviders />
+                        <ResponsiveProvider>
+                            <WithinProviders />
+                        </ResponsiveProvider>
                     </ThemeProvider>
                 </SettingsProvider>
             </PaperProvider>

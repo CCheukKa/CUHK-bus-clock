@@ -1,8 +1,9 @@
-import { EtaError, EtaInfo, isEtaInfoArray } from "@/backend/Bus";
-import { Colour, getCountdown, toTimeString } from "@/backend/Helper";
+import { EtaError, EtaInfo, isEtaInfoArray } from "@/utils/Bus";
+import { Colour, getCountdown, toTimeString } from "@/utils/Helper";
 import { busRouteInfos, stationAbbreviations } from "@/constants/BusData";
 import { useSettings } from "@/context/SettingsContext";
 import { useTheme } from "@/context/ThemeContext";
+import { FontSizes } from "@/utils/Typography";
 import { FontAwesome } from "@expo/vector-icons";
 import { ScrollView, StyleSheet, Text, View } from "react-native";
 
@@ -24,14 +25,14 @@ const noInfoTexts = [
         '🛸 Try somewhere else..?',
         '🦵🏻 Try walking..?',
         '🌀 Try teleporting..?',
-        '🦸🏻‍♂️ Try flying..?',
+        '🪽 Try flying..?',
         '🏊🏻 Try swimming..?',
         '⏪ Try rewinding time..?',
         '🤨 Complain to CUHK Transport Office..?',
         '🚦 Blame the traffic..?',
         '🌦️ Blame the weather..?',
         '🌌 Blame the universe..?',
-        '😴 Just wait..?',
+        '😴 Just keep waiting..?',
         '🚌 Drive it yourself..?',
     ],
 ];
@@ -198,7 +199,7 @@ function EtaTime({ time, etaTime, isPast, left, right }: { time: Date, etaTime: 
             <Text style={{
                 color: isPast ? theme.lowContrast : theme.highContrast,
                 fontWeight: 'bold',
-                fontSize: 18,
+                fontSize: FontSizes.small,
             }}>
                 {settings.bigCountdownInPanel
                     ? countdownString
@@ -208,7 +209,7 @@ function EtaTime({ time, etaTime, isPast, left, right }: { time: Date, etaTime: 
             <Text style={{
                 color: isPast ? theme.lowContrast : theme.halfContrast,
                 fontWeight: 'bold',
-                fontSize: 12,
+                fontSize: FontSizes.tiny,
             }}>
                 {settings.bigCountdownInPanel
                     ? `[ ${etaString} ]`
@@ -241,10 +242,10 @@ const panelStyles = StyleSheet.create({
         zIndex: 1,
     },
     panelTitle: {
-        fontSize: 20,
+        fontSize: FontSizes.large,
         fontWeight: 'bold',
         position: 'absolute',
-        top: -15,
+        top: -14,
         paddingHorizontal: 6,
         paddingBottom: 2,
         borderRadius: 6,
@@ -262,7 +263,7 @@ const noInfoStyles = StyleSheet.create({
         alignItems: 'center',
     },
     noInfoText: {
-        fontSize: 16,
+        fontSize: FontSizes.small,
         fontWeight: 'bold',
         textAlign: 'center',
     },
@@ -320,7 +321,7 @@ const etaStyles = StyleSheet.create({
     },
     routeNumberBubbleText: {
         fontWeight: 'bold',
-        fontSize: 16,
+        fontSize: FontSizes.small,
         textAlign: 'center',
     },
     etaTimeContainer: {
@@ -332,7 +333,7 @@ const etaStyles = StyleSheet.create({
     },
     etaInfoCardStation: {
         position: 'absolute',
-        fontSize: 16,
+        fontSize: FontSizes.small,
         marginHorizontal: 8,
         width: '25%',
     },

@@ -17,7 +17,6 @@
 - Fix location picker flickering
   - Merge into same file?
 - Add warning for past + future peek time >= 60 minutes
-- Shrink everything
 - Fix dropdown size not updating on showClockFace change
 - Fix errorText overflow clipping
 - Find a better way to display error messages

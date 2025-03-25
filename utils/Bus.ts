@@ -1,5 +1,5 @@
 import { BusRoute, busRouteInfos, busStationTimings, Coordinates, Region, regionPolygons, Station, stationCoordinates, stationRegions, termini } from "@/constants/BusData";
-import { LocationExtra, MathExtra } from "./Helper";
+import { LocationExtra, MathExtra } from "@/utils/Helper";
 
 //! TODO:
 //! add support for public holidays
@@ -127,6 +127,7 @@ export function getEtaInfos({ from, to }: FromTo, currentTime: Date, pastPeekMin
             etaErrors.filter(etaError => etaError.isType(EtaErrorType.OUT_OF_SERVICE_HOURS))
                 .map(etaError => (etaError as OutOfServiceHoursError).routes)
                 .flat()
+                .sort()
         );
     }
     if (errorlessEtaInfos.length !== 0 && withinPeekValidEtaInfos.length == 0) { return new NotWithinPeekTimeError; }
@@ -135,6 +136,7 @@ export function getEtaInfos({ from, to }: FromTo, currentTime: Date, pastPeekMin
             etaErrors.filter(etaError => etaError.isType(EtaErrorType.NO_SERVICE_TODAY))
                 .map(etaError => (etaError as NoServiceTodayError).routes)
                 .flat()
+                .sort()
         );
     }
     return new InternalApiError;
