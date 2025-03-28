@@ -118,14 +118,14 @@ export default function ClockScreen() {
                 {
                     showResetToCurrentTimeButton
                         ? <View style={[
-                            styles.buttonContainer,
+                            styles.resetToCurrentTimeButtonContainer,
                             { right: settings.showClockFace ? 0 : 30 },
                         ]}>
                             <TouchableOpacity
                                 onPress={handleResetToCurrentTimeButtonPress}
                                 activeOpacity={0.4}
                                 style={[
-                                    styles.button,
+                                    styles.resetToCurrentTimeButton,
                                     { backgroundColor: theme.primary },
                                 ]}
                             >
@@ -169,7 +169,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         gap: 8,
     },
-    buttonContainer: {
+    resetToCurrentTimeButtonContainer: {
         position: 'absolute',
         display: 'flex',
         justifyContent: 'center',
@@ -177,7 +177,7 @@ const styles = StyleSheet.create({
         height: '100%',
         aspectRatio: 1,
     },
-    button: {
+    resetToCurrentTimeButton: {
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
