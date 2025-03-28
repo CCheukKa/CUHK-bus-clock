@@ -1348,5 +1348,167 @@
             "timestamp": 1742280887798
         },
         "station": "Sir Run Run Shaw Hall"
+    },
+    {
+        "route": "1A",
+        "timeStamp": "2025-03-20T06:50:08.836Z",
+        "location": {
+            "coords": {
+                "accuracy": 100,
+                "longitude": 114.2098055,
+                "altitude": 8.800000190734863,
+                "heading": 0,
+                "latitude": 22.4141987,
+                "altitudeAccuracy": 100,
+                "speed": 0
+            },
+            "mocked": false,
+            "timestamp": 1742453409143
+        },
+        "station": "University Station"
+    },
+    {
+        "route": "1A",
+        "timeStamp": "2025-03-20T06:52:34.703Z",
+        "location": {
+            "coords": {
+                "accuracy": 231.90499877929688,
+                "longitude": 114.2102174,
+                "altitude": 34.96099853515625,
+                "heading": 284.0124816894531,
+                "latitude": 22.4179505,
+                "altitudeAccuracy": 2.837559223175049,
+                "speed": 6.1244940757751465
+            },
+            "mocked": false,
+            "timestamp": 1742453555069
+        },
+        "station": "University Sports Centre"
+    },
+    {
+        "route": "1A",
+        "timeStamp": "2025-03-20T06:55:07.603Z",
+        "location": {
+            "coords": {
+                "accuracy": 500,
+                "longitude": 114.2069138,
+                "altitude": 95.5,
+                "heading": 0,
+                "latitude": 22.4186975,
+                "altitudeAccuracy": 3.0055058002471924,
+                "speed": 0
+            },
+            "mocked": false,
+            "timestamp": 1742453707927
+        },
+        "station": "Sir Run Run Shaw Hall"
+    },
+    {
+        "route": "1A",
+        "timeStamp": "2025-03-24T08:50:10.496Z",
+        "location": {
+            "coords": {
+                "accuracy": 48.36180114746094,
+                "longitude": 114.2101043,
+                "altitude": 8.300000190734863,
+                "heading": 0,
+                "latitude": 22.4144138,
+                "altitudeAccuracy": 35.21277618408203,
+                "speed": 0
+            },
+            "mocked": false,
+            "timestamp": 1742806211137
+        },
+        "station": "University Station"
+    },
+    {
+        "route": "1A",
+        "timeStamp": "2025-03-24T08:51:57.224Z",
+        "location": {
+            "coords": {
+                "accuracy": 20.520999908447266,
+                "longitude": 114.2105056,
+                "altitude": 41.70000076293945,
+                "heading": 258.01629638671875,
+                "latitude": 22.417801,
+                "altitudeAccuracy": 17.550504684448242,
+                "speed": 1.7641798257827759
+            },
+            "mocked": false,
+            "timestamp": 1742806317505
+        },
+        "station": "University Sports Centre"
+    },
+    {
+        "route": "1A",
+        "timeStamp": "2025-03-24T08:54:00.143Z",
+        "location": {
+            "coords": {
+                "accuracy": 27.746000289916992,
+                "longitude": 114.2069667,
+                "altitude": 98.4000015258789,
+                "heading": 0,
+                "latitude": 22.4199075,
+                "altitudeAccuracy": 5.579700946807861,
+                "speed": 0
+            },
+            "mocked": false,
+            "timestamp": 1742806438608
+        },
+        "station": "Sir Run Run Shaw Hall"
+    },
+    {
+        "route": "2",
+        "timeStamp": "2025-03-28T05:45:31.130Z",
+        "location": {
+            "coords": {
+                "accuracy": 100,
+                "longitude": 114.209442,
+                "altitude": 7.599999904632568,
+                "heading": 0,
+                "latitude": 22.4138682,
+                "altitudeAccuracy": 30.91822052001953,
+                "speed": 0
+            },
+            "mocked": false,
+            "timestamp": 1743140731411
+        },
+        "station": "University Station Piazza"
+    },
+    {
+        "route": "2",
+        "timeStamp": "2025-03-28T05:48:21.638Z",
+        "location": {
+            "coords": {
+                "accuracy": 33.582000732421875,
+                "longitude": 114.2104698,
+                "altitude": 41.70000076293945,
+                "heading": 0,
+                "latitude": 22.4178433,
+                "altitudeAccuracy": 12.352038383483887,
+                "speed": 0
+            },
+            "mocked": false,
+            "timestamp": 1743140902119
+        },
+        "station": "University Sports Centre"
+    },
+    {
+        "route": "2",
+        "timeStamp": "2025-03-28T05:50:41.238Z",
+        "location": {
+            "coords": {
+                "accuracy": 4.933000087738037,
+                "longitude": 114.2070726,
+                "altitude": 41.70000076293945,
+                "heading": 269.1931457519531,
+                "latitude": 22.4198933,
+                "altitudeAccuracy": 13.738635063171387,
+                "speed": 1.2378618717193604
+            },
+            "mocked": false,
+            "timestamp": 1743141040778
+        },
+        "station": "Sir Run Run Shaw Hall"
     }
 ]

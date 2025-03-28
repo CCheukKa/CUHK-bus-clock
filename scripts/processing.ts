@@ -42,10 +42,19 @@ console.log(`Total entries: ${processedLog.length}`);
 
 fs.writeFileSync('./data/processed-bus-log.json', JSON.stringify(processedLog, null, 4));
 
+const stationTimesStats = Object.keys(busStationTimings).reduce((acc, key) => {
+    const times = busStationTimings[key];
+    const mean = times.reduce((a, b) => a + b, 0) / times.length;
+    const variance = times.reduce((a, b) => a + (b - mean) ** 2, 0) / times.length;
+    const stdDev = Math.sqrt(variance);
+    acc[key] = { mean, stdDev };
+    return acc;
+}, {} as Record<string, { mean: number, stdDev: number }>);
 const stationTimes = Object.keys(busStationTimings).reduce((acc, key) => {
     acc[key] = [];
     return acc;
 }, {} as Record<string, number[]>);
+
 for (let i = 0; i < processedLog.length - 1; i++) {
     const thisEntry = processedLog[i];
     const nextEntry = processedLog[i + 1];
@@ -55,16 +64,25 @@ for (let i = 0; i < processedLog.length - 1; i++) {
     const timeElapsed = Math.round((new Date(nextEntry.timeStamp).getTime() - new Date(thisEntry.timeStamp).getTime()) / 1000);
     if (timeElapsed > 300) { continue; }
 
-    const string = `${thisEntry.station}>>${nextEntry.station}`;
-    if (!stationTimes[string]) {
-        console.log(`Dropped route ${thisEntry.route} ${string} (${thisEntry.timeStamp} >> ${nextEntry.timeStamp})`);
+    const stationPairString = `${thisEntry.station}>>${nextEntry.station}`;
+    if (!stationTimes[stationPairString]) {
+        console.log(`Dropped route ${thisEntry.route} ${stationPairString} (${thisEntry.timeStamp} >> ${nextEntry.timeStamp})`);
         continue;
     }
 
-    stationTimes[string].push(timeElapsed);
+    if (timeElapsed <= 0) {
+        console.warn(`Negative time elapsed: ${timeElapsed} ${stationPairString} (${thisEntry.timeStamp} >> ${nextEntry.timeStamp})`);
+        continue;
+    }
+
+    if (Math.abs(timeElapsed - stationTimesStats[stationPairString].mean) > 2 * stationTimesStats[stationPairString].stdDev) {
+        console.warn(`Permitted route ${thisEntry.route}: |Time elapsed (${timeElapsed}) - Mean (${stationTimesStats[stationPairString].mean})| > 2 SDs (${Math.round(stationTimesStats[stationPairString].stdDev)}) for ${stationPairString} (${thisEntry.timeStamp} >> ${nextEntry.timeStamp})`);
+    }
+
+    stationTimes[stationPairString].push(timeElapsed);
 }
 
-fs.writeFileSync('./data/station-times.json', JSON.stringify(stationTimes, null, 4));
+fs.writeFileSync('./data/station-times.json', JSON.stringify(stationTimes, null, 0));
 
 /* -------------------------------------------------------------------------- */
 
