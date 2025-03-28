@@ -1,17 +1,29 @@
-import { Settings, settingsSchema } from '@/utils/Settings';
+import { getDefaultSettings, Settings, settingsSchema } from '@/utils/Settings';
 import { FullscreenView } from '@/components/FullscreenView';
 import { ThemedText } from '@/components/ThemedText';
-import { useSettings } from '@/context/SettingsContext';
-import { StyleSheet, View } from 'react-native';
-import { Switch, TextInput } from 'react-native-paper';
+import { SettingsProvider, useSettings } from '@/context/SettingsContext';
+import { StyleSheet, TouchableOpacity, View } from 'react-native';
+import { Dialog, Portal, Switch, TextInput } from 'react-native-paper';
 import DropDownPicker from 'react-native-dropdown-picker';
 import { useEffect, useState } from 'react';
-import { useTheme } from '@/context/ThemeContext';
+import { ThemeProvider, useTheme } from '@/context/ThemeContext';
 import { ScrollView } from 'react-native';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { Colour } from '@/utils/Helper';
 
 DropDownPicker.setTheme('DARK');
 
 export default function SettingsScreen() {
+    const { theme } = useTheme();
+    const { setSettings } = useSettings();
+    const [resetDialogVisible, setResetDialogVisible] = useState(false);
+
+    const resetSettings = () => {
+        setSettings(getDefaultSettings());
+        console.log('[SettingsScreen][resetSettings] Settings reset to default');
+        setResetDialogVisible(false);
+    };
+
     return (
         <FullscreenView>
             <ScrollView
@@ -20,8 +32,67 @@ export default function SettingsScreen() {
             >
                 <Controls />
             </ScrollView>
+            <TouchableOpacity
+                style={styles.resetToDefaultButtonContainer}
+                onPress={() => setResetDialogVisible(true)}
+            >
+                <View style={[
+                    styles.resetToDefaultButton,
+                    { backgroundColor: theme.dimContrast },
+                ]}>
+                    <MaterialCommunityIcons
+                        name='arrow-u-left-top-bold'
+                        size={28}
+                        color={theme.highContrast}
+                    />
+                    <ThemedText type='subtitle'> Reset all to default settings </ThemedText>
+                </View>
+            </TouchableOpacity>
+            <ResetSettingsDialog />
         </FullscreenView>
     );
+    /* -------------------------------------------------------------------------- */
+
+    function ResetSettingsDialog() {
+        return (
+            <Portal>
+                <SettingsProvider>
+                    <ThemeProvider>
+                        <Dialog
+                            visible={resetDialogVisible}
+                            onDismiss={() => setResetDialogVisible(false)}
+                            style={{
+                                backgroundColor: theme.minimalContrast,
+                                shadowColor: theme.halfContrast,
+                                borderColor: theme.lowContrast,
+                                borderWidth: 0.5,
+                            }}
+                            theme={{ colors: { backdrop: `${theme.background}e0` } }}
+                        >
+                            <Dialog.Title style={{ color: theme.text, fontWeight: 'bold' }}>Reset Settings</Dialog.Title>
+                            <Dialog.Content>
+                                <ThemedText>
+                                    Do you want to reset all settings to their default values? This action cannot be undone.
+                                </ThemedText>
+                            </Dialog.Content>
+                            <Dialog.Actions>
+                                <TouchableOpacity onPress={() => setResetDialogVisible(false)}>
+                                    <ThemedText style={{ padding: 8, color: theme.highContrast }}>
+                                        Cancel
+                                    </ThemedText>
+                                </TouchableOpacity>
+                                <TouchableOpacity onPress={resetSettings}>
+                                    <ThemedText style={{ padding: 8, marginLeft: 8, color: theme.primary, fontWeight: 'bold' }}>
+                                        Reset
+                                    </ThemedText>
+                                </TouchableOpacity>
+                            </Dialog.Actions>
+                        </Dialog>
+                    </ThemeProvider>
+                </SettingsProvider>
+            </Portal>
+        );
+    }
 }
 
 function Controls() {
@@ -158,6 +229,22 @@ const styles = StyleSheet.create({
     control: {
         width: '100%',
         height: settingHeight,
+        borderRadius: 8,
+    },
+    resetToDefaultButtonContainer: {
+        marginVertical: 20,
+        display: 'flex',
+        flexDirection: 'row',
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    resetToDefaultButton: {
+        // width: '90%',
+        display: 'flex',
+        flexDirection: 'row',
+        justifyContent: 'center',
+        alignItems: 'center',
+        padding: 10,
         borderRadius: 8,
     },
 });
