@@ -43,8 +43,9 @@ export function LocationPicker({
         return subscription.remove;
     }, []);
     const measurePosition = () => {
-        const screenHeight = Dimensions.get('window').height;
+        console.log('[LocationPicker][measurePosition] Measuring position');
 
+        const screenHeight = Dimensions.get('window').height;
         if (!dropdownContainerRef.current) { return; }
         dropdownContainerRef.current.measure((_x, _y, _width, height, _pageX, pageY) => {
             const bottomEdgeOfComponent = pageY + height;
@@ -52,6 +53,7 @@ export function LocationPicker({
             setDistanceFromBottom(distanceFromBottom);
         });
     };
+    useEffect(() => { measurePosition() }, [settings]);
 
     return (
         <View
