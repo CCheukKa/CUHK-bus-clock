@@ -184,7 +184,6 @@ function getStationRouteETA(journey: Journey, currentTime: Date): EtaInfo[] | Et
     if (!routeInfo.stations.find(s => s === journey.fromStation)) { return new InternalApiError; }
     const routeStartStationTimeOffsetSeconds = getRouteStationTimeOffsetSeconds(journey.fromIndex);
     const routeEndStationTimeOffsetSeconds = getRouteStationTimeOffsetSeconds(journey.toIndex);
-
     const currentHour = currentTime.getHours();
 
     const etaInfos: (EtaInfo | null)[] = [];
@@ -242,10 +241,14 @@ function getStationRouteETA(journey: Journey, currentTime: Date): EtaInfo[] | Et
         if (!routeInfo) { throw new Error('[Bus][getRouteStationTimeOffsetSeconds] Route info not found'); }
         const stations = routeInfo.stations;
 
+        const DEFAULT_STATION_TIME_OFFSET_SECONDS = 120.5;
         let stationTime = 0;
         for (let i = 0; i < stationIndex; i++) {
             stationTime += MathExtra.average(...busStationTimings[`${stations[i]}>>${stations[i + 1]}`])
-                ?? (() => { throw new Error(`[Bus][getRouteStationTimeOffsetSeconds] Timing ${stations[i]} -> ${stations[i + 1]} not found!`) })();
+                || (() => {
+                    console.warn(`[Bus][getRouteStationTimeOffsetSeconds] Timing ${stations[i]}>>${stations[i + 1]} not found!`);
+                    return DEFAULT_STATION_TIME_OFFSET_SECONDS;
+                })();
         }
         return Math.round(stationTime);
     }
