@@ -1,5 +1,5 @@
 import { useEffect, useState, useRef, useMemo, useCallback } from 'react';
-import { Pressable, StyleSheet, TouchableOpacity, View } from 'react-native';
+import { StyleSheet, TouchableOpacity, View } from 'react-native';
 
 import { ThemedText } from '@/components/ThemedText';
 import { ClockFace } from '@/components/ClockFace';
@@ -121,18 +121,16 @@ export default function ClockScreen() {
                             styles.buttonContainer,
                             { right: settings.showClockFace ? 0 : 30 },
                         ]}>
-                            <Pressable
+                            <TouchableOpacity
                                 onPress={handleResetToCurrentTimeButtonPress}
-                                style={({ pressed }) => [
-                                    {
-                                        backgroundColor: !pressed
-                                            ? theme.primary
-                                            : theme.primaryHeavy,
-                                    },
+                                activeOpacity={0.4}
+                                style={[
                                     styles.button,
-                                ]}>
+                                    { backgroundColor: theme.primary },
+                                ]}
+                            >
                                 <FontAwesome6 name="clock-rotate-left" color={theme.background} size={20} />
-                            </Pressable>
+                            </TouchableOpacity>
                         </View>
                         : null
                 }
