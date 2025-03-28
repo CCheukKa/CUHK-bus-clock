@@ -1,6 +1,6 @@
 import { useFonts } from 'expo-font';
 import { SplashScreen } from 'expo-router';
-import { StrictMode, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { SettingsProvider } from '@/context/SettingsContext';
 import { StatusBar } from 'expo-status-bar';
 import { PaperProvider } from 'react-native-paper';
@@ -31,7 +31,7 @@ export default function RootLayout() {
     /* -------------------------------------------------------------------------- */
 
     return (
-        <StrictMode>
+        <>
             <StatusBar style="auto" />
             <PaperProvider
                 settings={{
@@ -54,7 +54,7 @@ export default function RootLayout() {
                     </ThemeProvider>
                 </SettingsProvider>
             </PaperProvider>
-        </StrictMode>
+        </>
     );
 }
 
