@@ -12,6 +12,7 @@ import { EtaInfoPanel } from '@/components/EtaInfoPanel';
 import { useSettings } from '@/context/SettingsContext';
 import { FullscreenView } from '@/components/FullscreenView';
 import { useTheme } from '@/context/ThemeContext';
+import { isPublicHoliday } from '@/utils/PublicHolidayScraper';
 
 const weekDays = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 
@@ -84,7 +85,7 @@ export default function ClockScreen() {
                     <TouchableOpacity onPress={() => { showDateTimePicker('date') }}>
                         {useMemo(() =>
                             <ThemedText type="subtitle" style={dateTimeTextStyle}>
-                                {`${logicTime.toLocaleDateString('en-GB')} (${weekDays[logicTime.getDay()]})`}
+                                {`${logicTime.toLocaleDateString('en-GB')} (${isPublicHoliday(logicTime) ? 'Holiday' : weekDays[logicTime.getDay()]})`}
                             </ThemedText>
                             , [new Date(logicTime).truncateTo('day').getTime(), dateTimeTextStyle]
                         )}
