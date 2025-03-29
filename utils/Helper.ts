@@ -394,6 +394,7 @@ declare global {
         /**
          * Truncates the current date to the specified unit.
          * Truncating to 'millisecond' is a null operation.
+         * @warning This method mutates the original Date object.
          * 
          * @param unit - The unit to truncate to (e.g., 'year', 'month', 'day', etc.).
          * @returns The truncated Date object.
