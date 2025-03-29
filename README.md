@@ -2,7 +2,10 @@
 
 <div align="center">
 
-<img width="200px" style="border-radius: 20px;" src="https://github.com/CCheukKa/CUHK-bus-clock/blob/main/assets/images/icon.png?raw=true" />
+<picture>
+    <img width="200px" src="https://github.com/CCheukKa/CUHK-bus-clock/blob/main/assets/images/icon.png?raw=true" />
+</picture>
+
 
 **A simple app that finds the nearest bus stop to your location and shows the estimated time of arrival for the next bus.**  
 This is a personal project by [CCheukKa](https://github.com/CCheukKa).  
