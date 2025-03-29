@@ -25,18 +25,15 @@ export default function ClockScreen() {
     const logicTime = useMemo(() => useRealTime ? realTime : customTime, [realTime, customTime, useRealTime]);
     // 
     const frameId = useRef<number | null>(null);
-    const updateRealTime = () => {
-        setRealTime(new Date());
+    const frameSecondTime = useRef<Date>(new Date());
+    function updateRealTime() {
+        if (new Date().getTime() - new Date(frameSecondTime.current).getTime() >= 1000) {
+            frameSecondTime.current = new Date().truncateTo('second');
+            setRealTime(new Date());
+        }
         frameId.current = requestAnimationFrame(updateRealTime);
     };
-    useEffect(() => {
-        frameId.current = requestAnimationFrame(updateRealTime);
-        return () => {
-            if (frameId.current) {
-                cancelAnimationFrame(frameId.current);
-            }
-        };
-    }, []);
+    useEffect(() => { frameId.current = requestAnimationFrame(updateRealTime) }, []);
     // 
     const [dateTimePickerValue, setDateTimePickerValue] = useState(logicTime);
     type DateTimePickerMode = 'time' | 'date' | null;
@@ -151,7 +148,7 @@ export default function ClockScreen() {
                 <EtaInfoPanel
                     time={logicTime}
                     etaInfos={etaInfos}
-                />, [JSON.stringify(etaInfos), fromTo, settings]
+                />, [logicTime, etaInfos, settings]
             )}
         </FullscreenView>
     );

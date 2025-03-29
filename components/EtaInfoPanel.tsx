@@ -1,4 +1,4 @@
-import { EtaError, EtaInfo, isEtaInfoArray } from "@/utils/Bus";
+import { EtaError, EtaInfo, isEtaError, isEtaInfoArray } from "@/utils/Bus";
 import { Colour, getCountdown, toTimeString } from "@/utils/Helper";
 import { busRouteInfos, stationAbbreviations } from "@/constants/BusData";
 import { useSettings } from "@/context/SettingsContext";
@@ -6,6 +6,7 @@ import { useTheme } from "@/context/ThemeContext";
 import { FontSizes } from "@/utils/Typography";
 import { FontAwesome, MaterialCommunityIcons } from "@expo/vector-icons";
 import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { useMemo, useRef } from "react";
 
 const noInfoTexts = [
     [
@@ -45,7 +46,21 @@ export function EtaInfoPanel({ time, etaInfos }: EtaInfoPanelProps) {
     const { theme } = useTheme();
     const { settings, setSettings } = useSettings();
 
-    return (
+    const frameCount = useRef<number>(0);
+    const frameTime = useRef<Date>(new Date());
+    const frameEtaInfos = useRef<EtaInfo[] | EtaError>([]);
+
+    const timeUpdated = time.getTime() !== frameTime.current.getTime();
+    const etaInfosUpdated = JSON.stringify(etaInfos) !== JSON.stringify(frameEtaInfos.current);
+    const etaInfosIsError = isEtaError(etaInfos);
+
+    const shouldUpdate = (!etaInfosIsError && timeUpdated) || (etaInfosUpdated && !timeUpdated);
+    if (shouldUpdate) { frameCount.current++; }
+
+    frameTime.current = time;
+    frameEtaInfos.current = etaInfos;
+
+    return useMemo(() => (
         <View style={[
             panelStyles.panelContainer,
             {
@@ -114,7 +129,7 @@ export function EtaInfoPanel({ time, etaInfos }: EtaInfoPanelProps) {
                     </View>
             }
         </View>
-    );
+    ), [frameCount.current, settings]);
 }
 
 function EtaInfoCard({ time, etaInfo }: { time: Date, etaInfo: EtaInfo }) {
