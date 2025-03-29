@@ -7,4 +7,4 @@ It is not affiliated with or endorsed by The Chinese University of Hong Kong (CU
 
 ## Support Me
 
-<a href="https://www.buymeacoffee.com/CCheukKa"><img src="https://img.buymeacoffee.com/button-api/?text=Buy me a coffee&emoji=&slug=CCheukKa&button_colour=FFDD00&font_colour=000000&font_family=Bree&outline_colour=000000&coffee_colour=ffffff" /></a>
+<a href="https://www.buymeacoffee.com/CCheukKa"><img src="https://img.buymeacoffee.com/button-api/?text=Buy me a coffee&emoji=&slug=CCheukKa&button_colour=5F7FFF&font_colour=ffffff&font_family=Bree&outline_colour=000000&coffee_colour=FFDD00" /></a>
