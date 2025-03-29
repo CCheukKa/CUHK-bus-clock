@@ -8,6 +8,7 @@
 ### Backend
 - Add ability to fetch timing data from repo
 ### UI
+- Shrink bottom navigation bar
 - Dropdown styling follow colour theme
 - Group buses arriving at the same time?
 - Add more colour themes
