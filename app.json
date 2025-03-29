@@ -12,10 +12,6 @@
             "supportsTablet": true
         },
         "android": {
-            "adaptiveIcon": {
-                "foregroundImage": "./assets/images/adaptive-icon.png",
-                "backgroundColor": "#ffffff"
-            },
             "package": "wtf.CCheukKa.CUHKbusclock",
             "permissions": [
                 "ACCESS_FINE_LOCATION",
