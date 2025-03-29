@@ -180,7 +180,7 @@ function findJourney(fromStation: Station, toStation: Station): Journey[] {
 function getStationRouteETA(journey: Journey, currentTime: Date): EtaInfo[] | EtaError {
     const routeInfo = busRouteInfos[journey.route];
     if (!routeInfo) { return new InternalApiError; }
-    if (!routeInfo.days.includes(currentTime.getDay())) { return new NoServiceTodayError([journey.route]); }
+    if (!routeInfo.serviceDays.includes(currentTime.getDay())) { return new NoServiceTodayError([journey.route]); }
     if (!routeInfo.stations.find(s => s === journey.fromStation)) { return new InternalApiError; }
     const routeStartStationTimeOffsetSeconds = getRouteStationTimeOffsetSeconds(journey.fromIndex);
     const routeEndStationTimeOffsetSeconds = getRouteStationTimeOffsetSeconds(journey.toIndex);

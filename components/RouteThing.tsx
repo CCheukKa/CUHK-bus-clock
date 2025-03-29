@@ -365,7 +365,7 @@ function handleErrors(etaError: EtaError) {
                     const condensedRouteDays: { [route: string]: number[] } = {};
                     for (const route of (etaError as NoServiceTodayError).routes) {
                         const routeName = route.replaceAll('_', '');
-                        const routeDays = busRouteInfos[route].days;
+                        const routeDays = busRouteInfos[route].serviceDays;
                         condensedRouteDays[routeName] = (condensedRouteDays[routeName] ?? []).concat(routeDays);
                     }
                     for (const route in condensedRouteDays) {
