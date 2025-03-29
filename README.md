@@ -7,7 +7,7 @@
 </picture>
 
 
-**A simple app that finds the nearest bus stop to your location and shows the estimated time of arrival for the next bus.**  
+**A simple app that shows the estimated time of arrival for the next bus.**  
 This is a personal project by [CCheukKa](https://github.com/CCheukKa).  
 
 </div>
