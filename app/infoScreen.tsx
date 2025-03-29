@@ -59,7 +59,7 @@ export default function InfoScreen() {
                     <TouchableOpacity
                         style={[
                             styles.button,
-                            { backgroundColor: theme.dimContrast },
+                            { backgroundColor: theme.minimalContrast },
                         ]}
                         onPress={() => {
                             Linking.openURL('https://github.com/CCheukKa/CUHK-bus-clock');
@@ -79,7 +79,7 @@ export default function InfoScreen() {
                     <TouchableOpacity
                         style={[
                             styles.button,
-                            { backgroundColor: theme.secondarySharp },
+                            { backgroundColor: theme.dimContrast },
                         ]}
                         onPress={() => {
                             Linking.openURL('https://github.com/CCheukKa/CUHK-bus-clock/issues/new?template=bug_report.md');
@@ -97,7 +97,7 @@ export default function InfoScreen() {
                     <TouchableOpacity
                         style={[
                             styles.button,
-                            { backgroundColor: theme.tertiarySharp },
+                            { backgroundColor: theme.dimContrast },
                         ]}
                         onPress={() => {
                             Linking.openURL('https://github.com/CCheukKa/CUHK-bus-clock/issues/new?template=feature_request.md');
@@ -110,6 +110,26 @@ export default function InfoScreen() {
                         />
                         <ThemedText type='defaultSemiBold'>
                             Feature Request
+                        </ThemedText>
+                    </TouchableOpacity>
+                </View>
+                <View style={styles.buttonsRowContainer}>
+                    <TouchableOpacity
+                        style={[
+                            styles.button,
+                            { backgroundColor: theme.secondarySharp },
+                        ]}
+                        onPress={() => {
+                            Linking.openURL('https://buymeacoffee.com/ccheukka');
+                        }}
+                    >
+                        <MaterialCommunityIcons
+                            name='hand-heart'
+                            size={26}
+                            color={theme.text}
+                        />
+                        <ThemedText type='defaultSemiBold'>
+                            Support Me
                         </ThemedText>
                     </TouchableOpacity>
                 </View>
