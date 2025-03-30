@@ -250,12 +250,13 @@ function EtaTime({ time, etaTime, isPast, left, right }: { time: Date, etaTime: 
     );
 }
 
+const PANEL_CORNER_RADIUS = 10;
 const panelStyles = StyleSheet.create({
     panelContainer: {
         width: '90%',
         flex: 1,
         borderWidth: 2,
-        borderRadius: 10,
+        borderRadius: PANEL_CORNER_RADIUS,
         marginTop: 25,
         marginBottom: 15,
         borderColor: 'red',
@@ -270,6 +271,7 @@ const panelStyles = StyleSheet.create({
         height: '100%',
         width: '100%',
         zIndex: 1,
+        borderRadius: PANEL_CORNER_RADIUS,
     },
     panelTitle: {
         fontSize: FontSizes.large,
