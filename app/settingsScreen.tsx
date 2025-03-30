@@ -9,7 +9,6 @@ import { useEffect, useState } from 'react';
 import { ThemeProvider, useTheme } from '@/context/ThemeContext';
 import { ScrollView } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { Colour } from '@/utils/Helper';
 
 DropDownPicker.setTheme('DARK');
 
