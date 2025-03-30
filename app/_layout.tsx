@@ -7,7 +7,7 @@ import { PaperProvider } from 'react-native-paper';
 import { ThemeProvider, useTheme } from '@/context/ThemeContext';
 import { BottomNavigation } from 'react-native-paper';
 import ClockScreen from '@/app/clockScreen';
-import InfoScreen from '@/app/infoScreen';
+import AboutScreen from '@/app/aboutScreen';
 import SettingsScreen from '@/app/settingsScreen';
 import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
 import { IconGlyphs, IconGlyphsType } from '@/utils/Helper';
@@ -63,12 +63,12 @@ function WithinProviders() {
 
     const [index, setIndex] = useState(1);
     const [routes] = useState<{ key: string, title: string, focusedIcon: IconGlyphsType, unfocusedIcon: IconGlyphsType }[]>([
-        { key: 'info', title: 'Info', focusedIcon: 'information', unfocusedIcon: 'information-outline' },
+        { key: 'about', title: 'About', focusedIcon: 'information', unfocusedIcon: 'information-outline' },
         { key: 'clock', title: 'Clock', focusedIcon: 'clock-time-four', unfocusedIcon: 'clock-time-four-outline' },
         { key: 'settings', title: 'Settings', focusedIcon: 'settings-sharp', unfocusedIcon: 'settings-outline' },
     ]);
     const renderScene = BottomNavigation.SceneMap({
-        info: InfoScreen,
+        about: AboutScreen,
         clock: ClockScreen,
         settings: SettingsScreen,
     });
