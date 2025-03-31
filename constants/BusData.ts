@@ -484,6 +484,7 @@ export const regionPolygons: Record<Exclude<Region, Region.MISCELLANEOUS>, Coord
 
 export type BusRouteInfo = {
     canonInfoUrl: string,
+    routeName: string,
     routeColour: string,
     firstService: [number, number],
     lastService: [number, number],
@@ -494,6 +495,7 @@ export type BusRouteInfo = {
 export const busRouteInfos: Record<BusRoute, BusRouteInfo> = Object.freeze({
     [BusRoute._1A]: {
         canonInfoUrl: 'https://transport.cuhk.edu.hk/route/1a',
+        routeName: 'Main Campus',
         routeColour: '#f2e421',
         firstService: [7, 40],
         lastService: [18, 40],
@@ -510,6 +512,7 @@ export const busRouteInfos: Record<BusRoute, BusRouteInfo> = Object.freeze({
     },
     [BusRoute._1B]: {
         canonInfoUrl: 'https://transport.cuhk.edu.hk/route/1b',
+        routeName: 'Main Campus',
         routeColour: '#f2e421',
         firstService: [8, 0],
         lastService: [18, 0],
@@ -528,6 +531,7 @@ export const busRouteInfos: Record<BusRoute, BusRouteInfo> = Object.freeze({
     },
     [BusRoute._2Y]: {
         canonInfoUrl: 'https://transport.cuhk.edu.hk/route/2',
+        routeName: 'NA/UC',
         routeColour: '#ec4790',
         firstService: [7, 45],
         lastService: [18, 45],
@@ -548,6 +552,7 @@ export const busRouteInfos: Record<BusRoute, BusRouteInfo> = Object.freeze({
     },
     [BusRoute._2N]: {
         canonInfoUrl: 'https://transport.cuhk.edu.hk/route/2',
+        routeName: 'NA/UC',
         routeColour: '#ec4790',
         firstService: [7, 45],
         lastService: [18, 45],
@@ -567,6 +572,7 @@ export const busRouteInfos: Record<BusRoute, BusRouteInfo> = Object.freeze({
     },
     [BusRoute._3]: {
         canonInfoUrl: 'https://transport.cuhk.edu.hk/route/3',
+        routeName: 'Shaw',
         routeColour: '#318761',
         firstService: [9, 0],
         lastService: [18, 40],
@@ -592,6 +598,7 @@ export const busRouteInfos: Record<BusRoute, BusRouteInfo> = Object.freeze({
     },
     [BusRoute._4]: {
         canonInfoUrl: 'https://transport.cuhk.edu.hk/route/4',
+        routeName: 'Campus Circuit',
         routeColour: '#e75a24',
         firstService: [7, 30],
         lastService: [18, 50],
@@ -617,6 +624,7 @@ export const busRouteInfos: Record<BusRoute, BusRouteInfo> = Object.freeze({
     },
     [BusRoute._5D]: {
         canonInfoUrl: 'https://transport.cuhk.edu.hk/route/5',
+        routeName: 'Upward',
         routeColour: '#29a1d8',
         firstService: [9, 18],
         lastService: [17, 26],
@@ -636,6 +644,7 @@ export const busRouteInfos: Record<BusRoute, BusRouteInfo> = Object.freeze({
     },
     [BusRoute._5E]: {
         canonInfoUrl: 'https://transport.cuhk.edu.hk/route/5',
+        routeName: 'Upward',
         routeColour: '#29a1d8',
         firstService: [9, 18],
         lastService: [13, 26],
@@ -655,6 +664,7 @@ export const busRouteInfos: Record<BusRoute, BusRouteInfo> = Object.freeze({
     },
     [BusRoute._6AD]: {
         canonInfoUrl: 'https://transport.cuhk.edu.hk/route/6a',
+        routeName: 'Downward (CWC)',
         routeColour: '#7c8644',
         firstService: [9, 10],
         lastService: [17, 10],
@@ -675,6 +685,7 @@ export const busRouteInfos: Record<BusRoute, BusRouteInfo> = Object.freeze({
     },
     [BusRoute._6AE]: {
         canonInfoUrl: 'https://transport.cuhk.edu.hk/route/6a',
+        routeName: 'Downward (CWC)',
         routeColour: '#7c8644',
         firstService: [9, 10],
         lastService: [13, 10],
@@ -695,6 +706,7 @@ export const busRouteInfos: Record<BusRoute, BusRouteInfo> = Object.freeze({
     },
     [BusRoute._6B]: {
         canonInfoUrl: 'https://transport.cuhk.edu.hk/route/6b',
+        routeName: 'Downward (NA/UC)',
         routeColour: '#7c8644',
         firstService: [12, 20],
         lastService: [17, 20],
@@ -711,6 +723,7 @@ export const busRouteInfos: Record<BusRoute, BusRouteInfo> = Object.freeze({
     },
     [BusRoute._7D]: {
         canonInfoUrl: 'https://transport.cuhk.edu.hk/route/7',
+        routeName: 'Downward (Shaw)',
         routeColour: '#666666',
         firstService: [8, 18],
         lastService: [17, 50],
@@ -729,6 +742,7 @@ export const busRouteInfos: Record<BusRoute, BusRouteInfo> = Object.freeze({
     },
     [BusRoute._7E]: {
         canonInfoUrl: 'https://transport.cuhk.edu.hk/route/7',
+        routeName: 'Downward (Shaw)',
         routeColour: '#666666',
         firstService: [8, 18],
         lastService: [13, 18],
@@ -747,6 +761,7 @@ export const busRouteInfos: Record<BusRoute, BusRouteInfo> = Object.freeze({
     },
     [BusRoute._8D]: {
         canonInfoUrl: 'https://transport.cuhk.edu.hk/route/8',
+        routeName: 'Western Campus',
         routeColour: '#ffc55a',
         firstService: [7, 40],
         lastService: [18, 40],
@@ -773,6 +788,7 @@ export const busRouteInfos: Record<BusRoute, BusRouteInfo> = Object.freeze({
     },
     [BusRoute._8E]: {
         canonInfoUrl: 'https://transport.cuhk.edu.hk/route/8',
+        routeName: 'Western Campus',
         routeColour: '#ffc55a',
         firstService: [7, 40],
         lastService: [18, 40],
@@ -800,6 +816,7 @@ export const busRouteInfos: Record<BusRoute, BusRouteInfo> = Object.freeze({
     },
     [BusRoute._NY]: {
         canonInfoUrl: 'https://transport.cuhk.edu.hk/route/n',
+        routeName: 'Night Service',
         routeColour: '#7961a8',
         firstService: [19, 0],
         lastService: [23, 30],
@@ -831,6 +848,7 @@ export const busRouteInfos: Record<BusRoute, BusRouteInfo> = Object.freeze({
     },
     [BusRoute._NN]: {
         canonInfoUrl: 'https://transport.cuhk.edu.hk/route/n',
+        routeName: 'Night Service',
         routeColour: '#7961a8',
         firstService: [19, 0],
         lastService: [23, 30],
@@ -860,6 +878,7 @@ export const busRouteInfos: Record<BusRoute, BusRouteInfo> = Object.freeze({
     },
     [BusRoute._HY]: {
         canonInfoUrl: 'https://transport.cuhk.edu.hk/route/h',
+        routeName: 'Holidays Service',
         routeColour: '#453087',
         firstService: [8, 20],
         lastService: [23, 20],
@@ -892,6 +911,7 @@ export const busRouteInfos: Record<BusRoute, BusRouteInfo> = Object.freeze({
     },
     [BusRoute._HN]: {
         canonInfoUrl: 'https://transport.cuhk.edu.hk/route/h',
+        routeName: 'Holidays Service',
         routeColour: '#453087',
         firstService: [8, 20],
         lastService: [23, 20],

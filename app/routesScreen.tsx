@@ -3,6 +3,7 @@ import { ThemedText } from '@/components/common/ThemedText';
 import { BusRoute, busRouteInfos, busStationTimings, Station } from '@/constants/BusData';
 import { useTheme } from '@/context/ThemeContext';
 import { Colour, MathExtra, toTimeString } from '@/utils/Helper';
+import { FontSizes } from '@/utils/Typography';
 import { Octicons } from '@expo/vector-icons';
 import React, { useEffect, useState } from 'react';
 import { Linking, ScrollView, StyleSheet, TouchableOpacity, View } from 'react-native';
@@ -116,13 +117,31 @@ function RouteInfoCard({ route }: RouteInfoCardProps) {
             routeInfoStyles.routeInfoHeader,
             { backgroundColor: routeColour },
         ]}>
-            <View style={routeInfoStyles.routeNumberContainer}>
-                <ThemedText
-                    type='title'
-                    style={{ color: contrastColour }}
-                >
-                    {route}
-                </ThemedText>
+            <View style={routeInfoStyles.routeInfoLeftSide}>
+                <View style={routeInfoStyles.routeNumberContainer}>
+                    <ThemedText
+                        type='title'
+                        style={{ color: contrastColour }}
+                    >
+                        {route}
+                    </ThemedText>
+                </View>
+                <View style={routeInfoStyles.routeNameContainer}>
+                    {route !== null
+                        ? (
+                            <ThemedText
+                                type='defaultSemiBold'
+                                style={{
+                                    color: contrastColour,
+                                    lineHeight: FontSizes.medium
+                                }}
+                            >
+                                {busRouteInfos[route].routeName}
+                            </ThemedText>
+                        )
+                        : null
+                    }
+                </View>
             </View>
             <View></View>
         </View>
@@ -263,6 +282,13 @@ const routeInfoStyles = StyleSheet.create({
         paddingHorizontal: 16,
         alignItems: 'center',
     },
+    routeInfoLeftSide: {
+        width: 50,
+        height: '100%',
+        display: 'flex',
+        flexDirection: 'row',
+        alignItems: 'center',
+    },
     routeNumberContainer: {
         height: '100%',
         aspectRatio: 1,
@@ -271,6 +297,15 @@ const routeInfoStyles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         transform: [{ translateY: 5 }],
+    },
+    routeNameContainer: {
+        display: 'flex',
+        flexDirection: 'row',
+        justifyContent: 'flex-start',
+        alignItems: 'center',
+        opacity: 0.8,
+        transform: [{ translateY: 2 }],
+        width: 80,
     },
     stationInfosContainer: {
         width: '100%',
