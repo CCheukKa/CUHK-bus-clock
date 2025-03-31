@@ -289,6 +289,8 @@ const routeInfoStyles = StyleSheet.create({
         paddingVertical: 16,
     },
 });
+
+const DOT_DIAMETER = 14;
 const stationInfoStyles = StyleSheet.create({
     container: {
         display: 'flex',
@@ -296,7 +298,6 @@ const stationInfoStyles = StyleSheet.create({
         justifyContent: 'flex-start',
         alignItems: 'center',
         width: '90%',
-        gap: 20,
     },
     routeLineContainer: {
         display: 'flex',
@@ -304,6 +305,8 @@ const stationInfoStyles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         height: STATION_HEIGHT,
+        width: DOT_DIAMETER,
+        marginRight: 8,
     },
     line: {
         position: 'absolute',
@@ -311,7 +314,7 @@ const stationInfoStyles = StyleSheet.create({
         height: STATION_HEIGHT * 2,
     },
     dot: {
-        width: 14,
+        width: DOT_DIAMETER,
         zIndex: 1,
         aspectRatio: 1,
         borderRadius: '50%',
@@ -338,7 +341,7 @@ const stationInfoStyles = StyleSheet.create({
         width: 50,
         display: 'flex',
         flexDirection: 'row',
-        justifyContent: 'center',
+        justifyContent: 'flex-end',
         alignItems: 'center',
     },
 });
