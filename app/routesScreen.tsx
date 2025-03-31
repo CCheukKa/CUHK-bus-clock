@@ -3,8 +3,9 @@ import { ThemedText } from '@/components/common/ThemedText';
 import { BusRoute, busRouteInfos, busStationTimings, Station } from '@/constants/BusData';
 import { useTheme } from '@/context/ThemeContext';
 import { Colour, MathExtra, toTimeString } from '@/utils/Helper';
+import { Octicons } from '@expo/vector-icons';
 import React, { useEffect, useState } from 'react';
-import { ScrollView, StyleSheet, View } from 'react-native';
+import { Linking, ScrollView, StyleSheet, TouchableOpacity, View } from 'react-native';
 import DropDownPicker from 'react-native-dropdown-picker';
 
 enum StationInfoType {
@@ -161,22 +162,41 @@ export default function RoutesScreen() {
             <View style={styles.screenContainer}>
                 <RouteInfoCard route={selectedRoute} />
                 <View style={styles.controlContainer}>
-                    <DropDownPicker
-                        open={open}
-                        value={value}
-                        items={items}
-                        setOpen={setOpen}
-                        setValue={setValue}
-                        setItems={setItems}
+                    <View style={styles.dropdownPickerContainer}>
+                        <DropDownPicker
+                            open={open}
+                            value={value}
+                            items={items}
+                            setOpen={setOpen}
+                            setValue={setValue}
+                            setItems={setItems}
+                            style={[
+                                styles.dropDownPicker,
+                                {
+                                    backgroundColor: theme.minimalContrast,
+                                    borderColor: theme.dimContrast,
+                                },
+                            ]}
+                            dropDownContainerStyle={{ backgroundColor: theme.minimalContrast }}
+                        />
+                    </View>
+                    <TouchableOpacity
                         style={[
-                            styles.dropDownPicker,
-                            {
-                                backgroundColor: theme.minimalContrast,
-                                borderColor: theme.dimContrast,
-                            },
+                            styles.canonRouteInfoButton,
+                            { backgroundColor: theme.dimContrast },
                         ]}
-                        dropDownContainerStyle={{ backgroundColor: theme.minimalContrast }}
-                    />
+                        onPress={() => {
+                            if (selectedRoute === null) { return; }
+                            const url = busRouteInfos[selectedRoute].canonInfoUrl;
+                            Linking.openURL(url);
+                        }}
+                    >
+                        <Octicons
+                            name='link-external'
+                            size={24}
+                            color={theme.halfContrast}
+                        />
+                    </TouchableOpacity>
                 </View>
             </View>
         </FullscreenView>
@@ -205,12 +225,30 @@ const styles = StyleSheet.create({
     },
     controlContainer: {
         width: '100%',
+        display: 'flex',
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+    },
+    dropdownPickerContainer: {
+        width: '80%',
+        height: 50,
+        display: 'flex',
+        flexDirection: 'row',
         justifyContent: 'center',
         alignItems: 'center',
     },
     dropDownPicker: {
         borderWidth: 2,
         paddingHorizontal: 16,
+    },
+    canonRouteInfoButton: {
+        height: 50,
+        aspectRatio: 1,
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        borderRadius: 8,
     },
 });
 
