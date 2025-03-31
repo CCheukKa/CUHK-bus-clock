@@ -1,6 +1,6 @@
 import { getDefaultSettings, Settings, settingsSchema } from '@/utils/Settings';
-import { FullscreenView } from '@/components/FullscreenView';
-import { ThemedText } from '@/components/ThemedText';
+import { FullscreenView } from '@/components/common/FullscreenView';
+import { ThemedText } from '@/components/common/ThemedText';
 import { SettingsProvider, useSettings } from '@/context/SettingsContext';
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
 import { Dialog, Portal, Switch, TextInput } from 'react-native-paper';

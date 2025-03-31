@@ -1,4 +1,4 @@
-import { ClockThing, ClockThingType } from "@/components/ClockThing";
+import { ClockThing, ClockThingType } from "@/components/clockScreen/clock/ClockThing";
 
 export function ClockNumbers() {
     return Array.from({ length: 12 }, (_, i) => i + 1).map(i => {

@@ -1,13 +1,13 @@
 import { StyleSheet, View } from 'react-native';
-import { ClockThing, ClockThingType } from '@/components/ClockThing';
-import { ClockTicks } from '@/components/ClockTicks';
-import { RouteThings } from '@/components/RouteThing';
+import { ClockThing, ClockThingType } from '@/components/clockScreen/clock/ClockThing';
+import { ClockTicks } from '@/components/clockScreen/clock/ClockTicks';
+import { RouteThings } from '@/components/clockScreen/clock/RouteThing';
 import { EtaError, EtaInfo, isEtaError } from '@/utils/Bus';
 import { useTheme } from '@/context/ThemeContext';
-import { ClockNumbers } from '@/components/ClockNumbers';
+import { ClockNumbers } from '@/components/clockScreen/clock/ClockNumbers';
 import { useSettings } from '@/context/SettingsContext';
-import { ClockHands } from '@/components/ClockHands';
-import { ClockArcs } from '@/components/ClockArcs';
+import { ClockHands } from '@/components/clockScreen/clock/ClockHands';
+import { ClockArcs } from '@/components/clockScreen/clock/ClockArcs';
 import { useMemo } from 'react';
 
 type ClockFaceProps = {

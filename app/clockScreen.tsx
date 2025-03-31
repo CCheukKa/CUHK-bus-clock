@@ -1,16 +1,16 @@
 import { useEffect, useState, useRef, useMemo, useCallback } from 'react';
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
 
-import { ThemedText } from '@/components/ThemedText';
-import { ClockFace } from '@/components/ClockFace';
+import { ThemedText } from '@/components/common/ThemedText';
+import { ClockFace } from '@/components/clockScreen/clock/ClockFace';
 import { FontAwesome6 } from '@expo/vector-icons';
 import DateTimePicker, { DateTimePickerEvent } from '@react-native-community/datetimepicker';
-import { JourneyPlanner } from '@/components/JourneyPlanner';
+import { JourneyPlanner } from '@/components/clockScreen/JourneyPlanner';
 import { FromTo, getEtaInfos } from '@/utils/Bus';
 import { Region } from '@/constants/BusData';
-import { EtaInfoPanel } from '@/components/EtaInfoPanel';
+import { EtaInfoPanel } from '@/components/clockScreen/EtaInfoPanel';
 import { useSettings } from '@/context/SettingsContext';
-import { FullscreenView } from '@/components/FullscreenView';
+import { FullscreenView } from '@/components/common/FullscreenView';
 import { useTheme } from '@/context/ThemeContext';
 import { isPublicHoliday } from '@/utils/PublicHolidayScraper';
 

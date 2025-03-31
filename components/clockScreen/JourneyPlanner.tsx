@@ -1,5 +1,5 @@
 import { Region, starts, Station, stationRegions, termini } from "@/constants/BusData";
-import { DropdownItem, LocationPicker } from "@/components/LocationPicker";
+import { DropdownItem, LocationPicker } from "@/components/clockScreen/LocationPicker";
 import { useEffect, useMemo, useState } from "react";
 import { FromTo, getRegionFromGPS, getStationFromGPS, LocationNullable } from "@/utils/Bus";
 import { MaterialCommunityIcons } from "@expo/vector-icons";

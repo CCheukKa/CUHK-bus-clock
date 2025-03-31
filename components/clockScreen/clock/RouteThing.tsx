@@ -1,4 +1,4 @@
-import { ClockThing, ClockThingType } from "@/components/ClockThing";
+import { ClockThing, ClockThingType } from "@/components/clockScreen/clock/ClockThing";
 import { EtaError, EtaErrorType, EtaInfo, isEtaError, NoServiceTodayError, OutOfServiceHoursError } from "@/utils/Bus";
 import { busRouteInfos } from "@/constants/BusData";
 import { Colour, getCountdown, MathExtra, toTimeString } from "@/utils/Helper";

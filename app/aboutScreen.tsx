@@ -1,5 +1,5 @@
-import { FullscreenView } from '@/components/FullscreenView';
-import { ThemedText } from '@/components/ThemedText';
+import { FullscreenView } from '@/components/common/FullscreenView';
+import { ThemedText } from '@/components/common/ThemedText';
 import { Image, StyleSheet, TouchableOpacity, View } from 'react-native';
 import Constants from 'expo-constants';
 import { FontSizes } from '@/utils/Typography';
