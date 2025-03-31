@@ -5,12 +5,12 @@ import { MathExtra } from '@/utils/Helper';
 import { FontSizes } from '@/utils/Typography';
 
 export enum ClockThingType {
-    CLOCK_CENTRE_DOT = 'clockCentreDot',
-    CLOCK_NUMBER = 'clockNumber',
-    ROUTE_BUBBLE = 'routeNumber',
-    ROUTE_ANNOTATION_LINE = 'routeAnnotationLine',
-    ROUTE_TIMING = 'routeTiming',
-    ERROR_TEXT = 'errorText',
+    CLOCK_CENTRE_DOT,
+    CLOCK_NUMBER,
+    ROUTE_BUBBLE,
+    ROUTE_ANNOTATION_LINE,
+    ROUTE_TIMING,
+    ERROR_TEXT,
 };
 
 /**
