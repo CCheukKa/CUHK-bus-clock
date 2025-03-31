@@ -12,6 +12,7 @@ import SettingsScreen from '@/app/settingsScreen';
 import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
 import { IconGlyphs, IconGlyphsType } from '@/utils/Helper';
 import { ResponsiveProvider } from '@/context/ResponsiveContext';
+import RoutesScreen from '@/app/routesScreen';
 
 SplashScreen.preventAutoHideAsync();
 export default function RootLayout() {
@@ -61,14 +62,16 @@ export default function RootLayout() {
 function WithinProviders() {
     const { theme } = useTheme();
 
-    const [index, setIndex] = useState(1);
+    const [index, setIndex] = useState(2); //^ Default to clock screen
     const [routes] = useState<{ key: string, title: string, focusedIcon: IconGlyphsType, unfocusedIcon: IconGlyphsType }[]>([
         { key: 'about', title: 'About', focusedIcon: 'information', unfocusedIcon: 'information-outline' },
+        { key: 'routes', title: 'Routes', focusedIcon: 'routes-clock', unfocusedIcon: 'routes' },
         { key: 'clock', title: 'Clock', focusedIcon: 'clock-time-four', unfocusedIcon: 'clock-time-four-outline' },
         { key: 'settings', title: 'Settings', focusedIcon: 'settings-sharp', unfocusedIcon: 'settings-outline' },
     ]);
     const renderScene = BottomNavigation.SceneMap({
         about: AboutScreen,
+        routes: RoutesScreen,
         clock: ClockScreen,
         settings: SettingsScreen,
     });
