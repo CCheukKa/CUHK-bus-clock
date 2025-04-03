@@ -9,11 +9,11 @@ import React, { useEffect, useState } from 'react';
 import { Linking, ScrollView, StyleSheet, TouchableOpacity, View } from 'react-native';
 import DropDownPicker from 'react-native-dropdown-picker';
 
-enum StationInfoType {
-    TOP,
-    MIDDLE,
-    BOTTOM,
-};
+const enum StationInfoType {
+    TOP = 'top',
+    MIDDLE = 'middle',
+    BOTTOM = 'bottom',
+}
 type StationInfoProps = {
     type: StationInfoType
     station: Station

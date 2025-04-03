@@ -1,10 +1,10 @@
 import { useTheme } from '@/context/ThemeContext';
 import { StyleSheet, View } from 'react-native';
 
-export enum ClockTickType {
-    MAJOR,
-    MINOR,
-};
+export const enum ClockTickType {
+    MAJOR = 'major',
+    MINOR = 'minor',
+}
 
 type ClockTickProps = {
     type: ClockTickType;

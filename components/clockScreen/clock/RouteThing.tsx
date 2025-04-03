@@ -6,7 +6,7 @@ import { useTheme } from "@/context/ThemeContext";
 import { useMemo } from "react";
 import { useSettings } from "@/context/SettingsContext";
 
-const weekDays = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+const weekDays = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'] as const;
 
 type RouteBubbleInfo = {
     bubbleScale: number;

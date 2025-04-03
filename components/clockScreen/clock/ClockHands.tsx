@@ -2,9 +2,9 @@
 import { useTheme } from '@/context/ThemeContext';
 import { StyleSheet, View } from 'react-native';
 
-enum ClockHandType {
-    HOUR,
-    MINUTE,
+const enum ClockHandType {
+    HOUR = 'hour',
+    MINUTE = 'minute',
 }
 type ClockHandProps = {
     type: ClockHandType;

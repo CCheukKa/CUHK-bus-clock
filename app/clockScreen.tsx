@@ -14,7 +14,7 @@ import { FullscreenView } from '@/components/common/FullscreenView';
 import { useTheme } from '@/context/ThemeContext';
 import { isPublicHoliday } from '@/utils/PublicHolidayScraper';
 
-const weekDays = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+const weekDays = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'] as const;
 
 export default function ClockScreen() {
     const { settings } = useSettings();

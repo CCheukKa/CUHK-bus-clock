@@ -1,7 +1,7 @@
-export enum ThemeName {
+export const enum ThemeName {
     DARK = 'dark',
     LIGHT = 'light',
-};
+}
 
 export type Theme = {
     black: string;
@@ -71,4 +71,4 @@ export const Themes: Record<ThemeName, Theme> = {
         tertiaryHeavy: 'seagreen',
         tertiarySharp: 'forestgreen',
     },
-};
+} as const;

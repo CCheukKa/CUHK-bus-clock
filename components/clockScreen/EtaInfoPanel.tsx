@@ -36,7 +36,7 @@ const noInfoTexts = [
         '😴 Just keep waiting..?',
         '🚌 Drive it yourself..?',
     ],
-];
+] as const;
 
 type EtaInfoPanelProps = {
     time: Date;

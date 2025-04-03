@@ -1,26 +1,27 @@
-export enum BusRoute {
-    _1A = '1A',
-    _1B = '1B',
-    _2Y = '2+', // stops at sir run run shaw hall
-    _2N = '2', // doesn't stop at sir run run shaw hall
-    _3 = '3',
-    _4 = '4',
-    _5D = '5', // weekdays
-    _5E = '5_', // weekends
-    _6AD = '6A', // weekdays
-    _6AE = '6A_', // weekends
-    _6B = '6B',
-    _7D = '7', // weekdays
-    _7E = '7_', // weekends
-    _8D = '8', // weekdays
-    _8E = '8_', // weekends
-    _NY = 'N+', // stops at pg hall 1
-    _NN = 'N', // doesn't stop at pg hall 1
-    _HY = 'H+', // stops at pg hall 1 & area 39 (upwards)
-    _HN = 'H', // doesn't stop at pg hall 1 & area 39 (upwards)
-};
+export const BusRoute = {
+    _1A: '1A',
+    _1B: '1B',
+    _2Y: '2+', // stops at sir run run shaw hall
+    _2N: '2', // doesn't stop at sir run run shaw hall
+    _3: '3',
+    _4: '4',
+    _5D: '5', // weekdays
+    _5E: '5_', // weekends
+    _6AD: '6A', // weekdays
+    _6AE: '6A_', // weekends
+    _6B: '6B',
+    _7D: '7', // weekdays
+    _7E: '7_', // weekends
+    _8D: '8', // weekdays
+    _8E: '8_', // weekends
+    _NY: 'N+', // stops at pg hall 1
+    _NN: 'N', // doesn't stop at pg hall 1
+    _HY: 'H+', // stops at pg hall 1 & area 39 (upwards)
+    _HN: 'H', // doesn't stop at pg hall 1 & area 39 (upwards)
+} as const;
+export type BusRoute = typeof BusRoute[keyof typeof BusRoute];
 
-export enum Station {
+export const enum Station {
     AREA_39_DOWNWARD = 'Area 39 (Downward)',
     AREA_39_UPWARD = 'Area 39 (Upward)',
     CAMPUS_CIRCUIT_EAST_DOWNWARD = 'Campus Circuit East (Downward)',
@@ -55,8 +56,8 @@ export enum Station {
     WU_YEE_SUN_COLLEGE_DOWNWARD = 'Wu Yee Sun College (Downward)',
     WU_YEE_SUN_COLLEGE_UPWARD = 'Wu Yee Sun College (Upward)',
     YIA = 'YIA',
-};
-export const stationAbbreviations: Record<Station, string> = Object.freeze({
+}
+export const stationAbbreviations: Record<Station, string> = {
     [Station.AREA_39_DOWNWARD]: 'Area 39 (Down)',
     [Station.AREA_39_UPWARD]: 'Area 39 (Up)',
     [Station.CAMPUS_CIRCUIT_EAST_DOWNWARD]: 'Circuit East (Down)',
@@ -91,22 +92,22 @@ export const stationAbbreviations: Record<Station, string> = Object.freeze({
     [Station.WU_YEE_SUN_COLLEGE_DOWNWARD]: 'WYS College (Down)',
     [Station.WU_YEE_SUN_COLLEGE_UPWARD]: 'WYS College (Up)',
     [Station.YIA]: 'YIA',
-});
+} as const;
 // compile this auto?
 export const starts: Station[] = [
     Station.CHUNG_CHI_TEACHING_BUILDING,
     Station.UNIVERSITY_STATION,
     Station.YIA,
-];
+] as const;
 // compile this auto?
 export const termini: Station[] = [
     Station.CHUNG_CHI_TEACHING_BUILDING_TERMINUS,
     Station.CWC_COLLEGE_DOWNWARD_TERMINUS,
     Station.UNIVERSITY_STATION_PIAZZA_TERMINUS,
     Station.UNIVERSITY_STATION_TERMINUS,
-];
+] as const;
 
-export enum Region {
+export const enum Region {
     AREA_39 = 'Area 39',
     CAMPUS_EAST = 'Campus East',
     CHUNG_CHI_COLLEGE_AREA = 'Chung Chi College Area',
@@ -120,9 +121,9 @@ export enum Region {
     UNITED_COLLEGE_AREA = 'United College Area',
     WYS_COLLEGE_AREA = 'Wu Yee Sun College Area',
     MISCELLANEOUS = 'Miscellaneous',
-};
+}
 
-export const stationRegions: Record<Region, Station[]> = Object.freeze({
+export const stationRegions: Record<Region, Station[]> = {
     [Region.AREA_39]: [
         Station.AREA_39_DOWNWARD,
         Station.AREA_39_UPWARD,
@@ -183,13 +184,13 @@ export const stationRegions: Record<Region, Station[]> = Object.freeze({
         Station.RESIDENCE_15,
         Station.UNTIED_COLLEGE_STAFF_RESIDENCE,
     ],
-});
+} as const;
 
 export type Coordinates = {
     latitude: number,
     longitude: number,
 };
-export const stationCoordinates: Record<Station, Coordinates> = Object.freeze({
+export const stationCoordinates: Record<Station, Coordinates> = {
     [Station.AREA_39_DOWNWARD]: { latitude: 22.42762, longitude: 114.20436 }, //^ ???
     [Station.AREA_39_UPWARD]: { latitude: 22.42762, longitude: 114.20436 }, //^ ???
     [Station.CAMPUS_CIRCUIT_EAST_DOWNWARD]: { latitude: 22.41906, longitude: 114.21298 },
@@ -224,8 +225,8 @@ export const stationCoordinates: Record<Station, Coordinates> = Object.freeze({
     [Station.WU_YEE_SUN_COLLEGE_DOWNWARD]: { latitude: 22.42109, longitude: 114.20353 },
     [Station.WU_YEE_SUN_COLLEGE_UPWARD]: { latitude: 22.42121, longitude: 114.20345 },
     [Station.YIA]: { latitude: 22.41599, longitude: 114.21083 },
-});
-export const regionPolygons: Record<Exclude<Region, Region.MISCELLANEOUS>, Coordinates[]> = Object.freeze({
+} as const;
+export const regionPolygons: Record<Exclude<Region, Region.MISCELLANEOUS>, Coordinates[]> = {
     [Region.AREA_39]: [
         { latitude: 22.42727, longitude: 114.20296 },
         { latitude: 22.42706, longitude: 114.20378 },
@@ -480,7 +481,7 @@ export const regionPolygons: Record<Exclude<Region, Region.MISCELLANEOUS>, Coord
         { latitude: 22.42155, longitude: 114.20210 },
         { latitude: 22.42115, longitude: 114.20357 },
     ],
-});
+} as const;
 
 export type BusRouteInfo = {
     canonInfoUrl: string,
@@ -492,7 +493,7 @@ export type BusRouteInfo = {
     minuteMarks: number[],
     stations: Station[],
 };
-export const busRouteInfos: Record<BusRoute, BusRouteInfo> = Object.freeze({
+export const busRouteInfos: Record<BusRoute, BusRouteInfo> = {
     [BusRoute._1A]: {
         canonInfoUrl: 'https://transport.cuhk.edu.hk/route/1a',
         routeName: 'Main Campus',
@@ -939,9 +940,9 @@ export const busRouteInfos: Record<BusRoute, BusRouteInfo> = Object.freeze({
             Station.UNIVERSITY_STATION_TERMINUS,
         ],
     },
-});
+} as const;
 
-export const busStationTimings: Record<string, number[]> = Object.freeze({
+export const busStationTimings: Record<string, number[]> = {
     [`${Station.AREA_39_DOWNWARD}>>${Station.CAMPUS_CIRCUIT_NORTH}`]: [138],
     [`${Station.AREA_39_UPWARD}>>${Station.CWC_COLLEGE_DOWNWARD}`]: [],
     [`${Station.CAMPUS_CIRCUIT_EAST_UPWARD}>>${Station.CWC_COLLEGE_UPWARD}`]: [],
@@ -996,4 +997,4 @@ export const busStationTimings: Record<string, number[]> = Object.freeze({
     [`${Station.WU_YEE_SUN_COLLEGE_UPWARD}>>${Station.SHAW_COLLEGE_UPWARD}`]: [94, 95, 92],
     [`${Station.YIA}>>${Station.CAMPUS_CIRCUIT_EAST_UPWARD}`]: [],
     [`${Station.YIA}>>${Station.UNIVERSITY_SPORTS_CENTRE}`]: [],
-});
+} as const;
