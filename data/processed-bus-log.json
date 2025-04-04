@@ -1510,5 +1510,293 @@
             "timestamp": 1743141040778
         },
         "station": "Sir Run Run Shaw Hall"
+    },
+    {
+        "route": "1A",
+        "timeStamp": "2025-04-02T05:25:33.823Z",
+        "location": {
+            "coords": {
+                "accuracy": 70.55599975585938,
+                "longitude": 114.208546,
+                "altitude": 5.599999904632568,
+                "heading": 0,
+                "latitude": 22.4142271,
+                "altitudeAccuracy": 17.457382202148438,
+                "speed": 0
+            },
+            "mocked": false,
+            "timestamp": 1743571534208
+        },
+        "station": "University Station"
+    },
+    {
+        "route": "1A",
+        "timeStamp": "2025-04-02T05:27:36.344Z",
+        "location": {
+            "coords": {
+                "accuracy": 57.14099884033203,
+                "longitude": 114.2102772,
+                "altitude": 38.82550048828125,
+                "heading": 285.30670166015625,
+                "latitude": 22.4178926,
+                "altitudeAccuracy": 2.6592564582824707,
+                "speed": 5.3118743896484375
+            },
+            "mocked": false,
+            "timestamp": 1743571656676
+        },
+        "station": "University Sports Centre"
+    },
+    {
+        "route": "1A",
+        "timeStamp": "2025-04-02T05:30:05.162Z",
+        "location": {
+            "coords": {
+                "accuracy": 497.6789855957031,
+                "longitude": 114.2084627,
+                "altitude": 41.70000076293945,
+                "heading": 0,
+                "latitude": 22.4199072,
+                "altitudeAccuracy": 23.513471603393555,
+                "speed": 0
+            },
+            "mocked": false,
+            "timestamp": 1743571805525
+        },
+        "station": "Sir Run Run Shaw Hall"
+    },
+    {
+        "route": "2",
+        "timeStamp": "2025-04-03T02:40:18.880Z",
+        "location": {
+            "coords": {
+                "accuracy": 35.55799865722656,
+                "longitude": 114.2097952,
+                "altitude": 4.099999904632568,
+                "heading": 0,
+                "latitude": 22.4136765,
+                "altitudeAccuracy": 4.352652549743652,
+                "speed": 0
+            },
+            "mocked": false,
+            "timestamp": 1743648019387
+        },
+        "station": "University Station Piazza"
+    },
+    {
+        "route": "2",
+        "timeStamp": "2025-04-03T02:43:14.756Z",
+        "location": {
+            "coords": {
+                "accuracy": 23.264999389648438,
+                "longitude": 114.2105117,
+                "altitude": 41.70000076293945,
+                "heading": 0,
+                "latitude": 22.4178011,
+                "altitudeAccuracy": 1,
+                "speed": 0
+            },
+            "mocked": false,
+            "timestamp": 1743648195420
+        },
+        "station": "University Sports Centre"
+    },
+    {
+        "route": "2",
+        "timeStamp": "2025-04-03T02:45:26.911Z",
+        "location": {
+            "coords": {
+                "accuracy": 23.0310001373291,
+                "longitude": 114.2070699,
+                "altitude": 98.5,
+                "heading": 0,
+                "latitude": 22.4198799,
+                "altitudeAccuracy": 1.342223048210144,
+                "speed": 0
+            },
+            "mocked": false,
+            "timestamp": 1743648325904
+        },
+        "station": "Sir Run Run Shaw Hall"
+    },
+    {
+        "route": "2",
+        "timeStamp": "2025-04-03T02:46:30.302Z",
+        "location": {
+            "coords": {
+                "accuracy": 16.72100067138672,
+                "longitude": 114.2030398,
+                "altitude": 120.9000015258789,
+                "heading": 0,
+                "latitude": 22.4199074,
+                "altitudeAccuracy": 3.723271131515503,
+                "speed": 0
+            },
+            "mocked": false,
+            "timestamp": 1743648390478
+        },
+        "station": "Fung King Hey Building"
+    },
+    {
+        "route": "2",
+        "timeStamp": "2025-04-03T02:48:01.693Z",
+        "location": {
+            "coords": {
+                "accuracy": 500,
+                "longitude": 114.2061707,
+                "altitude": 120.9000015258789,
+                "heading": 0,
+                "latitude": 22.4195127,
+                "altitudeAccuracy": 3.723271131515503,
+                "speed": 0
+            },
+            "mocked": false,
+            "timestamp": 1743648481829
+        },
+        "station": "United College (Upward)"
+    },
+    {
+        "route": "2",
+        "timeStamp": "2025-04-03T02:49:17.446Z",
+        "location": {
+            "coords": {
+                "accuracy": 52.400001525878906,
+                "longitude": 114.2075691,
+                "altitude": 149.8000030517578,
+                "heading": 266.70135498046875,
+                "latitude": 22.4214466,
+                "altitudeAccuracy": 9.064922332763672,
+                "speed": 0.5440886616706848
+            },
+            "mocked": false,
+            "timestamp": 1743648562795
+        },
+        "station": "New Asia College"
+    },
+    {
+        "route": "2",
+        "timeStamp": "2025-04-03T02:50:31.151Z",
+        "location": {
+            "coords": {
+                "accuracy": 33.810001373291016,
+                "longitude": 114.2051341,
+                "altitude": 138.20001220703125,
+                "heading": 0,
+                "latitude": 22.4204468,
+                "altitudeAccuracy": 8.318476676940918,
+                "speed": 0
+            },
+            "mocked": false,
+            "timestamp": 1743648631411
+        },
+        "station": "United College (Downward)"
+    },
+    {
+        "route": "2",
+        "timeStamp": "2025-04-03T02:52:24.533Z",
+        "location": {
+            "coords": {
+                "accuracy": 40.39400100708008,
+                "longitude": 114.2045996,
+                "altitude": 100.0999984741211,
+                "heading": 0,
+                "latitude": 22.4191999,
+                "altitudeAccuracy": 21.719797134399414,
+                "speed": 0
+            },
+            "mocked": false,
+            "timestamp": 1743648744878
+        },
+        "station": "University Admin Building"
+    },
+    {
+        "route": "2",
+        "timeStamp": "2025-04-03T02:53:47.633Z",
+        "location": {
+            "coords": {
+                "accuracy": 342.2860107421875,
+                "longitude": 114.2101807,
+                "altitude": 48.20000076293945,
+                "heading": 113.97685241699219,
+                "latitude": 22.4179276,
+                "altitudeAccuracy": 2.8118228912353516,
+                "speed": 1.8956446647644043
+            },
+            "mocked": false,
+            "timestamp": 1743648832755
+        },
+        "station": "S.H. Ho College"
+    },
+    {
+        "route": "2",
+        "timeStamp": "2025-04-03T02:55:33.280Z",
+        "location": {
+            "coords": {
+                "accuracy": 55.1879997253418,
+                "longitude": 114.2108301,
+                "altitude": 24.76580810546875,
+                "heading": 0,
+                "latitude": 22.4155371,
+                "altitudeAccuracy": 2.8780786991119385,
+                "speed": 0
+            },
+            "mocked": false,
+            "timestamp": 1743648933638
+        },
+        "station": "University Station (Terminus)"
+    },
+    {
+        "route": "3",
+        "timeStamp": "2025-04-03T03:00:13.338Z",
+        "location": {
+            "coords": {
+                "accuracy": 25.868999481201172,
+                "longitude": 114.2108348,
+                "altitude": 15.800000190734863,
+                "heading": 0,
+                "latitude": 22.416032,
+                "altitudeAccuracy": 8.102275848388672,
+                "speed": 0
+            },
+            "mocked": false,
+            "timestamp": 1743649213796
+        },
+        "station": "YIA"
+    },
+    {
+        "route": "3",
+        "timeStamp": "2025-04-03T03:01:26.222Z",
+        "location": {
+            "coords": {
+                "accuracy": 17.878000259399414,
+                "longitude": 114.21052,
+                "altitude": 41.79999923706055,
+                "heading": 253.4907684326172,
+                "latitude": 22.4178062,
+                "altitudeAccuracy": 3.646682024002075,
+                "speed": 0.557823657989502
+            },
+            "mocked": false,
+            "timestamp": 1743649288935
+        },
+        "station": "University Sports Centre"
+    },
+    {
+        "route": "3",
+        "timeStamp": "2025-04-03T03:03:24.008Z",
+        "location": {
+            "coords": {
+                "accuracy": 33.22800064086914,
+                "longitude": 114.207379,
+                "altitude": 98.4000015258789,
+                "heading": 0,
+                "latitude": 22.4197337,
+                "altitudeAccuracy": 1.5499261617660522,
+                "speed": 0
+            },
+            "mocked": false,
+            "timestamp": 1743649404249
+        },
+        "station": "Science Centre"
     }
 ]
