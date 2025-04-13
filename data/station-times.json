@@ -85,7 +85,10 @@
     "Sir Run Run Shaw Hall>>New Asia Circle": [
         91
     ],
-    "Sir Run Run Shaw Hall>>University Admin Building": [],
+    "Sir Run Run Shaw Hall>>University Admin Building": [
+        90,
+        157
+    ],
     "United College (Downward)>>University Admin Building": [
         81,
         113
@@ -107,7 +110,10 @@
         103,
         83
     ],
-    "University Sports Centre>>Fung King Hey Building": [],
+    "University Sports Centre>>Fung King Hey Building": [
+        168,
+        205
+    ],
     "University Sports Centre>>Science Centre": [
         116,
         118
@@ -124,7 +130,8 @@
         123,
         140,
         149,
-        132
+        132,
+        109
     ],
     "University Station>>Postgraduate Hall 1": [
         124
@@ -138,13 +145,16 @@
         126,
         146,
         107,
-        123
+        123,
+        131
     ],
     "University Station Piazza>>Chung Chi Teaching Building (Terminus)": [],
     "University Station Piazza>>University Sports Centre": [
         157,
         171,
-        176
+        176,
+        150,
+        162
     ],
     "Wu Yee Sun College (Downward)>>New Asia College": [
         84
