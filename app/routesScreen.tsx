@@ -4,10 +4,11 @@ import { BusRoute, busRouteInfos, busStationTimings, Station } from '@/constants
 import { useTheme } from '@/context/ThemeContext';
 import { Colour, MathExtra, toTimeString } from '@/utils/Helper';
 import { FontSizes } from '@/utils/Typography';
-import { Octicons } from '@expo/vector-icons';
+import { MaterialCommunityIcons, Octicons } from '@expo/vector-icons';
 import React, { useEffect, useState } from 'react';
 import { Linking, ScrollView, StyleSheet, TouchableOpacity, View } from 'react-native';
 import DropDownPicker from 'react-native-dropdown-picker';
+import { weekDays } from '@/constants/UI';
 
 const enum StationInfoType {
     TOP = 'top',
@@ -117,18 +118,19 @@ function RouteInfoCard({ route }: RouteInfoCardProps) {
             routeInfoStyles.routeInfoHeader,
             { backgroundColor: routeColour },
         ]}>
-            <View style={routeInfoStyles.routeInfoLeftSide}>
-                <View style={routeInfoStyles.routeNumberContainer}>
-                    <ThemedText
-                        type='title'
-                        style={{ color: contrastColour }}
-                    >
-                        {route}
-                    </ThemedText>
-                </View>
-                <View style={routeInfoStyles.routeNameContainer}>
-                    {route !== null
-                        ? (
+            {route === null
+                ? null
+                : (<>
+                    <View style={routeInfoStyles.routeInfoLeftSide}>
+                        <View style={routeInfoStyles.routeNumberContainer}>
+                            <ThemedText
+                                type='title'
+                                style={{ color: contrastColour }}
+                            >
+                                {route}
+                            </ThemedText>
+                        </View>
+                        <View style={routeInfoStyles.routeNameContainer}>
                             <ThemedText
                                 type='defaultSemiBold'
                                 style={{
@@ -138,12 +140,65 @@ function RouteInfoCard({ route }: RouteInfoCardProps) {
                             >
                                 {busRouteInfos[route].routeName}
                             </ThemedText>
-                        )
-                        : null
-                    }
-                </View>
-            </View>
-            <View></View>
+                        </View>
+                    </View>
+                    <View style={routeInfoStyles.routeInfoRightSide}>
+                        <View style={routeInfoStyles.routeInfoRightSideContent}>
+                            <MaterialCommunityIcons
+                                name='timetable'
+                                size={24}
+                                color={contrastColour}
+                            />
+                            <ThemedText
+                                type='defaultSemiBold'
+                                style={{ color: contrastColour }}
+                            >
+                                {busRouteInfos[route].minuteMarks
+                                    .map(mark => `:${mark.toString().padStart(2, '0')}`)
+                                    .join(', ')
+                                }
+                            </ThemedText>
+                        </View>
+                        <View style={routeInfoStyles.routeInfoRightSideContent}>
+                            <MaterialCommunityIcons
+                                name='weather-sunset'
+                                size={24}
+                                color={contrastColour}
+                            />
+                            <ThemedText
+                                type='defaultSemiBold'
+                                style={{ color: contrastColour }}
+                            >
+                                {`${toTimeString(busRouteInfos[route].firstService, true)} - ${toTimeString(busRouteInfos[route].lastService, true)}`}
+                            </ThemedText>
+                        </View>
+                        <View style={routeInfoStyles.routeInfoRightSideContent}>
+                            <MaterialCommunityIcons
+                                name='calendar-week'
+                                size={24}
+                                color={contrastColour}
+                            />
+                            <View style={routeInfoStyles.weekDaysContainer}>
+                                {weekDays.map((day, index) => {
+                                    const isAvailable = busRouteInfos[route].serviceDays.includes(index);
+                                    return (
+                                        <ThemedText
+                                            key={index}
+                                            type='defaultSemiBold'
+                                            style={{
+                                                color: contrastColour,
+                                                opacity: isAvailable ? 1 : 0.2,
+                                            }}
+                                        >
+                                            {day[0]}
+                                        </ThemedText>
+                                    );
+                                })}
+                            </View>
+                        </View>
+                    </View>
+                </>)
+            }
         </View>
         <View style={[
             routeInfoStyles.stationInfosContainer,
@@ -271,7 +326,7 @@ const styles = StyleSheet.create({
     },
 });
 
-const ROUTE_INFO_HEADER_HEIGHT = 60;
+const ROUTE_INFO_HEADER_HEIGHT = 90;
 const routeInfoStyles = StyleSheet.create({
     routeInfoHeader: {
         height: ROUTE_INFO_HEADER_HEIGHT,
@@ -288,10 +343,10 @@ const routeInfoStyles = StyleSheet.create({
         display: 'flex',
         flexDirection: 'row',
         alignItems: 'center',
+        gap: 8,
     },
     routeNumberContainer: {
-        height: '100%',
-        aspectRatio: 1,
+        width: '100%',
         display: 'flex',
         flexDirection: 'row',
         justifyContent: 'center',
@@ -322,6 +377,26 @@ const routeInfoStyles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         paddingVertical: 16,
+    },
+    routeInfoRightSide: {
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'center',
+        alignItems: 'stretch',
+    },
+    routeInfoRightSideContent: {
+        display: 'flex',
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        gap: 8,
+    },
+    weekDaysContainer: {
+        display: 'flex',
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        gap: 6,
     },
 });
 

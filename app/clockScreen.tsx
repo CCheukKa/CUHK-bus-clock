@@ -13,8 +13,7 @@ import { useSettings } from '@/context/SettingsContext';
 import { FullscreenView } from '@/components/common/FullscreenView';
 import { useTheme } from '@/context/ThemeContext';
 import { isPublicHoliday } from '@/utils/PublicHolidayScraper';
-
-const weekDays = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'] as const;
+import { weekDays } from '@/constants/UI';
 
 export default function ClockScreen() {
     const { settings } = useSettings();
@@ -85,7 +84,7 @@ export default function ClockScreen() {
                     <TouchableOpacity onPress={() => { showDateTimePicker('date') }}>
                         {useMemo(() =>
                             <ThemedText type="subtitle" style={dateTimeTextStyle}>
-                                {`${logicTime.toLocaleDateString('en-GB')} (${isPublicHoliday(logicTime) ? 'Holiday' : weekDays[logicTime.getDay()]})`}
+                                {`${logicTime.toLocaleDateString('en-GB')} (${isPublicHoliday(logicTime) ? 'Holiday' : weekDays[logicTime.getDay()].substring(0, 3)})`}
                             </ThemedText>
                             , [new Date(logicTime).truncateTo('day').getTime(), dateTimeTextStyle]
                         )}
