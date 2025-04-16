@@ -2,31 +2,45 @@
     "Area 39 (Downward)>>Campus Circuit North": [
         138
     ],
-    "Area 39 (Upward)>>CW Chu College (Downward)": [],
-    "Campus Circuit East (Upward)>>CW Chu College (Upward)": [],
+    "Area 39 (Upward)>>CW Chu College (Downward)": [
+        98
+    ],
+    "Campus Circuit East (Upward)>>CW Chu College (Upward)": [
+        139
+    ],
     "Campus Circuit East (Downward)>>University Station Piazza": [],
     "Campus Circuit East (Downward)>>University Station (Terminus)": [
-        94
+        94,
+        84
     ],
     "Campus Circuit North>>Campus Circuit East (Downward)": [
-        159
+        159,
+        174
     ],
     "Chan Chun Ha Hostel>>Shaw College (Downward)": [
         118,
-        97
+        97,
+        155
     ],
     "Chan Chun Ha Hostel>>Wu Yee Sun College (Downward)": [],
-    "Chung Chi Teaching Building>>University Sports Centre": [],
+    "Chung Chi Teaching Building>>University Sports Centre": [
+        119
+    ],
     "CW Chu College (Downward)>>Residence No.10": [
         93
     ],
     "CW Chu College (Downward)>>Residence No.15": [
         83
     ],
-    "CW Chu College (Downward)>>United College Staff Residence": [],
-    "CW Chu College (Upward)>>Area 39 (Upward)": [],
+    "CW Chu College (Downward)>>United College Staff Residence": [
+        141
+    ],
+    "CW Chu College (Upward)>>Area 39 (Upward)": [
+        79
+    ],
     "Fung King Hey Building>>United College (Upward)": [
-        91
+        91,
+        79
     ],
     "Fung King Hey Building>>Wu Yee Sun College (Upward)": [
         36
@@ -35,7 +49,9 @@
         51,
         51
     ],
-    "New Asia College>>Wu Yee Sun College (Upward)": [],
+    "New Asia College>>Wu Yee Sun College (Upward)": [
+        88
+    ],
     "New Asia College>>United College (Downward)": [
         53,
         74
@@ -59,7 +75,8 @@
     ],
     "Shaw College (Downward)>>Wu Yee Sun College (Downward)": [
         123,
-        79
+        79,
+        105
     ],
     "Shaw College (Upward)>>Area 39 (Downward)": [
         178
@@ -69,7 +86,9 @@
         126,
         109
     ],
-    "Shaw College (Upward)>>CW Chu College (Downward) (Terminus)": [],
+    "Shaw College (Upward)>>CW Chu College (Downward) (Terminus)": [
+        125
+    ],
     "S.H. Ho College>>Postgraduate Hall 1": [],
     "S.H. Ho College>>University Station Piazza": [],
     "S.H. Ho College>>University Station Piazza (Terminus)": [
@@ -80,7 +99,8 @@
         106
     ],
     "Sir Run Run Shaw Hall>>Fung King Hey Building": [
-        63
+        63,
+        73
     ],
     "Sir Run Run Shaw Hall>>New Asia Circle": [
         91
@@ -99,12 +119,16 @@
     ],
     "United College Staff Residence>>Chan Chun Ha Hostel": [
         59,
-        55
+        55,
+        52
     ],
     "United College (Upward)>>New Asia College": [
-        76
+        76,
+        63
     ],
-    "University Admin Building>>Science Centre": [],
+    "University Admin Building>>Science Centre": [
+        161
+    ],
     "University Admin Building>>S.H. Ho College": [
         98,
         103,
@@ -131,7 +155,8 @@
         140,
         149,
         132,
-        109
+        109,
+        145
     ],
     "University Station>>Postgraduate Hall 1": [
         124
@@ -160,14 +185,18 @@
         84
     ],
     "Wu Yee Sun College (Downward)>>University Admin Building": [
-        93
+        93,
+        131
     ],
     "Wu Yee Sun College (Upward)>>Shaw College (Upward)": [
         94,
         95,
-        92
+        92,
+        88
     ],
-    "YIA>>Campus Circuit East (Upward)": [],
+    "YIA>>Campus Circuit East (Upward)": [
+        100
+    ],
     "YIA>>University Sports Centre": [
         73
     ]
