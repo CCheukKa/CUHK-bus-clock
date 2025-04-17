@@ -7,3 +7,5 @@ export const WEEK_DAYS = [
     'Friday',
     'Saturday',
 ] as const;
+
+export const NAVIGATION_BAR_HEIGHT = 16;

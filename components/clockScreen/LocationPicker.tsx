@@ -7,6 +7,7 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { useEffect, useRef, useState } from "react";
 import { Dimensions, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import DropDownPicker, { RenderListItemPropsInterface } from "react-native-dropdown-picker";
+import { NAVIGATION_BAR_HEIGHT } from "@/constants/UI";
 
 export type DropdownItem = {
     type: 'region' | 'station';
@@ -49,7 +50,7 @@ export function LocationPicker({
         if (!dropdownContainerRef.current) { return; }
         dropdownContainerRef.current.measure((_x, _y, _width, height, _pageX, pageY) => {
             const bottomEdgeOfComponent = pageY + height;
-            const distanceFromBottom = screenHeight - bottomEdgeOfComponent;
+            const distanceFromBottom = screenHeight - bottomEdgeOfComponent - NAVIGATION_BAR_HEIGHT - 8;
             setDistanceFromBottom(distanceFromBottom);
         });
     };
