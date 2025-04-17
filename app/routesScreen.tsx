@@ -8,7 +8,7 @@ import { MaterialCommunityIcons, Octicons } from '@expo/vector-icons';
 import React, { useEffect, useState } from 'react';
 import { Linking, ScrollView, StyleSheet, TouchableOpacity, View } from 'react-native';
 import DropDownPicker from 'react-native-dropdown-picker';
-import { weekDays } from '@/constants/UI';
+import { WEEK_DAYS } from '@/constants/UI';
 
 const enum StationInfoType {
     TOP = 'top',
@@ -179,7 +179,7 @@ function RouteInfoCard({ route }: RouteInfoCardProps) {
                                 color={contrastColour}
                             />
                             <View style={routeInfoStyles.weekDaysContainer}>
-                                {weekDays.map((day, index) => {
+                                {WEEK_DAYS.map((day, index) => {
                                     const isAvailable = busRouteInfos[route].serviceDays.includes(index);
                                     return (
                                         <ThemedText
