@@ -21,7 +21,7 @@ export const BusRoute = {
 } as const;
 export type BusRoute = typeof BusRoute[keyof typeof BusRoute];
 
-export const enum Station {
+export enum Station {
     AREA_39_DOWNWARD = 'Area 39 (Downward)',
     AREA_39_UPWARD = 'Area 39 (Upward)',
     CAMPUS_CIRCUIT_EAST_DOWNWARD = 'Campus Circuit East (Downward)',
@@ -107,7 +107,7 @@ export const termini: Station[] = [
     Station.UNIVERSITY_STATION_TERMINUS,
 ] as const;
 
-export const enum Region {
+export enum Region {
     AREA_39 = 'Area 39',
     CAMPUS_EAST = 'Campus East',
     CHUNG_CHI_COLLEGE_AREA = 'Chung Chi College Area',
