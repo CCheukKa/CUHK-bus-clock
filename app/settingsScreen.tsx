@@ -112,8 +112,8 @@ function Controls() {
             const settingText = (
                 <View style={styles.settingText}>
                     <ThemedText type='subtitle'> {name} </ThemedText>
-                    <ThemedText type='default'> {description} </ThemedText>
-                    <ThemedText type='faded'> Default: {String(defaultValue)} </ThemedText>
+                    <ThemedText type='default' style={{ color: theme.halfContrast }}> {description} </ThemedText>
+                    <ThemedText type='faded' style={{ color: theme.lowContrast }}> Default: {String(defaultValue)} </ThemedText>
                 </View>
             );
 
