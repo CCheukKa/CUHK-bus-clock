@@ -12,6 +12,7 @@ export type Settings = {
     timingShowMinutes: number;
     useModalLocationPicker: boolean;
     bigCountdownInPanel: boolean;
+    detectHolidays: boolean;
 };
 export const settingsSchema: Record<keyof Settings, {
     type: 'enum' | 'number' | 'nonNegativeNumber' | 'boolean';
@@ -71,6 +72,11 @@ export const settingsSchema: Record<keyof Settings, {
         type: 'boolean',
         description: 'Show big countdown in panel',
         defaultValue: false,
+    },
+    detectHolidays: {
+        type: 'boolean',
+        description: 'Fetch holidays from HK gov API',
+        defaultValue: true,
     },
 };
 

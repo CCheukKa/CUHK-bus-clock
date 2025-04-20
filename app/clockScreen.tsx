@@ -69,10 +69,11 @@ export default function ClockScreen() {
     //
     const [fromTo, setFromTo] = useState<FromTo>({ from: Region.MTR, to: Region.MAIN_CAMPUS });
     const etaInfos = useMemo(() =>
-        getEtaInfos(fromTo, logicTime, settings.pastPeekMinutes, settings.futurePeekMinutes),
+        getEtaInfos(fromTo, logicTime, settings.pastPeekMinutes, settings.futurePeekMinutes, settings.detectHolidays),
         [
             fromTo,
             logicTime.truncateTo('second').getTime(),
+            settings,
         ]
     );
     //
@@ -84,9 +85,9 @@ export default function ClockScreen() {
                     <TouchableOpacity onPress={() => { showDateTimePicker('date') }}>
                         {useMemo(() =>
                             <ThemedText type="subtitle" style={dateTimeTextStyle}>
-                                {`${logicTime.toLocaleDateString('en-GB')} (${isPublicHoliday(logicTime) ? 'Holiday' : WEEK_DAYS[logicTime.getDay()].substring(0, 3)})`}
+                                {`${logicTime.toLocaleDateString('en-GB')} (${settings.detectHolidays && isPublicHoliday(logicTime) ? 'Holiday' : WEEK_DAYS[logicTime.getDay()].substring(0, 3)})`}
                             </ThemedText>
-                            , [new Date(logicTime).truncateTo('day').getTime(), dateTimeTextStyle]
+                            , [new Date(logicTime).truncateTo('day').getTime(), dateTimeTextStyle, settings]
                         )}
                     </TouchableOpacity>
                     <TouchableOpacity onPress={() => { showDateTimePicker('time') }}>

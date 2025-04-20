@@ -2,10 +2,6 @@ import { BusRoute, busRouteInfos, busStationTimings, Coordinates, Region, region
 import { LocationExtra, MathExtra } from "@/utils/Helper";
 import { isPublicHoliday } from "@/utils/PublicHolidayScraper";
 
-//! TODO:
-//! add support for public holidays
-//! scrape here?: https://www.gov.hk/en/about/abouthk/holiday/2025.htm
-
 export type EtaInfo = {
     journey: Journey,
     etaFromTime: Date,
@@ -69,7 +65,7 @@ export function isEtaInfoArray(value: EtaInfo | EtaInfo[] | EtaError): value is 
 export function isEtaError(value: EtaInfo | EtaInfo[] | EtaError): value is EtaError { return value instanceof EtaError; }
 /* -------------------------------------------------------------------------- */
 
-export function getEtaInfos({ from, to }: FromTo, currentTime: Date, pastPeekMinutes: number, futurePeekMinutes: number): EtaInfo[] | EtaError {
+export function getEtaInfos({ from, to }: FromTo, currentTime: Date, pastPeekMinutes: number, futurePeekMinutes: number, detectHolidays: boolean): EtaInfo[] | EtaError {
     /*
     !   Error handling order:
         - Internal API error
@@ -107,7 +103,7 @@ export function getEtaInfos({ from, to }: FromTo, currentTime: Date, pastPeekMin
     }
 
     for (const journey of shortestRouteJourneys) {
-        etaInfos.push(...[getStationRouteETA(journey, currentTime)].flat());
+        etaInfos.push(...[getStationRouteETA(journey, currentTime, detectHolidays)].flat());
     }
 
     const etaErrors = etaInfos.filter(etaInfo => isEtaError(etaInfo));
@@ -178,10 +174,14 @@ function findJourney(fromStation: Station, toStation: Station): Journey[] {
     return journeys;
 }
 
-function getStationRouteETA(journey: Journey, currentTime: Date): EtaInfo[] | EtaError {
+function getStationRouteETA(journey: Journey, currentTime: Date, detectHolidays: boolean): EtaInfo[] | EtaError {
     const routeInfo = busRouteInfos[journey.route];
     if (!routeInfo) { return new InternalApiError; }
-    if (!routeInfo.serviceDays.includes(isPublicHoliday(currentTime) ? 0 : currentTime.getDay())) { return new NoServiceTodayError([journey.route]); }
+    if (!routeInfo.serviceDays.includes(
+        detectHolidays && isPublicHoliday(currentTime)
+            ? 0
+            : currentTime.getDay())
+    ) { return new NoServiceTodayError([journey.route]); }
     if (!routeInfo.stations.find(s => s === journey.fromStation)) { return new InternalApiError; }
     const routeStartStationTimeOffsetSeconds = getRouteStationTimeOffsetSeconds(journey.fromIndex);
     const routeEndStationTimeOffsetSeconds = getRouteStationTimeOffsetSeconds(journey.toIndex);
