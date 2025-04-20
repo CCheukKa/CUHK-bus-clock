@@ -101,6 +101,10 @@ function Controls() {
     return (Object.keys(settings) as (keyof Settings)[])
         .map(key => {
             const schema = settingsSchema[key];
+            if (schema === undefined) {
+                console.log(`[SettingsScreen][Controls] Dropped setting key: ${key}`);
+                return null;
+            }
 
             const name = (key as string).toTitleString();
             const description = schema.description;
