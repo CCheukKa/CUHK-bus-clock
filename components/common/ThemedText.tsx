@@ -3,7 +3,7 @@ import { Text, type TextProps, StyleSheet } from 'react-native';
 import { FontSizes, normalize } from '@/utils/Typography';
 
 export type ThemedTextProps = TextProps & {
-    type?: 'default' | 'title' | 'defaultSemiBold' | 'subtitle' | 'link' | 'faded';
+    type?: 'default' | 'title' | 'defaultSemiBold' | 'subtitle' | 'link' | 'faded' | 'defaultPlus';
 };
 
 export function ThemedText({
@@ -22,6 +22,7 @@ export function ThemedText({
                 type === 'title' ? styles.title : undefined,
                 type === 'defaultSemiBold' ? styles.defaultSemiBold : undefined,
                 type === 'subtitle' ? styles.subtitle : undefined,
+                type === 'defaultPlus' ? [styles.defaultPlus] : undefined,
                 type === 'faded' ? [styles.faded, { color: theme.halfContrast },] : undefined,
                 style,
             ]}
@@ -51,6 +52,10 @@ const styles = StyleSheet.create({
     },
     subtitle: {
         fontSize: FontSizes.large,
+        fontWeight: 'bold',
+    },
+    defaultPlus: {
+        fontSize: FontSizes.medium,
         fontWeight: 'bold',
     },
 });

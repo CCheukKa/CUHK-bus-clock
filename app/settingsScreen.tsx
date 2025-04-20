@@ -41,10 +41,10 @@ export default function SettingsScreen() {
                 ]}>
                     <MaterialCommunityIcons
                         name='arrow-u-left-top-bold'
-                        size={28}
+                        size={24}
                         color={theme.highContrast}
                     />
-                    <ThemedText type='subtitle'> Reset all to default settings </ThemedText>
+                    <ThemedText type='defaultPlus'> Reset all to default settings </ThemedText>
                 </View>
             </TouchableOpacity>
             <ResetSettingsDialog />
@@ -111,9 +111,19 @@ function Controls() {
             const defaultValue = schema.defaultValue;
             const settingText = (
                 <View style={styles.settingText}>
-                    <ThemedText type='subtitle'> {name} </ThemedText>
-                    <ThemedText type='default' style={{ color: theme.halfContrast }}> {description} </ThemedText>
-                    <ThemedText type='faded' style={{ color: theme.lowContrast }}> Default: {String(defaultValue)} </ThemedText>
+                    <ThemedText type='defaultPlus'>
+                        {name}
+                    </ThemedText>
+                    <ThemedText type='default'
+                        style={{ color: theme.halfContrast }}
+                    >
+                        {description}
+                    </ThemedText>
+                    <ThemedText type='faded'
+                        style={{ color: theme.lowContrast }}
+                    >
+                        {`Default: ${String(defaultValue)}`}
+                    </ThemedText>
                 </View>
             );
 
@@ -235,19 +245,19 @@ const styles = StyleSheet.create({
         borderRadius: 8,
     },
     resetToDefaultButtonContainer: {
-        marginVertical: 20,
+        marginVertical: 16,
         display: 'flex',
         flexDirection: 'row',
         justifyContent: 'center',
         alignItems: 'center',
     },
     resetToDefaultButton: {
-        // width: '90%',
         display: 'flex',
         flexDirection: 'row',
         justifyContent: 'center',
         alignItems: 'center',
-        padding: 10,
+        paddingVertical: 6,
+        paddingHorizontal: 12,
         borderRadius: 8,
     },
 });
