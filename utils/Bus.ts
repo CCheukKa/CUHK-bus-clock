@@ -153,6 +153,7 @@ export type Journey = {
     fromIndex: number,
     toStation: Station,
     toIndex: number,
+    passThroughInflexion: boolean,
 };
 function findJourney(fromStation: Station, toStation: Station): Journey[] {
     const journeys: Journey[] = [];
@@ -166,7 +167,11 @@ function findJourney(fromStation: Station, toStation: Station): Journey[] {
         for (const fromIndex of fromIndices) {
             for (const toIndex of toIndices) {
                 if (fromIndex < toIndex) {
-                    journeys.push({ route, fromIndex, toIndex, fromStation, toStation });
+                    const passThroughInflexion =
+                        routeInfo.inflexionIndex !== undefined
+                            ? fromIndex < routeInfo.inflexionIndex && toIndex > routeInfo.inflexionIndex
+                            : false;
+                    journeys.push({ route, fromIndex, toIndex, fromStation, toStation, passThroughInflexion });
                 }
             }
         }
@@ -182,7 +187,7 @@ function getStationRouteETA(journey: Journey, currentTime: Date, detectHolidays:
             ? 0
             : currentTime.getDay())
     ) { return new NoServiceTodayError([journey.route]); }
-    if (!routeInfo.stations.find(s => s === journey.fromStation)) { return new InternalApiError; }
+    if (!routeInfo.stations.find(station => station === journey.fromStation)) { return new InternalApiError; }
     const routeStartStationTimeOffsetSeconds = getRouteStationTimeOffsetSeconds(journey.fromIndex);
     const routeEndStationTimeOffsetSeconds = getRouteStationTimeOffsetSeconds(journey.toIndex);
     const currentHour = currentTime.getHours();

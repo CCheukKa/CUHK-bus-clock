@@ -492,6 +492,7 @@ export type BusRouteInfo = {
     serviceDays: number[],
     minuteMarks: number[],
     stations: Station[],
+    inflexionIndex?: number,
 };
 export const busRouteInfos: Record<BusRoute, BusRouteInfo> = {
     [BusRoute._1A]: {
@@ -506,10 +507,12 @@ export const busRouteInfos: Record<BusRoute, BusRouteInfo> = {
             Station.UNIVERSITY_STATION,
             Station.UNIVERSITY_SPORTS_CENTRE,
             Station.SIR_RUN_RUN_SHAW_HALL,
+            // inflexion
             Station.UNIVERSITY_ADMIN_BUILDING,
             Station.SHHO_COLLEGE,
             Station.UNIVERSITY_STATION_TERMINUS,
         ],
+        inflexionIndex: 2.5,
     },
     [BusRoute._1B]: {
         canonInfoUrl: 'https://transport.cuhk.edu.hk/route/1b',
@@ -524,11 +527,13 @@ export const busRouteInfos: Record<BusRoute, BusRouteInfo> = {
             Station.POSTGRADUATE_HALL_1,
             Station.UNIVERSITY_SPORTS_CENTRE,
             Station.SIR_RUN_RUN_SHAW_HALL,
+            // inflexion
             Station.UNIVERSITY_ADMIN_BUILDING,
             Station.SHHO_COLLEGE,
             Station.POSTGRADUATE_HALL_1,
             Station.UNIVERSITY_STATION_TERMINUS,
         ],
+        inflexionIndex: 3.5,
     },
     [BusRoute._2Y]: {
         canonInfoUrl: 'https://transport.cuhk.edu.hk/route/2',
@@ -545,11 +550,13 @@ export const busRouteInfos: Record<BusRoute, BusRouteInfo> = {
             Station.FUNG_KING_HEY_BUILDING,
             Station.UNITED_COLLEGE_UPWARD,
             Station.NEW_ASIA_COLLEGE,
+            // inflexion
             Station.UNITED_COLLEGE_DOWNWARD,
             Station.UNIVERSITY_ADMIN_BUILDING,
             Station.SHHO_COLLEGE,
             Station.UNIVERSITY_STATION_TERMINUS,
         ],
+        inflexionIndex: 5.5,
     },
     [BusRoute._2N]: {
         canonInfoUrl: 'https://transport.cuhk.edu.hk/route/2',
@@ -565,11 +572,13 @@ export const busRouteInfos: Record<BusRoute, BusRouteInfo> = {
             Station.FUNG_KING_HEY_BUILDING,
             Station.UNITED_COLLEGE_UPWARD,
             Station.NEW_ASIA_COLLEGE,
+            // inflexion
             Station.UNITED_COLLEGE_DOWNWARD,
             Station.UNIVERSITY_ADMIN_BUILDING,
             Station.SHHO_COLLEGE,
             Station.UNIVERSITY_STATION_TERMINUS,
         ],
+        inflexionIndex: 4.5,
     },
     [BusRoute._3]: {
         canonInfoUrl: 'https://transport.cuhk.edu.hk/route/3',
@@ -590,12 +599,14 @@ export const busRouteInfos: Record<BusRoute, BusRouteInfo> = {
             Station.RESIDENCE_15,
             Station.UNTIED_COLLEGE_STAFF_RESIDENCE,
             Station.CHAN_CHUN_HA_HOSTEL,
+            // inflexion
             Station.SHAW_COLLEGE_DOWNWARD,
             Station.WU_YEE_SUN_COLLEGE_DOWNWARD,
             Station.UNIVERSITY_ADMIN_BUILDING,
             Station.SHHO_COLLEGE,
             Station.UNIVERSITY_STATION_PIAZZA_TERMINUS,
         ],
+        inflexionIndex: 9.5,
     },
     [BusRoute._4]: {
         canonInfoUrl: 'https://transport.cuhk.edu.hk/route/4',
@@ -779,6 +790,7 @@ export const busRouteInfos: Record<BusRoute, BusRouteInfo> = {
             Station.SCIENCE_CENTRE,
             Station.NEW_ASIA_CIRCLE,
             Station.UNITED_COLLEGE_DOWNWARD,
+            // inflexion
             Station.WU_YEE_SUN_COLLEGE_UPWARD,
             Station.SHAW_COLLEGE_UPWARD,
             Station.AREA_39_DOWNWARD,
@@ -786,6 +798,7 @@ export const busRouteInfos: Record<BusRoute, BusRouteInfo> = {
             Station.CAMPUS_CIRCUIT_EAST_DOWNWARD,
             Station.UNIVERSITY_STATION_TERMINUS,
         ],
+        inflexionIndex: 9.5,
     },
     [BusRoute._8E]: {
         canonInfoUrl: 'https://transport.cuhk.edu.hk/route/8',
@@ -806,6 +819,7 @@ export const busRouteInfos: Record<BusRoute, BusRouteInfo> = {
             Station.SCIENCE_CENTRE,
             Station.NEW_ASIA_CIRCLE,
             Station.UNITED_COLLEGE_DOWNWARD,
+            // inflexion
             Station.WU_YEE_SUN_COLLEGE_UPWARD,
             Station.SHAW_COLLEGE_UPWARD,
             Station.AREA_39_DOWNWARD,
@@ -814,6 +828,7 @@ export const busRouteInfos: Record<BusRoute, BusRouteInfo> = {
             Station.UNIVERSITY_STATION_PIAZZA,
             Station.CHUNG_CHI_TEACHING_BUILDING_TERMINUS,
         ],
+        inflexionIndex: 9.5,
     },
     [BusRoute._NY]: {
         canonInfoUrl: 'https://transport.cuhk.edu.hk/route/n',
@@ -837,6 +852,7 @@ export const busRouteInfos: Record<BusRoute, BusRouteInfo> = {
             Station.RESIDENCE_15,
             Station.UNTIED_COLLEGE_STAFF_RESIDENCE,
             Station.CHAN_CHUN_HA_HOSTEL,
+            // inflexion
             Station.SHAW_COLLEGE_DOWNWARD,
             Station.WU_YEE_SUN_COLLEGE_DOWNWARD,
             Station.NEW_ASIA_COLLEGE,
@@ -846,6 +862,7 @@ export const busRouteInfos: Record<BusRoute, BusRouteInfo> = {
             Station.POSTGRADUATE_HALL_1,
             Station.UNIVERSITY_STATION_TERMINUS,
         ],
+        inflexionIndex: 12.5,
     },
     [BusRoute._NN]: {
         canonInfoUrl: 'https://transport.cuhk.edu.hk/route/n',
@@ -868,6 +885,7 @@ export const busRouteInfos: Record<BusRoute, BusRouteInfo> = {
             Station.RESIDENCE_15,
             Station.UNTIED_COLLEGE_STAFF_RESIDENCE,
             Station.CHAN_CHUN_HA_HOSTEL,
+            // inflexion
             Station.SHAW_COLLEGE_DOWNWARD,
             Station.WU_YEE_SUN_COLLEGE_DOWNWARD,
             Station.NEW_ASIA_COLLEGE,
@@ -876,6 +894,7 @@ export const busRouteInfos: Record<BusRoute, BusRouteInfo> = {
             Station.SHHO_COLLEGE,
             Station.UNIVERSITY_STATION_TERMINUS,
         ],
+        inflexionIndex: 11.5,
     },
     [BusRoute._HY]: {
         canonInfoUrl: 'https://transport.cuhk.edu.hk/route/h',
@@ -900,6 +919,7 @@ export const busRouteInfos: Record<BusRoute, BusRouteInfo> = {
             Station.RESIDENCE_15,
             Station.UNTIED_COLLEGE_STAFF_RESIDENCE,
             Station.CHAN_CHUN_HA_HOSTEL,
+            // inflexion
             Station.SHAW_COLLEGE_DOWNWARD,
             Station.WU_YEE_SUN_COLLEGE_DOWNWARD,
             Station.NEW_ASIA_COLLEGE,
@@ -909,6 +929,7 @@ export const busRouteInfos: Record<BusRoute, BusRouteInfo> = {
             Station.POSTGRADUATE_HALL_1,
             Station.UNIVERSITY_STATION_TERMINUS,
         ],
+        inflexionIndex: 13.5,
     },
     [BusRoute._HN]: {
         canonInfoUrl: 'https://transport.cuhk.edu.hk/route/h',
@@ -931,6 +952,7 @@ export const busRouteInfos: Record<BusRoute, BusRouteInfo> = {
             Station.RESIDENCE_15,
             Station.UNTIED_COLLEGE_STAFF_RESIDENCE,
             Station.CHAN_CHUN_HA_HOSTEL,
+            // inflexion
             Station.SHAW_COLLEGE_DOWNWARD,
             Station.WU_YEE_SUN_COLLEGE_DOWNWARD,
             Station.NEW_ASIA_COLLEGE,
@@ -939,6 +961,7 @@ export const busRouteInfos: Record<BusRoute, BusRouteInfo> = {
             Station.SHHO_COLLEGE,
             Station.UNIVERSITY_STATION_TERMINUS,
         ],
+        inflexionIndex: 11.5,
     },
 } as const;
 

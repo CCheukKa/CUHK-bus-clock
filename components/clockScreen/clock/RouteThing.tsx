@@ -294,8 +294,13 @@ export function RouteThing({ routeThingInfo }: { routeThingInfo: RouteThingInfo 
                 degrees={bubbleAngle} distance={bubbleDistance}
                 type={ClockThingType.ROUTE_BUBBLE}
                 style={{
-                    backgroundColour: bubbleColour,
-                    textColour: routeTextColour,
+                    borderColour: etaInfo.journey.passThroughInflexion ? bubbleColour : undefined,
+                    backgroundColour: etaInfo.journey.passThroughInflexion ? theme.background : bubbleColour,
+                    textColour: etaInfo.journey.passThroughInflexion
+                        ? Math.abs(Colour.getLuminance(theme.background) - Colour.getLuminance(bubbleColour)) > Math.abs(Colour.getLuminance(theme.background) - Colour.getLuminance(routeTextColour))
+                            ? bubbleColour
+                            : routeTextColour
+                        : routeTextColour,
                     scale: bubbleScale,
                 }}
             >

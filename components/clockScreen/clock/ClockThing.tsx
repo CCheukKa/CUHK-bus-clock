@@ -32,6 +32,7 @@ type ClockThingProps =
             backgroundColour?: string;
             textColour?: string;
             scale?: number;
+            borderColour?: string;
         };
         degrees: number;
         distance: number;
@@ -71,7 +72,12 @@ export function ClockThing({ type, style, degrees, distance, children }: ClockTh
                             backgroundColor: style?.backgroundColour,
                             transform: [{ scale: style?.scale ?? 1 }],
                             shadowColor: theme.highContrast,
-                        }
+                        },
+                        style?.borderColour
+                            ? {
+                                borderColor: style.borderColour,
+                                borderWidth: 2,
+                            } : null,
                     ]}>
                         <Text style={[
                             auxiliaryStyles.routeNumber,
