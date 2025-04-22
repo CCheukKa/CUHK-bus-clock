@@ -57,9 +57,12 @@
         74
     ],
     "Postgraduate Hall 1>>University Sports Centre": [
-        107
+        107,
+        155
     ],
-    "Postgraduate Hall 1>>University Station (Terminus)": [],
+    "Postgraduate Hall 1>>University Station (Terminus)": [
+        134
+    ],
     "Residence No.10>>Residence No.15": [
         36
     ],
@@ -89,14 +92,17 @@
     "Shaw College (Upward)>>CW Chu College (Downward) (Terminus)": [
         125
     ],
-    "S.H. Ho College>>Postgraduate Hall 1": [],
+    "S.H. Ho College>>Postgraduate Hall 1": [
+        100
+    ],
     "S.H. Ho College>>University Station Piazza": [],
     "S.H. Ho College>>University Station Piazza (Terminus)": [
         128
     ],
     "S.H. Ho College>>University Station (Terminus)": [
         95,
-        106
+        106,
+        97
     ],
     "Sir Run Run Shaw Hall>>Fung King Hey Building": [
         63,
@@ -107,7 +113,8 @@
     ],
     "Sir Run Run Shaw Hall>>University Admin Building": [
         90,
-        157
+        157,
+        113
     ],
     "United College (Downward)>>University Admin Building": [
         81,
@@ -132,7 +139,8 @@
     "University Admin Building>>S.H. Ho College": [
         98,
         103,
-        83
+        83,
+        140
     ],
     "University Sports Centre>>Fung King Hey Building": [
         168,
@@ -156,10 +164,13 @@
         149,
         132,
         109,
-        145
+        145,
+        147,
+        160
     ],
     "University Station>>Postgraduate Hall 1": [
-        124
+        124,
+        150
     ],
     "University Station>>University Sports Centre": [
         135,
@@ -171,7 +182,8 @@
         146,
         107,
         123,
-        131
+        131,
+        98
     ],
     "University Station Piazza>>Chung Chi Teaching Building (Terminus)": [],
     "University Station Piazza>>University Sports Centre": [

@@ -2310,5 +2310,243 @@
             "mocked": false,
             "timestamp": 1744784023012
         }
+    },
+    {
+        "route": "1B",
+        "timeStamp": "2025-04-22T00:30:03.454Z",
+        "location": {
+            "coords": {
+                "accuracy": 80.67400360107422,
+                "longitude": 114.2098316,
+                "altitude": 5.599999904632568,
+                "heading": 0,
+                "latitude": 22.4143294,
+                "altitudeAccuracy": 17.28787612915039,
+                "speed": 0
+            },
+            "mocked": false,
+            "timestamp": 1745281803829
+        }
+    },
+    {
+        "route": "1B",
+        "timeStamp": "2025-04-22T00:32:33.548Z",
+        "location": {
+            "coords": {
+                "accuracy": 12.71500015258789,
+                "longitude": 114.2121508,
+                "altitude": 30.200000762939453,
+                "heading": 321.9040222167969,
+                "latitude": 22.4203394,
+                "altitudeAccuracy": 3.080329179763794,
+                "speed": 4.142156600952148
+            },
+            "mocked": false,
+            "timestamp": 1745281953959
+        }
+    },
+    {
+        "route": "1B",
+        "timeStamp": "2025-04-22T00:35:08.952Z",
+        "location": {
+            "coords": {
+                "accuracy": 3.7899999618530273,
+                "longitude": 114.2106477,
+                "altitude": 46.156005859375,
+                "heading": 283.4596862792969,
+                "latitude": 22.4177917,
+                "altitudeAccuracy": 2.5,
+                "speed": 0.22962193191051483
+            },
+            "mocked": false,
+            "timestamp": 1745282108968
+        }
+    },
+    {
+        "route": "1B",
+        "timeStamp": "2025-04-22T00:37:35.819Z",
+        "location": {
+            "coords": {
+                "accuracy": 26.996000289916992,
+                "longitude": 114.2073024,
+                "altitude": 98.5999984741211,
+                "heading": 0,
+                "latitude": 22.4198553,
+                "altitudeAccuracy": 5.590546131134033,
+                "speed": 0
+            },
+            "mocked": false,
+            "timestamp": 1745282253688
+        }
+    },
+    {
+        "route": "1B",
+        "timeStamp": "2025-04-22T04:08:32.009Z",
+        "location": {
+            "coords": {
+                "accuracy": 100,
+                "longitude": 114.2074703,
+                "altitude": 95.4000015258789,
+                "heading": 0,
+                "latitude": 22.4193238,
+                "altitudeAccuracy": 100,
+                "speed": 0
+            },
+            "mocked": false,
+            "timestamp": 1745294912399
+        }
+    },
+    {
+        "route": "1B",
+        "timeStamp": "2025-04-22T04:10:25.282Z",
+        "location": {
+            "coords": {
+                "accuracy": 800,
+                "longitude": 114.2039415,
+                "altitude": 95.4000015258789,
+                "heading": 0,
+                "latitude": 22.4170763,
+                "altitudeAccuracy": 4.1138739585876465,
+                "speed": 0
+            },
+            "mocked": false,
+            "timestamp": 1745295025505
+        }
+    },
+    {
+        "route": "1B",
+        "timeStamp": "2025-04-22T04:12:45.335Z",
+        "location": {
+            "coords": {
+                "accuracy": 26.56999969482422,
+                "longitude": 114.2101119,
+                "altitude": 48.099998474121094,
+                "heading": 111.80636596679688,
+                "latitude": 22.4180769,
+                "altitudeAccuracy": 6.290248394012451,
+                "speed": 6.897613048553467
+            },
+            "mocked": false,
+            "timestamp": 1745295167416
+        }
+    },
+    {
+        "route": "1B",
+        "timeStamp": "2025-04-22T04:14:25.227Z",
+        "location": {
+            "coords": {
+                "accuracy": 6.185999870300293,
+                "longitude": 114.2122362,
+                "altitude": 48.099998474121094,
+                "heading": 262.72027587890625,
+                "latitude": 22.4202876,
+                "altitudeAccuracy": 7.265584468841553,
+                "speed": 1.0351841449737549
+            },
+            "mocked": false,
+            "timestamp": 1745295264950
+        }
+    },
+    {
+        "route": "1B",
+        "timeStamp": "2025-04-22T04:16:39.259Z",
+        "location": {
+            "coords": {
+                "accuracy": 3.7899999618530273,
+                "longitude": 114.2104574,
+                "altitude": 29.400001525878906,
+                "heading": 208.00906372070312,
+                "latitude": 22.4151389,
+                "altitudeAccuracy": 4.5584940910339355,
+                "speed": 0.8098927140235901
+            },
+            "mocked": false,
+            "timestamp": 1745295398949
+        }
+    },
+    {
+        "route": "1A",
+        "timeStamp": "2025-04-22T04:28:50.712Z",
+        "location": {
+            "coords": {
+                "accuracy": 13.29800033569336,
+                "longitude": 114.2099691,
+                "altitude": 48,
+                "heading": 0,
+                "latitude": 22.4179591,
+                "altitudeAccuracy": 7.397678375244141,
+                "speed": 0
+            },
+            "mocked": false,
+            "timestamp": 1745296131036
+        }
+    },
+    {
+        "route": "1A",
+        "timeStamp": "2025-04-22T04:30:27.982Z",
+        "location": {
+            "coords": {
+                "accuracy": 29.201000213623047,
+                "longitude": 114.2105812,
+                "altitude": 9.100000381469727,
+                "heading": 0,
+                "latitude": 22.4152639,
+                "altitudeAccuracy": 8.19820499420166,
+                "speed": 0
+            },
+            "mocked": false,
+            "timestamp": 1745296228273
+        }
+    },
+    {
+        "route": "1A",
+        "timeStamp": "2025-04-22T04:40:27.383Z",
+        "location": {
+            "coords": {
+                "accuracy": 100,
+                "longitude": 114.2102043,
+                "altitude": 10.640777850070602,
+                "heading": 0,
+                "latitude": 22.4146398,
+                "altitudeAccuracy": 100,
+                "speed": 0
+            },
+            "mocked": false,
+            "timestamp": 1745296827782
+        }
+    },
+    {
+        "route": "1A",
+        "timeStamp": "2025-04-22T04:42:05.476Z",
+        "location": {
+            "coords": {
+                "accuracy": 9.302000045776367,
+                "longitude": 114.2106638,
+                "altitude": 43.764928950375044,
+                "heading": 282,
+                "latitude": 22.4181206,
+                "altitudeAccuracy": 10.05783462524414,
+                "speed": 0.17000000178813934
+            },
+            "mocked": false,
+            "timestamp": 1745296939534
+        }
+    },
+    {
+        "route": "1A",
+        "timeStamp": "2025-04-22T04:44:45.805Z",
+        "location": {
+            "coords": {
+                "accuracy": 19.243999481201172,
+                "longitude": 114.2068751,
+                "altitude": 98.5999984741211,
+                "heading": 268.35687255859375,
+                "latitude": 22.4200166,
+                "altitudeAccuracy": 2.6263744831085205,
+                "speed": 5.6868577003479
+            },
+            "mocked": false,
+            "timestamp": 1745297086162
+        }
     }
 ]
