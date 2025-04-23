@@ -624,6 +624,7 @@ export const busRouteInfos: Record<BusRoute, BusRouteInfo> = {
         stations: [
             /* 0 */ Station.YIA,
             /* 1 */ Station.CAMPUS_CIRCUIT_EAST_UPWARD,
+            //$ inflexion
             /* 2 */ Station.CWC_COLLEGE_UPWARD,
             /* 3 */ Station.AREA_39_UPWARD,
             /* 4 */ Station.CWC_COLLEGE_DOWNWARD,
@@ -634,10 +635,12 @@ export const busRouteInfos: Record<BusRoute, BusRouteInfo> = {
             /* 9 */ Station.WU_YEE_SUN_COLLEGE_DOWNWARD,
             /* 10 */ Station.NEW_ASIA_COLLEGE,
             /* 11 */ Station.UNITED_COLLEGE_DOWNWARD,
+            //$ inflexion
             /* 12 */ Station.UNIVERSITY_ADMIN_BUILDING,
             /* 13 */ Station.SHHO_COLLEGE,
             /* 14 */ Station.UNIVERSITY_STATION_TERMINUS,
         ],
+        inflexionIndices: [1.5, 11.5],
     },
     [BusRoute._5D]: {
         canonInfoUrl: 'https://transport.cuhk.edu.hk/route/5',
