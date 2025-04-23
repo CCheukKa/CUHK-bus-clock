@@ -73,7 +73,8 @@ export default function ClockScreen() {
         const rawEtaInfos = getEtaInfos(fromTo, logicTime, settings.pastPeekMinutes, settings.futurePeekMinutes, settings.detectHolidays);
         if (isEtaError(rawEtaInfos)) { return rawEtaInfos; }
         if (settings.suboptimalRouteStyle === SuboptimalRouteStyle.HIDDEN) {
-            return rawEtaInfos.filter(etaInfo => !etaInfo.journey.passThroughInflexion);
+            const filteredEtaInfos = rawEtaInfos.filter(etaInfo => !etaInfo.journey.isSuboptimal);
+            return filteredEtaInfos.length > 0 ? filteredEtaInfos : rawEtaInfos;
         }
         return rawEtaInfos;
     }, [
