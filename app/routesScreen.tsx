@@ -6,7 +6,7 @@ import { Colour, MathExtra, toTimeString } from '@/utils/Helper';
 import { FontSizes } from '@/utils/Typography';
 import { MaterialCommunityIcons, Octicons } from '@expo/vector-icons';
 import React, { useEffect, useState } from 'react';
-import { Linking, ScrollView, StyleSheet, TouchableOpacity, View } from 'react-native';
+import { Linking, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import DropDownPicker from 'react-native-dropdown-picker';
 import { WEEK_DAYS } from '@/constants/UI';
 
@@ -66,8 +66,10 @@ type StationInfosProps = {
     route: BusRoute,
 };
 function StationInfos({ route }: StationInfosProps) {
+    const { theme } = useTheme();
+
     let stationTimingOffset = 0;
-    const stationInfos: React.JSX.Element[] = [];
+    const stationInfos: (React.JSX.Element | null)[] = [];
     for (let i = 0; i < busRouteInfos[route].stations.length; i++) {
         const thisStation = busRouteInfos[route].stations[i];
         const previousStation = i > 0 ? busRouteInfos[route].stations[i - 1] : null;
@@ -87,7 +89,15 @@ function StationInfos({ route }: StationInfosProps) {
                 }
                 station={thisStation}
                 stationTimingOffset={stationTimingOffset}
-            />
+            />,
+            busRouteInfos[route].inflexionIndices?.some(ii => Math.floor(ii) === i)
+                ? <View style={stationInfoStyles.inflexionMarkerContainer}>
+                    <View style={[
+                        stationInfoStyles.inflexionMarker,
+                        { backgroundColor: theme.dimContrast },
+                    ]} />
+                </View>
+                : null,
         );
     }
     return stationInfos;
@@ -453,5 +463,19 @@ const stationInfoStyles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'flex-end',
         alignItems: 'center',
+    },
+    inflexionMarkerContainer: {
+        width: '90%',
+        height: 0,
+        overflow: 'visible',
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'flex-start',
+        zIndex: 1,
+    },
+    inflexionMarker: {
+        width: DOT_DIAMETER,
+        height: 2,
+        borderRadius: 1,
     },
 });
