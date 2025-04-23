@@ -153,7 +153,7 @@ export type Journey = {
     fromIndex: number,
     toStation: Station,
     toIndex: number,
-    passThroughInflexion: boolean,
+    isSuboptimal: boolean,
 };
 function findJourney(fromStation: Station, toStation: Station): Journey[] {
     const journeys: Journey[] = [];
@@ -167,11 +167,11 @@ function findJourney(fromStation: Station, toStation: Station): Journey[] {
         for (const fromIndex of fromIndices) {
             for (const toIndex of toIndices) {
                 if (fromIndex < toIndex) {
-                    const passThroughInflexion =
-                        routeInfo.inflexionIndex !== undefined
-                            ? fromIndex < routeInfo.inflexionIndex && toIndex > routeInfo.inflexionIndex
+                    const isSuboptimal =
+                        routeInfo.inflexionIndices !== undefined
+                            ? fromIndex < routeInfo.inflexionIndices[0] && toIndex > routeInfo.inflexionIndices[1]
                             : false;
-                    journeys.push({ route, fromIndex, toIndex, fromStation, toStation, passThroughInflexion });
+                    journeys.push({ route, fromIndex, toIndex, fromStation, toStation, isSuboptimal });
                 }
             }
         }

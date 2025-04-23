@@ -296,15 +296,15 @@ export function RouteThing({ routeThingInfo }: { routeThingInfo: RouteThingInfo 
                 type={ClockThingType.ROUTE_BUBBLE}
                 style={{
                     borderColour:
-                        settings.suboptimalRouteStyle === SuboptimalRouteStyle.HOLLOW && etaInfo.journey.passThroughInflexion
+                        settings.suboptimalRouteStyle === SuboptimalRouteStyle.HOLLOW && etaInfo.journey.isSuboptimal
                             ? bubbleColour
                             : undefined,
                     backgroundColour:
-                        settings.suboptimalRouteStyle === SuboptimalRouteStyle.HOLLOW && etaInfo.journey.passThroughInflexion
+                        settings.suboptimalRouteStyle === SuboptimalRouteStyle.HOLLOW && etaInfo.journey.isSuboptimal
                             ? theme.background
                             : bubbleColour,
                     textColour:
-                        settings.suboptimalRouteStyle === SuboptimalRouteStyle.HOLLOW && etaInfo.journey.passThroughInflexion
+                        settings.suboptimalRouteStyle === SuboptimalRouteStyle.HOLLOW && etaInfo.journey.isSuboptimal
                             ? Math.abs(Colour.getLuminance(theme.background) - Colour.getLuminance(bubbleColour)) > Math.abs(Colour.getLuminance(theme.background) - Colour.getLuminance(routeTextColour))
                                 ? bubbleColour
                                 : routeTextColour
