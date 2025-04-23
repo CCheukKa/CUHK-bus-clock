@@ -1,5 +1,11 @@
 # Roadmap
 
+## Bugs
+- Fix location picker being empty upon settings screen interaction (?)
+- Fix location picker flickering
+  - Merge into same file?
+- Fix errorText overflow clipping
+
 ## Features
 ### Core
 - Add ability to search for stations?
@@ -15,10 +21,7 @@
 - Add more colour themes
 - Pressing setting controls dismiss everything
 - Improve light theme colour usage
-- Fix location picker flickering
-  - Merge into same file?
 - Add warning for past + future peek time >= 60 minutes
-- Fix errorText overflow clipping
 - Find a better way to display error messages
 ### Sustainability
 - Add a way for users to contribute data
