@@ -1,5 +1,11 @@
 import { ThemeName } from "@/constants/Themes";
 
+export enum SuboptimalRouteStyle {
+    HIDDEN = 'hide',
+    HOLLOW = 'hollow',
+    FILLED = 'filled',
+};
+
 /* -------------------------------------------------------------------------- */
 export type Settings = {
     theme: ThemeName;
@@ -10,6 +16,7 @@ export type Settings = {
     showCountdown: boolean;
     dimDistantInfo: boolean;
     timingShowMinutes: number;
+    suboptimalRouteStyle: SuboptimalRouteStyle;
     useModalLocationPicker: boolean;
     bigCountdownInPanel: boolean;
     detectHolidays: boolean;
@@ -62,6 +69,12 @@ export const settingsSchema: Record<keyof Settings, {
         type: 'nonNegativeNumber',
         description: 'Minutes within which to show timings',
         defaultValue: 10,
+    },
+    suboptimalRouteStyle: {
+        type: 'enum',
+        enumValues: Object.values(SuboptimalRouteStyle),
+        description: 'Appearance for suboptimal routes',
+        defaultValue: SuboptimalRouteStyle.HOLLOW,
     },
     useModalLocationPicker: {
         type: 'boolean',

@@ -6,7 +6,7 @@ import { ClockFace } from '@/components/clockScreen/clock/ClockFace';
 import { FontAwesome6 } from '@expo/vector-icons';
 import DateTimePicker, { DateTimePickerEvent } from '@react-native-community/datetimepicker';
 import { JourneyPlanner } from '@/components/clockScreen/JourneyPlanner';
-import { FromTo, getEtaInfos } from '@/utils/Bus';
+import { FromTo, getEtaInfos, isEtaError } from '@/utils/Bus';
 import { Region } from '@/constants/BusData';
 import { EtaInfoPanel } from '@/components/clockScreen/EtaInfoPanel';
 import { useSettings } from '@/context/SettingsContext';
@@ -14,6 +14,7 @@ import { FullscreenView } from '@/components/common/FullscreenView';
 import { useTheme } from '@/context/ThemeContext';
 import { isPublicHoliday } from '@/utils/PublicHolidayScraper';
 import { WEEK_DAYS } from '@/constants/UI';
+import { SuboptimalRouteStyle } from '@/utils/Settings';
 
 export default function ClockScreen() {
     const { settings } = useSettings();
@@ -68,13 +69,18 @@ export default function ClockScreen() {
     }, []);
     //
     const [fromTo, setFromTo] = useState<FromTo>({ from: Region.MTR, to: Region.MAIN_CAMPUS });
-    const etaInfos = useMemo(() =>
-        getEtaInfos(fromTo, logicTime, settings.pastPeekMinutes, settings.futurePeekMinutes, settings.detectHolidays),
-        [
-            fromTo,
-            logicTime.truncateTo('second').getTime(),
-            settings,
-        ]
+    const etaInfos = useMemo(() => {
+        const rawEtaInfos = getEtaInfos(fromTo, logicTime, settings.pastPeekMinutes, settings.futurePeekMinutes, settings.detectHolidays);
+        if (isEtaError(rawEtaInfos)) { return rawEtaInfos; }
+        if (settings.suboptimalRouteStyle === SuboptimalRouteStyle.HIDDEN) {
+            return rawEtaInfos.filter(etaInfo => !etaInfo.journey.passThroughInflexion);
+        }
+        return rawEtaInfos;
+    }, [
+        fromTo,
+        logicTime.truncateTo('second').getTime(),
+        settings,
+    ]
     );
     //
     const dateTimeTextStyle = useMemo(() => !useRealTime ? { color: theme.primary } : null, [useRealTime]);

@@ -7,6 +7,7 @@ import { FontSizes } from "@/utils/Typography";
 import { FontAwesome, MaterialCommunityIcons } from "@expo/vector-icons";
 import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { useMemo, useRef } from "react";
+import { SuboptimalRouteStyle } from "@/utils/Settings";
 
 const noInfoTexts = [
     [
@@ -134,16 +135,20 @@ export function EtaInfoPanel({ time, etaInfos }: EtaInfoPanelProps) {
 
 function EtaInfoCard({ time, etaInfo }: { time: Date, etaInfo: EtaInfo }) {
     const { theme } = useTheme();
+    const { settings } = useSettings();
     const routeColour = busRouteInfos[etaInfo.journey.route].routeColour;
     const contrastColour = Colour.getLuminance(routeColour) > 150 ? theme.black : theme.white;
     const isPast = etaInfo.etaFromTime.getTime() < time.getTime();
+
+    const cardColour = isPast ? theme.background : theme.dimContrast;
+    const displayRouteColour = isPast ? Colour.mixRGBA(theme.dimContrast, routeColour, 0.5) : routeColour;
 
     const arrowDistance = 35;
     return (
         <View style={[
             etaStyles.etaInfoCard,
             {
-                backgroundColor: isPast ? theme.background : theme.dimContrast,
+                backgroundColor: cardColour,
             },
         ]}>
             <Text style={[
@@ -161,8 +166,17 @@ function EtaInfoCard({ time, etaInfo }: { time: Date, etaInfo: EtaInfo }) {
                 <View style={etaStyles.arrowContainer}>
                     <View style={[
                         etaStyles.routeNumberBubble,
+                        settings.suboptimalRouteStyle === SuboptimalRouteStyle.HOLLOW && etaInfo.journey.passThroughInflexion
+                            ? {
+                                borderColor: displayRouteColour,
+                                borderWidth: 2,
+                            }
+                            : null,
                         {
-                            backgroundColor: isPast ? Colour.mixRGBA(theme.dimContrast, routeColour, 0.5) : routeColour,
+                            backgroundColor:
+                                settings.suboptimalRouteStyle === SuboptimalRouteStyle.HOLLOW && etaInfo.journey.passThroughInflexion
+                                    ? cardColour
+                                    : displayRouteColour,
                             shadowColor: contrastColour,
                             shadowRadius: 4,
                             elevation: 1,
@@ -179,7 +193,7 @@ function EtaInfoCard({ time, etaInfo }: { time: Date, etaInfo: EtaInfo }) {
                     <FontAwesome
                         name='long-arrow-right'
                         size={40}
-                        color={isPast ? Colour.mixRGBA(theme.dimContrast, routeColour, 0.5) : routeColour}
+                        color={displayRouteColour}
                         style={{
                             position: 'relative',
                             left: 12,
@@ -190,7 +204,7 @@ function EtaInfoCard({ time, etaInfo }: { time: Date, etaInfo: EtaInfo }) {
                     <FontAwesome
                         name='long-arrow-right'
                         size={40}
-                        color={isPast ? Colour.mixRGBA(theme.dimContrast, routeColour, 0.5) : routeColour}
+                        color={displayRouteColour}
                         style={{
                             position: 'relative',
                             right: 8,

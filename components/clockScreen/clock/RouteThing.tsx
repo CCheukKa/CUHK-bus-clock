@@ -5,6 +5,7 @@ import { Colour, getCountdown, MathExtra, toTimeString } from "@/utils/Helper";
 import { useTheme } from "@/context/ThemeContext";
 import { useMemo } from "react";
 import { useSettings } from "@/context/SettingsContext";
+import { SuboptimalRouteStyle } from "@/utils/Settings";
 
 const weekDays = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'] as const;
 
@@ -294,13 +295,20 @@ export function RouteThing({ routeThingInfo }: { routeThingInfo: RouteThingInfo 
                 degrees={bubbleAngle} distance={bubbleDistance}
                 type={ClockThingType.ROUTE_BUBBLE}
                 style={{
-                    borderColour: etaInfo.journey.passThroughInflexion ? bubbleColour : undefined,
-                    backgroundColour: etaInfo.journey.passThroughInflexion ? theme.background : bubbleColour,
-                    textColour: etaInfo.journey.passThroughInflexion
-                        ? Math.abs(Colour.getLuminance(theme.background) - Colour.getLuminance(bubbleColour)) > Math.abs(Colour.getLuminance(theme.background) - Colour.getLuminance(routeTextColour))
+                    borderColour:
+                        settings.suboptimalRouteStyle === SuboptimalRouteStyle.HOLLOW && etaInfo.journey.passThroughInflexion
                             ? bubbleColour
-                            : routeTextColour
-                        : routeTextColour,
+                            : undefined,
+                    backgroundColour:
+                        settings.suboptimalRouteStyle === SuboptimalRouteStyle.HOLLOW && etaInfo.journey.passThroughInflexion
+                            ? theme.background
+                            : bubbleColour,
+                    textColour:
+                        settings.suboptimalRouteStyle === SuboptimalRouteStyle.HOLLOW && etaInfo.journey.passThroughInflexion
+                            ? Math.abs(Colour.getLuminance(theme.background) - Colour.getLuminance(bubbleColour)) > Math.abs(Colour.getLuminance(theme.background) - Colour.getLuminance(routeTextColour))
+                                ? bubbleColour
+                                : routeTextColour
+                            : routeTextColour,
                     scale: bubbleScale,
                 }}
             >
