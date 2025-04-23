@@ -166,7 +166,7 @@ function EtaInfoCard({ time, etaInfo }: { time: Date, etaInfo: EtaInfo }) {
                 <View style={etaStyles.arrowContainer}>
                     <View style={[
                         etaStyles.routeNumberBubble,
-                        settings.suboptimalRouteStyle === SuboptimalRouteStyle.HOLLOW && etaInfo.journey.isSuboptimal
+                        settings.suboptimalRouteStyle !== SuboptimalRouteStyle.FILLED && etaInfo.journey.isSuboptimal
                             ? {
                                 borderColor: displayRouteColour,
                                 borderWidth: 2,
@@ -174,7 +174,7 @@ function EtaInfoCard({ time, etaInfo }: { time: Date, etaInfo: EtaInfo }) {
                             : null,
                         {
                             backgroundColor:
-                                settings.suboptimalRouteStyle === SuboptimalRouteStyle.HOLLOW && etaInfo.journey.isSuboptimal
+                                settings.suboptimalRouteStyle !== SuboptimalRouteStyle.FILLED && etaInfo.journey.isSuboptimal
                                     ? cardColour
                                     : displayRouteColour,
                             shadowColor: contrastColour,
@@ -186,7 +186,7 @@ function EtaInfoCard({ time, etaInfo }: { time: Date, etaInfo: EtaInfo }) {
                             etaStyles.routeNumberBubbleText,
                             {
                                 color:
-                                    settings.suboptimalRouteStyle === SuboptimalRouteStyle.HOLLOW && etaInfo.journey.isSuboptimal
+                                    settings.suboptimalRouteStyle !== SuboptimalRouteStyle.FILLED && etaInfo.journey.isSuboptimal
                                         ? theme.highContrast
                                         : contrastColour,
                                 opacity: isPast ? 0.8 : 1,
