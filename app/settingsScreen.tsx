@@ -2,12 +2,11 @@ import { getDefaultSettings, Settings, settingsSchema } from '@/utils/Settings';
 import { FullscreenView } from '@/components/common/FullscreenView';
 import { ThemedText } from '@/components/common/ThemedText';
 import { SettingsProvider, useSettings } from '@/context/SettingsContext';
-import { StyleSheet, TouchableOpacity, View } from 'react-native';
+import { FlatList, StyleSheet, TouchableOpacity, View } from 'react-native';
 import { Dialog, Portal, Switch, TextInput } from 'react-native-paper';
 import DropDownPicker from 'react-native-dropdown-picker';
 import { useEffect, useState } from 'react';
 import { ThemeProvider, useTheme } from '@/context/ThemeContext';
-import { ScrollView } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 DropDownPicker.setTheme('DARK');
@@ -25,12 +24,12 @@ export default function SettingsScreen() {
 
     return (
         <FullscreenView>
-            <ScrollView
-                style={styles.settingsScrollview}
-                contentContainerStyle={styles.settingsScrollviewContainer}
-            >
-                <Controls />
-            </ScrollView>
+            <FlatList
+                data={Controls()}
+                style={styles.settingsFlatList}
+                contentContainerStyle={styles.settingsFlatListContainer}
+                renderItem={e => e.item}
+            />
             <TouchableOpacity
                 style={styles.resetToDefaultButtonContainer}
                 onPress={() => setResetDialogVisible(true)}
@@ -208,11 +207,11 @@ function Controls() {
 
 const settingHeight = 24 + 24 + 16;
 const styles = StyleSheet.create({
-    settingsScrollview: {
+    settingsFlatList: {
         width: '100%',
         height: '90%',
     },
-    settingsScrollviewContainer: {
+    settingsFlatListContainer: {
         display: 'flex',
         flexDirection: 'column',
         paddingVertical: 48,
