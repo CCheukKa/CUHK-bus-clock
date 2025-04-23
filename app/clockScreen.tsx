@@ -3,7 +3,7 @@ import { StyleSheet, TouchableOpacity, View } from 'react-native';
 
 import { ThemedText } from '@/components/common/ThemedText';
 import { ClockFace } from '@/components/clockScreen/clock/ClockFace';
-import { FontAwesome6 } from '@expo/vector-icons';
+import { FontAwesome6, MaterialCommunityIcons } from '@expo/vector-icons';
 import DateTimePicker, { DateTimePickerEvent } from '@react-native-community/datetimepicker';
 import { JourneyPlanner } from '@/components/clockScreen/JourneyPlanner';
 import { FromTo, getEtaInfos, isEtaError } from '@/utils/Bus';
@@ -69,14 +69,16 @@ export default function ClockScreen() {
     }, []);
     //
     const [fromTo, setFromTo] = useState<FromTo>({ from: Region.MTR, to: Region.MAIN_CAMPUS });
-    const etaInfos = useMemo(() => {
+    const { etaInfos, filteredCount } = useMemo(() => {
         const rawEtaInfos = getEtaInfos(fromTo, logicTime, settings.pastPeekMinutes, settings.futurePeekMinutes, settings.detectHolidays);
-        if (isEtaError(rawEtaInfos)) { return rawEtaInfos; }
+        if (isEtaError(rawEtaInfos)) { return { etaInfos: rawEtaInfos, filteredCount: NaN }; }
         if (settings.suboptimalRouteStyle === SuboptimalRouteStyle.HIDDEN) {
             const filteredEtaInfos = rawEtaInfos.filter(etaInfo => !etaInfo.journey.isSuboptimal);
-            return filteredEtaInfos.length > 0 ? filteredEtaInfos : rawEtaInfos;
+            return filteredEtaInfos.length > 0
+                ? { etaInfos: filteredEtaInfos, filteredCount: rawEtaInfos.length - filteredEtaInfos.length }
+                : { etaInfos: rawEtaInfos, filteredCount: NaN };
         }
-        return rawEtaInfos;
+        return { etaInfos: rawEtaInfos, filteredCount: NaN };
     }, [
         fromTo,
         logicTime.truncateTo('second').getTime(),
@@ -106,6 +108,30 @@ export default function ClockScreen() {
                         )}
                     </TouchableOpacity>
                 </View>
+                {filteredCount > 0
+                    ? <View style={styles.filteredCountContainer}>
+                        <MaterialCommunityIcons
+                            name='bus'
+                            size={18}
+                            color={theme.lowContrast}
+                        />
+                        <MaterialCommunityIcons
+                            name='filter-minus'
+                            size={12}
+                            color={theme.lowContrast}
+                            style={{
+                                position: 'relative',
+                                left: -4,
+                                margin: 0,
+                                alignSelf: 'flex-start',
+                            }}
+                        />
+                        <ThemedText type="default" style={{ color: theme.halfContrast }}>
+                            {filteredCount}
+                        </ThemedText>
+                    </View>
+                    : null
+                }
                 {dateTimePickerMode
                     ? (
                         <DateTimePicker
@@ -120,24 +146,23 @@ export default function ClockScreen() {
                     )
                     : null
                 }
-                {
-                    showResetToCurrentTimeButton
-                        ? <View style={[
-                            styles.resetToCurrentTimeButtonContainer,
-                            { right: settings.showClockFace ? 0 : 30 },
-                        ]}>
-                            <TouchableOpacity
-                                onPress={handleResetToCurrentTimeButtonPress}
-                                activeOpacity={0.4}
-                                style={[
-                                    styles.resetToCurrentTimeButton,
-                                    { backgroundColor: theme.primary },
-                                ]}
-                            >
-                                <FontAwesome6 name="clock-rotate-left" color={theme.background} size={20} />
-                            </TouchableOpacity>
-                        </View>
-                        : null
+                {showResetToCurrentTimeButton
+                    ? <View style={[
+                        styles.resetToCurrentTimeButtonContainer,
+                        { right: settings.showClockFace ? 0 : 30 },
+                    ]}>
+                        <TouchableOpacity
+                            onPress={handleResetToCurrentTimeButtonPress}
+                            activeOpacity={0.4}
+                            style={[
+                                styles.resetToCurrentTimeButton,
+                                { backgroundColor: theme.primary },
+                            ]}
+                        >
+                            <FontAwesome6 name="clock-rotate-left" color={theme.background} size={20} />
+                        </TouchableOpacity>
+                    </View>
+                    : null
                 }
             </View>
             {useMemo(() =>
@@ -166,6 +191,15 @@ const styles = StyleSheet.create({
     headerContainer: {
         width: '90%',
         marginTop: 24,
+    },
+    filteredCountContainer: {
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        display: 'flex',
+        flexDirection: 'row',
+        justifyContent: 'center',
+        alignItems: 'center',
     },
     dateTimeContainer: {
         display: 'flex',
