@@ -185,7 +185,10 @@ function EtaInfoCard({ time, etaInfo }: { time: Date, etaInfo: EtaInfo }) {
                         <Text style={[
                             etaStyles.routeNumberBubbleText,
                             {
-                                color: contrastColour,
+                                color:
+                                    settings.suboptimalRouteStyle === SuboptimalRouteStyle.HOLLOW && etaInfo.journey.passThroughInflexion
+                                        ? theme.highContrast
+                                        : contrastColour,
                                 opacity: isPast ? 0.8 : 1,
                             },
                         ]}>{etaInfo.journey.route}</Text>
