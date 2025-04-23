@@ -136,6 +136,9 @@ function Controls() {
                             useEffect(() => {
                                 setSettings({ ...settings, [key]: value })
                             }, [value]);
+                            useEffect(() => {
+                                setValue(settings[key].toString());
+                            }, [settings[key]]);
                             return (<DropDownPicker
                                 open={open}
                                 value={value}
@@ -158,6 +161,9 @@ function Controls() {
                     case 'nonNegativeNumber':
                         {
                             const [value, setValue] = useState(settings[key].toString());
+                            useEffect(() => {
+                                setValue(settings[key].toString());
+                            }, [settings[key].toString()]);
                             return (<TextInput
                                 mode='outlined'
                                 keyboardType='numeric'
