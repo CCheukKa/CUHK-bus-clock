@@ -261,7 +261,11 @@ export default function RoutesScreen() {
                                     borderColor: theme.dimContrast,
                                 },
                             ]}
-                            dropDownContainerStyle={{ backgroundColor: theme.minimalContrast }}
+                            dropDownContainerStyle={{
+                                backgroundColor: theme.minimalContrast,
+                                borderColor: theme.dimContrast,
+                                borderWidth: 2,
+                            }}
                         />
                     </View>
                     <TouchableOpacity
