@@ -1,8 +1,8 @@
 export const BusRoute = {
     _1A: '1A',
     _1B: '1B',
-    _2Y: '2+', // stops at sir run run shaw hall
     _2N: '2', // doesn't stop at sir run run shaw hall
+    _2Y: '2+', // stops at sir run run shaw hall
     _3: '3',
     _4: '4',
     _5D: '5', // weekdays
@@ -14,10 +14,10 @@ export const BusRoute = {
     _7E: '7*', // weekends
     _8D: '8', // weekdays
     _8E: '8*', // weekends
-    _NY: 'N+', // stops at pg hall 1
     _NN: 'N', // doesn't stop at pg hall 1
-    _HY: 'H+', // stops at pg hall 1 & area 39 (upwards)
+    _NY: 'N+', // stops at pg hall 1
     _HN: 'H', // doesn't stop at pg hall 1 & area 39 (upwards)
+    _HY: 'H+', // stops at pg hall 1 & area 39 (upwards)
 } as const;
 export type BusRoute = typeof BusRoute[keyof typeof BusRoute];
 
