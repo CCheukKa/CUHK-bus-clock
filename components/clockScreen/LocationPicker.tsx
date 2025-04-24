@@ -4,7 +4,7 @@ import { useSettings } from "@/context/SettingsContext";
 import { useTheme } from "@/context/ThemeContext";
 import { FontSizes } from "@/utils/Typography";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { Dimensions, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import DropDownPicker, { RenderListItemPropsInterface } from "react-native-dropdown-picker";
 import { NAVIGATION_BAR_HEIGHT } from "@/constants/UI";
@@ -38,29 +38,24 @@ export function LocationPicker({
 
     const dropdownContainerRef = useRef<View>(null);
     const [distanceFromBottom, setDistanceFromBottom] = useState(200);
-    useEffect(() => {
-        measurePosition();
-        const subscription = Dimensions.addEventListener('change', measurePosition);
-        return subscription.remove;
-    }, []);
-    const measurePosition = () => {
-        console.log('[LocationPicker][measurePosition] Measuring position');
 
+    (() => { //* measurePosition()
+        console.log('[LocationPicker][measurePosition] Measuring position');
         const screenHeight = Dimensions.get('window').height;
         if (!dropdownContainerRef.current) { return; }
         dropdownContainerRef.current.measure((_x, _y, _width, height, _pageX, pageY) => {
             const bottomEdgeOfComponent = pageY + height;
-            const distanceFromBottom = screenHeight - bottomEdgeOfComponent - NAVIGATION_BAR_HEIGHT - 8;
-            setDistanceFromBottom(distanceFromBottom);
+            const newDistanceFromBottom = screenHeight - bottomEdgeOfComponent - NAVIGATION_BAR_HEIGHT - 8;
+            if (distanceFromBottom !== newDistanceFromBottom) {
+                setDistanceFromBottom(newDistanceFromBottom);
+            }
         });
-    };
-    useEffect(() => { measurePosition() }, [settings]);
+    })();
 
     return (
         <View
             style={styles.dropdownContainer}
             ref={dropdownContainerRef}
-            onLayout={measurePosition}
         >
             <View style={[
                 styles.dropdownLabel,

@@ -1,7 +1,6 @@
 # Roadmap
 
 ## Bugs
-- Fix location picker being empty upon settings screen interaction (?)
 - Fix location picker flickering
   - Merge into same file?
 - Fix errorText overflow clipping
