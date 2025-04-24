@@ -342,7 +342,7 @@ const styles = StyleSheet.create({
         flexDirection: 'column',
         justifyContent: 'space-between',
         alignItems: 'center',
-        gap: 4,
+        gap: 5,
     },
     legendContainer: {
         width: '100%',
@@ -357,7 +357,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
-        gap: 4,
+        gap: 5,
     },
     controlButton: {
         backgroundColor: 'blue',
@@ -366,7 +366,7 @@ const styles = StyleSheet.create({
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
-        borderRadius: 8,
+        borderRadius: 4,
     },
 });
 
