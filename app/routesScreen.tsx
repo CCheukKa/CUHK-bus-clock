@@ -360,7 +360,6 @@ const styles = StyleSheet.create({
         gap: 5,
     },
     controlButton: {
-        backgroundColor: 'blue',
         flex: 1,
         aspectRatio: 1,
         display: 'flex',
