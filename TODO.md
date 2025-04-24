@@ -14,7 +14,6 @@
 - Add ability to fetch timing data from repo
 ### UI
 - Shrink bottom navigation bar
-- Consolidate route variants in route screen
 - Dropdown styling follow colour theme
 - Group buses arriving at the same time?
 - Add more colour themes
