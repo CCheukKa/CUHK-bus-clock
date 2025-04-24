@@ -236,27 +236,23 @@ export default function RoutesScreen() {
     const { theme } = useTheme();
 
     const [selectedRoute, setSelectedRoute] = useState<BusRoute>(BusRoute._1A);
-    const busRoutes = Object.keys(BusRoute);
     const controlButtons = [
-        ...busRoutes.map(routeKey => {
-            const route = BusRoute[routeKey as keyof typeof BusRoute];
-            const routeInfo = busRouteInfos[route];
+        ...Object.entries(busRouteInfos).map(([key, routeInfo]) => {
+            const route = key as BusRoute;
             const routeColour = routeInfo.routeColour;
             const contrastColour = Colour.getLuminance(routeColour) > 150
                 ? theme.black
                 : theme.white;
             return (
                 <TouchableOpacity
-                    key={routeKey}
+                    key={key}
                     style={[
                         styles.controlButton,
                         {
                             backgroundColor: `${routeColour}${selectedRoute === route ? 'ff' : '40'}`,
                         },
                     ]}
-                    onPress={() => {
-                        setSelectedRoute(route);
-                    }}
+                    onPress={() => { setSelectedRoute(route); }}
                 >
                     <ThemedText
                         type='defaultPlus'

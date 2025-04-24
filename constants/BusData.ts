@@ -969,13 +969,13 @@ export const busRouteInfos: Record<BusRoute, BusRouteInfo> = {
 } as const;
 
 export const { starts, termini }: { starts: Station[], termini: Station[] } = (() => {
-    const starts = new Set<Station>(Object.keys(Station).map(stationKey => Station[stationKey as keyof typeof Station]));
-    const termini = new Set<Station>(Object.keys(Station).map(stationKey => Station[stationKey as keyof typeof Station]));
-    Object.keys(BusRoute).forEach(routeKey => {
-        const routeInfo = busRouteInfos[BusRoute[routeKey as keyof typeof BusRoute]];
-        routeInfo.stations.forEach((station, index) => {
+    const starts = new Set<Station>(Object.values(Station));
+    const termini = new Set<Station>(Object.values(Station));
+    Object.entries(busRouteInfos).forEach(([_, routeInfo]) => {
+        const routeStations = routeInfo.stations;
+        routeStations.forEach((station, index) => {
             if (index !== 0) { starts.delete(station); }
-            if (index !== routeInfo.stations.length - 1) { termini.delete(station); }
+            if (index !== routeStations.length - 1) { termini.delete(station); }
         });
     });
     return { starts: Array.from(starts), termini: Array.from(termini) };
