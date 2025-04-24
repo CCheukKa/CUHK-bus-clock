@@ -39,7 +39,7 @@ export function LocationPicker({
     const dropdownContainerRef = useRef<View>(null);
     const [distanceFromBottom, setDistanceFromBottom] = useState(200);
 
-    if (!settings.useModalLocationPicker) {
+    if (!settings.useFullscreenLocationPicker) {
         (() => { //* measurePosition()
             console.log('[LocationPicker][measurePosition] Measuring position');
             const screenHeight = Dimensions.get('window').height;
@@ -95,7 +95,7 @@ export function LocationPicker({
                 ]}
                 dropDownDirection="BOTTOM"
                 maxHeight={distanceFromBottom - 34}
-                listMode={settings.useModalLocationPicker ? "MODAL" : "SCROLLVIEW"}
+                listMode={settings.useFullscreenLocationPicker ? "MODAL" : "SCROLLVIEW"}
                 modalTitle={pickerLabel}
                 modalTitleStyle={[
                     styles.dropdownModalTitle,

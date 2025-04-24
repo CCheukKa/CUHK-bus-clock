@@ -17,7 +17,7 @@ export type Settings = {
     dimDistantInfo: boolean;
     timingShowMinutes: number;
     suboptimalRouteStyle: SuboptimalRouteStyle;
-    useModalLocationPicker: boolean;
+    useFullscreenLocationPicker: boolean;
     bigCountdownInPanel: boolean;
     detectHolidays: boolean;
 };
@@ -76,7 +76,7 @@ export const settingsSchema: Record<keyof Settings, {
         description: 'Appearance for suboptimal routes',
         defaultValue: SuboptimalRouteStyle.HOLLOW,
     },
-    useModalLocationPicker: {
+    useFullscreenLocationPicker: {
         type: 'boolean',
         description: 'Use fullscreen modal for location picker',
         defaultValue: false,
