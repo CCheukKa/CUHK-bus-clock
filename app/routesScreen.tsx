@@ -137,7 +137,11 @@ function RouteInfoCard({ route }: RouteInfoCardProps) {
                         <View style={routeInfoStyles.routeNumberContainer}>
                             <ThemedText
                                 type='title'
-                                style={{ color: contrastColour }}
+                                style={{
+                                    width: '130%',
+                                    textAlign: 'center',
+                                    color: contrastColour,
+                                }}
                             >
                                 {route}
                             </ThemedText>
@@ -392,6 +396,7 @@ const routeInfoStyles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'center',
         alignItems: 'center',
+        overflow: 'visible',
         transform: [{ translateY: 5 }],
     },
     routeNameContainer: {
