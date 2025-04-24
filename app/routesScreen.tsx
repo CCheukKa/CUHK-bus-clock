@@ -239,7 +239,7 @@ export default function RoutesScreen() {
     const busRoutes = Object.keys(BusRoute);
     const controlButtons = [
         ...busRoutes.map(routeKey => {
-            const route = BusRoute[routeKey as keyof typeof BusRoute]
+            const route = BusRoute[routeKey as keyof typeof BusRoute];
             const routeInfo = busRouteInfos[route];
             const routeColour = routeInfo.routeColour;
             const contrastColour = Colour.getLuminance(routeColour) > 150
