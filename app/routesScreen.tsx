@@ -5,9 +5,8 @@ import { useTheme } from '@/context/ThemeContext';
 import { Colour, MathExtra, toTimeString } from '@/utils/Helper';
 import { FontSizes } from '@/utils/Typography';
 import { MaterialCommunityIcons, Octicons } from '@expo/vector-icons';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { Linking, ScrollView, StyleSheet, TouchableOpacity, View } from 'react-native';
-import DropDownPicker from 'react-native-dropdown-picker';
 import { WEEK_DAYS } from '@/constants/UI';
 
 const enum StationInfoType {
@@ -91,7 +90,10 @@ function StationInfos({ route }: StationInfosProps) {
                 stationTimingOffset={stationTimingOffset}
             />,
             busRouteInfos[route].inflexionIndices?.some(ii => Math.floor(ii) === i)
-                ? <View style={stationInfoStyles.inflexionMarkerContainer}>
+                ? <View
+                    key={`${i}:inflexion`}
+                    style={stationInfoStyles.inflexionMarkerContainer}
+                >
                     <View style={[
                         stationInfoStyles.inflexionMarker,
                         { backgroundColor: theme.dimContrast },
@@ -233,61 +235,84 @@ function RouteInfoCard({ route }: RouteInfoCardProps) {
 export default function RoutesScreen() {
     const { theme } = useTheme();
 
-    const [open, setOpen] = useState(false);
-    const [value, setValue] = useState<keyof typeof BusRoute>('_1A' as keyof typeof BusRoute);
-    const [items, setItems] = useState(Object.keys(BusRoute).map(key => { return { label: BusRoute[key as keyof typeof BusRoute], value: key } }));
-    const [selectedRoute, setSelectedRoute] = useState<BusRoute | null>(BusRoute._1A);
-    useEffect(() => {
-        setSelectedRoute(value !== null ? BusRoute[value] : null);
-    }, [value]);
+    const [selectedRoute, setSelectedRoute] = useState<BusRoute>(BusRoute._1A);
+    const busRoutes = Object.keys(BusRoute);
+    const controlButtons = [
+        ...busRoutes.map(routeKey => {
+            const route = BusRoute[routeKey as keyof typeof BusRoute]
+            const routeInfo = busRouteInfos[route];
+            const routeColour = routeInfo.routeColour;
+            const contrastColour = Colour.getLuminance(routeColour) > 150
+                ? theme.black
+                : theme.white;
+            return (
+                <TouchableOpacity
+                    key={routeKey}
+                    style={[
+                        styles.controlButton,
+                        {
+                            backgroundColor: `${routeColour}${selectedRoute === route ? 'ff' : '40'}`,
+                        },
+                    ]}
+                    onPress={() => {
+                        setSelectedRoute(route);
+                    }}
+                >
+                    <ThemedText
+                        type='defaultPlus'
+                        style={{
+                            color: selectedRoute === route
+                                ? contrastColour
+                                : theme.highContrast,
+                            opacity: selectedRoute === route ? 1 : 0.5,
+                        }}
+                    >
+                        {route}
+                    </ThemedText>
+                </TouchableOpacity>
+            );
+        }),
+        (<TouchableOpacity
+            key={'canonRouteInfoButton'}
+            style={[
+                styles.controlButton,
+                { backgroundColor: theme.dimContrast },
+            ]}
+            onPress={() => {
+                const url = busRouteInfos[selectedRoute].canonInfoUrl;
+                Linking.openURL(url);
+            }}
+        >
+            <Octicons
+                name='link-external'
+                size={20}
+                color={theme.halfContrast}
+            />
+        </TouchableOpacity>),
+    ];
 
     return (
         <FullscreenView>
             <View style={styles.screenContainer}>
                 <RouteInfoCard route={selectedRoute} />
-                <View style={styles.controlContainer}>
-                    <View style={styles.dropdownPickerContainer}>
-                        <DropDownPicker
-                            open={open}
-                            value={value}
-                            items={items}
-                            setOpen={setOpen}
-                            setValue={setValue}
-                            setItems={setItems}
-                            style={[
-                                styles.dropDownPicker,
-                                {
-                                    backgroundColor: theme.minimalContrast,
-                                    borderColor: theme.dimContrast,
-                                },
-                            ]}
-                            dropDownContainerStyle={{
-                                backgroundColor: theme.minimalContrast,
-                                borderColor: theme.dimContrast,
-                                borderWidth: 2,
-                            }}
-                        />
+                <View style={styles.controlsContainer}>
+                    <View style={styles.legendContainer}>
+                        <ThemedText type='faded'>
+                            [ + ] stops at additional stations
+                        </ThemedText>
+                        <ThemedText type='faded'>
+                            [ * ] weekend services
+                        </ThemedText>
                     </View>
-                    <TouchableOpacity
-                        style={[
-                            styles.canonRouteInfoButton,
-                            { backgroundColor: theme.dimContrast },
-                        ]}
-                        onPress={() => {
-                            if (selectedRoute === null) { return; }
-                            const url = busRouteInfos[selectedRoute].canonInfoUrl;
-                            Linking.openURL(url);
-                        }}
-                    >
-                        <Octicons
-                            name='link-external'
-                            size={24}
-                            color={theme.halfContrast}
-                        />
-                    </TouchableOpacity>
+                    <View style={styles.controlsRowContainer}>
+                        {controlButtons.slice(0, controlButtons.length / 2)}
+                    </View>
+                    <View style={styles.controlsRowContainer}>
+                        {controlButtons.slice(controlButtons.length / 2)}
+                    </View>
                 </View>
             </View>
-        </FullscreenView>
+        </FullscreenView >
     );
 }
 
@@ -311,27 +336,32 @@ const styles = StyleSheet.create({
         borderRadius: ROUTE_INFO_BORDER_RADIUS,
         overflow: 'hidden',
     },
-    controlContainer: {
+    controlsContainer: {
+        width: '100%',
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        gap: 4,
+    },
+    legendContainer: {
         width: '100%',
         display: 'flex',
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
     },
-    dropdownPickerContainer: {
-        width: '80%',
-        height: 50,
+    controlsRowContainer: {
+        width: '100%',
         display: 'flex',
         flexDirection: 'row',
-        justifyContent: 'center',
+        justifyContent: 'space-between',
         alignItems: 'center',
+        gap: 4,
     },
-    dropDownPicker: {
-        borderWidth: 2,
-        paddingHorizontal: 16,
-    },
-    canonRouteInfoButton: {
-        height: 50,
+    controlButton: {
+        backgroundColor: 'blue',
+        flex: 1,
         aspectRatio: 1,
         display: 'flex',
         justifyContent: 'center',
