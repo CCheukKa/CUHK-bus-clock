@@ -237,37 +237,39 @@ export default function RoutesScreen() {
 
     const [selectedRoute, setSelectedRoute] = useState<BusRoute>(BusRoute._1A);
     const controlButtons = [
-        ...Object.entries(busRouteInfos).map(([key, routeInfo]) => {
-            const route = key as BusRoute;
-            const routeColour = routeInfo.routeColour;
-            const contrastColour = Colour.getLuminance(routeColour) > 150
-                ? theme.black
-                : theme.white;
-            return (
-                <TouchableOpacity
-                    key={key}
-                    style={[
-                        styles.controlButton,
-                        {
-                            backgroundColor: `${routeColour}${selectedRoute === route ? 'ff' : '40'}`,
-                        },
-                    ]}
-                    onPress={() => { setSelectedRoute(route); }}
-                >
-                    <ThemedText
-                        type='defaultPlus'
-                        style={{
-                            color: selectedRoute === route
-                                ? contrastColour
-                                : theme.highContrast,
-                            opacity: selectedRoute === route ? 1 : 0.5,
-                        }}
+        ...Object.entries(busRouteInfos)
+            .sort(([keyA], [keyB]) => keyA > keyB ? 1 : -1)
+            .map(([key, routeInfo]) => {
+                const route = key as BusRoute;
+                const routeColour = routeInfo.routeColour;
+                const contrastColour = Colour.getLuminance(routeColour) > 150
+                    ? theme.black
+                    : theme.white;
+                return (
+                    <TouchableOpacity
+                        key={key}
+                        style={[
+                            styles.controlButton,
+                            {
+                                backgroundColor: `${routeColour}${selectedRoute === route ? 'ff' : '40'}`,
+                            },
+                        ]}
+                        onPress={() => { setSelectedRoute(route); }}
                     >
-                        {route}
-                    </ThemedText>
-                </TouchableOpacity>
-            );
-        }),
+                        <ThemedText
+                            type='defaultPlus'
+                            style={{
+                                color: selectedRoute === route
+                                    ? contrastColour
+                                    : theme.highContrast,
+                                opacity: selectedRoute === route ? 1 : 0.5,
+                            }}
+                        >
+                            {route}
+                        </ThemedText>
+                    </TouchableOpacity>
+                );
+            }),
         (<TouchableOpacity
             key={'canonRouteInfoButton'}
             style={[
