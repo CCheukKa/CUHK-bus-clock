@@ -21,42 +21,44 @@ export const BusRoute = {
 } as const;
 export type BusRoute = typeof BusRoute[keyof typeof BusRoute];
 
-export enum Station {
-    AREA_39_DOWNWARD = 'Area 39 (Downward)',
-    AREA_39_UPWARD = 'Area 39 (Upward)',
-    CAMPUS_CIRCUIT_EAST_DOWNWARD = 'Campus Circuit East (Downward)',
-    CAMPUS_CIRCUIT_EAST_UPWARD = 'Campus Circuit East (Upward)',
-    CAMPUS_CIRCUIT_NORTH = 'Campus Circuit North',
-    CHAN_CHUN_HA_HOSTEL = 'Chan Chun Ha Hostel',
-    CHUNG_CHI_TEACHING_BUILDING = 'Chung Chi Teaching Building',
-    CHUNG_CHI_TEACHING_BUILDING_TERMINUS = 'Chung Chi Teaching Building (Terminus)',
-    CWC_COLLEGE_DOWNWARD = 'CW Chu College (Downward)',
-    CWC_COLLEGE_DOWNWARD_TERMINUS = 'CW Chu College (Downward) (Terminus)',
-    CWC_COLLEGE_UPWARD = 'CW Chu College (Upward)',
-    FUNG_KING_HEY_BUILDING = 'Fung King Hey Building',
-    NEW_ASIA_CIRCLE = 'New Asia Circle',
-    NEW_ASIA_COLLEGE = 'New Asia College',
-    POSTGRADUATE_HALL_1 = 'Postgraduate Hall 1',
-    RESIDENCE_10 = 'Residence No.10',
-    RESIDENCE_15 = 'Residence No.15',
-    SCIENCE_CENTRE = 'Science Centre',
-    SHAW_COLLEGE_DOWNWARD = 'Shaw College (Downward)',
-    SHAW_COLLEGE_UPWARD = 'Shaw College (Upward)',
-    SHHO_COLLEGE = 'S.H. Ho College',
-    SIR_RUN_RUN_SHAW_HALL = 'Sir Run Run Shaw Hall',
-    UNITED_COLLEGE_DOWNWARD = 'United College (Downward)',
-    UNTIED_COLLEGE_STAFF_RESIDENCE = 'United College Staff Residence',
-    UNITED_COLLEGE_UPWARD = 'United College (Upward)',
-    UNIVERSITY_ADMIN_BUILDING = 'University Admin Building',
-    UNIVERSITY_SPORTS_CENTRE = 'University Sports Centre',
-    UNIVERSITY_STATION = 'University Station',
-    UNIVERSITY_STATION_TERMINUS = 'University Station (Terminus)',
-    UNIVERSITY_STATION_PIAZZA = 'University Station Piazza',
-    UNIVERSITY_STATION_PIAZZA_TERMINUS = 'University Station Piazza (Terminus)',
-    WU_YEE_SUN_COLLEGE_DOWNWARD = 'Wu Yee Sun College (Downward)',
-    WU_YEE_SUN_COLLEGE_UPWARD = 'Wu Yee Sun College (Upward)',
-    YIA = 'YIA',
-}
+export const Station = {
+    AREA_39_DOWNWARD: 'Area 39 (Downward)',
+    AREA_39_UPWARD: 'Area 39 (Upward)',
+    CAMPUS_CIRCUIT_EAST_DOWNWARD: 'Campus Circuit East (Downward)',
+    CAMPUS_CIRCUIT_EAST_UPWARD: 'Campus Circuit East (Upward)',
+    CAMPUS_CIRCUIT_NORTH: 'Campus Circuit North',
+    CHAN_CHUN_HA_HOSTEL: 'Chan Chun Ha Hostel',
+    CHUNG_CHI_TEACHING_BUILDING: 'Chung Chi Teaching Building',
+    CHUNG_CHI_TEACHING_BUILDING_TERMINUS: 'Chung Chi Teaching Building (Terminus)',
+    CWC_COLLEGE_DOWNWARD: 'CW Chu College (Downward)',
+    CWC_COLLEGE_DOWNWARD_TERMINUS: 'CW Chu College (Downward) (Terminus)',
+    CWC_COLLEGE_UPWARD: 'CW Chu College (Upward)',
+    FUNG_KING_HEY_BUILDING: 'Fung King Hey Building',
+    NEW_ASIA_CIRCLE: 'New Asia Circle',
+    NEW_ASIA_COLLEGE: 'New Asia College',
+    POSTGRADUATE_HALL_1: 'Postgraduate Hall 1',
+    RESIDENCE_10: 'Residence No.10',
+    RESIDENCE_15: 'Residence No.15',
+    SCIENCE_CENTRE: 'Science Centre',
+    SHAW_COLLEGE_DOWNWARD: 'Shaw College (Downward)',
+    SHAW_COLLEGE_UPWARD: 'Shaw College (Upward)',
+    SHHO_COLLEGE: 'S.H. Ho College',
+    SIR_RUN_RUN_SHAW_HALL: 'Sir Run Run Shaw Hall',
+    UNITED_COLLEGE_DOWNWARD: 'United College (Downward)',
+    UNTIED_COLLEGE_STAFF_RESIDENCE: 'United College Staff Residence',
+    UNITED_COLLEGE_UPWARD: 'United College (Upward)',
+    UNIVERSITY_ADMIN_BUILDING: 'University Admin Building',
+    UNIVERSITY_SPORTS_CENTRE: 'University Sports Centre',
+    UNIVERSITY_STATION: 'University Station',
+    UNIVERSITY_STATION_TERMINUS: 'University Station (Terminus)',
+    UNIVERSITY_STATION_PIAZZA: 'University Station Piazza',
+    UNIVERSITY_STATION_PIAZZA_TERMINUS: 'University Station Piazza (Terminus)',
+    WU_YEE_SUN_COLLEGE_DOWNWARD: 'Wu Yee Sun College (Downward)',
+    WU_YEE_SUN_COLLEGE_UPWARD: 'Wu Yee Sun College (Upward)',
+    YIA: 'YIA',
+} as const;
+export type Station = typeof Station[keyof typeof Station];
+
 export const stationAbbreviations: Record<Station, string> = {
     [Station.AREA_39_DOWNWARD]: 'Area 39 (Down)',
     [Station.AREA_39_UPWARD]: 'Area 39 (Up)',
@@ -93,19 +95,6 @@ export const stationAbbreviations: Record<Station, string> = {
     [Station.WU_YEE_SUN_COLLEGE_UPWARD]: 'WYS College (Up)',
     [Station.YIA]: 'YIA',
 } as const;
-// compile this auto?
-export const starts: Station[] = [
-    Station.CHUNG_CHI_TEACHING_BUILDING,
-    Station.UNIVERSITY_STATION,
-    Station.YIA,
-] as const;
-// compile this auto?
-export const termini: Station[] = [
-    Station.CHUNG_CHI_TEACHING_BUILDING_TERMINUS,
-    Station.CWC_COLLEGE_DOWNWARD_TERMINUS,
-    Station.UNIVERSITY_STATION_PIAZZA_TERMINUS,
-    Station.UNIVERSITY_STATION_TERMINUS,
-] as const;
 
 export enum Region {
     AREA_39 = 'Area 39',
@@ -978,6 +967,19 @@ export const busRouteInfos: Record<BusRoute, BusRouteInfo> = {
         inflexionIndices: [6.5, 11.5],
     },
 } as const;
+
+export const { starts, termini }: { starts: Station[], termini: Station[] } = (() => {
+    const starts = new Set<Station>(Object.keys(Station).map(stationKey => Station[stationKey as keyof typeof Station]));
+    const termini = new Set<Station>(Object.keys(Station).map(stationKey => Station[stationKey as keyof typeof Station]));
+    Object.keys(BusRoute).forEach(routeKey => {
+        const routeInfo = busRouteInfos[BusRoute[routeKey as keyof typeof BusRoute]];
+        routeInfo.stations.forEach((station, index) => {
+            if (index !== 0) { starts.delete(station); }
+            if (index !== routeInfo.stations.length - 1) { termini.delete(station); }
+        });
+    });
+    return { starts: Array.from(starts), termini: Array.from(termini) };
+})();
 
 export const busStationTimings: Record<string, number[]> = {
     [`${Station.AREA_39_DOWNWARD}>>${Station.CAMPUS_CIRCUIT_NORTH}`]: [138],
