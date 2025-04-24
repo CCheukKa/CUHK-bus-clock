@@ -1,23 +1,23 @@
 export const BusRoute = {
     _1A: '1A',
     _1B: '1B',
-    _2N: '2', // doesn't stop at sir run run shaw hall
-    _2Y: '2+', // stops at sir run run shaw hall
+    _2: '2', // doesn't stop at sir run run shaw hall
+    _2P: '2+', // stops at sir run run shaw hall
     _3: '3',
     _4: '4',
-    _5D: '5', // weekdays
-    _5E: '5*', // weekends
-    _6AD: '6A', // weekdays
-    _6AE: '6A*', // weekends
+    _5: '5',
+    _5S: '5*', // weekends
+    _6A: '6A',
+    _6AS: '6A*', // weekends
     _6B: '6B',
-    _7D: '7', // weekdays
-    _7E: '7*', // weekends
-    _8D: '8', // weekdays
-    _8E: '8*', // weekends
-    _NN: 'N', // doesn't stop at pg hall 1
-    _NY: 'N+', // stops at pg hall 1
-    _HN: 'H', // doesn't stop at pg hall 1 & area 39 (upwards)
-    _HY: 'H+', // stops at pg hall 1 & area 39 (upwards)
+    _7: '7',
+    _7S: '7*', // weekends
+    _8: '8',
+    _8S: '8*', // weekends
+    _N: 'N', // doesn't stop at pg hall 1
+    _NP: 'N+', // stops at pg hall 1
+    _H: 'H', // doesn't stop at pg hall 1 & area 39 (upwards)
+    _HP: 'H+', // stops at pg hall 1 & area 39 (upwards)
 } as const;
 export type BusRoute = typeof BusRoute[keyof typeof BusRoute];
 
@@ -526,7 +526,7 @@ export const busRouteInfos: Record<BusRoute, BusRouteInfo> = {
         ],
         inflexionIndices: [2.5, 4.5],
     },
-    [BusRoute._2Y]: {
+    [BusRoute._2P]: {
         canonInfoUrl: 'https://transport.cuhk.edu.hk/route/2',
         routeName: 'NA/UC',
         routeColour: '#ec4790',
@@ -550,7 +550,7 @@ export const busRouteInfos: Record<BusRoute, BusRouteInfo> = {
         ],
         inflexionIndices: [4.5, 5.5],
     },
-    [BusRoute._2N]: {
+    [BusRoute._2]: {
         canonInfoUrl: 'https://transport.cuhk.edu.hk/route/2',
         routeName: 'NA/UC',
         routeColour: '#ec4790',
@@ -631,7 +631,7 @@ export const busRouteInfos: Record<BusRoute, BusRouteInfo> = {
         ],
         inflexionIndices: [1.5, 11.5],
     },
-    [BusRoute._5D]: {
+    [BusRoute._5]: {
         canonInfoUrl: 'https://transport.cuhk.edu.hk/route/5',
         routeName: 'Upward',
         routeColour: '#29a1d8',
@@ -651,7 +651,7 @@ export const busRouteInfos: Record<BusRoute, BusRouteInfo> = {
             /* 8 */ Station.CWC_COLLEGE_DOWNWARD_TERMINUS,
         ],
     },
-    [BusRoute._5E]: {
+    [BusRoute._5S]: {
         canonInfoUrl: 'https://transport.cuhk.edu.hk/route/5',
         routeName: 'Upward',
         routeColour: '#29a1d8',
@@ -671,7 +671,7 @@ export const busRouteInfos: Record<BusRoute, BusRouteInfo> = {
             /* 8 */ Station.CWC_COLLEGE_DOWNWARD_TERMINUS,
         ],
     },
-    [BusRoute._6AD]: {
+    [BusRoute._6A]: {
         canonInfoUrl: 'https://transport.cuhk.edu.hk/route/6a',
         routeName: 'Downward (CWC)',
         routeColour: '#7c8644',
@@ -692,7 +692,7 @@ export const busRouteInfos: Record<BusRoute, BusRouteInfo> = {
             /* 9 */ Station.CHUNG_CHI_TEACHING_BUILDING_TERMINUS,
         ],
     },
-    [BusRoute._6AE]: {
+    [BusRoute._6AS]: {
         canonInfoUrl: 'https://transport.cuhk.edu.hk/route/6a',
         routeName: 'Downward (CWC)',
         routeColour: '#7c8644',
@@ -730,7 +730,7 @@ export const busRouteInfos: Record<BusRoute, BusRouteInfo> = {
             /* 5 */ Station.CHUNG_CHI_TEACHING_BUILDING_TERMINUS,
         ],
     },
-    [BusRoute._7D]: {
+    [BusRoute._7]: {
         canonInfoUrl: 'https://transport.cuhk.edu.hk/route/7',
         routeName: 'Downward (Shaw)',
         routeColour: '#666666',
@@ -749,7 +749,7 @@ export const busRouteInfos: Record<BusRoute, BusRouteInfo> = {
             /* 7 */ Station.CHUNG_CHI_TEACHING_BUILDING_TERMINUS,
         ],
     },
-    [BusRoute._7E]: {
+    [BusRoute._7S]: {
         canonInfoUrl: 'https://transport.cuhk.edu.hk/route/7',
         routeName: 'Downward (Shaw)',
         routeColour: '#666666',
@@ -768,7 +768,7 @@ export const busRouteInfos: Record<BusRoute, BusRouteInfo> = {
             /* 7 */ Station.CHUNG_CHI_TEACHING_BUILDING_TERMINUS,
         ],
     },
-    [BusRoute._8D]: {
+    [BusRoute._8]: {
         canonInfoUrl: 'https://transport.cuhk.edu.hk/route/8',
         routeName: 'Western Campus',
         routeColour: '#ffc55a',
@@ -798,7 +798,7 @@ export const busRouteInfos: Record<BusRoute, BusRouteInfo> = {
         ],
         inflexionIndices: [5.5, 9.5],
     },
-    [BusRoute._8E]: {
+    [BusRoute._8S]: {
         canonInfoUrl: 'https://transport.cuhk.edu.hk/route/8',
         routeName: 'Western Campus',
         routeColour: '#ffc55a',
@@ -829,7 +829,7 @@ export const busRouteInfos: Record<BusRoute, BusRouteInfo> = {
         ],
         inflexionIndices: [5.5, 9.5],
     },
-    [BusRoute._NY]: {
+    [BusRoute._NP]: {
         canonInfoUrl: 'https://transport.cuhk.edu.hk/route/n',
         routeName: 'Night Service',
         routeColour: '#7961a8',
@@ -864,7 +864,7 @@ export const busRouteInfos: Record<BusRoute, BusRouteInfo> = {
         ],
         inflexionIndices: [7.5, 12.5],
     },
-    [BusRoute._NN]: {
+    [BusRoute._N]: {
         canonInfoUrl: 'https://transport.cuhk.edu.hk/route/n',
         routeName: 'Night Service',
         routeColour: '#7961a8',
@@ -897,7 +897,7 @@ export const busRouteInfos: Record<BusRoute, BusRouteInfo> = {
         ],
         inflexionIndices: [6.5, 11.5],
     },
-    [BusRoute._HY]: {
+    [BusRoute._HP]: {
         canonInfoUrl: 'https://transport.cuhk.edu.hk/route/h',
         routeName: 'Holidays Service',
         routeColour: '#453087',
@@ -933,7 +933,7 @@ export const busRouteInfos: Record<BusRoute, BusRouteInfo> = {
         ],
         inflexionIndices: [7.5, 13.5],
     },
-    [BusRoute._HN]: {
+    [BusRoute._H]: {
         canonInfoUrl: 'https://transport.cuhk.edu.hk/route/h',
         routeName: 'Holidays Service',
         routeColour: '#453087',
