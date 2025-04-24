@@ -138,7 +138,6 @@ function RouteInfoCard({ route }: RouteInfoCardProps) {
                             <ThemedText
                                 type='title'
                                 style={{
-                                    width: '130%',
                                     textAlign: 'center',
                                     color: contrastColour,
                                 }}
@@ -383,7 +382,6 @@ const routeInfoStyles = StyleSheet.create({
         alignItems: 'center',
     },
     routeInfoLeftSide: {
-        width: 50,
         height: '100%',
         display: 'flex',
         flexDirection: 'row',
@@ -391,7 +389,7 @@ const routeInfoStyles = StyleSheet.create({
         gap: 8,
     },
     routeNumberContainer: {
-        width: '100%',
+        minWidth: 50,
         display: 'flex',
         flexDirection: 'row',
         justifyContent: 'center',
