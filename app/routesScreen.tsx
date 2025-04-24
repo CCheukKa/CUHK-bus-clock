@@ -286,7 +286,7 @@ export default function RoutesScreen() {
             <Octicons
                 name='link-external'
                 size={20}
-                color={theme.halfContrast}
+                color={theme.highContrast}
             />
         </TouchableOpacity>),
     ];
