@@ -6,7 +6,7 @@ import { Colour, MathExtra, toTimeString } from '@/utils/Helper';
 import { FontSizes } from '@/utils/Typography';
 import { MaterialCommunityIcons, Octicons } from '@expo/vector-icons';
 import React, { useEffect, useState } from 'react';
-import { Linking, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Linking, ScrollView, StyleSheet, TouchableOpacity, View } from 'react-native';
 import DropDownPicker from 'react-native-dropdown-picker';
 import { WEEK_DAYS } from '@/constants/UI';
 
