@@ -39,18 +39,20 @@ export function LocationPicker({
     const dropdownContainerRef = useRef<View>(null);
     const [distanceFromBottom, setDistanceFromBottom] = useState(200);
 
-    (() => { //* measurePosition()
-        console.log('[LocationPicker][measurePosition] Measuring position');
-        const screenHeight = Dimensions.get('window').height;
-        if (!dropdownContainerRef.current) { return; }
-        dropdownContainerRef.current.measure((_x, _y, _width, height, _pageX, pageY) => {
-            const bottomEdgeOfComponent = pageY + height;
-            const newDistanceFromBottom = screenHeight - bottomEdgeOfComponent - NAVIGATION_BAR_HEIGHT - 8;
-            if (distanceFromBottom !== newDistanceFromBottom) {
-                setDistanceFromBottom(newDistanceFromBottom);
-            }
-        });
-    })();
+    if (!settings.useModalLocationPicker) {
+        (() => { //* measurePosition()
+            console.log('[LocationPicker][measurePosition] Measuring position');
+            const screenHeight = Dimensions.get('window').height;
+            if (!dropdownContainerRef.current) { return; }
+            dropdownContainerRef.current.measure((_x, _y, _width, height, _pageX, pageY) => {
+                const bottomEdgeOfComponent = pageY + height;
+                const newDistanceFromBottom = screenHeight - bottomEdgeOfComponent - NAVIGATION_BAR_HEIGHT - 8;
+                if (distanceFromBottom !== newDistanceFromBottom) {
+                    setDistanceFromBottom(newDistanceFromBottom);
+                }
+            });
+        })();
+    }
 
     return (
         <View
