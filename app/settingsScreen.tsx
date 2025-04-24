@@ -151,9 +151,17 @@ function Controls() {
                                     {
                                         backgroundColor: schema.disabled ? theme.background : theme.minimalContrast,
                                         opacity: schema.disabled ? 0.4 : 1,
+                                        borderColor: open ? theme.dimContrast : 'transparent',
+                                        borderWidth: 2,
                                     },
                                 ]}
-                                dropDownContainerStyle={{ backgroundColor: theme.minimalContrast }}
+                                dropDownContainerStyle={{
+                                    backgroundColor: theme.minimalContrast,
+                                    borderColor: theme.dimContrast,
+                                    borderWidth: 2,
+                                }}
+                                arrowIconStyle={styles.dropdownIconStyle}
+                                tickIconStyle={styles.dropdownIconStyle}
                                 disabled={schema.disabled}
                             />);
                         }
@@ -248,6 +256,14 @@ const styles = StyleSheet.create({
         width: '100%',
         height: settingHeight,
         borderRadius: 8,
+    },
+    dropdownIconStyle: {
+        margin: 0,
+        padding: 0,
+        position: 'absolute',
+        right: 0,
+        overflow: 'visible',
+        transform: [{ translateY: "-50%" }]
     },
     resetToDefaultButtonContainer: {
         marginVertical: 16,
