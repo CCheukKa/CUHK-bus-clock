@@ -79,7 +79,7 @@ function StationInfos({ route }: StationInfosProps) {
 
         stationInfos.push(
             <StationInfo
-                key={i}
+                key={thisStation}
                 type={
                     i === 0
                         ? StationInfoType.TOP
