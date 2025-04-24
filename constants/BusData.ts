@@ -6,14 +6,14 @@ export const BusRoute = {
     _3: '3',
     _4: '4',
     _5D: '5', // weekdays
-    _5E: '5_', // weekends
+    _5E: '5*', // weekends
     _6AD: '6A', // weekdays
-    _6AE: '6A_', // weekends
+    _6AE: '6A*', // weekends
     _6B: '6B',
     _7D: '7', // weekdays
-    _7E: '7_', // weekends
+    _7E: '7*', // weekends
     _8D: '8', // weekdays
-    _8E: '8_', // weekends
+    _8E: '8*', // weekends
     _NY: 'N+', // stops at pg hall 1
     _NN: 'N', // doesn't stop at pg hall 1
     _HY: 'H+', // stops at pg hall 1 & area 39 (upwards)
