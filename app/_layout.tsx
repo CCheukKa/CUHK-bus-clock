@@ -33,7 +33,7 @@ export default function RootLayout() {
 
     return (
         <>
-            <StatusBar style="auto" />
+            <StatusBar style="light" />
             <PaperProvider
                 settings={{
                     icon: ({ name, ...otherProps }) => {
@@ -93,6 +93,12 @@ function WithinProviders() {
             inactiveColor={theme.lowContrast}
             activeIndicatorStyle={{ backgroundColor: theme.dimContrast }}
             keyboardHidesNavigationBar={false}
+            theme={{
+                dark: true,
+                colors: {
+                    background: theme.background,
+                }
+            }}
         />
     );
 }
