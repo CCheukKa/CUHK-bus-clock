@@ -97,7 +97,8 @@
     ],
     "S.H. Ho College>>University Station Piazza": [],
     "S.H. Ho College>>University Station Piazza (Terminus)": [
-        128
+        128,
+        93
     ],
     "S.H. Ho College>>University Station (Terminus)": [
         95,
@@ -118,7 +119,8 @@
     ],
     "United College (Downward)>>University Admin Building": [
         81,
-        113
+        113,
+        119
     ],
     "United College (Downward)>>Wu Yee Sun College (Upward)": [
         64,
@@ -140,7 +142,8 @@
         98,
         103,
         83,
-        140
+        140,
+        108
     ],
     "University Sports Centre>>Fung King Hey Building": [
         168,

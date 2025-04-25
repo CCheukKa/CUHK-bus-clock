@@ -2548,5 +2548,73 @@
             "mocked": false,
             "timestamp": 1745297086162
         }
+    },
+    {
+        "route": "2",
+        "timeStamp": "2025-04-25T07:03:36.863Z",
+        "location": {
+            "coords": {
+                "accuracy": 45.34600067138672,
+                "longitude": 114.2052733,
+                "altitude": 137.20001220703125,
+                "heading": 0,
+                "latitude": 22.4203287,
+                "altitudeAccuracy": 12.781641006469727,
+                "speed": 0
+            },
+            "mocked": false,
+            "timestamp": 1745564636530
+        }
+    },
+    {
+        "route": "2",
+        "timeStamp": "2025-04-25T07:05:35.930Z",
+        "location": {
+            "coords": {
+                "accuracy": 76.17500305175781,
+                "longitude": 114.2031069,
+                "altitude": 110.38104248046875,
+                "heading": 0,
+                "latitude": 22.4202208,
+                "altitudeAccuracy": 22.08712387084961,
+                "speed": 0
+            },
+            "mocked": false,
+            "timestamp": 1745564736208
+        }
+    },
+    {
+        "route": "2",
+        "timeStamp": "2025-04-25T07:07:23.580Z",
+        "location": {
+            "coords": {
+                "accuracy": 16.090999603271484,
+                "longitude": 114.2098747,
+                "altitude": 48,
+                "heading": 0,
+                "latitude": 22.418006,
+                "altitudeAccuracy": 3.0139071941375732,
+                "speed": 0
+            },
+            "mocked": false,
+            "timestamp": 1745564842014
+        }
+    },
+    {
+        "route": "2",
+        "timeStamp": "2025-04-25T07:08:56.947Z",
+        "location": {
+            "coords": {
+                "accuracy": 57.40700149536133,
+                "longitude": 114.2105195,
+                "altitude": 9.800000190734863,
+                "heading": 0,
+                "latitude": 22.4153202,
+                "altitudeAccuracy": 2.2572569847106934,
+                "speed": 0
+            },
+            "mocked": false,
+            "timestamp": 1745564937374
+        }
     }
 ]
