@@ -35,6 +35,13 @@ export default function InfoScreen() {
                     It is not affiliated with CUHK.
                     All information used in this app is either publicly available or collected by me.
                 </ThemedText>
+                <ThemedText
+                    type='default'
+                    style={styles.descriptionText}
+                >
+                    Data points were collected manually and averaged to generate a time sheet.
+                    Please expect inaccuracies and variations from real-world conditions.
+                </ThemedText>
             </View>
             <View style={styles.buttonsContainer}>
                 <View style={styles.buttonsRowContainer}>
