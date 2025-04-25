@@ -985,11 +985,11 @@ export const busStationTimings: Record<string, number[]> = {
     [`${Station.AREA_39_DOWNWARD}>>${Station.CAMPUS_CIRCUIT_NORTH}`]: [138],
     [`${Station.AREA_39_UPWARD}>>${Station.CWC_COLLEGE_DOWNWARD}`]: [98],
     [`${Station.CAMPUS_CIRCUIT_EAST_UPWARD}>>${Station.CWC_COLLEGE_UPWARD}`]: [139],
-    [`${Station.CAMPUS_CIRCUIT_EAST_DOWNWARD}>>${Station.UNIVERSITY_STATION_PIAZZA}`]: [],
+    [`${Station.CAMPUS_CIRCUIT_EAST_DOWNWARD}>>${Station.UNIVERSITY_STATION_PIAZZA}`]: [94, 84], //!
     [`${Station.CAMPUS_CIRCUIT_EAST_DOWNWARD}>>${Station.UNIVERSITY_STATION_TERMINUS}`]: [94, 84],
     [`${Station.CAMPUS_CIRCUIT_NORTH}>>${Station.CAMPUS_CIRCUIT_EAST_DOWNWARD}`]: [159, 174],
     [`${Station.CHAN_CHUN_HA_HOSTEL}>>${Station.SHAW_COLLEGE_DOWNWARD}`]: [118, 97, 155],
-    [`${Station.CHAN_CHUN_HA_HOSTEL}>>${Station.WU_YEE_SUN_COLLEGE_DOWNWARD}`]: [],
+    [`${Station.CHAN_CHUN_HA_HOSTEL}>>${Station.WU_YEE_SUN_COLLEGE_DOWNWARD}`]: [60], //!
     [`${Station.CHUNG_CHI_TEACHING_BUILDING}>>${Station.UNIVERSITY_SPORTS_CENTRE}`]: [119],
     [`${Station.CWC_COLLEGE_DOWNWARD}>>${Station.RESIDENCE_10}`]: [93],
     [`${Station.CWC_COLLEGE_DOWNWARD}>>${Station.RESIDENCE_15}`]: [83],
@@ -1012,7 +1012,7 @@ export const busStationTimings: Record<string, number[]> = {
     [`${Station.SHAW_COLLEGE_UPWARD}>>${Station.CWC_COLLEGE_DOWNWARD}`]: [126, 109],
     [`${Station.SHAW_COLLEGE_UPWARD}>>${Station.CWC_COLLEGE_DOWNWARD_TERMINUS}`]: [125],
     [`${Station.SHHO_COLLEGE}>>${Station.POSTGRADUATE_HALL_1}`]: [100],
-    [`${Station.SHHO_COLLEGE}>>${Station.UNIVERSITY_STATION_PIAZZA}`]: [],
+    [`${Station.SHHO_COLLEGE}>>${Station.UNIVERSITY_STATION_PIAZZA}`]: [128, 93], //!
     [`${Station.SHHO_COLLEGE}>>${Station.UNIVERSITY_STATION_PIAZZA_TERMINUS}`]: [128, 93],
     [`${Station.SHHO_COLLEGE}>>${Station.UNIVERSITY_STATION_TERMINUS}`]: [95, 106, 97],
     [`${Station.SIR_RUN_RUN_SHAW_HALL}>>${Station.FUNG_KING_HEY_BUILDING}`]: [63, 73],
@@ -1029,7 +1029,7 @@ export const busStationTimings: Record<string, number[]> = {
     [`${Station.UNIVERSITY_SPORTS_CENTRE}>>${Station.SIR_RUN_RUN_SHAW_HALL}`]: [132, 139, 110, 153, 147, 127, 145, 153, 123, 140, 149, 132, 109, 145, 147, 160],
     [`${Station.UNIVERSITY_STATION}>>${Station.POSTGRADUATE_HALL_1}`]: [124, 150],
     [`${Station.UNIVERSITY_STATION}>>${Station.UNIVERSITY_SPORTS_CENTRE}`]: [135, 111, 91, 127, 112, 126, 146, 107, 123, 131, 98],
-    [`${Station.UNIVERSITY_STATION_PIAZZA}>>${Station.CHUNG_CHI_TEACHING_BUILDING_TERMINUS}`]: [],
+    [`${Station.UNIVERSITY_STATION_PIAZZA}>>${Station.CHUNG_CHI_TEACHING_BUILDING_TERMINUS}`]: [40], //!
     [`${Station.UNIVERSITY_STATION_PIAZZA}>>${Station.UNIVERSITY_SPORTS_CENTRE}`]: [157, 171, 176, 150, 162],
     [`${Station.WU_YEE_SUN_COLLEGE_DOWNWARD}>>${Station.NEW_ASIA_COLLEGE}`]: [84],
     [`${Station.WU_YEE_SUN_COLLEGE_DOWNWARD}>>${Station.UNIVERSITY_ADMIN_BUILDING}`]: [93, 131],
