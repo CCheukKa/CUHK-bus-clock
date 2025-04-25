@@ -226,8 +226,7 @@ function EtaInfoCard({ time, etaInfo }: { time: Date, etaInfo: EtaInfo }) {
                     color: isPast ? theme.halfContrast : theme.highContrast,
                 },
             ]}>
-                {/* {stationAbbreviations[etaInfo.journey.toStation].replace(/ \(.*\)/, '')} */}
-                {stationAbbreviations[etaInfo.journey.toStation]}
+                {stationAbbreviations[etaInfo.journey.toStation].replace(/ (?=\()/, '\n')}
             </Text>
         </View>
     );
