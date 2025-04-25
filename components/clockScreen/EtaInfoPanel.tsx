@@ -159,7 +159,7 @@ function EtaInfoCard({ time, etaInfo }: { time: Date, etaInfo: EtaInfo }) {
                     color: isPast ? theme.halfContrast : theme.highContrast,
                 },
             ]}>
-                {stationAbbreviations[etaInfo.journey.fromStation].replace(/ (?=\()/, '\n')}
+                {stationAbbreviations[etaInfo.journey.fromStation].replace(/ (?=\((?:Up|Down)\))/, '\n')}
             </Text>
             <View style={etaStyles.etaInfoCardCenter}>
                 <EtaTime time={time} etaTime={etaInfo.etaFromTime} isPast={isPast} right={arrowDistance} />
