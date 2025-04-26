@@ -72,7 +72,13 @@ export function EtaInfoPanel({ time, etaInfos }: EtaInfoPanelProps) {
     }, [scrollTargetEtaInfo]);
     const scrollViewRef = useRef<ScrollView>(null);
 
-    useEffect
+    useEffect(() => {
+        setSortedEtaInfos(
+            isEtaInfoArray(etaInfos)
+                ? etaInfos.sort((a, b) => a.etaFromTime.getTime() - b.etaFromTime.getTime())
+                : null
+        );
+    }, [etaInfos]);
 
     return useMemo(() => (
         <View style={[
@@ -126,37 +132,31 @@ export function EtaInfoPanel({ time, etaInfos }: EtaInfoPanelProps) {
                     ETA Info Panel
                 </ThemedText>
             </View>
-            {(() => {
-                if (isEtaInfoArray(etaInfos)) {
-                    const sortedEtaInfos = etaInfos.sort((a, b) => a.etaFromTime.getTime() - b.etaFromTime.getTime());
-                    setSortedEtaInfos(sortedEtaInfos);
-                    return <ScrollView
-                        style={etaStyles.etaScrollContainer}
-                        contentContainerStyle={etaStyles.etaScrollContainerContent}
-                        showsVerticalScrollIndicator={false}
-                        snapToInterval={scrollSnapInterval}
-                        ref={scrollViewRef}
-                    >
-                        {sortedEtaInfos.map((etaInfo) => (
-                            <EtaInfoCard
-                                key={etaInfo.journey.route + etaInfo.etaFromTime}
-                                time={time}
-                                etaInfo={etaInfo}
-                            />
-                        ))}
-                    </ScrollView>
-                } else {
-                    setSortedEtaInfos(null);
-                    return <View style={noInfoStyles.noInfoContainer}>
-                        <ThemedText style={[
-                            noInfoStyles.noInfoText,
-                            { color: theme.lowContrast },
-                        ]}>
-                            {`${noInfoTexts[0][Math.floor(Math.random() * noInfoTexts[0].length)]}\n\n${noInfoTexts[1][Math.floor(Math.random() * noInfoTexts[1].length)]}`}
-                        </ThemedText>
-                    </View>
-                }
-            })()}
+            {sortedEtaInfos !== null
+                ? <ScrollView
+                    style={etaStyles.etaScrollContainer}
+                    contentContainerStyle={etaStyles.etaScrollContainerContent}
+                    showsVerticalScrollIndicator={false}
+                    snapToInterval={scrollSnapInterval}
+                    ref={scrollViewRef}
+                >
+                    {sortedEtaInfos.map((etaInfo) => (
+                        <EtaInfoCard
+                            key={etaInfo.journey.route + etaInfo.etaFromTime}
+                            time={time}
+                            etaInfo={etaInfo}
+                        />
+                    ))}
+                </ScrollView>
+                : <View style={noInfoStyles.noInfoContainer}>
+                    <ThemedText style={[
+                        noInfoStyles.noInfoText,
+                        { color: theme.lowContrast },
+                    ]}>
+                        {`${noInfoTexts[0][Math.floor(Math.random() * noInfoTexts[0].length)]}\n\n${noInfoTexts[1][Math.floor(Math.random() * noInfoTexts[1].length)]}`}
+                    </ThemedText>
+                </View>
+            }
         </View>
     ), [frameCount.current, settings]);
     /* -------------------------------------------------------------------------- */
