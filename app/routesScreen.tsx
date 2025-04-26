@@ -145,7 +145,7 @@ function RouteInfoCard({ route }: RouteInfoCardProps) {
                             </ThemedText>
                         </View>
                         <View style={routeInfoStyles.routeNameContainer}>
-                            <ThemedText style={{ color: contrastColour }}>
+                            <ThemedText type='bold' style={{ color: Colour.mixRGBA(routeColour, contrastColour, 0.6) }}>
                                 {busRouteInfos[route].routeName}
                             </ThemedText>
                         </View>
@@ -157,7 +157,7 @@ function RouteInfoCard({ route }: RouteInfoCardProps) {
                                 size={24}
                                 color={contrastColour}
                             />
-                            <ThemedText style={{ color: contrastColour }}>
+                            <ThemedText type='bold' style={{ color: contrastColour }}>
                                 {busRouteInfos[route].minuteMarks
                                     .map(mark => `:${mark.toString().padStart(2, '0')}`)
                                     .join(', ')
@@ -170,7 +170,7 @@ function RouteInfoCard({ route }: RouteInfoCardProps) {
                                 size={24}
                                 color={contrastColour}
                             />
-                            <ThemedText style={{ color: contrastColour }}>
+                            <ThemedText type='bold' style={{ color: contrastColour }}>
                                 {`${toTimeString(busRouteInfos[route].firstService, true)} - ${toTimeString(busRouteInfos[route].lastService, true)}`}
                             </ThemedText>
                         </View>
@@ -186,9 +186,11 @@ function RouteInfoCard({ route }: RouteInfoCardProps) {
                                     return (
                                         <ThemedText
                                             key={index}
+                                            type='bold'
                                             style={{
-                                                color: contrastColour,
-                                                opacity: isAvailable ? 1 : 0.2,
+                                                color: isAvailable
+                                                    ? contrastColour
+                                                    : Colour.mixRGBA(routeColour, contrastColour, 0.2),
                                             }}
                                         >
                                             {day[0]}
@@ -394,7 +396,6 @@ const routeInfoStyles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'flex-start',
         alignItems: 'center',
-        opacity: 0.8,
         transform: [{ translateY: 2 }],
         width: 80,
     },
