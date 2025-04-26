@@ -2,7 +2,6 @@ import { FullscreenView } from '@/components/common/FullscreenView';
 import { ThemedText } from '@/components/common/ThemedText';
 import { Image, StyleSheet, TouchableOpacity, View } from 'react-native';
 import Constants from 'expo-constants';
-import { FontSizes } from '@/utils/Typography';
 import { useTheme } from '@/context/ThemeContext';
 import { FontAwesome6, MaterialCommunityIcons } from '@expo/vector-icons';
 import { Linking } from 'react-native';
@@ -59,7 +58,7 @@ export default function InfoScreen() {
                             size={22}
                             color={theme.text}
                         />
-                        <ThemedText type='defaultSemiBold'>
+                        <ThemedText>
                             View Developer
                         </ThemedText>
                     </TouchableOpacity>
@@ -77,7 +76,7 @@ export default function InfoScreen() {
                             size={20}
                             color={theme.text}
                         />
-                        <ThemedText type='defaultSemiBold'>
+                        <ThemedText>
                             View Source
                         </ThemedText>
                     </TouchableOpacity>
@@ -97,7 +96,7 @@ export default function InfoScreen() {
                             size={26}
                             color={theme.text}
                         />
-                        <ThemedText type='defaultSemiBold'>
+                        <ThemedText>
                             Report Bug
                         </ThemedText>
                     </TouchableOpacity>
@@ -115,7 +114,7 @@ export default function InfoScreen() {
                             size={26}
                             color={theme.text}
                         />
-                        <ThemedText type='defaultSemiBold'>
+                        <ThemedText>
                             Feature Request
                         </ThemedText>
                     </TouchableOpacity>
@@ -135,7 +134,7 @@ export default function InfoScreen() {
                             size={26}
                             color={theme.text}
                         />
-                        <ThemedText type='defaultSemiBold'>
+                        <ThemedText>
                             Support Me
                         </ThemedText>
                     </TouchableOpacity>
@@ -160,7 +159,6 @@ const styles = StyleSheet.create({
     },
     descriptionText: {
         marginVertical: 16,
-        lineHeight: FontSizes.large,
         textAlign: 'justify',
     },
     buttonsContainer: {

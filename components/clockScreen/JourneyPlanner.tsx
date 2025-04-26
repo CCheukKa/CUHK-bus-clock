@@ -3,10 +3,11 @@ import { DropdownItem, LocationPicker } from "@/components/clockScreen/LocationP
 import { useEffect, useMemo, useState } from "react";
 import { FromTo, getRegionFromGPS, getStationFromGPS, LocationNullable } from "@/utils/Bus";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
-import { StyleSheet, Text, ToastAndroid, TouchableOpacity, View } from "react-native";
+import { StyleSheet, ToastAndroid, TouchableOpacity, View } from "react-native";
 import { useTheme } from "@/context/ThemeContext";
 import * as Location from "expo-location";
 import Animated, { cancelAnimation, Easing, useAnimatedStyle, useSharedValue, withRepeat, withTiming } from "react-native-reanimated";
+import { ThemedText } from "@/components/common/ThemedText";
 
 const data: DropdownItem[] = (() => {
     const entries: DropdownItem[] = [];
@@ -125,14 +126,14 @@ export function JourneyPlanner({ fromTo, setFromTo }: JourneyPlannerProps) {
                             }}
                         />
                     </View>
-                    <Text
+                    <ThemedText
                         style={[
                             styles.warningText,
                             { color: theme.primary },
                         ]}
                     >
                         {warningMessage}
-                    </Text>
+                    </ThemedText>
                 </View>
                 {useMemo(() =>
                     <LocationPicker
@@ -234,7 +235,6 @@ const styles = StyleSheet.create({
     warningText: {
         position: 'absolute',
         right: 0,
-        fontWeight: 'bold',
         textAlign: 'right',
     },
     gpsSpinner: {

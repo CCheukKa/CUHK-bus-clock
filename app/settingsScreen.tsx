@@ -67,7 +67,11 @@ export default function SettingsScreen() {
                             }}
                             theme={{ colors: { backdrop: `${theme.background}e0` } }}
                         >
-                            <Dialog.Title style={{ color: theme.text, fontWeight: 'bold' }}>Reset Settings</Dialog.Title>
+                            <Dialog.Title style={{ color: theme.text }}>
+                                <ThemedText type='subtitle' style={{ fontSize: 24 }}>
+                                    Reset Settings
+                                </ThemedText>
+                            </Dialog.Title>
                             <Dialog.Content>
                                 <ThemedText>
                                     Do you want to reset all settings to their default values? This action cannot be undone.
@@ -80,7 +84,7 @@ export default function SettingsScreen() {
                                     </ThemedText>
                                 </TouchableOpacity>
                                 <TouchableOpacity onPress={resetSettings}>
-                                    <ThemedText style={{ padding: 8, marginLeft: 8, color: theme.primary, fontWeight: 'bold' }}>
+                                    <ThemedText style={{ padding: 8, marginLeft: 8, color: theme.primary }}>
                                         Reset
                                     </ThemedText>
                                 </TouchableOpacity>
@@ -160,6 +164,7 @@ function Controls() {
                                     borderColor: theme.dimContrast,
                                     borderWidth: 2,
                                 }}
+                                textStyle={{ fontFamily: 'KlintRounded' }}
                                 arrowIconStyle={styles.dropdownIconStyle}
                                 tickIconStyle={styles.dropdownIconStyle}
                                 disabled={schema.disabled}
@@ -185,7 +190,11 @@ function Controls() {
                                     setSettings({ ...settings, [key]: inputValue })
                                     setValue(inputValue.toString());
                                 }}
-                                contentStyle={{ textAlign: 'right' }}
+                                contentStyle={{
+                                    textAlign: 'right',
+                                    fontFamily: 'KlintRounded',
+                                    color: theme.highContrast,
+                                }}
                                 style={[
                                     styles.control,
                                     { backgroundColor: theme.minimalContrast }
@@ -238,6 +247,7 @@ const styles = StyleSheet.create({
         flexDirection: 'column',
         justifyContent: 'flex-start',
         alignItems: 'flex-start',
+        gap: 4,
     },
     setting: {
         width: '90%',

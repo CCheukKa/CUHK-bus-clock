@@ -2,12 +2,12 @@ import { LocationNullable } from "@/utils/Bus";
 import { Region } from "@/constants/BusData";
 import { useSettings } from "@/context/SettingsContext";
 import { useTheme } from "@/context/ThemeContext";
-import { FontSizes } from "@/utils/Typography";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { useRef, useState } from "react";
-import { Dimensions, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { Dimensions, StyleSheet, TouchableOpacity, View } from "react-native";
 import DropDownPicker, { RenderListItemPropsInterface } from "react-native-dropdown-picker";
 import { NAVIGATION_BAR_HEIGHT } from "@/constants/UI";
+import { ThemedText } from "@/components/common/ThemedText";
 
 export type DropdownItem = {
     type: 'region' | 'station';
@@ -72,12 +72,9 @@ export function LocationPicker({
                     size={24}
                     color={dropdownOpened ? theme.highContrast : theme.halfContrast}
                 />
-                <Text style={[
-                    styles.dropdownLabelText,
-                    { color: dropdownOpened ? theme.highContrast : theme.halfContrast },
-                ]}>
+                <ThemedText style={{ color: dropdownOpened ? theme.highContrast : theme.halfContrast }}>
                     {pickerLabel}
-                </Text>
+                </ThemedText>
             </View>
             <DropDownPicker
                 onOpen={onOpen}
@@ -89,18 +86,12 @@ export function LocationPicker({
                 setItems={setDropdownItems}
                 closeOnBackPressed={true}
                 placeholder="Select a station/region"
-                placeholderStyle={[
-                    styles.dropdownPlaceholder,
-                    { color: theme.lowContrast },
-                ]}
+                placeholderStyle={{ color: theme.lowContrast }}
                 dropDownDirection="BOTTOM"
                 maxHeight={distanceFromBottom - 34}
                 listMode={settings.useFullscreenLocationPicker ? "MODAL" : "SCROLLVIEW"}
                 modalTitle={pickerLabel}
-                modalTitleStyle={[
-                    styles.dropdownModalTitle,
-                    { color: theme.highContrast },
-                ]}
+                modalTitleStyle={{ color: theme.highContrast }}
                 modalAnimationType="slide"
                 modalContentContainerStyle={{
                     backgroundColor: theme.minimalContrast,
@@ -116,10 +107,10 @@ export function LocationPicker({
                         borderColor: theme.dimContrast,
                     },
                 ]}
-                textStyle={[
-                    styles.dropdownText,
-                    { color: theme.highContrast },
-                ]}
+                textStyle={{
+                    color: theme.highContrast,
+                    fontFamily: 'KlintRounded',
+                }}
                 dropDownContainerStyle={[
                     styles.dropdownListContainer,
                     {
@@ -173,23 +164,18 @@ export function LocationPicker({
                             }}
                         />
                     }
-                    <Text style={[
+                    <ThemedText style={[
                         styles.dropdownItemText,
-                        {
-                            color: isSelected ? theme.dimContrast : theme.highContrast,
-                            fontWeight: isRegion || isSelected ? 'bold' : 'normal',
-                            fontSize: isRegion ? FontSizes.small : undefined,
-                        }
+                        { color: isSelected ? theme.dimContrast : theme.highContrast }
                     ]}>
                         {listItem.label}
-                    </Text>
+                    </ThemedText>
                 </View>
                 {
                     listItem.value === Region.MISCELLANEOUS
-                        ? <Text style={{
+                        ? <ThemedText style={{
                             color: isSelected ? theme.primarySharp : theme.primary,
-                            fontWeight: isSelected ? 'bold' : 'normal',
-                        }}>Choose a station instead</Text>
+                        }}>Choose a station instead</ThemedText>
                         : null
                 }
             </TouchableOpacity>
@@ -215,9 +201,6 @@ const styles = StyleSheet.create({
         zIndex: 10,
         borderRadius: 4,
     },
-    dropdownLabelText: {
-        fontWeight: 'bold',
-    },
     dropdownBar: {
         width: '100%',
         paddingHorizontal: 16,
@@ -225,15 +208,9 @@ const styles = StyleSheet.create({
         borderWidth: 2,
         zIndex: 1,
     },
-    dropdownPlaceholder: {
-        fontWeight: 'bold',
-    },
     dropdownListContainer: {
         borderWidth: 2,
         paddingVertical: 8,
-    },
-    dropdownModalTitle: {
-        fontWeight: 'bold',
     },
     dropdownItem: {
         paddingHorizontal: 16,
@@ -246,9 +223,6 @@ const styles = StyleSheet.create({
     },
     dropdownItemText: {
         marginLeft: 4,
-    },
-    dropdownText: {
-        fontWeight: 'bold',
     },
     dropdownItemMain: {
         display: 'flex',

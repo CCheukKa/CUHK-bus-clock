@@ -3,7 +3,6 @@ import { ThemedText } from '@/components/common/ThemedText';
 import { BusRoute, busRouteInfos, busStationTimings, Station } from '@/constants/BusData';
 import { useTheme } from '@/context/ThemeContext';
 import { Colour, MathExtra, toTimeString } from '@/utils/Helper';
-import { FontSizes } from '@/utils/Typography';
 import { MaterialCommunityIcons, Octicons } from '@expo/vector-icons';
 import React, { useState } from 'react';
 import { Linking, ScrollView, StyleSheet, TouchableOpacity, View } from 'react-native';
@@ -48,12 +47,12 @@ function StationInfo({ type, station, stationTimingOffset }: StationInfoProps) {
                     borderColor: theme.dimContrast,
                 },
             ]}>
-                <ThemedText type='defaultSemiBold'>
+                <ThemedText>
                     {station}
                 </ThemedText>
             </View>
             <View style={stationInfoStyles.stationTimingContainer}>
-                <ThemedText type='defaultSemiBold'>
+                <ThemedText>
                     {`+${toTimeString(Math.round(stationTimingOffset))}`}
                 </ThemedText>
             </View>
@@ -146,13 +145,7 @@ function RouteInfoCard({ route }: RouteInfoCardProps) {
                             </ThemedText>
                         </View>
                         <View style={routeInfoStyles.routeNameContainer}>
-                            <ThemedText
-                                type='defaultSemiBold'
-                                style={{
-                                    color: contrastColour,
-                                    lineHeight: FontSizes.medium
-                                }}
-                            >
+                            <ThemedText style={{ color: contrastColour }}>
                                 {busRouteInfos[route].routeName}
                             </ThemedText>
                         </View>
@@ -164,10 +157,7 @@ function RouteInfoCard({ route }: RouteInfoCardProps) {
                                 size={24}
                                 color={contrastColour}
                             />
-                            <ThemedText
-                                type='defaultSemiBold'
-                                style={{ color: contrastColour }}
-                            >
+                            <ThemedText style={{ color: contrastColour }}>
                                 {busRouteInfos[route].minuteMarks
                                     .map(mark => `:${mark.toString().padStart(2, '0')}`)
                                     .join(', ')
@@ -180,10 +170,7 @@ function RouteInfoCard({ route }: RouteInfoCardProps) {
                                 size={24}
                                 color={contrastColour}
                             />
-                            <ThemedText
-                                type='defaultSemiBold'
-                                style={{ color: contrastColour }}
-                            >
+                            <ThemedText style={{ color: contrastColour }}>
                                 {`${toTimeString(busRouteInfos[route].firstService, true)} - ${toTimeString(busRouteInfos[route].lastService, true)}`}
                             </ThemedText>
                         </View>
@@ -199,7 +186,6 @@ function RouteInfoCard({ route }: RouteInfoCardProps) {
                                     return (
                                         <ThemedText
                                             key={index}
-                                            type='defaultSemiBold'
                                             style={{
                                                 color: contrastColour,
                                                 opacity: isAvailable ? 1 : 0.2,
@@ -248,24 +234,32 @@ export default function RoutesScreen() {
                 const contrastColour = Colour.getLuminance(routeColour) > 150
                     ? theme.black
                     : theme.white;
+                const backgroundColour = Colour.mixRGBA(
+                    theme.background,
+                    routeColour,
+                    selectedRoute === route ? 1 : 0.25,
+                );
                 return (
                     <TouchableOpacity
                         key={key}
                         style={[
                             styles.controlButton,
                             {
-                                backgroundColor: `${routeColour}${selectedRoute === route ? 'ff' : '40'}`,
+                                backgroundColor: backgroundColour,
                             },
                         ]}
                         onPress={() => { setSelectedRoute(route); }}
                     >
                         <ThemedText
-                            type='defaultPlus'
+                            type='boldPlus'
                             style={{
                                 color: selectedRoute === route
                                     ? contrastColour
-                                    : theme.highContrast,
-                                opacity: selectedRoute === route ? 1 : 0.5,
+                                    : Colour.mixRGBA(
+                                        backgroundColour,
+                                        theme.highContrast,
+                                        selectedRoute === route ? 1 : 0.4,
+                                    ),
                             }}
                         >
                             {route}
@@ -385,7 +379,6 @@ const routeInfoStyles = StyleSheet.create({
         height: '100%',
         display: 'flex',
         flexDirection: 'row',
-        alignItems: 'center',
         gap: 8,
     },
     routeNumberContainer: {
@@ -395,7 +388,6 @@ const routeInfoStyles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         overflow: 'visible',
-        transform: [{ translateY: 5 }],
     },
     routeNameContainer: {
         display: 'flex',

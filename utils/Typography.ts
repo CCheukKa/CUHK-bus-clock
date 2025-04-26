@@ -19,7 +19,7 @@ export const hp = (heightPercent: number) => {
 };
 
 // Scale font size based on screen width
-export const normalize = (size: number) => {
+export const normalise = (size: number) => {
     const scale = SCREEN_WIDTH / baseWidth;
     const newSize = size * scale;
     return Math.round(PixelRatio.roundToNearestPixel(newSize));
@@ -27,10 +27,10 @@ export const normalize = (size: number) => {
 
 // Font sizes used throughout the app
 export const FontSizes = {
-    tiny: normalize(10),
-    small: normalize(12),
-    medium: normalize(14),
-    large: normalize(16),
-    xlarge: normalize(24),
-    xxlarge: normalize(32),
+    tiny: normalise(10),
+    small: normalise(12),
+    medium: normalise(14),
+    large: normalise(16),
+    xlarge: normalise(24),
+    xxlarge: normalise(32),
 };

@@ -1,8 +1,8 @@
 import { ReactNode } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import { useTheme } from '@/context/ThemeContext';
 import { MathExtra } from '@/utils/Helper';
-import { FontSizes } from '@/utils/Typography';
+import { ThemedText } from '@/components/common/ThemedText';
 
 export const enum ClockThingType {
     CLOCK_CENTRE_DOT = 'clockCentreDot',
@@ -59,10 +59,10 @@ export function ClockThing({ type, style, degrees, distance, children }: ClockTh
                 ]} />);
             case ClockThingType.CLOCK_NUMBER:
                 return (<View style={mainStyles.clockNumberContainer}>
-                    <Text style={[
+                    <ThemedText type='subtitle' style={[
                         mainStyles.clockNumber,
                         { color: theme.halfContrast },
-                    ]}>{children}</Text>
+                    ]}>{children}</ThemedText>
                 </View>);
             case ClockThingType.ROUTE_BUBBLE:
                 return (
@@ -79,12 +79,15 @@ export function ClockThing({ type, style, degrees, distance, children }: ClockTh
                                 borderWidth: 2,
                             } : null,
                     ]}>
-                        <Text style={[
-                            auxiliaryStyles.routeNumber,
-                            { color: style?.textColour }
-                        ]}>
+                        <ThemedText
+                            type='boldPlus'
+                            style={[
+                                auxiliaryStyles.routeNumber,
+                                { color: style?.textColour }
+                            ]}
+                        >
                             {children}
-                        </Text>
+                        </ThemedText>
                     </View>
                 );
             case ClockThingType.ROUTE_ANNOTATION_LINE:
@@ -100,24 +103,24 @@ export function ClockThing({ type, style, degrees, distance, children }: ClockTh
                     }
                 ]} />);
             case ClockThingType.ROUTE_TIMING:
-                return (<Text style={[
+                return (<ThemedText style={[
                     auxiliaryStyles.routeTiming,
                     {
                         color: style?.textColour,
                         textShadowColor: theme.dimContrast,
                     }
-                ]}>{children}</Text>);
+                ]}>{children}</ThemedText>);
             case ClockThingType.ERROR_TEXT:
                 return (<View style={auxiliaryStyles.errorTextContainer}>
-                    <Text
-                        style={[
-                            auxiliaryStyles.errorText,
-                            {
-                                color: theme.primaryHeavy,
-                                textShadowColor: theme.primarySharp,
-                            },
-                        ]}
-                    >{children}</Text>
+                    <ThemedText style={[
+                        auxiliaryStyles.errorText,
+                        {
+                            color: theme.primaryHeavy,
+                            textShadowColor: theme.primarySharp,
+                        },
+                    ]}>
+                        {children}
+                    </ThemedText>
                 </View>);
             default:
                 return children;
@@ -164,8 +167,6 @@ const mainStyles = StyleSheet.create({
         width: '100%',
         aspectRatio: 1,
         textAlign: 'center',
-        fontSize: FontSizes.large,
-        fontWeight: 'bold',
         transform: [{ translateY: 4 }],
     },
 });
@@ -186,13 +187,9 @@ const auxiliaryStyles = StyleSheet.create({
         elevation: 1,
     },
     routeNumber: {
-        fontSize: FontSizes.medium,
-        fontWeight: 'bold',
         textAlign: 'center',
     },
     routeTiming: {
-        fontSize: FontSizes.small,
-        fontWeight: 'bold',
         textAlign: 'center',
         textShadowOffset: { width: 0, height: 0 },
         shadowOpacity: 0.5,
@@ -209,8 +206,6 @@ const auxiliaryStyles = StyleSheet.create({
     },
     errorText: {
         paddingVertical: 8,
-        fontSize: FontSizes.small,
-        fontWeight: 'bold',
         textAlign: 'center',
         textShadowRadius: 40,
     },

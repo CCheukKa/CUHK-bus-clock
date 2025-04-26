@@ -13,11 +13,12 @@ import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
 import { IconGlyphs, IconGlyphsType } from '@/utils/Helper';
 import { ResponsiveProvider } from '@/context/ResponsiveContext';
 import RoutesScreen from '@/app/routesScreen';
+import { ThemedText } from '@/components/common/ThemedText';
 
 SplashScreen.preventAutoHideAsync();
 export default function RootLayout() {
     const [loaded] = useFonts({
-        SpaceMono: require('../assets/fonts/SpaceMono-Regular.ttf'),
+        KlintRounded: require('@/assets/fonts/klintroundedboldflipfont.ttf'),
     });
 
     useEffect(() => {
@@ -97,8 +98,18 @@ function WithinProviders() {
                 dark: true,
                 colors: {
                     background: theme.background,
-                }
+                },
             }}
+            renderLabel={({ route, focused }) => (
+                <ThemedText style={{
+                    textAlign: 'center',
+                    elevation: 0,
+                    color: focused ? theme.highContrast : theme.lowContrast,
+                    backgroundColor: theme.background,
+                }}>
+                    {route.title}
+                </ThemedText>
+            )}
         />
     );
 }
