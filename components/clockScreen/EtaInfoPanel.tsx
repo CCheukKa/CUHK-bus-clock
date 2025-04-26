@@ -78,7 +78,7 @@ export function EtaInfoPanel({ time, etaInfos }: EtaInfoPanelProps) {
                 ? etaInfos.sort((a, b) => a.etaFromTime.getTime() - b.etaFromTime.getTime())
                 : null
         );
-    }, [etaInfos]);
+    }, [frameCount.current]);
 
     return useMemo(() => (
         <View style={[
@@ -158,17 +158,21 @@ export function EtaInfoPanel({ time, etaInfos }: EtaInfoPanelProps) {
                 </View>
             }
         </View>
-    ), [frameCount.current, settings]);
+    ), [sortedEtaInfos, settings]);
     /* -------------------------------------------------------------------------- */
 
-    function scrollToEtaInfo(etaInfo: EtaInfo) {
+    function scrollToEtaInfo(etaInfo: EtaInfo | null) {
+        if (etaInfo === null) {
+            console.warn(`[EtaInfoPanel] etaInfo is null`);
+            return;
+        }
         if (sortedEtaInfos === null) {
-            console.warn(`[EtaInfoPanel] etaInfoIds is null, cannot scroll to ${etaInfo}`);
+            console.warn(`[EtaInfoPanel] sortedEtaInfos is null, cannot scroll to ${JSON.stringify(etaInfo)}`);
             return;
         }
         const index = sortedEtaInfos.indexOf(etaInfo);
         if (index === -1) {
-            console.warn(`[EtaInfoPanel] etaInfoId ${etaInfo} not found in etaInfoIds`);
+            console.warn(`[EtaInfoPanel] etaInfo ${JSON.stringify(etaInfo)} not found in sortedEtaInfos`);
             return;
         }
         scrollViewRef.current?.scrollTo({ y: scrollSnapInterval * index, animated: true });

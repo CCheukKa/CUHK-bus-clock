@@ -5,7 +5,6 @@
   - Merge into same file?
 - Fix errorText overflow clipping
 - Some bubbles are not fully pressable
-- ETA info panel not updating when use real time is false
 
 ## Features
 ### Core
