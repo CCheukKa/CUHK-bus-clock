@@ -7,7 +7,6 @@ export type EtaInfo = {
     etaFromTime: Date,
     etaToTime: Date,
     isLastService: boolean,
-    id: string,
 }
 export type LocationNullable = Station | Region | null;
 export type FromTo = {
@@ -219,7 +218,6 @@ function getStationRouteETA(journey: Journey, currentTime: Date, detectHolidays:
                     etaFromTime: pastHourEtaFromTime,
                     etaToTime: pastHourEtaToTime,
                     isLastService: !isWithinServiceHours(pastHourEtaFromTime),
-                    id: getEtaInfoId(journey, pastHourEtaFromTime, pastHourEtaToTime),
                 }
                 : null,
             isWithinServiceHours(currentHourMarkTime)
@@ -228,7 +226,6 @@ function getStationRouteETA(journey: Journey, currentTime: Date, detectHolidays:
                     etaFromTime: currentHourEtaFromTime,
                     etaToTime: currentHourEtaToTime,
                     isLastService: !isWithinServiceHours(currentHourEtaFromTime),
-                    id: getEtaInfoId(journey, currentHourEtaFromTime, currentHourEtaToTime),
                 }
                 : null,
             isWithinServiceHours(futureHourMarkTime)
@@ -237,7 +234,6 @@ function getStationRouteETA(journey: Journey, currentTime: Date, detectHolidays:
                     etaFromTime: futureHourEtaFromTime,
                     etaToTime: futureHourEtaToTime,
                     isLastService: !isWithinServiceHours(futureHourEtaFromTime),
-                    id: getEtaInfoId(journey, futureHourEtaFromTime, futureHourEtaToTime),
                 }
                 : null,
         );
@@ -282,9 +278,6 @@ function getStationRouteETA(journey: Journey, currentTime: Date, detectHolidays:
         return (time >= yesterdayFirstService && time <= yesterdayLastService)
             || (time >= todayFirstService && time <= todayLastService)
             || (time >= tomorrowFirstService && time <= tomorrowLastService);
-    }
-    function getEtaInfoId(journey: Journey, etaFromTime: Date, etaToTime: Date): string {
-        return `${journey.route}-${journey.fromStation}-${journey.toStation}-${etaFromTime.getTime()}-${etaToTime.getTime()}`;
     }
 }
 

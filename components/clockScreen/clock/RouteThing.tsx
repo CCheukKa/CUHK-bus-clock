@@ -282,7 +282,7 @@ export function RouteThing({ routeThingInfo }: { routeThingInfo: RouteThingInfo 
 
     const { degrees: timingAngle, distance: timingDistance } = MathExtra.xyToClockPolar(timingX, timingY);
 
-    const { setScrollToEtaInfoParameters } = useClockScreenContext();
+    const { setScrollTargetEtaInfo } = useClockScreenContext();
 
     return (
         <>
@@ -314,7 +314,7 @@ export function RouteThing({ routeThingInfo }: { routeThingInfo: RouteThingInfo 
                             : routeTextColour,
                     scale: bubbleScale,
                 }}
-                onPress={() => { setScrollToEtaInfoParameters({ etaInfoId: etaInfo.id }) }}
+                onPress={() => { setScrollTargetEtaInfo(etaInfo) }}
             >
                 {etaInfo.journey.route}
             </ClockThing>

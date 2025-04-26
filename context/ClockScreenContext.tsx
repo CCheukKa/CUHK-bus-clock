@@ -1,21 +1,18 @@
+import { EtaInfo } from '@/utils/Bus';
 import { createContext, useContext, useState, ReactNode } from 'react';
 
-export type ScrollToEtaInfoParameters = {
-    etaInfoId: string,
-}
-
 type ClockScreenContext = {
-    scrollToEtaInfoParameters: ScrollToEtaInfoParameters | null;
-    setScrollToEtaInfoParameters: React.Dispatch<React.SetStateAction<ScrollToEtaInfoParameters | null>>;
+    scrollTargetEtaInfo: EtaInfo | null;
+    setScrollTargetEtaInfo: React.Dispatch<React.SetStateAction<EtaInfo | null>>;
 };
 
 const ClockScreenContext = createContext<ClockScreenContext | undefined>(undefined);
 
 export const ClockScreenContextProvider = ({ children }: { children?: ReactNode }) => {
-    const [scrollToEtaInfoParameters, setScrollToEtaInfoParameters] = useState<ScrollToEtaInfoParameters | null>(null);
+    const [scrollTargetEtaInfo, setScrollTargetEtaInfo] = useState<EtaInfo | null>(null);
 
     return (
-        <ClockScreenContext.Provider value={{ scrollToEtaInfoParameters, setScrollToEtaInfoParameters }} >
+        <ClockScreenContext.Provider value={{ scrollTargetEtaInfo, setScrollTargetEtaInfo }} >
             {children}
         </ClockScreenContext.Provider>
     );

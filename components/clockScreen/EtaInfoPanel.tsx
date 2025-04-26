@@ -64,12 +64,12 @@ export function EtaInfoPanel({ time, etaInfos }: EtaInfoPanelProps) {
     frameEtaInfos.current = etaInfos;
 
     const scrollSnapInterval = ETA_INFO_CARD_HEIGHT + ETA_INFO_CARD_GAP;
-    const [etaInfoIds, setEtaInfoIds] = useState<string[] | null>(null);
-    const { scrollToEtaInfoParameters } = useClockScreenContext();
+    const [sortedEtaInfos, setSortedEtaInfos] = useState<EtaInfo[] | null>(null);
+    const { scrollTargetEtaInfo } = useClockScreenContext();
     useEffect(() => {
-        if (scrollToEtaInfoParameters === null) { return; }
-        scrollToEtaInfo(scrollToEtaInfoParameters.etaInfoId);
-    }, [scrollToEtaInfoParameters]);
+        if (scrollTargetEtaInfo === null) { return; }
+        scrollToEtaInfo(scrollTargetEtaInfo);
+    }, [scrollTargetEtaInfo]);
     const scrollViewRef = useRef<ScrollView>(null);
 
     useEffect
@@ -129,7 +129,7 @@ export function EtaInfoPanel({ time, etaInfos }: EtaInfoPanelProps) {
             {(() => {
                 if (isEtaInfoArray(etaInfos)) {
                     const sortedEtaInfos = etaInfos.sort((a, b) => a.etaFromTime.getTime() - b.etaFromTime.getTime());
-                    setEtaInfoIds(sortedEtaInfos.map(etaInfo => etaInfo.id));
+                    setSortedEtaInfos(sortedEtaInfos);
                     return <ScrollView
                         style={etaStyles.etaScrollContainer}
                         contentContainerStyle={etaStyles.etaScrollContainerContent}
@@ -146,7 +146,7 @@ export function EtaInfoPanel({ time, etaInfos }: EtaInfoPanelProps) {
                         ))}
                     </ScrollView>
                 } else {
-                    setEtaInfoIds(null);
+                    setSortedEtaInfos(null);
                     return <View style={noInfoStyles.noInfoContainer}>
                         <ThemedText style={[
                             noInfoStyles.noInfoText,
@@ -161,14 +161,14 @@ export function EtaInfoPanel({ time, etaInfos }: EtaInfoPanelProps) {
     ), [frameCount.current, settings]);
     /* -------------------------------------------------------------------------- */
 
-    function scrollToEtaInfo(id: string) {
-        if (etaInfoIds === null) {
-            console.warn(`[EtaInfoPanel] etaInfoIds is null, cannot scroll to ${id}`);
+    function scrollToEtaInfo(etaInfo: EtaInfo) {
+        if (sortedEtaInfos === null) {
+            console.warn(`[EtaInfoPanel] etaInfoIds is null, cannot scroll to ${etaInfo}`);
             return;
         }
-        const index = etaInfoIds.indexOf(id);
+        const index = sortedEtaInfos.indexOf(etaInfo);
         if (index === -1) {
-            console.warn(`[EtaInfoPanel] etaInfoId ${id} not found in etaInfoIds`);
+            console.warn(`[EtaInfoPanel] etaInfoId ${etaInfo} not found in etaInfoIds`);
             return;
         }
         scrollViewRef.current?.scrollTo({ y: scrollSnapInterval * index, animated: true });
