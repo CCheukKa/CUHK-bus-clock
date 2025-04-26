@@ -145,7 +145,7 @@ function RouteInfoCard({ route }: RouteInfoCardProps) {
                             </ThemedText>
                         </View>
                         <View style={routeInfoStyles.routeNameContainer}>
-                            <ThemedText type='bold' style={{ color: Colour.mixRGBA(routeColour, contrastColour, 0.6) }}>
+                            <ThemedText type='bold' style={{ color: Colour.mixRGBA(routeColour, contrastColour, 0.8) }}>
                                 {busRouteInfos[route].routeName}
                             </ThemedText>
                         </View>
