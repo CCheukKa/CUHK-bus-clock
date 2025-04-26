@@ -22,6 +22,7 @@
 - Improve light theme colour usage
 - Add warning for past + future peek time >= 60 minutes
 - Find a better way to display error messages
+- Auto scroll to closest info card in info panel
 ### Sustainability
 - Add a way for users to contribute data
 
