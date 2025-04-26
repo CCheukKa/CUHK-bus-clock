@@ -382,6 +382,7 @@ const routeInfoStyles = StyleSheet.create({
         display: 'flex',
         flexDirection: 'row',
         gap: 8,
+        paddingTop: 3,
     },
     routeNumberContainer: {
         minWidth: 50,
@@ -396,7 +397,6 @@ const routeInfoStyles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'flex-start',
         alignItems: 'center',
-        transform: [{ translateY: 2 }],
         width: 80,
     },
     stationInfosContainer: {
