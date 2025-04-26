@@ -138,6 +138,7 @@ export function EtaInfoPanel({ time, etaInfos }: EtaInfoPanelProps) {
                     contentContainerStyle={etaStyles.etaScrollContainerContent}
                     showsVerticalScrollIndicator={false}
                     snapToInterval={scrollSnapInterval}
+                    snapToEnd={false}
                     ref={scrollViewRef}
                 >
                     {sortedEtaInfos.map((etaInfo) => (
