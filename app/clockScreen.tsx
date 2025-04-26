@@ -15,16 +15,17 @@ import { useTheme } from '@/context/ThemeContext';
 import { isPublicHoliday } from '@/utils/PublicHolidayScraper';
 import { WEEK_DAYS } from '@/constants/UI';
 import { SuboptimalRouteStyle } from '@/utils/Settings';
+import { ClockScreenContextProvider } from '@/context/ClockScreenContext';
 
 export default function ClockScreen() {
     const { settings } = useSettings();
     const { theme } = useTheme();
-
+    /* -------------------------------------------------------------------------- */
     const [realTime, setRealTime] = useState(new Date());
     const [customTime, setCustomTime] = useState(new Date());
     const [useRealTime, setUseRealTime] = useState(true);
     const logicTime = useMemo(() => useRealTime ? realTime : customTime, [realTime, customTime, useRealTime]);
-    // 
+    /* -------------------------------------------------------------------------- */
     const frameId = useRef<number | null>(null);
     const frameSecondTime = useRef<Date>(new Date());
     function updateRealTime() {
@@ -35,12 +36,12 @@ export default function ClockScreen() {
         frameId.current = requestAnimationFrame(updateRealTime);
     };
     useEffect(() => { frameId.current = requestAnimationFrame(updateRealTime) }, []);
-    // 
+    /* -------------------------------------------------------------------------- */
     const [dateTimePickerValue, setDateTimePickerValue] = useState(logicTime);
     type DateTimePickerMode = 'time' | 'date' | null;
     const [dateTimePickerMode, setDateTimePickerMode] = useState<DateTimePickerMode>(null);
     const showResetToCurrentTimeButton = useMemo(() => !useRealTime, [useRealTime]);
-    // 
+    /* -------------------------------------------------------------------------- */
     const showDateTimePicker = useCallback((mode: DateTimePickerMode) => {
         setDateTimePickerValue(logicTime);
         setDateTimePickerMode(mode);
@@ -67,7 +68,7 @@ export default function ClockScreen() {
         setUseRealTime(true);
         setDateTimePickerMode(null);
     }, []);
-    //
+    /* -------------------------------------------------------------------------- */
     const [fromTo, setFromTo] = useState<FromTo>({ from: Region.MTR, to: Region.MAIN_CAMPUS });
     const { etaInfos, filteredCount } = useMemo(() => {
         const rawEtaInfos = getEtaInfos(fromTo, logicTime, settings.pastPeekMinutes, settings.futurePeekMinutes, settings.detectHolidays);
@@ -83,107 +84,108 @@ export default function ClockScreen() {
         fromTo,
         logicTime.truncateTo('second').getTime(),
         settings,
-    ]
-    );
-    //
+    ]);
+    /* -------------------------------------------------------------------------- */
     const dateTimeTextStyle = useMemo(() => !useRealTime ? { color: theme.primary } : null, [useRealTime]);
     return (
-        <FullscreenView>
-            <View style={styles.headerContainer}>
-                <View style={styles.dateTimeContainer}>
-                    <TouchableOpacity onPress={() => { showDateTimePicker('date') }}>
-                        {useMemo(() =>
-                            <ThemedText type="subtitle" style={dateTimeTextStyle}>
-                                {`${logicTime.toLocaleDateString('en-GB')} (${settings.detectHolidays && isPublicHoliday(logicTime) ? 'Holiday' : WEEK_DAYS[logicTime.getDay()].substring(0, 3)})`}
-                            </ThemedText>
-                            , [new Date(logicTime).truncateTo('day').getTime(), dateTimeTextStyle, settings]
-                        )}
-                    </TouchableOpacity>
-                    <TouchableOpacity onPress={() => { showDateTimePicker('time') }}>
-                        {useMemo(() =>
-                            <ThemedText type="title" style={dateTimeTextStyle}>
-                                {logicTime.toLocaleTimeString('en-GB')}
-                            </ThemedText>
-                            , [new Date(logicTime).truncateTo('second').getTime(), dateTimeTextStyle]
-                        )}
-                    </TouchableOpacity>
-                </View>
-                {filteredCount > 0
-                    ? <View style={styles.filteredCountContainer}>
-                        <MaterialCommunityIcons
-                            name='bus'
-                            size={18}
-                            color={theme.lowContrast}
-                        />
-                        <MaterialCommunityIcons
-                            name='filter-minus'
-                            size={12}
-                            color={theme.lowContrast}
-                            style={{
-                                position: 'relative',
-                                left: -4,
-                                margin: 0,
-                                alignSelf: 'flex-start',
-                            }}
-                        />
-                        <ThemedText style={{ color: theme.halfContrast }}>
-                            {filteredCount}
-                        </ThemedText>
-                    </View>
-                    : null
-                }
-                {dateTimePickerMode
-                    ? (
-                        <DateTimePicker
-                            value={dateTimePickerValue}
-                            mode={dateTimePickerMode}
-                            is24Hour={true}
-                            disabled={!dateTimePickerMode}
-                            //! TODO: update @react-native-community/datetimepicker to ^8.3.0 after the issue is fixed
-                            // design='material'
-                            onChange={handleDateTimePickerChange}
-                        />
-                    )
-                    : null
-                }
-                {showResetToCurrentTimeButton
-                    ? <View style={[
-                        styles.resetToCurrentTimeButtonContainer,
-                        { right: settings.showClockFace ? 0 : 30 },
-                    ]}>
-                        <TouchableOpacity
-                            onPress={handleResetToCurrentTimeButtonPress}
-                            activeOpacity={0.4}
-                            style={[
-                                styles.resetToCurrentTimeButton,
-                                { backgroundColor: theme.primary },
-                            ]}
-                        >
-                            <FontAwesome6 name="clock-rotate-left" color={theme.background} size={20} />
+        <ClockScreenContextProvider>
+            <FullscreenView>
+                <View style={styles.headerContainer}>
+                    <View style={styles.dateTimeContainer}>
+                        <TouchableOpacity onPress={() => { showDateTimePicker('date') }}>
+                            {useMemo(() =>
+                                <ThemedText type="subtitle" style={dateTimeTextStyle}>
+                                    {`${logicTime.toLocaleDateString('en-GB')} (${settings.detectHolidays && isPublicHoliday(logicTime) ? 'Holiday' : WEEK_DAYS[logicTime.getDay()].substring(0, 3)})`}
+                                </ThemedText>
+                                , [new Date(logicTime).truncateTo('day').getTime(), dateTimeTextStyle, settings]
+                            )}
+                        </TouchableOpacity>
+                        <TouchableOpacity onPress={() => { showDateTimePicker('time') }}>
+                            {useMemo(() =>
+                                <ThemedText type="title" style={dateTimeTextStyle}>
+                                    {logicTime.toLocaleTimeString('en-GB')}
+                                </ThemedText>
+                                , [new Date(logicTime).truncateTo('second').getTime(), dateTimeTextStyle]
+                            )}
                         </TouchableOpacity>
                     </View>
-                    : null
-                }
-            </View>
-            {useMemo(() =>
-                <ClockFace
-                    time={logicTime}
-                    etaInfos={etaInfos}
-                />, [logicTime, etaInfos, settings]
-            )}
-            {useMemo(() =>
-                <JourneyPlanner
-                    fromTo={fromTo}
-                    setFromTo={setFromTo}
-                />, [fromTo]
-            )}
-            {useMemo(() =>
-                <EtaInfoPanel
-                    time={logicTime}
-                    etaInfos={etaInfos}
-                />, [logicTime, etaInfos, settings]
-            )}
-        </FullscreenView>
+                    {filteredCount > 0
+                        ? <View style={styles.filteredCountContainer}>
+                            <MaterialCommunityIcons
+                                name='bus'
+                                size={18}
+                                color={theme.lowContrast}
+                            />
+                            <MaterialCommunityIcons
+                                name='filter-minus'
+                                size={12}
+                                color={theme.lowContrast}
+                                style={{
+                                    position: 'relative',
+                                    left: -4,
+                                    margin: 0,
+                                    alignSelf: 'flex-start',
+                                }}
+                            />
+                            <ThemedText style={{ color: theme.halfContrast }}>
+                                {filteredCount}
+                            </ThemedText>
+                        </View>
+                        : null
+                    }
+                    {dateTimePickerMode
+                        ? (
+                            <DateTimePicker
+                                value={dateTimePickerValue}
+                                mode={dateTimePickerMode}
+                                is24Hour={true}
+                                disabled={!dateTimePickerMode}
+                                //! TODO: update @react-native-community/datetimepicker to ^8.3.0 after the issue is fixed
+                                // design='material'
+                                onChange={handleDateTimePickerChange}
+                            />
+                        )
+                        : null
+                    }
+                    {showResetToCurrentTimeButton
+                        ? <View style={[
+                            styles.resetToCurrentTimeButtonContainer,
+                            { right: settings.showClockFace ? 0 : 30 },
+                        ]}>
+                            <TouchableOpacity
+                                onPress={handleResetToCurrentTimeButtonPress}
+                                activeOpacity={0.4}
+                                style={[
+                                    styles.resetToCurrentTimeButton,
+                                    { backgroundColor: theme.primary },
+                                ]}
+                            >
+                                <FontAwesome6 name="clock-rotate-left" color={theme.background} size={20} />
+                            </TouchableOpacity>
+                        </View>
+                        : null
+                    }
+                </View>
+                {useMemo(() =>
+                    <ClockFace
+                        time={logicTime}
+                        etaInfos={etaInfos}
+                    />, [logicTime, etaInfos, settings]
+                )}
+                {useMemo(() =>
+                    <JourneyPlanner
+                        fromTo={fromTo}
+                        setFromTo={setFromTo}
+                    />, [fromTo]
+                )}
+                {useMemo(() =>
+                    <EtaInfoPanel
+                        time={logicTime}
+                        etaInfos={etaInfos}
+                    />, [logicTime, etaInfos, settings]
+                )}
+            </FullscreenView>
+        </ClockScreenContextProvider>
     );
 }
 

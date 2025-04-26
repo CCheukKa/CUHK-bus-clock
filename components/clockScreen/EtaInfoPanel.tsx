@@ -6,9 +6,10 @@ import { useTheme } from "@/context/ThemeContext";
 import { FontSizes } from "@/utils/Typography";
 import { FontAwesome, MaterialCommunityIcons } from "@expo/vector-icons";
 import { ScrollView, StyleSheet, TouchableOpacity, View } from "react-native";
-import { useMemo, useRef } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { SuboptimalRouteStyle } from "@/utils/Settings";
 import { ThemedText } from "@/components/common/ThemedText";
+import { useClockScreenContext } from "@/context/ClockScreenContext";
 
 const noInfoTexts = [
     [
@@ -62,6 +63,17 @@ export function EtaInfoPanel({ time, etaInfos }: EtaInfoPanelProps) {
     frameTime.current = time;
     frameEtaInfos.current = etaInfos;
 
+    const scrollSnapInterval = ETA_INFO_CARD_HEIGHT + ETA_INFO_CARD_GAP;
+    const [etaInfoIds, setEtaInfoIds] = useState<string[] | null>(null);
+    const { scrollToEtaInfoParameters } = useClockScreenContext();
+    useEffect(() => {
+        if (scrollToEtaInfoParameters === null) { return; }
+        scrollToEtaInfo(scrollToEtaInfoParameters.etaInfoId);
+    }, [scrollToEtaInfoParameters]);
+    const scrollViewRef = useRef<ScrollView>(null);
+
+    useEffect
+
     return useMemo(() => (
         <View style={[
             panelStyles.panelContainer,
@@ -114,26 +126,28 @@ export function EtaInfoPanel({ time, etaInfos }: EtaInfoPanelProps) {
                     ETA Info Panel
                 </ThemedText>
             </View>
-            {
-                isEtaInfoArray(etaInfos)
-                    ? <ScrollView
+            {(() => {
+                if (isEtaInfoArray(etaInfos)) {
+                    const sortedEtaInfos = etaInfos.sort((a, b) => a.etaFromTime.getTime() - b.etaFromTime.getTime());
+                    setEtaInfoIds(sortedEtaInfos.map(etaInfo => etaInfo.id));
+                    return <ScrollView
                         style={etaStyles.etaScrollContainer}
                         contentContainerStyle={etaStyles.etaScrollContainerContent}
                         showsVerticalScrollIndicator={false}
+                        snapToInterval={scrollSnapInterval}
+                        ref={scrollViewRef}
                     >
-                        {
-                            etaInfos
-                                .sort((a, b) => a.etaFromTime.getTime() - b.etaFromTime.getTime())
-                                .map((etaInfo) => (
-                                    <EtaInfoCard
-                                        key={etaInfo.journey.route + etaInfo.etaFromTime}
-                                        time={time}
-                                        etaInfo={etaInfo}
-                                    />
-                                ))
-                        }
+                        {sortedEtaInfos.map((etaInfo) => (
+                            <EtaInfoCard
+                                key={etaInfo.journey.route + etaInfo.etaFromTime}
+                                time={time}
+                                etaInfo={etaInfo}
+                            />
+                        ))}
                     </ScrollView>
-                    : <View style={noInfoStyles.noInfoContainer}>
+                } else {
+                    setEtaInfoIds(null);
+                    return <View style={noInfoStyles.noInfoContainer}>
                         <ThemedText style={[
                             noInfoStyles.noInfoText,
                             { color: theme.lowContrast },
@@ -141,9 +155,24 @@ export function EtaInfoPanel({ time, etaInfos }: EtaInfoPanelProps) {
                             {`${noInfoTexts[0][Math.floor(Math.random() * noInfoTexts[0].length)]}\n\n${noInfoTexts[1][Math.floor(Math.random() * noInfoTexts[1].length)]}`}
                         </ThemedText>
                     </View>
-            }
+                }
+            })()}
         </View>
     ), [frameCount.current, settings]);
+    /* -------------------------------------------------------------------------- */
+
+    function scrollToEtaInfo(id: string) {
+        if (etaInfoIds === null) {
+            console.warn(`[EtaInfoPanel] etaInfoIds is null, cannot scroll to ${id}`);
+            return;
+        }
+        const index = etaInfoIds.indexOf(id);
+        if (index === -1) {
+            console.warn(`[EtaInfoPanel] etaInfoId ${id} not found in etaInfoIds`);
+            return;
+        }
+        scrollViewRef.current?.scrollTo({ y: scrollSnapInterval * index, animated: true });
+    }
 }
 
 function EtaInfoCard({ time, etaInfo }: { time: Date, etaInfo: EtaInfo }) {
@@ -333,6 +362,8 @@ const noInfoStyles = StyleSheet.create({
     },
 });
 
+const ETA_INFO_CARD_HEIGHT = 48;
+const ETA_INFO_CARD_GAP = 10;
 const etaStyles = StyleSheet.create({
     etaScrollContainer: {
         zIndex: 2,
@@ -346,12 +377,12 @@ const etaStyles = StyleSheet.create({
         flexDirection: 'column',
         justifyContent: 'center',
         alignItems: 'center',
-        gap: 10,
+        gap: ETA_INFO_CARD_GAP,
         paddingBottom: 60,
     },
     etaInfoCard: {
         width: '100%',
-        height: 48,
+        height: ETA_INFO_CARD_HEIGHT,
         display: 'flex',
         flexDirection: 'row',
         justifyContent: 'center',

@@ -6,6 +6,7 @@ import { useTheme } from "@/context/ThemeContext";
 import { useMemo } from "react";
 import { useSettings } from "@/context/SettingsContext";
 import { SuboptimalRouteStyle } from "@/utils/Settings";
+import { useClockScreenContext } from "@/context/ClockScreenContext";
 
 const weekDays = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'] as const;
 
@@ -281,6 +282,8 @@ export function RouteThing({ routeThingInfo }: { routeThingInfo: RouteThingInfo 
 
     const { degrees: timingAngle, distance: timingDistance } = MathExtra.xyToClockPolar(timingX, timingY);
 
+    const { setScrollToEtaInfoParameters } = useClockScreenContext();
+
     return (
         <>
             <ClockThing
@@ -311,6 +314,7 @@ export function RouteThing({ routeThingInfo }: { routeThingInfo: RouteThingInfo 
                             : routeTextColour,
                     scale: bubbleScale,
                 }}
+                onPress={() => { setScrollToEtaInfoParameters({ etaInfoId: etaInfo.id }) }}
             >
                 {etaInfo.journey.route}
             </ClockThing>

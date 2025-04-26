@@ -1,5 +1,5 @@
 import { ReactNode } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, TouchableOpacity, View } from 'react-native';
 import { useTheme } from '@/context/ThemeContext';
 import { MathExtra } from '@/utils/Helper';
 import { ThemedText } from '@/components/common/ThemedText';
@@ -36,11 +36,12 @@ type ClockThingProps =
         };
         degrees: number;
         distance: number;
+        onPress?: () => void;
         children?: ReactNode;
     };
 
 
-export function ClockThing({ type, style, degrees, distance, children }: ClockThingProps) {
+export function ClockThing({ type, style, degrees, distance, onPress, children }: ClockThingProps) {
     const { theme } = useTheme();
 
     const { x, y } = MathExtra.clockPolarToXY(degrees, distance);
@@ -66,19 +67,22 @@ export function ClockThing({ type, style, degrees, distance, children }: ClockTh
                 </View>);
             case ClockThingType.ROUTE_BUBBLE:
                 return (
-                    <View style={[
-                        auxiliaryStyles.routeBubble,
-                        {
-                            backgroundColor: style?.backgroundColour,
-                            transform: [{ scale: style?.scale ?? 1 }],
-                            shadowColor: theme.highContrast,
-                        },
-                        style?.borderColour
-                            ? {
-                                borderColor: style.borderColour,
-                                borderWidth: 2,
-                            } : null,
-                    ]}>
+                    <TouchableOpacity
+                        style={[
+                            auxiliaryStyles.routeBubble,
+                            {
+                                backgroundColor: style?.backgroundColour,
+                                transform: [{ scale: style?.scale ?? 1 }],
+                                shadowColor: theme.highContrast,
+                            },
+                            style?.borderColour
+                                ? {
+                                    borderColor: style.borderColour,
+                                    borderWidth: 2,
+                                } : null,
+                        ]}
+                        onPress={onPress}
+                    >
                         <ThemedText
                             type='boldPlus'
                             style={[
@@ -88,7 +92,7 @@ export function ClockThing({ type, style, degrees, distance, children }: ClockTh
                         >
                             {children}
                         </ThemedText>
-                    </View>
+                    </TouchableOpacity>
                 );
             case ClockThingType.ROUTE_ANNOTATION_LINE:
                 return (<View style={[
