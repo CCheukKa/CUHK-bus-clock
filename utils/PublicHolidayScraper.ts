@@ -13,7 +13,7 @@ async function scrapePublicHolidays() {
     console.log('[PublicHolidayScraper][scrapePublicHolidays] Scraping public holidays...');
     const response = await fetch('https://www.1823.gov.hk/common/ical/en.json');
     if (!response.ok) {
-        console.error('Network response was not ok');
+        console.error('[PublicHolidayScraper][scrapePublicHolidays] Network response was not ok');
         isScraping = false;
         return;
     }

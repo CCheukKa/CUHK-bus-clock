@@ -209,7 +209,7 @@ export function JourneyPlanner({ fromTo, setFromTo }: JourneyPlannerProps) {
 async function getCurrentLocation() {
     let { status } = await Location.requestForegroundPermissionsAsync();
     if (status !== 'granted') {
-        console.error('Permission to access location was denied');
+        console.error('[JourneyPlanner][getCurrentLocation] Permission to access location was denied');
         return;
     }
     const location = await Location.getLastKnownPositionAsync({ maxAge: 20000 });
