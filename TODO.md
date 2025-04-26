@@ -1,4 +1,10 @@
-# Roadmap
+# v2.0 Roadmap
+
+## Technical
+- Rewrite in native code (?)
+
+<!-- ----------------------------------------------------------------------- -->
+# v1.0 Roadmap
 
 ## Bugs
 - Fix location picker flickering
@@ -28,3 +34,4 @@
 
 ## Technical
 - Update @react-native-community/datetimepicker to ^8.3.0 after incompatibilities are fixed
+- Decrease bundle size
