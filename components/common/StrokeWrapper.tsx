@@ -35,7 +35,7 @@ export function StrokeWrapper({
         };
     });
 
-    const childElement = React.Children.only(children) as React.ReactElement;
+    const childElement = React.Children.only(children) as React.ReactElement<{ style?: any }>;
     const outlineClones = offsets.map(offset =>
         React.cloneElement(
             childElement,
