@@ -20,6 +20,19 @@ export const BusRoute = {
     _HP: 'H+', // stops at pg hall 1 & area 39 (upwards)
 } as const;
 export type BusRoute = typeof BusRoute[keyof typeof BusRoute];
+export const busRouteGroups: BusRoute[][] = [
+    [BusRoute._1A, BusRoute._1B],
+    [BusRoute._2, BusRoute._2P],
+    [BusRoute._3],
+    [BusRoute._4],
+    [BusRoute._5], [BusRoute._5S],
+    [BusRoute._6A], [BusRoute._6AS],
+    [BusRoute._6B],
+    [BusRoute._7], [BusRoute._7S],
+    [BusRoute._8], [BusRoute._8S],
+    [BusRoute._N, BusRoute._NP],
+    [BusRoute._H, BusRoute._HP],
+] as const;
 
 export const Station = {
     AREA_39_DOWNWARD: 'Area 39 (Downward)',

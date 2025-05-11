@@ -1,6 +1,6 @@
 import { FullscreenView } from '@/components/common/FullscreenView';
 import { ThemedText } from '@/components/common/ThemedText';
-import { BusRoute, busRouteInfos, busStationTimings, Station } from '@/constants/BusData';
+import { BusRoute, busRouteGroups, busRouteInfos, busStationTimings, Station } from '@/constants/BusData';
 import { useTheme } from '@/context/ThemeContext';
 import { Colour, MathExtra, toTimeString } from '@/utils/Helper';
 import { MaterialCommunityIcons, Octicons } from '@expo/vector-icons';
@@ -105,21 +105,22 @@ function StationInfos({ route }: StationInfosProps) {
 }
 
 type RouteInfoCardProps = {
-    route: BusRoute | null,
+    selectedRoute: BusRoute | null,
 };
-function RouteInfoCard({ route }: RouteInfoCardProps) {
+function RouteInfoCard({ selectedRoute }: RouteInfoCardProps) {
     const { theme } = useTheme();
 
-    const routeColour = route !== null
-        ? busRouteInfos[route].routeColour
+    const routeColour = selectedRoute !== null
+        ? busRouteInfos[selectedRoute].routeColour
         : 'transparent';
-    const contrastColour = route !== null
+    const contrastColour = selectedRoute !== null
         ? (
             Colour.getLuminance(routeColour) > 150
                 ? theme.black
                 : theme.white
         )
         : theme.text;
+    const fadedColour = Colour.mixRGBA(routeColour, contrastColour, 0.2);
 
     return (<View style={[
         styles.routeInfoCard,
@@ -129,7 +130,7 @@ function RouteInfoCard({ route }: RouteInfoCardProps) {
             routeInfoStyles.routeInfoHeader,
             { backgroundColor: routeColour },
         ]}>
-            {route === null
+            {selectedRoute === null
                 ? null
                 : (<>
                     <View style={routeInfoStyles.routeInfoLeftSide}>
@@ -141,12 +142,12 @@ function RouteInfoCard({ route }: RouteInfoCardProps) {
                                     color: contrastColour,
                                 }}
                             >
-                                {route}
+                                {selectedRoute}
                             </ThemedText>
                         </View>
                         <View style={routeInfoStyles.routeNameContainer}>
                             <ThemedText type='bold' style={{ color: Colour.mixRGBA(routeColour, contrastColour, 0.8) }}>
-                                {busRouteInfos[route].routeName}
+                                {busRouteInfos[selectedRoute].routeName}
                             </ThemedText>
                         </View>
                     </View>
@@ -157,12 +158,24 @@ function RouteInfoCard({ route }: RouteInfoCardProps) {
                                 size={24}
                                 color={contrastColour}
                             />
-                            <ThemedText type='bold' style={{ color: contrastColour }}>
-                                {busRouteInfos[route].minuteMarks
-                                    .map(mark => `:${mark.toString().padStart(2, '0')}`)
-                                    .join(', ')
-                                }
-                            </ThemedText>
+                            <View style={routeInfoStyles.minuteMarksContainer}>
+                                {(() => {
+                                    const combinedRouteMinuteMarks: { minuteMark: number, route: BusRoute }[] = busRouteGroups.find(group => group.includes(selectedRoute))
+                                        ?.flatMap(route => busRouteInfos[route].minuteMarks.map(minuteMark => ({ minuteMark, route })))
+                                        .sort((a, b) => a.minuteMark - b.minuteMark)
+                                        ?? (() => { throw new Error(`[routesScreens][RouteInfoCard] Route ${selectedRoute} not found in busRouteGroups`) })();
+                                    return combinedRouteMinuteMarks
+                                        .flatMap(({ minuteMark, route }) => ([
+                                            <ThemedText type='bold' style={{ color: route === selectedRoute ? contrastColour : fadedColour }} key={`${route}:${minuteMark}`}>
+                                                {`:${minuteMark.toString().padStart(2, '0')}`}
+                                            </ThemedText>,
+                                            <ThemedText type='bold' style={{ color: route === selectedRoute ? contrastColour : fadedColour }} key={`${route}:${minuteMark}:comma`}>
+                                                {', '}
+                                            </ThemedText>
+                                        ]))
+                                        .slice(0, -1);
+                                })()}
+                            </View>
                         </View>
                         <View style={routeInfoStyles.routeInfoRightSideContent}>
                             <MaterialCommunityIcons
@@ -171,7 +184,7 @@ function RouteInfoCard({ route }: RouteInfoCardProps) {
                                 color={contrastColour}
                             />
                             <ThemedText type='bold' style={{ color: contrastColour }}>
-                                {`${toTimeString(busRouteInfos[route].firstService, true)} - ${toTimeString(busRouteInfos[route].lastService, true)}`}
+                                {`${toTimeString(busRouteInfos[selectedRoute].firstService, true)} - ${toTimeString(busRouteInfos[selectedRoute].lastService, true)}`}
                             </ThemedText>
                         </View>
                         <View style={routeInfoStyles.routeInfoRightSideContent}>
@@ -182,7 +195,7 @@ function RouteInfoCard({ route }: RouteInfoCardProps) {
                             />
                             <View style={routeInfoStyles.weekDaysContainer}>
                                 {WEEK_DAYS.map((day, index) => {
-                                    const isAvailable = busRouteInfos[route].serviceDays.includes(index);
+                                    const isAvailable = busRouteInfos[selectedRoute].serviceDays.includes(index);
                                     return (
                                         <ThemedText
                                             key={index}
@@ -190,7 +203,7 @@ function RouteInfoCard({ route }: RouteInfoCardProps) {
                                             style={{
                                                 color: isAvailable
                                                     ? contrastColour
-                                                    : Colour.mixRGBA(routeColour, contrastColour, 0.2),
+                                                    : fadedColour,
                                             }}
                                         >
                                             {day[0]}
@@ -214,8 +227,8 @@ function RouteInfoCard({ route }: RouteInfoCardProps) {
                 style={routeInfoStyles.stationInfosScrollView}
                 contentContainerStyle={routeInfoStyles.stationInfosScrollViewContent}
             >
-                {route !== null
-                    ? <StationInfos route={route} />
+                {selectedRoute !== null
+                    ? <StationInfos route={selectedRoute} />
                     : null
                 }
             </ScrollView>
@@ -291,7 +304,7 @@ export default function RoutesScreen() {
     return (
         <FullscreenView>
             <View style={styles.screenContainer}>
-                <RouteInfoCard route={selectedRoute} />
+                <RouteInfoCard selectedRoute={selectedRoute} />
                 <View style={styles.controlsContainer}>
                     <View style={styles.legendContainer}>
                         <ThemedText type='faded'>
@@ -420,6 +433,12 @@ const routeInfoStyles = StyleSheet.create({
         flexDirection: 'column',
         justifyContent: 'center',
         alignItems: 'stretch',
+    },
+    minuteMarksContainer: {
+        display: 'flex',
+        flexDirection: 'row',
+        justifyContent: 'center',
+        alignItems: 'center',
     },
     routeInfoRightSideContent: {
         display: 'flex',
