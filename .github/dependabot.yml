@@ -9,3 +9,12 @@ updates:
     directory: "/" # Location of package manifests
     schedule:
       interval: "weekly"
+    groups:
+      all-dependencies:
+        patterns:
+          - "*" # Match all dependencies so they are combined into one PR
+        # Optional: include all update types (major, minor, patch). Omit to allow all.
+        update-types:
+          - "major"
+          - "minor"
+          - "patch"
