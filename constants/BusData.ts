@@ -1,19 +1,19 @@
 export const BusRoute = {
-    _1A: '1A',
-    _1B: '1B',
+    _1: '1',
     _2: '2', // doesn't stop at sir run run shaw hall
     _2P: '2+', // stops at sir run run shaw hall
+    _2S: '2S', // stops at sir run run shaw hall & pg hall 1
     _3: '3',
     _4: '4',
     _5: '5',
-    _5S: '5*', // weekends
+    _5W: '5*', // weekends
     _6A: '6A',
-    _6AS: '6A*', // weekends
+    _6AW: '6A*', // weekends
     _6B: '6B',
     _7: '7',
-    _7S: '7*', // weekends
+    _7W: '7*', // weekends
     _8: '8',
-    _8S: '8*', // weekends
+    _8W: '8*', // weekends
     _N: 'N', // doesn't stop at pg hall 1
     _NP: 'N+', // stops at pg hall 1
     _H: 'H', // doesn't stop at pg hall 1 & area 39 (upwards)
@@ -21,15 +21,15 @@ export const BusRoute = {
 } as const;
 export type BusRoute = typeof BusRoute[keyof typeof BusRoute];
 export const busRouteGroups: BusRoute[][] = [
-    [BusRoute._1A, BusRoute._1B],
-    [BusRoute._2, BusRoute._2P],
+    [BusRoute._1],
+    [BusRoute._2, BusRoute._2P, BusRoute._2S],
     [BusRoute._3],
     [BusRoute._4],
-    [BusRoute._5], [BusRoute._5S],
-    [BusRoute._6A], [BusRoute._6AS],
+    [BusRoute._5], [BusRoute._5W],
+    [BusRoute._6A], [BusRoute._6AW],
     [BusRoute._6B],
-    [BusRoute._7], [BusRoute._7S],
-    [BusRoute._8], [BusRoute._8S],
+    [BusRoute._7], [BusRoute._7W],
+    [BusRoute._8], [BusRoute._8W],
     [BusRoute._N, BusRoute._NP],
     [BusRoute._H, BusRoute._HP],
 ] as const;
@@ -497,14 +497,14 @@ export type BusRouteInfo = {
     inflexionIndices?: [number, number],
 };
 export const busRouteInfos: Record<BusRoute, BusRouteInfo> = {
-    [BusRoute._1A]: {
-        canonInfoUrl: 'https://transport.cuhk.edu.hk/route/1a',
+    [BusRoute._1]: {
+        canonInfoUrl: 'https://transport.cuhk.edu.hk/route/1',
         routeName: 'Main Campus',
         routeColour: '#f2e421',
         firstService: [7, 40],
-        lastService: [18, 40],
+        lastService: [18, 55],
         serviceDays: [1, 2, 3, 4, 5, 6],
-        minuteMarks: [10, 20, 40, 50],
+        minuteMarks: [10, 25, 40, 55],
         stations: [
             /* 0 */ Station.UNIVERSITY_STATION,
             /* 1 */ Station.UNIVERSITY_SPORTS_CENTRE,
@@ -517,28 +517,6 @@ export const busRouteInfos: Record<BusRoute, BusRouteInfo> = {
         ],
         inflexionIndices: [1.5, 3.5],
     },
-    [BusRoute._1B]: {
-        canonInfoUrl: 'https://transport.cuhk.edu.hk/route/1b',
-        routeName: 'Main Campus',
-        routeColour: '#f2e421',
-        firstService: [8, 0],
-        lastService: [18, 0],
-        serviceDays: [1, 2, 3, 4, 5, 6],
-        minuteMarks: [0, 30],
-        stations: [
-            /* 0 */ Station.UNIVERSITY_STATION,
-            /* 1 */ Station.POSTGRADUATE_HALL_1,
-            /* 2 */ Station.UNIVERSITY_SPORTS_CENTRE,
-            //$ inflexion
-            /* 3 */ Station.SIR_RUN_RUN_SHAW_HALL,
-            /* 4 */ Station.UNIVERSITY_ADMIN_BUILDING,
-            //$ inflexion
-            /* 5 */ Station.SHHO_COLLEGE,
-            /* 6 */ Station.POSTGRADUATE_HALL_1,
-            /* 7 */ Station.UNIVERSITY_STATION_TERMINUS,
-        ],
-        inflexionIndices: [2.5, 4.5],
-    },
     [BusRoute._2]: {
         canonInfoUrl: 'https://transport.cuhk.edu.hk/route/2',
         routeName: 'NA/UC',
@@ -546,7 +524,7 @@ export const busRouteInfos: Record<BusRoute, BusRouteInfo> = {
         firstService: [7, 45],
         lastService: [18, 45],
         serviceDays: [1, 2, 3, 4, 5, 6],
-        minuteMarks: [15, 30],
+        minuteMarks: [15],
         stations: [
             /* 0 */ Station.UNIVERSITY_STATION_PIAZZA,
             /* 1 */ Station.UNIVERSITY_SPORTS_CENTRE,
@@ -569,7 +547,7 @@ export const busRouteInfos: Record<BusRoute, BusRouteInfo> = {
         firstService: [7, 45],
         lastService: [18, 45],
         serviceDays: [1, 2, 3, 4, 5, 6],
-        minuteMarks: [0, 45],
+        minuteMarks: [45],
         stations: [
             /* 0 */ Station.UNIVERSITY_STATION_PIAZZA,
             /* 1 */ Station.UNIVERSITY_SPORTS_CENTRE,
@@ -585,6 +563,32 @@ export const busRouteInfos: Record<BusRoute, BusRouteInfo> = {
             /* 9 */ Station.UNIVERSITY_STATION_TERMINUS,
         ],
         inflexionIndices: [4.5, 5.5],
+    },
+    [BusRoute._2S]: {
+        canonInfoUrl: 'https://transport.cuhk.edu.hk/route/2s',
+        routeName: 'NA/UC (S)',
+        routeColour: '#d9c473',
+        firstService: [7, 45],
+        lastService: [18, 45],
+        serviceDays: [1, 2, 3, 4, 5, 6],
+        minuteMarks: [0, 30],
+        stations: [
+            /* 0 */ Station.UNIVERSITY_STATION_PIAZZA,
+            /* 1 */ Station.POSTGRADUATE_HALL_1,
+            /* 2 */ Station.UNIVERSITY_SPORTS_CENTRE,
+            /* 3 */ Station.SIR_RUN_RUN_SHAW_HALL,
+            /* 4 */ Station.FUNG_KING_HEY_BUILDING,
+            /* 5 */ Station.UNITED_COLLEGE_UPWARD,
+            //$ inflexion
+            /* 6 */ Station.NEW_ASIA_COLLEGE,
+            //$ inflexion
+            /* 7 */ Station.UNITED_COLLEGE_DOWNWARD,
+            /* 8 */ Station.UNIVERSITY_ADMIN_BUILDING,
+            /* 9 */ Station.SHHO_COLLEGE,
+            /* 10 */ Station.POSTGRADUATE_HALL_1,
+            /* 11 */ Station.UNIVERSITY_STATION_TERMINUS,
+        ],
+        inflexionIndices: [5.5, 6.5],
     },
     [BusRoute._3]: {
         canonInfoUrl: 'https://transport.cuhk.edu.hk/route/3',
@@ -664,7 +668,7 @@ export const busRouteInfos: Record<BusRoute, BusRouteInfo> = {
             /* 8 */ Station.CWC_COLLEGE_DOWNWARD_TERMINUS,
         ],
     },
-    [BusRoute._5S]: {
+    [BusRoute._5W]: {
         canonInfoUrl: 'https://transport.cuhk.edu.hk/route/5',
         routeName: 'Upward',
         routeColour: '#29a1d8',
@@ -705,7 +709,7 @@ export const busRouteInfos: Record<BusRoute, BusRouteInfo> = {
             /* 9 */ Station.CHUNG_CHI_TEACHING_BUILDING_TERMINUS,
         ],
     },
-    [BusRoute._6AS]: {
+    [BusRoute._6AW]: {
         canonInfoUrl: 'https://transport.cuhk.edu.hk/route/6a',
         routeName: 'Downward (CWC)',
         routeColour: '#7c8644',
@@ -748,9 +752,9 @@ export const busRouteInfos: Record<BusRoute, BusRouteInfo> = {
         routeName: 'Downward (Shaw)',
         routeColour: '#666666',
         firstService: [8, 18],
-        lastService: [17, 50],
+        lastService: [17, 18],
         serviceDays: [1, 2, 3, 4, 5],
-        minuteMarks: [18, 50],
+        minuteMarks: [0, 18],
         stations: [
             /* 0 */ Station.SHAW_COLLEGE_DOWNWARD,
             /* 1 */ Station.WU_YEE_SUN_COLLEGE_DOWNWARD,
@@ -762,14 +766,14 @@ export const busRouteInfos: Record<BusRoute, BusRouteInfo> = {
             /* 7 */ Station.CHUNG_CHI_TEACHING_BUILDING_TERMINUS,
         ],
     },
-    [BusRoute._7S]: {
+    [BusRoute._7W]: {
         canonInfoUrl: 'https://transport.cuhk.edu.hk/route/7',
         routeName: 'Downward (Shaw)',
         routeColour: '#666666',
         firstService: [8, 18],
         lastService: [13, 18],
         serviceDays: [6],
-        minuteMarks: [18, 50],
+        minuteMarks: [0, 18],
         stations: [
             /* 0 */ Station.SHAW_COLLEGE_DOWNWARD,
             /* 1 */ Station.WU_YEE_SUN_COLLEGE_DOWNWARD,
@@ -785,33 +789,36 @@ export const busRouteInfos: Record<BusRoute, BusRouteInfo> = {
         canonInfoUrl: 'https://transport.cuhk.edu.hk/route/8',
         routeName: 'Western Campus',
         routeColour: '#ffc55a',
-        firstService: [7, 40],
-        lastService: [18, 40],
+        firstService: [7, 35],
+        lastService: [18, 35],
         serviceDays: [1, 2, 3, 4, 5],
-        minuteMarks: [0, 20, 40],
+        minuteMarks: [15, 35, 55],
         stations: [
-            /* 0 */ Station.AREA_39_UPWARD,
-            /* 1 */ Station.CWC_COLLEGE_DOWNWARD,
-            /* 2 */ Station.UNTIED_COLLEGE_STAFF_RESIDENCE,
-            /* 3 */ Station.CHAN_CHUN_HA_HOSTEL,
-            /* 4 */ Station.SHAW_COLLEGE_DOWNWARD,
-            /* 5 */ Station.WU_YEE_SUN_COLLEGE_DOWNWARD,
+            /* 0 */ Station.YIA,
+            /* 1 */ Station.CAMPUS_CIRCUIT_EAST_UPWARD,
+            /* 2 */ Station.CWC_COLLEGE_UPWARD,
+            /* 3 */ Station.AREA_39_UPWARD,
+            /* 4 */ Station.CWC_COLLEGE_DOWNWARD,
+            /* 5 */ Station.UNTIED_COLLEGE_STAFF_RESIDENCE,
+            /* 6 */ Station.CHAN_CHUN_HA_HOSTEL,
+            /* 7 */ Station.SHAW_COLLEGE_DOWNWARD,
+            /* 8 */ Station.WU_YEE_SUN_COLLEGE_DOWNWARD,
             //$ inflexion
-            /* 6 */ Station.UNIVERSITY_ADMIN_BUILDING,
-            /* 7 */ Station.SCIENCE_CENTRE,
-            /* 8 */ Station.NEW_ASIA_CIRCLE,
-            /* 9 */ Station.UNITED_COLLEGE_DOWNWARD,
+            /* 9 */ Station.UNIVERSITY_ADMIN_BUILDING,
+            /* 10 */ Station.SCIENCE_CENTRE,
+            /* 11 */ Station.NEW_ASIA_CIRCLE,
+            /* 12 */ Station.UNITED_COLLEGE_DOWNWARD,
             //$ inflexion
-            /* 10 */ Station.WU_YEE_SUN_COLLEGE_UPWARD,
-            /* 11 */ Station.SHAW_COLLEGE_UPWARD,
-            /* 12 */ Station.AREA_39_DOWNWARD,
-            /* 13 */ Station.CAMPUS_CIRCUIT_NORTH,
-            /* 14 */ Station.CAMPUS_CIRCUIT_EAST_DOWNWARD,
-            /* 15 */ Station.UNIVERSITY_STATION_TERMINUS,
+            /* 13 */ Station.WU_YEE_SUN_COLLEGE_UPWARD,
+            /* 14 */ Station.SHAW_COLLEGE_UPWARD,
+            /* 15 */ Station.AREA_39_DOWNWARD,
+            /* 16 */ Station.CAMPUS_CIRCUIT_NORTH,
+            /* 17 */ Station.CAMPUS_CIRCUIT_EAST_DOWNWARD,
+            /* 18 */ Station.UNIVERSITY_STATION_TERMINUS,
         ],
-        inflexionIndices: [5.5, 9.5],
+        inflexionIndices: [8.5, 12.5],
     },
-    [BusRoute._8S]: {
+    [BusRoute._8W]: {
         canonInfoUrl: 'https://transport.cuhk.edu.hk/route/8',
         routeName: 'Western Campus',
         routeColour: '#ffc55a',
@@ -928,20 +935,19 @@ export const busRouteInfos: Record<BusRoute, BusRouteInfo> = {
             /* 6 */ Station.SHAW_COLLEGE_UPWARD,
             //$ inflexion
             /* 7 */ Station.CWC_COLLEGE_DOWNWARD,
-            /* 8 */ Station.RESIDENCE_10,
-            /* 9 */ Station.RESIDENCE_15,
-            /* 10 */ Station.UNTIED_COLLEGE_STAFF_RESIDENCE,
-            /* 11 */ Station.CHAN_CHUN_HA_HOSTEL,
+            /* 8 */ Station.RESIDENCE_15,
+            /* 9 */ Station.UNTIED_COLLEGE_STAFF_RESIDENCE,
+            /* 10 */ Station.CHAN_CHUN_HA_HOSTEL,
             //$ inflexion
-            /* 12 */ Station.SHAW_COLLEGE_DOWNWARD,
-            /* 13 */ Station.WU_YEE_SUN_COLLEGE_DOWNWARD,
-            /* 14 */ Station.NEW_ASIA_COLLEGE,
-            /* 15 */ Station.UNITED_COLLEGE_DOWNWARD,
-            /* 16 */ Station.UNIVERSITY_ADMIN_BUILDING,
-            /* 17 */ Station.SHHO_COLLEGE,
-            /* 18 */ Station.UNIVERSITY_STATION_TERMINUS,
+            /* 11 */ Station.SHAW_COLLEGE_DOWNWARD,
+            /* 12 */ Station.WU_YEE_SUN_COLLEGE_DOWNWARD,
+            /* 13 */ Station.NEW_ASIA_COLLEGE,
+            /* 14 */ Station.UNITED_COLLEGE_DOWNWARD,
+            /* 15 */ Station.UNIVERSITY_ADMIN_BUILDING,
+            /* 16 */ Station.SHHO_COLLEGE,
+            /* 17 */ Station.UNIVERSITY_STATION_TERMINUS,
         ],
-        inflexionIndices: [6.5, 11.5],
+        inflexionIndices: [6.5, 10.5],
     },
     [BusRoute._HP]: {
         canonInfoUrl: 'https://transport.cuhk.edu.hk/route/h',
@@ -963,21 +969,20 @@ export const busRouteInfos: Record<BusRoute, BusRouteInfo> = {
             //$ inflexion
             /* 8 */ Station.AREA_39_UPWARD,
             /* 9 */ Station.CWC_COLLEGE_DOWNWARD,
-            /* 10 */ Station.RESIDENCE_10,
-            /* 11 */ Station.RESIDENCE_15,
-            /* 12 */ Station.UNTIED_COLLEGE_STAFF_RESIDENCE,
-            /* 13 */ Station.CHAN_CHUN_HA_HOSTEL,
+            /* 10 */ Station.RESIDENCE_15,
+            /* 11 */ Station.UNTIED_COLLEGE_STAFF_RESIDENCE,
+            /* 12 */ Station.CHAN_CHUN_HA_HOSTEL,
             //$ inflexion
-            /* 14 */ Station.SHAW_COLLEGE_DOWNWARD,
-            /* 15 */ Station.WU_YEE_SUN_COLLEGE_DOWNWARD,
-            /* 16 */ Station.NEW_ASIA_COLLEGE,
-            /* 17 */ Station.UNITED_COLLEGE_DOWNWARD,
-            /* 18 */ Station.UNIVERSITY_ADMIN_BUILDING,
-            /* 19 */ Station.SHHO_COLLEGE,
-            /* 20 */ Station.POSTGRADUATE_HALL_1,
-            /* 21 */ Station.UNIVERSITY_STATION_TERMINUS,
+            /* 13 */ Station.SHAW_COLLEGE_DOWNWARD,
+            /* 14 */ Station.WU_YEE_SUN_COLLEGE_DOWNWARD,
+            /* 15 */ Station.NEW_ASIA_COLLEGE,
+            /* 16 */ Station.UNITED_COLLEGE_DOWNWARD,
+            /* 17 */ Station.UNIVERSITY_ADMIN_BUILDING,
+            /* 18 */ Station.SHHO_COLLEGE,
+            /* 19 */ Station.POSTGRADUATE_HALL_1,
+            /* 20 */ Station.UNIVERSITY_STATION_TERMINUS,
         ],
-        inflexionIndices: [7.5, 13.5],
+        inflexionIndices: [7.5, 12.5],
     },
 } as const;
 
@@ -1043,6 +1048,7 @@ export const busStationTimings: Record<string, number[]> = {
     [`${Station.UNIVERSITY_STATION}>>${Station.POSTGRADUATE_HALL_1}`]: [124, 150],
     [`${Station.UNIVERSITY_STATION}>>${Station.UNIVERSITY_SPORTS_CENTRE}`]: [135, 111, 91, 127, 112, 126, 146, 107, 123, 131, 98],
     [`${Station.UNIVERSITY_STATION_PIAZZA}>>${Station.CHUNG_CHI_TEACHING_BUILDING_TERMINUS}`]: [40], //!
+    [`${Station.UNIVERSITY_STATION_PIAZZA}>>${Station.POSTGRADUATE_HALL_1}`]: [124, 150], //!
     [`${Station.UNIVERSITY_STATION_PIAZZA}>>${Station.UNIVERSITY_SPORTS_CENTRE}`]: [157, 171, 176, 150, 162],
     [`${Station.WU_YEE_SUN_COLLEGE_DOWNWARD}>>${Station.NEW_ASIA_COLLEGE}`]: [84],
     [`${Station.WU_YEE_SUN_COLLEGE_DOWNWARD}>>${Station.UNIVERSITY_ADMIN_BUILDING}`]: [93, 131],

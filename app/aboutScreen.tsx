@@ -24,7 +24,7 @@ export default function InfoScreen() {
                     type='default'
                     style={styles.descriptionText}
                 >
-                    Based on the 2025 CUHK bus schedule.
+                    Based on the CUHK bus schedule last updated on Sep 2026.
                 </ThemedText>
                 <ThemedText
                     type='default'

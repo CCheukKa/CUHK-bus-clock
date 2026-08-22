@@ -239,7 +239,7 @@ function RouteInfoCard({ selectedRoute }: RouteInfoCardProps) {
 export default function RoutesScreen() {
     const { theme } = useTheme();
 
-    const [selectedRoute, setSelectedRoute] = useState<BusRoute>(BusRoute._1A);
+    const [selectedRoute, setSelectedRoute] = useState<BusRoute>(BusRoute._1);
     const controlButtons = [
         ...Object.entries(busRouteInfos)
             .sort(([keyA], [keyB]) => keyA > keyB ? 1 : -1)
