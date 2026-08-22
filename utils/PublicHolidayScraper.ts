@@ -7,7 +7,7 @@ type ScrapedHolidays = {
     dtend: [string],
 }
 async function scrapePublicHolidays() {
-    if (scraped || isScraping) { return; }
+    if (isScraping || (scraped && publicHolidays.length > 0)) { return; }
     isScraping = true;
 
     console.log('[PublicHolidayScraper][scrapePublicHolidays] Scraping public holidays...');
@@ -18,7 +18,8 @@ async function scrapePublicHolidays() {
         return;
     }
 
-    const data = await response.json();
+    // TODO: FIXME: Implement an actual fix to stream(?) the large JSON without running out of parser memory
+    const data = JSON.parse((await response.text()).replaceAll(/\s+/g, ""));
     const scrapedHolidays: ScrapedHolidays[] = data.vcalendar[0].vevent
         ?? (() => {
             console.error('[PublicHolidayScraper][scrapePublicHolidays] Malformed data');
@@ -27,7 +28,7 @@ async function scrapePublicHolidays() {
     publicHolidays = scrapedHolidays.map(scrapedHoliday => scrapedHoliday.dtstart[0]);
     scraped = true;
     isScraping = false;
-    console.log('[PublicHolidayScraper][scrapePublicHolidays] Scraped public holidays');
+    console.log(`[PublicHolidayScraper][scrapePublicHolidays] Scraped public holidays, got ${publicHolidays.length} holidays`);
 }
 
 export function isPublicHoliday(time: Date): boolean {
