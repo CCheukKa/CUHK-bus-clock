@@ -109,7 +109,7 @@ export function LocationPicker({
                 ]}
                 textStyle={{
                     color: theme.highContrast,
-                    fontFamily: 'KlintRounded',
+                    fontFamily: 'KlintRoundedBold',
                 }}
                 dropDownContainerStyle={[
                     styles.dropdownListContainer,

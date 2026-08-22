@@ -164,7 +164,7 @@ function Controls() {
                                     borderColor: theme.dimContrast,
                                     borderWidth: 2,
                                 }}
-                                textStyle={{ fontFamily: 'KlintRounded' }}
+                                textStyle={{ fontFamily: 'KlintRoundedBold' }}
                                 arrowIconStyle={styles.dropdownIconStyle}
                                 tickIconStyle={styles.dropdownIconStyle}
                                 disabled={schema.disabled}
@@ -192,7 +192,7 @@ function Controls() {
                                 }}
                                 contentStyle={{
                                     textAlign: 'right',
-                                    fontFamily: 'KlintRounded',
+                                    fontFamily: 'KlintRoundedBold',
                                     color: theme.highContrast,
                                 }}
                                 style={[

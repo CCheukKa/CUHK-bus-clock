@@ -18,7 +18,11 @@ import { ThemedText } from '@/components/common/ThemedText';
 SplashScreen.preventAutoHideAsync();
 export default function RootLayout() {
     const [loaded] = useFonts({
-        KlintRounded: require('@/assets/fonts/klintroundedboldflipfont.ttf'),
+        KlintRoundedLight: require('@/assets/fonts/KlintRoundedLight.ttf'),
+        KlintRoundedRegular: require('@/assets/fonts/KlintRoundedRegular.ttf'),
+        KlintRoundedMedium: require('@/assets/fonts/KlintRoundedMedium.ttf'),
+        KlintRoundedBold: require('@/assets/fonts/KlintRoundedBold.ttf'),
+        KlintRoundedBlack: require('@/assets/fonts/KlintRoundedBlack.ttf'),
     });
 
     useEffect(() => {
