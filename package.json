@@ -1,7 +1,7 @@
 {
     "name": "cuhk-bus-clock",
     "main": "expo-router/entry",
-    "version": "1.2.0",
+    "version": "2.0.0",
     "scripts": {
         "start": "expo start",
         "android": "expo run:android",
@@ -9,29 +9,31 @@
     },
     "dependencies": {
         "@expo/vector-icons": "^15.0.3",
-        "@react-native-async-storage/async-storage": "3.0.2",
+        "@react-native-async-storage/async-storage": "2.2.0",
         "@react-native-community/datetimepicker": "9.1.0",
-        "expo": "^55.0.9",
-        "expo-constants": "~55.0.9",
-        "expo-font": "~55.0.4",
-        "expo-linking": "~55.0.9",
-        "expo-location": "~55.1.4",
-        "expo-router": "~55.0.8",
-        "expo-status-bar": "~55.0.4",
-        "react": "19.2.4",
-        "react-native": "0.84.1",
+        "expo": "^57.0.9",
+        "expo-constants": "~57.0.13",
+        "expo-font": "~57.0.1",
+        "expo-linking": "~57.0.7",
+        "expo-location": "~57.0.12",
+        "expo-router": "~57.0.15",
+        "expo-status-bar": "~57.0.1",
+        "react": "19.2.3",
+        "react-native": "0.86.2",
         "react-native-dropdown-picker": "^5.4.6",
         "react-native-paper": "^5.14.1",
-        "react-native-reanimated": "~4.3.0",
+        "react-native-reanimated": "4.5.1",
         "react-native-safe-area-context": "5.7.0",
-        "react-native-screens": "~4.24.0",
-        "react-native-webview": "13.16.1"
+        "react-native-screens": "~4.26.0",
+        "react-native-webview": "13.16.1",
+        "react-native-worklets": "0.10.1"
     },
     "private": true,
     "packageManager": "yarn@1.22.22+sha512.a6b2f7906b721bba3d67d4aff083df04dad64c399707841b7acf00f6b133b7ac24255f2652fa22ae3534329dc6180534e98d17432037ff6fd140556e2bb3137e",
     "devDependencies": {
-        "@types/react": "~19.2.7",
-        "expo-dev-client": "~55.0.19",
+        "@types/react": "~19.2.14",
+        "baseline-browser-mapping": "^2.11.18",
+        "expo-dev-client": "~57.0.14",
         "typescript": "~6.0.2"
     }
 }
