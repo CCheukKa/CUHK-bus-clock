@@ -86,7 +86,7 @@ export default function ClockScreen() {
                         <TouchableOpacity onPress={() => { showDateTimePicker('date') }}>
                             {useMemo(() =>
                                 <ThemedText type="subtitle" style={dateTimeTextStyle}>
-                                    {`${logicTime.toLocaleDateString('en-GB')} (${settings.detectHolidays && isPublicHoliday(logicTime) ? 'Holiday' : WEEK_DAYS[logicTime.getDay()].substring(0, 3)})`}
+                                    {`${logicTime.toLocaleDateString('en-GB')} (${WEEK_DAYS[logicTime.getDay()].substring(0, 3)}${logicTime.getDay() == 0 || (settings.detectHolidays && isPublicHoliday(logicTime)) ? ' - Holiday' : ''})`}
                                 </ThemedText>
                                 , [new Date(logicTime).truncateTo('day').getTime(), dateTimeTextStyle, settings]
                             )}
