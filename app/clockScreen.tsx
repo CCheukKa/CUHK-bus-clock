@@ -4,7 +4,7 @@ import { StyleSheet, TouchableOpacity, View } from 'react-native';
 import { ThemedText } from '@/components/common/ThemedText';
 import { ClockFace } from '@/components/clockScreen/clock/ClockFace';
 import { FontAwesome6, MaterialCommunityIcons } from '@expo/vector-icons';
-import DateTimePicker, { DateTimePickerEvent } from '@react-native-community/datetimepicker';
+import DateTimePicker, { DateTimePickerChangeEvent } from '@expo/ui/community/datetime-picker';
 import { JourneyPlanner } from '@/components/clockScreen/JourneyPlanner';
 import { FromTo, getEtaInfos, isEtaError } from '@/utils/Bus';
 import { Region } from '@/constants/BusData';
@@ -46,23 +46,14 @@ export default function ClockScreen() {
         setDateTimePickerValue(logicTime);
         setDateTimePickerMode(mode);
     }, [logicTime]);
-    const handleDateTimePickerChange = useCallback((event: DateTimePickerEvent, selectedDate?: Date) => {
-        switch (event.type) {
-            case 'dismissed':
-                setDateTimePickerMode(null);
-                break;
-            case 'set':
-                if (selectedDate) {
-                    setUseRealTime(false);
-                    setCustomTime(selectedDate);
-                    setDateTimePickerValue(selectedDate);
-                    setDateTimePickerMode(null);
-                }
-                break;
-            case 'neutralButtonPressed':
-            default:
-                break;
-        }
+    const handleDateTimePickerChange = useCallback((_: DateTimePickerChangeEvent, selectedDate: Date) => {
+        setUseRealTime(false);
+        setCustomTime(selectedDate);
+        setDateTimePickerValue(selectedDate);
+        setDateTimePickerMode(null);
+    }, []);
+    const handleDateTimePickerDismiss = useCallback(() => {
+        setDateTimePickerMode(null);
     }, []);
     const handleResetToCurrentTimeButtonPress = useCallback(() => {
         setUseRealTime(true);
@@ -140,9 +131,8 @@ export default function ClockScreen() {
                                 mode={dateTimePickerMode}
                                 is24Hour={true}
                                 disabled={!dateTimePickerMode}
-                                //! TODO: update @react-native-community/datetimepicker to ^8.3.0 after the issue is fixed
-                                // design='material'
-                                onChange={handleDateTimePickerChange}
+                                onValueChange={handleDateTimePickerChange}
+                                onDismiss={handleDateTimePickerDismiss}
                             />
                         )
                         : null

@@ -7,12 +7,16 @@ export function FullscreenView({ children }: ViewProps) {
     const { theme } = useTheme();
 
     return (
-        <SafeAreaView style={[
-            styles.fullscreenView,
-            { backgroundColor: theme.background },
-        ]}>
+        <SafeAreaView
+            edges={['top', 'left', 'right']}
+            style={
+                [
+                    styles.fullscreenView,
+                    { backgroundColor: theme.background },
+                ]}
+        >
             {children}
-        </SafeAreaView>
+        </SafeAreaView >
     );
 }
 
