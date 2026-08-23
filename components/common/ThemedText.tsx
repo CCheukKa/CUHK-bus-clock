@@ -1,6 +1,7 @@
 import { useTheme } from '@/context/ThemeContext';
 import { Text, type TextProps, StyleSheet, } from 'react-native';
 import { FontSizes } from '@/utils/Typography';
+import { Font } from '@/app/_layout';
 
 export type ThemedTextProps = TextProps & {
     type?: 'default' | 'defaultPlus' | 'bold' | 'boldPlus' | 'faded' | 'title' | 'subtitle';
@@ -14,19 +15,6 @@ export function ThemedText({
     const { theme } = useTheme();
 
     const colour = theme.text;
-    const strokeWidth = (() => {
-        switch (type) {
-            case 'bold':
-            case 'boldPlus':
-                return 0.1;
-            case 'title':
-                return 0.5;
-            case 'subtitle':
-                return 0.15;
-            default:
-                return 0;
-        }
-    })();
 
     return (
         <Text
@@ -49,10 +37,11 @@ export function ThemedText({
 
 const styles = StyleSheet.create({
     common: {
-        fontFamily: 'KlintRoundedBold',
+        fontFamily: Font.KlintRounded700,
     },
     default: {
         fontSize: FontSizes.small,
+        fontFamily: Font.KlintRounded600,
     },
     plus: {
         fontSize: FontSizes.medium,
@@ -62,8 +51,10 @@ const styles = StyleSheet.create({
     },
     title: {
         fontSize: FontSizes.xxlarge,
+        fontFamily: Font.KlintRounded800,
     },
     subtitle: {
         fontSize: FontSizes.large,
+        fontFamily: Font.KlintRounded700,
     },
 });

@@ -8,6 +8,7 @@ import { Dimensions, StyleSheet, TouchableOpacity, View } from "react-native";
 import DropDownPicker, { RenderListItemPropsInterface } from "react-native-dropdown-picker";
 import { NAVIGATION_BAR_HEIGHT } from "@/constants/UI";
 import { ThemedText } from "@/components/common/ThemedText";
+import { Font } from "@/app/_layout";
 
 export type DropdownItem = {
     type: 'region' | 'station';
@@ -109,7 +110,7 @@ export function LocationPicker({
                 ]}
                 textStyle={{
                     color: theme.highContrast,
-                    fontFamily: 'KlintRoundedBold',
+                    fontFamily: Font.KlintRounded700,
                 }}
                 dropDownContainerStyle={[
                     styles.dropdownListContainer,

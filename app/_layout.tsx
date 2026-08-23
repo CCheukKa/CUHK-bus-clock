@@ -15,14 +15,26 @@ import { ResponsiveProvider } from '@/context/ResponsiveContext';
 import RoutesScreen from '@/app/routesScreen';
 import { ThemedText } from '@/components/common/ThemedText';
 
+export enum Font {
+    KlintRounded300 = 'KlintRounded300',
+    KlintRounded400 = 'KlintRounded400',
+    KlintRounded500 = 'KlintRounded500',
+    KlintRounded600 = 'KlintRounded600',
+    KlintRounded700 = 'KlintRounded700',
+    KlintRounded800 = 'KlintRounded800',
+    KlintRounded900 = 'KlintRounded900',
+}
+
 SplashScreen.preventAutoHideAsync();
 export default function RootLayout() {
     const [loaded] = useFonts({
-        KlintRoundedLight: require('@/assets/fonts/KlintRoundedLight.ttf'),
-        KlintRoundedRegular: require('@/assets/fonts/KlintRoundedRegular.ttf'),
-        KlintRoundedMedium: require('@/assets/fonts/KlintRoundedMedium.ttf'),
-        KlintRoundedBold: require('@/assets/fonts/KlintRoundedBold.ttf'),
-        KlintRoundedBlack: require('@/assets/fonts/KlintRoundedBlack.ttf'),
+        [Font.KlintRounded300]: require('@/assets/fonts/KlintRounded300Light.ttf'),
+        [Font.KlintRounded400]: require('@/assets/fonts/KlintRounded400Regular.ttf'),
+        [Font.KlintRounded500]: require('@/assets/fonts/KlintRounded500Medium.ttf'),
+        [Font.KlintRounded600]: require('@/assets/fonts/KlintRounded600SemiBold.ttf'),
+        [Font.KlintRounded700]: require('@/assets/fonts/KlintRounded700Bold.ttf'),
+        [Font.KlintRounded800]: require('@/assets/fonts/KlintRounded800ExtraBold.ttf'),
+        [Font.KlintRounded900]: require('@/assets/fonts/KlintRounded900Black.ttf'),
     });
 
     useEffect(() => {

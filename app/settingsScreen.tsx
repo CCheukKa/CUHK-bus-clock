@@ -8,6 +8,7 @@ import DropDownPicker from 'react-native-dropdown-picker';
 import { useEffect, useState } from 'react';
 import { ThemeProvider, useTheme } from '@/context/ThemeContext';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { Font } from './_layout';
 
 DropDownPicker.setTheme('DARK');
 
@@ -164,7 +165,7 @@ function Controls() {
                                     borderColor: theme.dimContrast,
                                     borderWidth: 2,
                                 }}
-                                textStyle={{ fontFamily: 'KlintRoundedBold' }}
+                                textStyle={{ fontFamily: Font.KlintRounded700 }}
                                 arrowIconStyle={styles.dropdownIconStyle}
                                 tickIconStyle={styles.dropdownIconStyle}
                                 disabled={schema.disabled}
@@ -192,7 +193,7 @@ function Controls() {
                                 }}
                                 contentStyle={{
                                     textAlign: 'right',
-                                    fontFamily: 'KlintRoundedBold',
+                                    fontFamily: Font.KlintRounded700,
                                     color: theme.highContrast,
                                 }}
                                 style={[
