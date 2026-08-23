@@ -923,7 +923,7 @@ export const busRouteInfos: Record<BusRoute, BusRouteInfo> = {
         routeColour: '#453087',
         firstService: [8, 20],
         lastService: [23, 20],
-        serviceDays: [0],
+        serviceDays: [0, 7],
         minuteMarks: [20, 40],
         stations: [
             /* 0 */ Station.UNIVERSITY_STATION,
@@ -955,7 +955,7 @@ export const busRouteInfos: Record<BusRoute, BusRouteInfo> = {
         routeColour: '#453087',
         firstService: [8, 20],
         lastService: [23, 20],
-        serviceDays: [0],
+        serviceDays: [0, 7],
         minuteMarks: [0],
         stations: [
             /* 0 */ Station.UNIVERSITY_STATION,

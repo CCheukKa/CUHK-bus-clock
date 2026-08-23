@@ -1,3 +1,5 @@
+import { Temporal } from '@js-temporal/polyfill';
+
 import { StyleSheet, View } from 'react-native';
 import { ClockThing, ClockThingType } from '@/components/clockScreen/clock/ClockThing';
 import { ClockTicks } from '@/components/clockScreen/clock/ClockTicks';
@@ -9,9 +11,10 @@ import { useSettings } from '@/context/SettingsContext';
 import { ClockHands } from '@/components/clockScreen/clock/ClockHands';
 import { ClockArcs } from '@/components/clockScreen/clock/ClockArcs';
 import { useMemo } from 'react';
+import { getFullTimeString } from '@/utils/Helper';
 
 type ClockFaceProps = {
-    time: Date;
+    time: Temporal.ZonedDateTime;
     etaInfos: EtaInfo[] | EtaError;
 };
 export function ClockFace({ time, etaInfos }: ClockFaceProps) {
@@ -37,13 +40,13 @@ export function ClockFace({ time, etaInfos }: ClockFaceProps) {
                             settings.showPeekArcs
                                 ? <ClockArcs time={time} />
                                 : null
-                            , [time.truncateTo('second').getTime(), settings.showPeekArcs]
+                            , [getFullTimeString(time), settings.showPeekArcs]
                         )}
                         {useMemo(() => <ClockNumbers />, [])}
                         {useMemo(() => <ClockTicks />, [])}
                         {useMemo(() =>
                             <ClockHands time={time} />
-                            , [time.truncateTo('second').getTime()]
+                            , [getFullTimeString(time)]
                         )}
                         {useMemo(() => <ClockThing type={ClockThingType.CLOCK_CENTRE_DOT} degrees={0} distance={0} />, [])}
                     </View>

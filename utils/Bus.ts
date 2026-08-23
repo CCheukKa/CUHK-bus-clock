@@ -1,11 +1,12 @@
+import { Temporal } from '@js-temporal/polyfill';
 import { BusRoute, busRouteInfos, busStationTimings, Coordinates, Region, regionPolygons, Station, stationCoordinates, stationRegions, termini } from "@/constants/BusData";
 import { LocationExtra, MathExtra } from "@/utils/Helper";
 import { isPublicHoliday } from "@/utils/PublicHolidayScraper";
 
 export type EtaInfo = {
     journey: Journey,
-    etaFromTime: Date,
-    etaToTime: Date,
+    etaFromTime: Temporal.ZonedDateTime,
+    etaToTime: Temporal.ZonedDateTime,
     isLastService: boolean,
 }
 export type LocationNullable = Station | Region | null;
@@ -65,7 +66,7 @@ export function isEtaInfoArray(value: EtaInfo | EtaInfo[] | EtaError): value is 
 export function isEtaError(value: EtaInfo | EtaInfo[] | EtaError): value is EtaError { return value instanceof EtaError; }
 /* -------------------------------------------------------------------------- */
 
-export function getEtaInfos({ from, to }: FromTo, currentTime: Date, pastPeekMinutes: number, futurePeekMinutes: number, detectHolidays: boolean): EtaInfo[] | EtaError {
+export function getEtaInfos({ from, to }: FromTo, currentTime: Temporal.ZonedDateTime, pastPeekMinutes: number, futurePeekMinutes: number, detectHolidays: boolean): EtaInfo[] | EtaError {
     /*
     !   Error handling order:
         - Internal API error
@@ -77,8 +78,8 @@ export function getEtaInfos({ from, to }: FromTo, currentTime: Date, pastPeekMin
 
     if (!from || !to) { return []; }
 
-    const pastPeekTimestamp = new Date(currentTime.getTime() - pastPeekMinutes * 60000);
-    const futurePeekTimestamp = new Date(currentTime.getTime() + futurePeekMinutes * 60000);
+    const pastPeekTimestamp = currentTime.add({ minutes: -pastPeekMinutes });
+    const futurePeekTimestamp = currentTime.add({ minutes: futurePeekMinutes });
 
     const fromStations = isRegion(from) ? stationRegions[from] : [from];
     const toStations = isRegion(to) ? stationRegions[to] : [to];
@@ -108,7 +109,7 @@ export function getEtaInfos({ from, to }: FromTo, currentTime: Date, pastPeekMin
 
     const etaErrors = etaInfos.filter(etaInfo => isEtaError(etaInfo));
     const errorlessEtaInfos = etaInfos.filter(etaInfo => isEtaInfo(etaInfo));
-    const withinPeekValidEtaInfos = errorlessEtaInfos.filter(eta => eta.etaFromTime >= pastPeekTimestamp && eta.etaFromTime <= futurePeekTimestamp);
+    const withinPeekValidEtaInfos = errorlessEtaInfos.filter(eta => eta.etaFromTime.epochMilliseconds >= pastPeekTimestamp.epochMilliseconds && eta.etaFromTime.epochMilliseconds <= futurePeekTimestamp.epochMilliseconds);
 
     const hasNotWithinPeekTime = errorlessEtaInfos.length !== 0 && withinPeekValidEtaInfos.length !== errorlessEtaInfos.length;
     const hasInternalApiError = etaErrors.some(etaError => etaError.isType(EtaErrorType.INTERNAL_API_ERROR));
@@ -179,29 +180,24 @@ function findJourney(fromStation: Station, toStation: Station): Journey[] {
     return journeys;
 }
 
-function getStationRouteETA(journey: Journey, currentTime: Date, detectHolidays: boolean): EtaInfo[] | EtaError {
+function getStationRouteETA(journey: Journey, currentTime: Temporal.ZonedDateTime, detectHolidays: boolean): EtaInfo[] | EtaError {
     const routeInfo = busRouteInfos[journey.route];
     if (!routeInfo) { return new InternalApiError; }
     if (!routeInfo.serviceDays.includes(
-        detectHolidays && isPublicHoliday(currentTime)
+        detectHolidays && isPublicHoliday(currentTime.toPlainDate())
             ? 0
-            : currentTime.getDay())
+            : currentTime.dayOfWeek)
     ) { return new NoServiceTodayError([journey.route]); }
     if (!routeInfo.stations.find(station => station === journey.fromStation)) { return new InternalApiError; }
     const routeStartStationTimeOffsetSeconds = getRouteStationTimeOffsetSeconds(journey.fromIndex);
     const routeEndStationTimeOffsetSeconds = getRouteStationTimeOffsetSeconds(journey.toIndex);
-    const currentHour = currentTime.getHours();
 
     const etaInfos: (EtaInfo | null)[] = [];
 
     for (const minuteMark of routeInfo.minuteMarks) {
-        const pastHourMarkTime = new Date(currentTime);
-        const currentHourMarkTime = new Date(currentTime);
-        const futureHourMarkTime = new Date(currentTime);
-
-        pastHourMarkTime.setHours(currentHour - 1, minuteMark, 0, 0);
-        currentHourMarkTime.setHours(currentHour, minuteMark, 0, 0);
-        futureHourMarkTime.setHours(currentHour + 1, minuteMark, 0, 0);
+        const pastHourMarkTime = currentTime.with({ minute: minuteMark, second: 0, millisecond: 0, nanosecond: 0 }).add({ hours: -1 });
+        const currentHourMarkTime = currentTime.with({ minute: minuteMark, second: 0, millisecond: 0, nanosecond: 0 });
+        const futureHourMarkTime = currentTime.with({ minute: minuteMark, second: 0, millisecond: 0, nanosecond: 0 }).add({ hours: 1 });
 
         const pastHourEtaFromTime = pastHourMarkTime.add({ seconds: routeStartStationTimeOffsetSeconds });
         const currentHourEtaFromTime = currentHourMarkTime.add({ seconds: routeStartStationTimeOffsetSeconds });
@@ -258,26 +254,21 @@ function getStationRouteETA(journey: Journey, currentTime: Date, detectHolidays:
         }
         return Math.round(stationTime);
     }
-    function isWithinServiceHours(time: Date): boolean {
+    function isWithinServiceHours(time: Temporal.ZonedDateTime): boolean {
         if (!routeInfo) { throw new Error('[Bus][isWithinServiceHours] Route info not found'); }
 
-        const yesterdayFirstService = new Date(currentTime).add({ days: -1 });
-        const yesterdayLastService = new Date(currentTime).add({ days: -1 });
-        const todayFirstService = new Date(currentTime);
-        const todayLastService = new Date(currentTime);
-        const tomorrowFirstService = new Date(currentTime).add({ days: 1 });
-        const tomorrowLastService = new Date(currentTime).add({ days: 1 });
+        const yesterdayFirstService = currentTime.add({ days: -1 }).with({ hour: routeInfo.firstService[0], minute: routeInfo.firstService[1], second: 0, millisecond: 0, nanosecond: 0 });
+        const yesterdayLastService = currentTime.add({ days: -1 }).with({ hour: routeInfo.lastService[0], minute: routeInfo.lastService[1], second: 0, millisecond: 0, nanosecond: 0 });
+        const todayFirstService = currentTime.with({ hour: routeInfo.firstService[0], minute: routeInfo.firstService[1], second: 0, millisecond: 0, nanosecond: 0 });
+        const todayLastService = currentTime.with({ hour: routeInfo.lastService[0], minute: routeInfo.lastService[1], second: 0, millisecond: 0, nanosecond: 0 });
+        const tomorrowFirstService = currentTime.add({ days: 1 }).with({ hour: routeInfo.firstService[0], minute: routeInfo.firstService[1], second: 0, millisecond: 0, nanosecond: 0 });
+        const tomorrowLastService = currentTime.add({ days: 1 }).with({ hour: routeInfo.lastService[0], minute: routeInfo.lastService[1], second: 0, millisecond: 0, nanosecond: 0 });
 
-        yesterdayFirstService.setHours(routeInfo.firstService[0], routeInfo.firstService[1], 0, 0);
-        yesterdayLastService.setHours(routeInfo.lastService[0], routeInfo.lastService[1], 0, 0);
-        todayFirstService.setHours(routeInfo.firstService[0], routeInfo.firstService[1], 0, 0);
-        todayLastService.setHours(routeInfo.lastService[0], routeInfo.lastService[1], 0, 0);
-        tomorrowFirstService.setHours(routeInfo.firstService[0], routeInfo.firstService[1], 0, 0);
-        tomorrowLastService.setHours(routeInfo.lastService[0], routeInfo.lastService[1], 0, 0);
+        const timeEpochMS = time.epochMilliseconds;
 
-        return (time >= yesterdayFirstService && time <= yesterdayLastService)
-            || (time >= todayFirstService && time <= todayLastService)
-            || (time >= tomorrowFirstService && time <= tomorrowLastService);
+        return (timeEpochMS >= yesterdayFirstService.epochMilliseconds && timeEpochMS <= yesterdayLastService.epochMilliseconds)
+            || (timeEpochMS >= todayFirstService.epochMilliseconds && timeEpochMS <= todayLastService.epochMilliseconds)
+            || (timeEpochMS >= tomorrowFirstService.epochMilliseconds && timeEpochMS <= tomorrowLastService.epochMilliseconds);
     }
 }
 

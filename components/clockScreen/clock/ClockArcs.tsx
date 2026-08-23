@@ -1,3 +1,5 @@
+import { Temporal } from '@js-temporal/polyfill';
+
 import { useSettings } from '@/context/SettingsContext';
 import { useTheme } from '@/context/ThemeContext';
 import { StyleSheet, View } from 'react-native';
@@ -72,13 +74,13 @@ function Pie({ startDegrees, angle, colour }: PieProps) {
 }
 
 type ClockArcsProps = {
-    time: Date;
+    time: Temporal.ZonedDateTime;
 };
 export function ClockArcs({ time }: ClockArcsProps) {
     const { theme } = useTheme();
     const { settings } = useSettings();
 
-    const currentDegrees = 360 / 60 * time.getMinutes() + 360 / 60 / 60 * time.getSeconds();
+    const currentDegrees = 360 / 60 * time.minute + 360 / 60 / 60 * time.second;
     const pastAngle = 360 / 60 * settings.pastPeekMinutes;
     const futureAngle = 360 / 60 * settings.futurePeekMinutes;
     return (

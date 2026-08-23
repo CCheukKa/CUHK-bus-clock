@@ -1,3 +1,5 @@
+import { Temporal } from '@js-temporal/polyfill';
+
 import { useEffect, useState, useRef, useMemo, useCallback } from 'react';
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
 
@@ -16,39 +18,40 @@ import { isPublicHoliday } from '@/utils/PublicHolidayScraper';
 import { WEEK_DAYS } from '@/constants/UI';
 import { SuboptimalRouteStyle } from '@/utils/Settings';
 import { ClockScreenContextProvider } from '@/context/ClockScreenContext';
+import { dateToTemporalZonedDateTime, getDateString, getFullTimeString, getNowZonedDateTime, temporalZonedDateTimeToDate } from '@/utils/Helper';
 
 export default function ClockScreen() {
     const { settings } = useSettings();
     const { theme } = useTheme();
     /* -------------------------------------------------------------------------- */
-    const [realTime, setRealTime] = useState(new Date());
-    const [customTime, setCustomTime] = useState(new Date());
+    const [realTime, setRealTime] = useState(getNowZonedDateTime());
+    const [customTime, setCustomTime] = useState(getNowZonedDateTime());
     const [useRealTime, setUseRealTime] = useState(true);
     const logicTime = useMemo(() => useRealTime ? realTime : customTime, [realTime, customTime, useRealTime]);
     /* -------------------------------------------------------------------------- */
     const frameId = useRef<number | null>(null);
-    const frameSecondTime = useRef<Date>(new Date());
+    const frameTime = useRef<Temporal.ZonedDateTime>(getNowZonedDateTime());
     function updateRealTime() {
-        if (new Date().getTime() - new Date(frameSecondTime.current).getTime() >= 1000) {
-            frameSecondTime.current = new Date().truncateTo('second');
-            setRealTime(new Date());
+        if (frameTime.current.until(getNowZonedDateTime()).total('seconds') >= 1) {
+            frameTime.current = getNowZonedDateTime();
+            setRealTime(getNowZonedDateTime());
         }
         frameId.current = requestAnimationFrame(updateRealTime);
     };
     useEffect(() => { frameId.current = requestAnimationFrame(updateRealTime) }, []);
     /* -------------------------------------------------------------------------- */
-    const [dateTimePickerValue, setDateTimePickerValue] = useState(logicTime);
+    const [dateTimePickerValue, setDateTimePickerValue] = useState(new Date());
     type DateTimePickerMode = 'time' | 'date' | null;
     const [dateTimePickerMode, setDateTimePickerMode] = useState<DateTimePickerMode>(null);
     const showResetToCurrentTimeButton = useMemo(() => !useRealTime, [useRealTime]);
     /* -------------------------------------------------------------------------- */
     const showDateTimePicker = useCallback((mode: DateTimePickerMode) => {
-        setDateTimePickerValue(logicTime);
+        setDateTimePickerValue(temporalZonedDateTimeToDate(logicTime));
         setDateTimePickerMode(mode);
     }, [logicTime]);
     const handleDateTimePickerChange = useCallback((_: DateTimePickerChangeEvent, selectedDate: Date) => {
         setUseRealTime(false);
-        setCustomTime(selectedDate);
+        setCustomTime(dateToTemporalZonedDateTime(selectedDate));
         setDateTimePickerValue(selectedDate);
         setDateTimePickerMode(null);
     }, []);
@@ -73,7 +76,7 @@ export default function ClockScreen() {
         return { etaInfos: rawEtaInfos, filteredCount: NaN };
     }, [
         fromTo,
-        logicTime.truncateTo('second').getTime(),
+        getFullTimeString(logicTime),
         settings,
     ]);
     /* -------------------------------------------------------------------------- */
@@ -86,17 +89,17 @@ export default function ClockScreen() {
                         <TouchableOpacity onPress={() => { showDateTimePicker('date') }}>
                             {useMemo(() =>
                                 <ThemedText type="subtitle" style={dateTimeTextStyle}>
-                                    {`${logicTime.toLocaleDateString('en-GB')} (${WEEK_DAYS[logicTime.getDay()].substring(0, 3)}${logicTime.getDay() == 0 || (settings.detectHolidays && isPublicHoliday(logicTime)) ? ' - Holiday' : ''})`}
+                                    {`${getDateString(logicTime)} (${WEEK_DAYS[logicTime.dayOfWeek].substring(0, 3)}${logicTime.dayOfWeek == 7 || (settings.detectHolidays && isPublicHoliday(logicTime.toPlainDate())) ? ' - Holiday' : ''})`}
                                 </ThemedText>
-                                , [new Date(logicTime).truncateTo('day').getTime(), dateTimeTextStyle, settings]
+                                , [logicTime.dayOfYear, dateTimeTextStyle, settings]
                             )}
                         </TouchableOpacity>
                         <TouchableOpacity onPress={() => { showDateTimePicker('time') }}>
                             {useMemo(() =>
                                 <ThemedText type="title" style={dateTimeTextStyle}>
-                                    {logicTime.toLocaleTimeString('en-GB')}
+                                    {getFullTimeString(logicTime)}
                                 </ThemedText>
-                                , [new Date(logicTime).truncateTo('second').getTime(), dateTimeTextStyle]
+                                , [getFullTimeString(logicTime), dateTimeTextStyle]
                             )}
                         </TouchableOpacity>
                     </View>

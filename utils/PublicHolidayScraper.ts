@@ -1,8 +1,9 @@
+import { Temporal } from '@js-temporal/polyfill';
 import { JSONParser } from '@streamparser/json';
 
 let scraped = false;
 let isScraping = false;
-let publicHolidays: string[] = [];
+let publicHolidays: Temporal.PlainDate[] = [];
 
 type DateTuple = [string, { value: string }];
 type HKPublicHolidayCalendar = {
@@ -48,16 +49,22 @@ async function scrapePublicHolidays() {
             console.error('[PublicHolidayScraper][scrapePublicHolidays] Malformed data');
             return [];
         })();
-    publicHolidays = scrapedHolidays.map(scrapedHoliday => scrapedHoliday.dtstart[0]);
+    publicHolidays = scrapedHolidays.flatMap(scrapedHoliday => {
+        const dtstart = scrapedHoliday.dtstart[0];
+        const dtend = scrapedHoliday.dtend[0];
+        const startDate = new Temporal.PlainDate(parseInt(dtstart.slice(0, 4)), parseInt(dtstart.slice(4, 6)), parseInt(dtstart.slice(6, 8)));
+        const endDate = new Temporal.PlainDate(parseInt(dtend.slice(0, 4)), parseInt(dtend.slice(4, 6)), parseInt(dtend.slice(6, 8)));
+        return Array.from({ length: startDate.until(endDate).total('days') }, (_, i) => startDate.add({ days: i }));
+    });
+
     scraped = true;
     isScraping = false;
     console.log(`[PublicHolidayScraper][scrapePublicHolidays] Scraped public holidays, got ${publicHolidays.length} holidays`);
 }
 
-export function isPublicHoliday(time: Date): boolean {
+export function isPublicHoliday(testDate: Temporal.PlainDate): boolean {
     scrapePublicHolidays();
-    const dateString = `${time.getFullYear()}${(time.getMonth() + 1).toString().padStart(2, '0')}${time.getDate().toString().padStart(2, '0')}`;
-    return publicHolidays.includes(dateString);
+    return publicHolidays.some(holiday => holiday.equals(testDate));
 }
 
 async function parseBodyJSON<T = unknown>(body: ReadableStream<Uint8Array<ArrayBuffer>>): Promise<T> {

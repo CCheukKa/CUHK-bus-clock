@@ -1,7 +1,9 @@
+import { Temporal } from '@js-temporal/polyfill';
+
 import { ClockThing, ClockThingType } from "@/components/clockScreen/clock/ClockThing";
 import { EtaError, EtaErrorType, EtaInfo, isEtaError, NoServiceTodayError, OutOfServiceHoursError } from "@/utils/Bus";
 import { busRouteInfos } from "@/constants/BusData";
-import { Colour, getCountdown, MathExtra, toTimeString } from "@/utils/Helper";
+import { Colour, getCountdownSeconds, getTimeString, MathExtra, toTimeString } from "@/utils/Helper";
 import { useTheme } from "@/context/ThemeContext";
 import { useMemo } from "react";
 import { useSettings } from "@/context/SettingsContext";
@@ -31,18 +33,18 @@ type RouteThingBasicInfo = {
 type RouteThingInfo = RouteThingBasicInfo & RouteBubbleInfo & RouteAnnotationLineInfo & RouteTimingInfo;
 type RouteThingPreInfo = RouteThingBasicInfo & RouteBubbleInfo & RouteAnnotationLineInfo;
 const MAX_ORBIT_COUNT = 3;
-function computeRouteThingInfos(etaInfos: EtaInfo[], currentTime: Date, timingHideMinutes: number): RouteThingInfo[] {
+function computeRouteThingInfos(etaInfos: EtaInfo[], currentTime: Temporal.ZonedDateTime, timingHideMinutes: number): RouteThingInfo[] {
     const routeThingPreInfos: RouteThingPreInfo[] = [];
     const bubbleOrbits: number[][] = Array.from({ length: MAX_ORBIT_COUNT }, () => []);
     for (let i = 0; i < etaInfos.length; i++) {
         const etaInfo = etaInfos[i];
-        const remainingMinutes = getCountdown(currentTime, etaInfo.etaFromTime) / 60;
+        const remainingMinutes = getCountdownSeconds(currentTime, etaInfo.etaFromTime) / 60;
         const routeBubbleInfo = computeRouteBubbleInfo(etaInfo, remainingMinutes);
         if (routeBubbleInfo === null) { continue; }
         const routeAnnotationLineInfo = computeRouteAnnotationLineInfo(routeBubbleInfo.bubbleOrbit, remainingMinutes);
         routeThingPreInfos.push({
             etaInfo,
-            remainingSeconds: getCountdown(currentTime, etaInfo.etaFromTime),
+            remainingSeconds: getCountdownSeconds(currentTime, etaInfo.etaFromTime),
             ...routeBubbleInfo,
             ...routeAnnotationLineInfo,
         });
@@ -50,7 +52,7 @@ function computeRouteThingInfos(etaInfos: EtaInfo[], currentTime: Date, timingHi
 
     const routeThingInfos: RouteThingInfo[] = [];
     const routeTimingPositions: { x: number, y: number }[] = [];
-    const currentMinuteAngle = currentTime.getMinutes() * 6 + currentTime.getSeconds() / 10;
+    const currentMinuteAngle = currentTime.minute * 6 + currentTime.second / 10;
     routeThingPreInfos.sort((a, b) =>
         MathExtra.getAngularDistance(a.bubbleAngle, currentMinuteAngle)
         - MathExtra.getAngularDistance(b.bubbleAngle, currentMinuteAngle)
@@ -76,7 +78,7 @@ function computeRouteThingInfos(etaInfos: EtaInfo[], currentTime: Date, timingHi
             { pin: 15, value: 10 },
         ]);
 
-        const bubbleAngle = etaInfo.etaFromTime.getMinutes() * 6 + etaInfo.etaFromTime.getSeconds() / 10;
+        const bubbleAngle = etaInfo.etaFromTime.minute * 6 + etaInfo.etaFromTime.second / 10;
         let bubbleOrbit: number | null = null;
         let placed = false;
         for (let i = 0; i < MAX_ORBIT_COUNT; i++) {
@@ -325,7 +327,7 @@ export function RouteThing({ routeThingInfo }: { routeThingInfo: RouteThingInfo 
             >
                 {settings.showCountdown
                     ? toTimeString(remainingSeconds)
-                    : etaInfo.etaFromTime.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' })
+                    : getTimeString(etaInfo.etaFromTime)
                 }
             </ClockThing>
         </>
@@ -334,7 +336,7 @@ export function RouteThing({ routeThingInfo }: { routeThingInfo: RouteThingInfo 
 
 type RouteThingsProps = {
     etaInfos: EtaInfo[] | EtaError;
-    currentTime: Date;
+    currentTime: Temporal.ZonedDateTime;
 };
 export function RouteThings({ etaInfos, currentTime }: RouteThingsProps) {
     const { settings } = useSettings();
@@ -344,7 +346,7 @@ export function RouteThings({ etaInfos, currentTime }: RouteThingsProps) {
 
         const routeThingInfos: RouteThingInfo[] = [];
         const rawRouteThingInfos = computeRouteThingInfos(
-            etaInfos.sort((a, b) => a.etaFromTime.getTime() - b.etaFromTime.getTime()),
+            etaInfos.sort((a, b) => a.etaFromTime.epochMilliseconds - b.etaFromTime.epochMilliseconds),
             currentTime,
             settings.timingShowMinutes,
         );
@@ -355,7 +357,7 @@ export function RouteThings({ etaInfos, currentTime }: RouteThingsProps) {
         return routeThingInfos.map(routeThingInfo => (
             <RouteThing
                 routeThingInfo={routeThingInfo}
-                key={`${routeThingInfo.etaInfo.journey.route}-${routeThingInfo.etaInfo.etaFromTime.getTime()}`}
+                key={`${routeThingInfo.etaInfo.journey.route}-${routeThingInfo.etaInfo.etaFromTime.epochMilliseconds}`}
             />
         ));
     }, [etaInfos]);

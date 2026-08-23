@@ -1,3 +1,4 @@
+import { Temporal } from '@js-temporal/polyfill';
 
 import { useTheme } from '@/context/ThemeContext';
 import { StyleSheet, View } from 'react-native';
@@ -52,13 +53,13 @@ function ClockHand({ type, degrees }: ClockHandProps) {
 }
 
 type ClockHandsProps = {
-    time: Date;
+    time: Temporal.ZonedDateTime;
 };
 export function ClockHands({ time }: ClockHandsProps) {
     return (
         <>
-            <ClockHand type={ClockHandType.HOUR} degrees={360 / 12 * time.getHours() + 360 / 12 / 60 * time.getMinutes()} />
-            <ClockHand type={ClockHandType.MINUTE} degrees={360 / 60 * time.getMinutes() + 360 / 60 / 60 * time.getSeconds()} />
+            <ClockHand type={ClockHandType.HOUR} degrees={360 / 12 * time.hour + 360 / 12 / 60 * time.minute} />
+            <ClockHand type={ClockHandType.MINUTE} degrees={360 / 60 * time.minute + 360 / 60 / 60 * time.second} />
         </>
     );
 }

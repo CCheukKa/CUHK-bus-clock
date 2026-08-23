@@ -1,5 +1,6 @@
+import { Temporal } from "@js-temporal/polyfill";
 import { EtaError, EtaInfo, isEtaError, isEtaInfoArray } from "@/utils/Bus";
-import { Colour, getCountdown, toTimeString } from "@/utils/Helper";
+import { Colour, getCountdownSeconds, getNowZonedDateTime, getTimeString, toTimeString } from "@/utils/Helper";
 import { busRouteInfos, stationAbbreviations } from "@/constants/BusData";
 import { useSettings } from "@/context/SettingsContext";
 import { useTheme } from "@/context/ThemeContext";
@@ -42,7 +43,7 @@ const noInfoTexts = [
 ] as const;
 
 type EtaInfoPanelProps = {
-    time: Date;
+    time: Temporal.ZonedDateTime;
     etaInfos: EtaInfo[] | EtaError;
 };
 export function EtaInfoPanel({ time, etaInfos }: EtaInfoPanelProps) {
@@ -50,10 +51,10 @@ export function EtaInfoPanel({ time, etaInfos }: EtaInfoPanelProps) {
     const { settings, setSettings } = useSettings();
 
     const frameCount = useRef<number>(0);
-    const frameTime = useRef<Date>(new Date());
+    const frameTime = useRef<Temporal.ZonedDateTime>(getNowZonedDateTime());
     const frameEtaInfos = useRef<EtaInfo[] | EtaError>([]);
 
-    const timeUpdated = time.getTime() !== frameTime.current.getTime();
+    const timeUpdated = !time.equals(frameTime.current);
     const etaInfosUpdated = JSON.stringify(etaInfos) !== JSON.stringify(frameEtaInfos.current);
     const etaInfosIsError = isEtaError(etaInfos);
 
@@ -75,7 +76,7 @@ export function EtaInfoPanel({ time, etaInfos }: EtaInfoPanelProps) {
     useEffect(() => {
         setSortedEtaInfos(
             isEtaInfoArray(etaInfos)
-                ? etaInfos.sort((a, b) => a.etaFromTime.getTime() - b.etaFromTime.getTime())
+                ? etaInfos.sort((a, b) => a.etaFromTime.epochMilliseconds - b.etaFromTime.epochMilliseconds)
                 : null
         );
     }, [frameCount.current]);
@@ -143,7 +144,7 @@ export function EtaInfoPanel({ time, etaInfos }: EtaInfoPanelProps) {
                 >
                     {sortedEtaInfos.map((etaInfo) => (
                         <EtaInfoCard
-                            key={etaInfo.journey.route + etaInfo.etaFromTime}
+                            key={etaInfo.journey.route + etaInfo.etaFromTime.epochMilliseconds}
                             time={time}
                             etaInfo={etaInfo}
                         />
@@ -180,12 +181,12 @@ export function EtaInfoPanel({ time, etaInfos }: EtaInfoPanelProps) {
     }
 }
 
-function EtaInfoCard({ time, etaInfo }: { time: Date, etaInfo: EtaInfo }) {
+function EtaInfoCard({ time, etaInfo }: { time: Temporal.ZonedDateTime, etaInfo: EtaInfo }) {
     const { theme } = useTheme();
     const { settings } = useSettings();
     const routeColour = busRouteInfos[etaInfo.journey.route].routeColour;
     const contrastColour = Colour.getLuminance(routeColour) > 150 ? theme.black : theme.white;
-    const isPast = etaInfo.etaFromTime.getTime() < time.getTime();
+    const isPast = etaInfo.etaFromTime.epochMilliseconds < time.epochMilliseconds;
 
     const cardColour = isPast ? theme.background : theme.dimContrast;
     const displayRouteColour = isPast ? Colour.mixRGBA(theme.dimContrast, routeColour, 0.5) : routeColour;
@@ -284,12 +285,12 @@ function EtaInfoCard({ time, etaInfo }: { time: Date, etaInfo: EtaInfo }) {
     );
 }
 
-function EtaTime({ time, etaTime, isPast, left, right }: { time: Date, etaTime: Date, isPast: boolean, left?: number, right?: number }) {
+function EtaTime({ time, etaTime, isPast, left, right }: { time: Temporal.ZonedDateTime, etaTime: Temporal.ZonedDateTime, isPast: boolean, left?: number, right?: number }) {
     const { theme } = useTheme();
     const { settings } = useSettings();
 
-    const countdownString = toTimeString(getCountdown(time, etaTime));
-    const etaString = etaTime.toLocaleTimeString('en-GB').slice(0, 5);
+    const countdownString = toTimeString(getCountdownSeconds(time, etaTime));
+    const etaString = getTimeString(etaTime);
     return (
         <View style={[
             etaStyles.etaTimeContainer,

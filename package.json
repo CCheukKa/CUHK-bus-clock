@@ -1,7 +1,7 @@
 {
     "name": "cuhk-bus-clock",
     "main": "expo-router/entry",
-    "version": "2.0.1",
+    "version": "2.1.0",
     "scripts": {
         "start": "expo start",
         "android": "expo run:android",
@@ -11,6 +11,7 @@
         "@charmy.tech/react-native-stroke-text": "^1.2.3",
         "@expo/ui": "~57.0.12",
         "@expo/vector-icons": "^15.0.3",
+        "@js-temporal/polyfill": "^0.5.1",
         "@react-native-async-storage/async-storage": "2.2.0",
         "@streamparser/json": "^0.0.26",
         "expo": "^57.0.9",

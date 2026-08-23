@@ -1,3 +1,5 @@
+import { Temporal } from '@js-temporal/polyfill';
+
 /**
  * A utility class for colour-related operations.
  */
@@ -356,101 +358,62 @@ export function toTimeString(input: number | [number, number], padFront: boolean
  * @param etaTime - The estimated date and time of arrival.
  * @returns The countdown in seconds as a number.
  */
-export function getCountdown(currentTime: Date, etaTime: Date): number {
-    const totalSeconds = (etaTime.getTime() - currentTime.getTime()) / 1000;
-    return totalSeconds;
+export function getCountdownSeconds(currentTime: Temporal.ZonedDateTime, etaTime: Temporal.ZonedDateTime): number {
+    return Math.floor(currentTime.until(etaTime).total('seconds'));
 }
 
 /* -------------------------------------------------------------------------- */
-/**
- * Extends the global Date interface with additional methods.
- */
-declare global {
-    interface Date {
-        /**
-         * Adds the specified amount of time to the current date.
-         * 
-         * @param years - The number of years to add. Defaults to 0.
-         * @param months - The number of months to add. Defaults to 0.
-         * @param days - The number of days to add. Defaults to 0.
-         * @param hours - The number of hours to add. Defaults to 0.
-         * @param minutes - The number of minutes to add. Defaults to 0.
-         * @param seconds - The number of seconds to add. Defaults to 0.
-         * @param milliseconds - The number of milliseconds to add. Defaults to 0.
-         * @returns The updated Date object.
-         */
-        add(
-            { years, months, days, hours, minutes, seconds, milliseconds }: {
-                years?: number,
-                months?: number,
-                days?: number,
-                hours?: number,
-                minutes?: number,
-                seconds?: number,
-                milliseconds?: number,
-            }
-        ): Date;
 
-        /**
-         * Truncates the current date to the specified unit.
-         * Truncating to 'millisecond' is a null operation.
-         * @warning This method mutates the original Date object.
-         * 
-         * @param unit - The unit to truncate to (e.g., 'year', 'month', 'day', etc.).
-         * @returns The truncated Date object.
-         */
-        truncateTo(
-            unit: DateUnits,
-        ): Date;
-    }
+export function getNowZonedDateTime(): Temporal.ZonedDateTime {
+    return Temporal.Now.zonedDateTimeISO('Asia/Hong_Kong');
 }
-Date.prototype.add = function (this: Date,
-    { years, months, days, hours, minutes, seconds, milliseconds }: {
-        years?: number,
-        months?: number,
-        days?: number,
-        hours?: number,
-        minutes?: number,
-        seconds?: number,
-        milliseconds?: number,
-    }
-): Date {
-    years = years ?? 0;
-    months = months ?? 0;
-    days = days ?? 0;
-    hours = hours ?? 0;
-    minutes = minutes ?? 0;
-    seconds = seconds ?? 0;
-    milliseconds = milliseconds ?? 0;
-    return new Date(this.getTime() + (years * 31536000000) + (months * 2592000000) + (days * 86400000) + (hours * 3600000) + (minutes * 60000) + (seconds * 1000) + (milliseconds));
-};
-type DateUnits = 'year' | 'month' | 'day' | 'hour' | 'minute' | 'second' | 'millisecond';
-Date.prototype.truncateTo = function (this: Date, unit: DateUnits): Date {
-    switch (unit) {
-        case 'year':
-            this.setMonth(0, 1);
-            break;
-        case 'month':
-            this.setDate(1);
-            break;
-        case 'day':
-            this.setHours(0, 0, 0, 0);
-            break;
-        case 'hour':
-            this.setMinutes(0, 0, 0);
-            break
-        case 'minute':
-            this.setSeconds(0, 0);
-            break;
-        case 'second':
-            this.setMilliseconds(0);
-            break;
-        case 'millisecond':
-            console.warn('[Helper][truncateTo] Date.prototype.truncateTo("millisecond") is a null operation.');
-            break;
-    }
-    return this;
+
+export function dateToTemporalZonedDateTime(date: Date): Temporal.ZonedDateTime {
+    return Temporal.Instant.fromEpochMilliseconds(date.getTime()).toZonedDateTimeISO('Asia/Hong_Kong');
 }
+
+export function temporalZonedDateTimeToDate(zonedDateTime: Temporal.ZonedDateTime): Date {
+    return new Date(zonedDateTime.epochMilliseconds);
+}
+
+export function getTimeString(zonedDateTime: Temporal.ZonedDateTime): string {
+    return zonedDateTime.toLocaleString('en-GB', { hour: '2-digit', minute: '2-digit' });
+}
+export function getFullTimeString(zonedDateTime: Temporal.ZonedDateTime): string {
+    return zonedDateTime.toLocaleString('en-GB', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+}
+export function getDateString(zonedDateTime: Temporal.ZonedDateTime): string {
+    return zonedDateTime.toLocaleString('en-GB', { day: '2-digit', month: '2-digit', year: 'numeric' });
+}
+
+// TODO: //! use the actual Temporal when it is supported and extend it
+// /* -------------------------------------------------------------------------- */
+// /**
+//  * Extends the global Date interface with additional methods.
+//  */
+// declare global {
+//     interface Date {
+//         toTemporalZonedDateTime(): Temporal.ZonedDateTime;
+//     }
+// }
+// Date.prototype.toTemporalZonedDateTime = function (this: Date): Temporal.ZonedDateTime {
+//     return Temporal.Instant.fromEpochMilliseconds(this.getTime()).toZonedDateTimeISO('Asia/Hong_Kong');
+// };
+
+// /* -------------------------------------------------------------------------- */
+// /**
+//  * Extends the global Temporal interface with additional methods.
+//  */
+// declare global {
+//     namespace Temporal {
+//         interface ZonedDateTimeZ {
+//             toDate(): Date;
+//         }
+//     }
+// }
+// Temporal.ZonedDateTime.prototype.toDate = function (this: Temporal.ZonedDateTime): Date {
+//     return new Date(this.epochMilliseconds);
+// };
 
 /* -------------------------------------------------------------------------- */
 /**
