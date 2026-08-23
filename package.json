@@ -8,7 +8,6 @@
         "ios": "expo run:ios"
     },
     "dependencies": {
-        "@charmy.tech/react-native-stroke-text": "^1.2.3",
         "@expo/ui": "~57.0.12",
         "@expo/vector-icons": "^15.0.3",
         "@js-temporal/polyfill": "^0.5.1",

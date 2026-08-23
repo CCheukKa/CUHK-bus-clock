@@ -4,7 +4,6 @@
     "": {
       "name": "cuhk-bus-clock",
       "dependencies": {
-        "@charmy.tech/react-native-stroke-text": "^1.2.3",
         "@expo/ui": "~57.0.12",
         "@expo/vector-icons": "^15.0.3",
         "@js-temporal/polyfill": "^0.5.1",
@@ -181,8 +180,6 @@
     "@babel/types": ["@babel/types@7.29.8", "", { "dependencies": { "@babel/helper-string-parser": "^7.29.7", "@babel/helper-validator-identifier": "^7.29.7" } }, "sha512-Vj1jF3cPfxg7OAfoI7QnVKLoILlm2JF9pnVHrX8qx7AHMiYWT+NDAA7jChlNgRS4WTLc/fD1lXLmPixluj+3Gg=="],
 
     "@callstack/react-theme-provider": ["@callstack/react-theme-provider@3.0.9", "", { "dependencies": { "deepmerge": "^3.2.0", "hoist-non-react-statics": "^3.3.0" }, "peerDependencies": { "react": ">=16.3.0" } }, "sha512-tTQ0uDSCL0ypeMa8T/E9wAZRGKWj8kXP7+6RYgPTfOPs9N07C9xM8P02GJ3feETap4Ux5S69D9nteq9mEj86NA=="],
-
-    "@charmy.tech/react-native-stroke-text": ["@charmy.tech/react-native-stroke-text@1.2.3", "", {}, "sha512-TyE4buh+cLgihNknT3Di/npUGtTNERmyCIZCYTmc7DynzXhP8S5zcqrlWnpOHpVaRfg/coHDN3sttjvOuR5Dpg=="],
 
     "@expo-google-fonts/material-symbols": ["@expo-google-fonts/material-symbols@0.4.44", "", {}, "sha512-36JP9Chcy/QEVZ9ZGY4i6zInlyFPbQjkIm6gRNuWWltScIj0WR8rddcD57EIjSC5YKCe2ZKLO6eO/N5r8Jit0A=="],
 
