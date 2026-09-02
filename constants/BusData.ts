@@ -1045,8 +1045,9 @@ export const busStationTimings: Record<string, number[]> = {
     [`${Station.UNIVERSITY_SPORTS_CENTRE}>>${Station.FUNG_KING_HEY_BUILDING}`]: [168, 205],
     [`${Station.UNIVERSITY_SPORTS_CENTRE}>>${Station.SCIENCE_CENTRE}`]: [116, 118],
     [`${Station.UNIVERSITY_SPORTS_CENTRE}>>${Station.SIR_RUN_RUN_SHAW_HALL}`]: [132, 139, 110, 153, 147, 127, 145, 153, 123, 140, 149, 132, 109, 145, 147, 160],
-    [`${Station.UNIVERSITY_STATION}>>${Station.POSTGRADUATE_HALL_1}`]: [124, 150],
-    [`${Station.UNIVERSITY_STATION}>>${Station.UNIVERSITY_SPORTS_CENTRE}`]: [135, 111, 91, 127, 112, 126, 146, 107, 123, 131, 98],
+    [`${Station.UNIVERSITY_STATION}>>${Station.POSTGRADUATE_HALL_1}`]: [124 + 6, 150 + 6], //! guestimation +6s
+    // [`${Station.UNIVERSITY_STATION}>>${Station.UNIVERSITY_SPORTS_CENTRE}`]: [135, 111, 91, 127, 112, 126, 146, 107, 123, 131, 98],
+    [`${Station.UNIVERSITY_STATION}>>${Station.UNIVERSITY_SPORTS_CENTRE}`]: [157 + 6, 171 + 6, 176 + 6, 150 + 6, 162 + 6], //! guestimation +6s
     [`${Station.UNIVERSITY_STATION_PIAZZA}>>${Station.CHUNG_CHI_TEACHING_BUILDING_TERMINUS}`]: [40], //!
     [`${Station.UNIVERSITY_STATION_PIAZZA}>>${Station.POSTGRADUATE_HALL_1}`]: [124, 150], //!
     [`${Station.UNIVERSITY_STATION_PIAZZA}>>${Station.UNIVERSITY_SPORTS_CENTRE}`]: [157, 171, 176, 150, 162],
