@@ -8,20 +8,20 @@
         "ios": "expo run:ios"
     },
     "dependencies": {
-        "@expo/ui": "~57.0.12",
+        "@expo/ui": "~57.0.15",
         "@expo/vector-icons": "^15.0.3",
         "@js-temporal/polyfill": "^0.5.1",
         "@react-native-async-storage/async-storage": "2.2.0",
         "@streamparser/json": "^0.0.26",
-        "expo": "^57.0.9",
-        "expo-constants": "~57.0.13",
-        "expo-font": "~57.0.1",
-        "expo-linking": "~57.0.7",
-        "expo-location": "~57.0.12",
-        "expo-router": "~57.0.15",
+        "expo": "~57.0.19",
+        "expo-constants": "~57.0.17",
+        "expo-font": "~57.0.3",
+        "expo-linking": "~57.0.9",
+        "expo-location": "~57.0.15",
+        "expo-router": "~57.0.18",
         "expo-status-bar": "~57.0.1",
         "react": "19.2.3",
-        "react-native": "0.86.2",
+        "react-native": "0.86.3",
         "react-native-dropdown-picker": "^5.4.6",
         "react-native-paper": "^5.14.1",
         "react-native-reanimated": "4.5.1",
@@ -35,7 +35,7 @@
     "devDependencies": {
         "@types/react": "~19.2.14",
         "baseline-browser-mapping": "^2.11.18",
-        "expo-dev-client": "~57.0.14",
+        "expo-dev-client": "~57.0.18",
         "typescript": "~6.0.2"
     }
 }
