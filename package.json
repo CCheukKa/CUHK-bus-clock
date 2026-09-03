@@ -2,6 +2,13 @@
     "name": "cuhk-bus-clock",
     "main": "expo-router/entry",
     "version": "2.1.2",
+    "expo": {
+        "autolinking": {
+            "exclude": [
+                "react-native-webview"
+            ]
+        }
+    },
     "scripts": {
         "start": "expo start",
         "android": "expo run:android",
@@ -27,7 +34,6 @@
         "react-native-reanimated": "4.5.1",
         "react-native-safe-area-context": "~5.7.0",
         "react-native-screens": "~4.26.0",
-        "react-native-webview": "13.16.1",
         "react-native-worklets": "0.10.1"
     },
     "private": true,
