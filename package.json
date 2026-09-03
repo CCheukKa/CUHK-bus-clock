@@ -36,6 +36,7 @@
         "@types/react": "~19.2.14",
         "baseline-browser-mapping": "^2.11.18",
         "expo-dev-client": "~57.0.18",
-        "typescript": "~6.0.2"
+        "typescript": "~6.0.2",
+        "ws": "^8.18.0"
     }
 }

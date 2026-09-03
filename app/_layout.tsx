@@ -13,17 +13,7 @@ import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
 import { IconGlyphs, IconGlyphsType } from '@/utils/Helper';
 import { ResponsiveProvider } from '@/context/ResponsiveContext';
 import RoutesScreen from '@/app/routesScreen';
-import { ThemedText } from '@/components/common/ThemedText';
-
-export enum Font {
-    KlintRounded300 = 'KlintRounded300',
-    KlintRounded400 = 'KlintRounded400',
-    KlintRounded500 = 'KlintRounded500',
-    KlintRounded600 = 'KlintRounded600',
-    KlintRounded700 = 'KlintRounded700',
-    KlintRounded800 = 'KlintRounded800',
-    KlintRounded900 = 'KlintRounded900',
-}
+import { Font, ThemedText } from '@/components/common/ThemedText';
 
 SplashScreen.preventAutoHideAsync();
 export default function RootLayout() {

@@ -1,6 +1,6 @@
 import { getDefaultSettings, Settings, settingsSchema } from '@/utils/Settings';
 import { FullscreenView } from '@/components/common/FullscreenView';
-import { ThemedText } from '@/components/common/ThemedText';
+import { Font, ThemedText } from '@/components/common/ThemedText';
 import { SettingsProvider, useSettings } from '@/context/SettingsContext';
 import { FlatList, StyleSheet, TouchableOpacity, View } from 'react-native';
 import { Dialog, Portal, Switch, TextInput } from 'react-native-paper';
@@ -8,7 +8,6 @@ import DropDownPicker from 'react-native-dropdown-picker';
 import { useEffect, useState } from 'react';
 import { ThemeProvider, useTheme } from '@/context/ThemeContext';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { Font } from './_layout';
 
 DropDownPicker.setTheme('DARK');
 

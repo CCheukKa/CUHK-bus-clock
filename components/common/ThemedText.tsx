@@ -1,7 +1,16 @@
 import { useTheme } from '@/context/ThemeContext';
 import { Text, type TextProps, StyleSheet, } from 'react-native';
 import { FontSizes } from '@/utils/Typography';
-import { Font } from '@/app/_layout';
+
+export enum Font {
+    KlintRounded300 = 'KlintRounded300',
+    KlintRounded400 = 'KlintRounded400',
+    KlintRounded500 = 'KlintRounded500',
+    KlintRounded600 = 'KlintRounded600',
+    KlintRounded700 = 'KlintRounded700',
+    KlintRounded800 = 'KlintRounded800',
+    KlintRounded900 = 'KlintRounded900',
+}
 
 export type ThemedTextProps = TextProps & {
     type?: 'default' | 'defaultPlus' | 'bold' | 'boldPlus' | 'faded' | 'title' | 'subtitle';
